@@ -60,15 +60,6 @@ public class OrganCriteria extends Pagination{
 		this.supOrganTypeId = supOrganTypeId;
 	}
 
-	@Override
-	public String getDefaultSort() {
-		return null;
-	}
-
-	@Override
-	public String[] getValidSortFields() {
-		return null;
-	}
 	
 	
 	

@@ -1,7 +1,10 @@
 package com.duobei.common.util;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public abstract class Pagination implements Serializable {
 	private static final long serialVersionUID = -3294096020910905389L;
 
@@ -137,16 +140,6 @@ public abstract class Pagination implements Serializable {
 		return totalPage;
 	}
 
-	/**
-	 * @return 需排序的字段
-	 */
-	public String getSort() {
-		if (isSortFieldValid()) {
-			return sort;
-		} else {
-			return getDefaultSort();
-		}
-	}
 
 	/**
 	 * @param sort
@@ -171,37 +164,7 @@ public abstract class Pagination implements Serializable {
 		this.order = order;
 	}
 
-	/**
-	 * @return 默认排序字段
-	 */
-	public abstract String getDefaultSort();
 
-	/**
-	 * 返回哪些字段是可以排序的。用于过滤从客户端传递过来的非法参数。
-	 * 
-	 * @return 有效的排序字段
-	 */
-	public abstract String[] getValidSortFields();
-
-	/**
-	 * 判断字段是否可用排序。 用此可过滤从客户端传递过来的非法参数。
-	 * 
-	 * @return
-	 */
-	public boolean isSortFieldValid() {
-		String[] fields = getValidSortFields();
-
-		if (null == fields || 0 == fields.length)
-			return false;
-
-		for (int i = 0; i < fields.length; i++) {
-			if (fields[i].equalsIgnoreCase(sort)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	/**
 	 * 返回下一页页码

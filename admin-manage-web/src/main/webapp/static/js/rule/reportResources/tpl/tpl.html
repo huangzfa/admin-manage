@@ -1,0 +1,1536 @@
+<!-- 规则报告 -->
+<script id="rule-template" type="text/x-handlebars-template">
+	<div class="everyTable">
+		{{#each data}}
+	    <div class="infoDetailContent">
+	        <ul class="clearfix">
+	            <li>
+	                <p class="p1">模 式</p>
+	                <p class="p2">
+	                	{{#equal ruleType "10"}}评分模式{{/equal}}
+	                	{{#equal ruleType "20"}}结果模式{{/equal}}
+	                </p>
+	            </li>
+	            <li>
+	                <p class="p1">规则名称</p>
+	                <p class="p2">{{ruleName}}</p>
+	            </li>
+
+                {{#equal ruleType "10"}}
+                <li>
+                    <p class="p1">得 分</p>
+                    <p class="p2">{{score}}</p>
+                </li>
+                {{/equal}}
+	            
+	            {{#if result}}
+                <li>
+                    <p class="p1">规则运行结果</p>
+                    <p class="p2">
+                        {{#equal result "10"}}通过{{/equal}}
+                        {{#equal result "20"}}需人工审核{{/equal}}
+                        {{#equal result "30"}}不通过{{/equal}}
+                    </p>
+                </li>
+                {{/if}}
+	            <li>
+	                <p class="p1">总条数</p>
+	                <p class="p2">{{ruleCount}}</p>
+	            </li>
+	            <li>
+	                <p class="p1">执行条数</p>
+	                <p class="p2">{{handlerCount}}</p>
+	            </li>
+	            <li>
+	                <p class="p1">命中条数</p>
+	                <p class="p2">{{hitCount}}</p>
+	            </li>
+	        </ul>
+	    </div>
+	    <table class="tableCSS">
+	        <thead>
+	            <tr>
+	                <th>表达式</th>
+	                <th>当前值</th>
+	                <th>是否命中</th>
+                    {{#equal ruleType "10"}}<th>得分</th>{{/equal}}
+                    {{#equal ruleType "20"}}<th>结果</th>{{/equal}}
+	            </tr>
+	        </thead>
+	        <tbody>
+	        	{{#each details}}
+	            <tr>
+	                <td>{{rule}}</td>
+	                <td>{{value}}</td>
+	                <td>
+	                	{{#equal result "Y"}}命中{{/equal}}
+	                	{{#equal result "N"}}未命中{{/equal}}
+	                </td>
+                    {{#equal ../ruleType "10"}}<td>{{score}}</td>{{/equal}}
+                    {{#equal ../ruleType "20"}}
+                        <td>
+                            {{#equal resultType "10"}}通过{{/equal}}
+                            {{#equal resultType "20"}}需人工审核{{/equal}}
+                            {{#equal resultType "30"}}不通过{{/equal}}
+                        </td>
+                    {{/equal}}
+	            </tr>
+	          {{/each}}
+	        </tbody>
+	    </table>
+	  {{/each}}
+	</div>
+</script>
+
+<!-- 同盾报告 -->
+<script id="tongdun-template" type="text/x-handlebars-template">
+    <p class="suggest">
+        <span class="suggestText">扫描建议： <em style="color: #22ac38;">{{final_score}}</em>分，{{final_decision}}</span>
+        <span class="suggestDetail">共发现<em style="color: #d73238;">{{infoLength}}</em>条异常信息</span>
+    </p>
+    <!-- 暂时没有数据 -->
+    <div class="infoDetailContent" style="display: none;">
+        <h3>账户基本信息</h3>
+        <ul class="clearfix">
+            <li>
+                <p class="p1">申请借款日期</p>
+                <p class="p2">2017-12-11 11:13:20</p>
+            </li>
+            <li>
+                <p class="p1">姓 名</p>
+                <p class="p2">2017-12-11 11:13:20</p>
+            </li>
+            <li>
+                <p class="p1">手机号码</p>
+                <p class="p2">2017-12-11 11:13:20</p>
+            </li>
+            <li>
+                <p class="p1">身份证号</p>
+                <p class="p2">2017-12-11 11:13:20</p>
+            </li>
+        </ul>
+    </div>
+    <div class="infoDetailContent">
+        <h3>归属地解析</h3>
+        <ul class="clearfix">
+        {{#with address_detect}}
+            <li>
+                <p class="p1">身份证所属</p>
+                <p class="p2">{{id_card_address}}</p>
+            </li>
+            <li>
+                <p class="p1">手机所属地</p>
+                <p class="p2">{{mobile_address}}</p>
+            </li>
+        {{/with}}
+        </ul>
+    </div>
+
+    <div class="infoDetailContent">
+        <h3>贷前风险情况</h3>
+
+
+        {{#each risk_items}}
+	        {{#each this}}
+		        {{#unless item_detail}}
+		        <!-- 个人基本信息核查询 -->
+		        <div class="everyTable clearfix">
+		            <h4>个人基本信息核查询</h4>
+		            <div class="tabletitle">
+		                <span class="sapnTitle">{{item_name}}</span>
+		                <span class="sapnDetail">风险等级{{{showGrade risk_level}}}</span>
+		            </div>
+		        </div>
+
+		        {{else}}
+
+		        <!-- "不良信息扫描" -->
+		        {{#equal item_detail.type "discredit_count"}}
+        			<div class="everyTable clearfix">
+					  {{#hideTitle @index}}<h4>不良信息扫描</h4>{{/hideTitle}}
+					  {{#each item_detail.overdue_details}}
+					    <table class="tableCSS">
+					        <tbody class="moreLine">
+					            <tr>
+					                <td class="listTitle">逾期金额</td>
+					                <td class="listText">{{overdue_amount}}</td>
+					                <td class="listTitle">逾期笔数</td>
+					                <td class="listText">{{overdue_count}}</td>
+					            </tr>
+					            <tr>
+					                <td class="listTitle">逾期天数</td>
+					                <td class="listText">{{overdue_day}}</td>
+					                <td class="listTitle"></td>
+                                    <td class="listText"></td>
+					            </tr>
+					        </tbody>
+					    </table>
+					   {{/each}}
+					</div>
+		        {{/equal}}
+
+		        {{#equal item_detail.type "frequency_detail"}}
+		        	<div class="everyTable clearfix hasDetail">
+		        		{{#hideTitle @index}}<h4>客户行为检测</h4>{{/hideTitle}}
+						<div class="tabletitle">
+						    <span class="sapnTitle">{{item_name}}</span>
+						    <span class="sapnDetail">风险等级{{{showGrade risk_level}}}</span>
+						</div>
+                        <table class="tableCSS">
+                            <tbody class="moreLine">
+                            		{{{frequencyDetail item_detail.frequency_detail_list}}}
+                            </tbody>
+                        </table>
+                	</div>
+		        {{/equal}}
+
+		        <!-- 多平台借贷申请检测 -->
+		        {{#equal item_detail.type "platform_detail"}}
+			        <div class="everyTable clearfix hasDetail">
+			            {{#hideTitle @index}}<h4>多平台借贷申请检测</h4>{{/hideTitle}}
+			            <div class="tableDetailWrap">
+			                <div class="tabletitle">
+			                    <span class="sapnTitle">{{item_name}}</span>
+			                    <span class="sapnDetail">风险等级{{{showGrade risk_level}}}</span>
+			                </div>
+			                <table class="tableCSS">
+			                    <tbody class="moreLine">
+			                        {{{ListTable item_detail.platform_detail item_detail.platform_count}}}
+			                    </tbody>
+			                </table>
+			                <div class="detailInfoList">
+			                    <h5>各维度多头详情</h5>
+			                    
+			                    <div class="clearfix">
+			                    	{{{ListTableTwoLine item_detail.platform_detail_dimension}}}
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+		        {{/equal}}
+
+		        {{!-- {{#if item_detail.type "discredit_count"}}
+		        	<p>"不良信息扫描"</p>
+		        {{/if}}
+
+		        {{#if item_detail.type "frequency_detail"}}
+		        	<p>"客户行为检测"</p>
+		        {{/if}}
+
+		        {{#if item_detail.type "platform_detail"}}
+		        	<p>""多平台借贷申请检测""</p>
+		        {{/if}} --}}
+
+		        {{/unless}}
+	        {{/each}}
+        {{/each}}
+        <!-- <div class="everyTable clearfix">
+            <h4>个人基本信息核查询</h4>
+            <table class="tableCSS">
+                <tbody class="moreLine">
+                    <tr>
+                        <td class="listTitle">年龄</td>
+                        <td class="listText">27</td>
+                        <td class="listTitle">性别</td>
+                        <td class="listText">男</td>
+                    </tr>
+                    <tr>
+                        <td class="listTitle">生日日期</td>
+                        <td class="listText">1990-03-27</td>
+                        <td class="listTitle">身份证是否是有效身份证</td>
+                        <td class="listText">1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="everyTable clearfix hasDetail">
+            <h4>多平台借贷申请检测</h4>
+            <div class="tableDetailWrap">
+                <div class="tabletitle">
+                    <span class="sapnTitle">身份证格式是否校验错误</span>
+                    <span class="sapnDetail">风险等级<em class="high">高</em></span>
+                </div>
+                <table class="tableCSS">
+                    <tbody class="moreLine">
+                        <tr>
+                            <td class="listTitle">年龄</td>
+                            <td class="listText">27</td>
+                            <td class="listTitle">性别</td>
+                            <td class="listText">男</td>
+                        </tr>
+                        <tr>
+                            <td class="listTitle">生日日期</td>
+                            <td class="listText">1990-03-27</td>
+                            <td class="listTitle">身份证是否是有效身份证</td>
+                            <td class="listText">1</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="detailInfoList">
+                    <h5>各维度多头详情</h5>
+                    <div class="detailTableWrap clearfix">
+                        <div class="detailItem">
+                            <table class="tableCSS">
+                                <tbody class="moreLine">
+                                    <tr>
+                                        <td class="listTitle">年龄</td>
+                                        <td class="listText">27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">生日日期</td>
+                                        <td class="listText">1990-03-27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">年龄</td>
+                                        <td class="listText">27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">生日日期</td>
+                                        <td class="listText">1990-03-27</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="detailItem">
+                            <table class="tableCSS">
+                                <tbody class="moreLine">
+                                    <tr>
+                                        <td class="listTitle">年龄</td>
+                                        <td class="listText">27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">生日日期</td>
+                                        <td class="listText">1990-03-27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">年龄</td>
+                                        <td class="listText">27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">生日日期</td>
+                                        <td class="listText">1990-03-27</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tableDetailWrap">
+                <div class="tabletitle">
+                    <p class="noRisk">无风险</p>
+                </div>
+                <table class="tableCSS">
+                    <tbody class="moreLine">
+                        <tr>
+                            <td class="listTitle">年龄</td>
+                            <td class="listText">27</td>
+                            <td class="listTitle">性别</td>
+                            <td class="listText">男</td>
+                        </tr>
+                        <tr>
+                            <td class="listTitle">生日日期</td>
+                            <td class="listText">1990-03-27</td>
+                            <td class="listTitle">身份证是否是有效身份证</td>
+                            <td class="listText">1</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="detailInfoList">
+                    <h5>各维度多头详情</h5>
+                    <div class="detailTableWrap clearfix">
+                        <div class="detailItem">
+                            <table class="tableCSS">
+                                <tbody class="moreLine">
+                                    <tr>
+                                        <td class="listTitle">年龄</td>
+                                        <td class="listText">27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">生日日期</td>
+                                        <td class="listText">1990-03-27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">年龄</td>
+                                        <td class="listText">27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">生日日期</td>
+                                        <td class="listText">1990-03-27</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="detailItem">
+                            <table class="tableCSS">
+                                <tbody class="moreLine">
+                                    <tr>
+                                        <td class="listTitle">年龄</td>
+                                        <td class="listText">27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">生日日期</td>
+                                        <td class="listText">1990-03-27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">年龄</td>
+                                        <td class="listText">27</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="listTitle">生日日期</td>
+                                        <td class="listText">1990-03-27</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="everyTable clearfix hasDetail">
+            <h4>不良信息扫描</h4>
+            <div class="tableDetailWrap">
+                <div class="tabletitle">
+                    <span class="sapnTitle">身份证格式是否校验错误</span>
+                    <span class="sapnDetail">风险等级<em class="high">高</em></span>
+                </div>
+                <table class="tableCSS">
+                    <tbody class="moreLine">
+                        <tr>
+                            <td class="listTitle">3个月身份证关联家庭地址数</td>
+                            <td class="listText">27</td>
+                            <td>杭州市余※※※※※※※※※※※※※※※※※※※※-211</td>
+                        </tr>
+                        <tr>
+                            <td class="listTitle" rowspan="3">3个月身份证关联家庭地址数</td>
+                            <td class="listText" rowspan="3">27</td>
+                            <td>杭州市余※※※※※※※※※※※※※※※※※※※※-211</td>
+                        </tr>
+                        <tr>
+                            <td>杭州市余※※※※※※※※※※※※※※※※※※※※-211</td>
+                        </tr>
+                        <tr>
+                            <td>杭州市余※※※※※※※※※※※※※※※※※※※※-211</td>
+                        </tr>
+                    </tbody>
+                </table> -->
+            </div>
+</script>
+
+<!--贷后帮报告-->
+<script id="daihouBang-template" type="text/x-handlebars-template">
+	{{#if user_basic}}
+	<div class="everyTable">
+	    <h4 class="tableTitle"> 用户基本信息 </h4>
+	    <table class="tableCSS">
+	        <tbody class="moreLine">
+	            <tr>
+	                <td class="listTitle">年龄</td>
+	                <td class="listText">{{user_basic.age}}</td>
+	                <td class="listTitle">性别</td>
+	                <td class="listText">{{user_basic.gender}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">生日日期</td>
+	                <td class="listText">{{user_basic.birthday}}</td>
+	                <td class="listTitle">身份证是否是有效身份证</td>
+	                <td class="listText">{{user_basic.idcard_validate}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">身份证户籍省份</td>
+	                <td class="listText">{{user_basic.idcard_province}}</td>
+	                <td class="listTitle">身份证户籍城市</td>
+	                <td class="listText">{{user_basic.idcard_city}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">身份证户籍地区</td>
+	                <td class="listText">{{user_basic.idcard_region}}</td>
+	                <td class="listTitle">手机运营商</td>
+	                <td class="listText">{{user_basic.phone_operator}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">手机归属地省份</td>
+	                <td class="listText">{{user_basic.phone_province}}</td>
+	                <td class="listTitle">手机归属地城市</td>
+	                <td class="listText">{{user_basic.phone_city}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">身份证号记录天数</td>
+	                <td class="listText">{{user_basic.record_idcard_days}}</td>
+	                <td class="listTitle">手机号记录天数</td>
+	                <td class="listText">{{user_basic.record_phone_days}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">身份证最近出现时间</td>
+	                <td class="listText">{{user_basic.last_appear_idcard}}</td>
+	                <td class="listTitle">手机号最近出现时间</td>
+	                <td class="listText">{{user_basic.last_appear_phone}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">关联身份证数量</td>
+	                <td class="listText">{{user_basic.used_idcards_cnt}}</td>
+	                <td class="listTitle">关联手机号数量</td>
+	                <td class="listText">{{user_basic.used_phones_cnt}}</td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
+	{{/if}}
+
+	{{#if risk_social_network}}
+	<div class="everyTable">
+	    <h4 class="tableTitle"> 社交风险点 </h4>
+	    <table class="tableCSS">
+	        <tbody class="moreLine">
+	            <tr>
+	                <td class="listTitle">葫芦分</td>
+	                <td class="listText">{{risk_social_network.sn_score}}</td>
+	                <td class="listTitle">直接联系人</td>
+	                <td class="listText">{{risk_social_network.sn_order1_contacts_cnt}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">直接联系人在黑名单中数量(直接黑人)</td>
+	                <td class="listText">{{risk_social_network.sn_order1_blacklist_contacts_cnt}}</td>
+	                <td class="listTitle">间接联系人在黑名单中数量(间接黑人)</td>
+	                <td class="listText">{{risk_social_network.sn_order2_blacklist_contacts_cnt}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">认识间接黑人的直接联系人个数</td>
+	                <td class="listText">{{risk_social_network.sn_order2_blacklist_routers_cnt}}</td>
+	                <td class="listTitle">认识间接黑人的直接联系人比例</td>
+	                <td class="listText">{{risk_social_network.sn_order2_blacklist_routers_pct}}</td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
+	{{/if}}
+
+	{{#if risk_blacklist}}
+	<div class="everyTable">
+	    <h4 class="tableTitle"> 黑名单 </h4>
+	    <table class="tableCSS">
+	        <tbody class="moreLine">
+	            <tr>
+	                <td class="listTitle">身份证是否命中黑名单</td>
+	                <td class="listText">{{risk_blacklist.idcard_in_blacklist}}</td>
+	                <td class="listTitle">手机号是否命中黑名单</td>
+	                <td class="listText">{{risk_blacklist.phone_in_blacklist}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">是否命中法院黑名单</td>
+	                <td class="listText">{{risk_blacklist.in_court_blacklist}}</td>
+	                <td class="listTitle">是否命中网贷黑名单</td>
+	                <td class="listText">{{risk_blacklist.in_p2p_blacklist}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">是否命中银行黑名单</td>
+	                <td class="listText">{{risk_blacklist.in_bank_blacklist}}</td>
+	                <td class="listTitle">最近该身份证出现在黑名单中时间</td>
+	                <td class="listText">{{risk_blacklist.last_appear_idcard_in_blacklist}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">最近该手机号出现在黑名单中时间</td>
+	                <td class="listText">{{risk_blacklist.last_appear_phone_in_blacklist}}</td>
+	                <td class="listTitle"></td>
+	                <td class="listText"></td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
+	{{/if}}
+
+	{{#if history_org}}
+	<div class="everyTable">
+	    <h4 class="tableTitle"> 历史机构类型 </h4>
+	    <table class="tableCSS">
+	        <tbody class="moreLine">
+	            <tr>
+	                <td class="listTitle">线上消费分期出现次数</td>
+	                <td class="listText">{{history_org.online_installment_cnt}}</td>
+	                <td class="listTitle">线下消费分期出现次数</td>
+	                <td class="listText">{{history_org.offline_installment_cnt}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">信用卡代还出现次数</td>
+	                <td class="listText">{{history_org.credit_card_repayment_cnt}}</td>
+	                <td class="listTitle">小额快速贷出现次数</td>
+	                <td class="listText">{{history_org.payday_loan_cnt}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">线上现金贷出现次数</td>
+	                <td class="listText">{{history_org.online_cash_loan_cnt}}</td>
+	                <td class="listTitle">线下现金贷出现次数</td>
+	                <td class="listText">{{history_org.offline_cash_loan_cnt}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">其他</td>
+	                <td class="listText">{{history_org.others_cnt}}</td>
+	                <td class="listTitle"></td>
+	                <td class="listText"></td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
+	{{/if}}
+
+	{{#if history_search}}
+	<div class="everyTable">
+	    <h4 class="tableTitle"> 历史查询 </h4>
+	    <table class="tableCSS">
+	        <tbody class="moreLine">
+	            <tr>
+	                <td class="listTitle">历史查询总次数</td>
+	                <td class="listText">{{history_search.search_cnt}}</td>
+	                <td class="listTitle">最近7天查询次数</td>
+	                <td class="listText">{{history_search.search_cnt_recent_7_days}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">最近14天查询次数</td>
+	                <td class="listText">{{history_search.search_cnt_recent_14_days}}</td>
+	                <td class="listTitle">最近30天查询次数</td>
+	                <td class="listText">{{history_search.search_cnt_recent_30_days}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">最近60天查询次数</td>
+	                <td class="listText">{{history_search.search_cnt_recent_60_days}}</td>
+	                <td class="listTitle">最近90天查询次数</td>
+	                <td class="listText">{{history_search.search_cnt_recent_90_days}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">最近180天查询次数</td>
+	                <td class="listText">{{history_search.search_cnt_recent_180_days}}</td>
+	                <td class="listTitle">历史查询总机构数</td>
+	                <td class="listText">{{history_search.org_cnt}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">最近7天查询机构数</td>
+	                <td class="listText">{{history_search.org_cnt_recent_7_days}}</td>
+	                <td class="listTitle">最近14天查询机构数</td>
+	                <td class="listText">{{history_search.org_cnt_recent_14_days}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">最近30天查询机构数</td>
+	                <td class="listText">{{history_search.org_cnt_recent_30_days}}</td>
+	                <td class="listTitle">最近60天查询机构数</td>
+	                <td class="listText">{{history_search.org_cnt_recent_60_days}}</td>
+	            </tr>
+	            <tr>
+	                <td class="listTitle">最近90天查询机构数</td>
+	                <td class="listText">{{history_search.org_cnt_recent_90_days}}</td>
+	                <td class="listTitle">最近180天查询机构数</td>
+	                <td class="listText">{{history_search.org_cnt_recent_180_days}}</td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
+	{{/if}}
+	
+	{{#if binding_idcards}}
+	<div class="everyTable">
+	    <h4 class="tableTitle"> 绑定身份证情况 </h4>
+	    <div class="tableWrap">
+		    <table class="tableCSS">
+		    	{{{bacKTables binding_idcards "listTitle" "binding_idcards"}}}
+		    </table>
+	    </div>
+	</div>
+	{{/if}}
+
+	{{#if binding_phones}}
+	<div class="everyTable">
+	    <h4 class="tableTitle"> 绑定号码情况 </h4>
+	    <div class="tableWrap">
+		    <table class="tableCSS">
+		    	{{{bacKTables binding_phones "listTitle" "binding_phones"}}}
+		    </table>
+		  </div>
+	</div>
+	{{/if}}
+</script>
+
+<!-- 上树报告 -->
+<script id="shangshu-template" type="text/x-handlebars-template">
+
+	{{#if shuli_operator_basic}}
+	<div class="everyTable">
+	    <h4 class="tableTitle"> 基础信息 </h4>
+	    <div class="tableWrap">
+	    	<table class="tableCSS">
+	    		{{{bacKTables shuli_operator_basic "shangshuTitle" "shuli_operator_basic"}}}
+	    	</table>
+	    	
+	    </div>
+	</div>
+	{{/if}}
+
+	{{#if shuli_operator_voice}}
+	<div class="everyTable">
+	    <h4 class="tableTitle"> 通话记录 </h4>
+	    <div class="tableWrap">
+	    	<table class="tableCSS">
+		    	{{{bacKTables shuli_operator_voice "shangshuTitle" "shuli_operator_voice"}}}
+		    </table>
+	    </div>
+	</div>
+	{{/if}}
+
+	{{#if shuli_operator_bill}}
+	<div class="everyTable">
+	    <h4 class="tableTitle"> 月账单信息 </h4>
+	    <div class="tableWrap">
+		    <table class="tableCSS">
+		    	{{{bacKTables shuli_operator_bill "shangshuTitle" "shuli_operator_bill"}}}
+		    </table>
+	    </div>
+	</div>
+	{{/if}}
+</script>
+
+<!-- 魔蝎报告 -->
+<script id="moxie-template" type="text/x-handlebars-template">
+
+	{{#if shuli_operator_basic}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 魔蝎信息 </h4>
+		<div class="tableWrap">
+			<table class="tableCSS">
+				{{{bacKTables shuli_operator_basic "moxieTitle" "shuli_operator_basic"}}}
+			</table>
+
+		</div>
+	</div>
+	{{/if}}
+
+	{{#if shuli_operator_voice}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 魔蝎记录 </h4>
+		<div class="tableWrap">
+			<table class="tableCSS">
+				{{{bacKTables shuli_operator_voice "moxieTitle" "shuli_operator_voice"}}}
+			</table>
+		</div>
+	</div>
+	{{/if}}
+
+	{{#if shuli_operator_bill}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 魔蝎账单信息 </h4>
+		<div class="tableWrap">
+			<table class="tableCSS">
+				{{{bacKTables shuli_operator_bill "moxieTitle" "shuli_operator_bill"}}}
+			</table>
+		</div>
+	</div>
+	{{/if}}
+</script>
+
+<!-- 法院报告 -->
+<script id="court-template" type="text/x-handlebars-template">
+
+	{{#equal checkStatus "未匹配到诉讼数据"}}未匹配到诉讼数据{{/equal}}
+
+    {{#if cpwsArray}}
+    <div class="everyTable">
+        <h4 class="tableTitle"> 裁判文书 </h4>
+        <div class="tableWrap">
+        <table class="tableCSS">
+            {{{bacKTables cpwsArray "courtTitle" "cpwsArray"}}}
+        </table>
+        </div>
+    </div>
+    {{/if}}
+
+    {{#if zxggArray}}
+    <div class="everyTable">
+        <h4 class="tableTitle"> 执行公告 </h4>
+        <div class="tableWrap">
+        <table class="tableCSS">
+        		{{{bacKTables zxggArray "courtTitle" "zxggArray"}}}
+        </table>
+        </div>
+    </div>
+    {{/if}}
+
+    {{#if ktggArray}}
+    <div class="everyTable">
+        <h4 class="tableTitle"> 开庭公告 </h4>
+        <div class="tableWrap">
+        <table class="tableCSS">
+        		{{{bacKTables ktggArray "courtTitle" "ktggArray"}}}
+        </table>
+        </div>
+    </div>
+    {{/if}}
+
+    {{#if sxggArray}}
+    <div class="everyTable">
+        <h4 class="tableTitle"> 失信公告 </h4>
+        <div class="tableWrap">
+        <table class="tableCSS">
+        		{{{bacKTables sxggArray "courtTitle" "sxggArray"}}}
+        </table>
+        </div>
+    </div>
+    {{/if}}
+
+    {{#if fyggArray}}
+    <div class="everyTable">
+        <h4 class="tableTitle"> 失信公告 </h4>
+        <div class="tableWrap">
+        <table class="tableCSS">
+        		{{{bacKTables fyggArray "courtTitle" "fyggArray"}}}
+        </table>
+        </div>
+    </div>
+    {{/if}}
+
+    {{#if wdhmdArray}}
+    <div class="everyTable">
+        <h4 class="tableTitle"> 网贷黑名单 </h4>
+        <div class="tableWrap">
+        <table class="tableCSS">
+        		{{{bacKTables wdhmdArray "courtTitle" "wdhmdArray"}}}
+        </table>
+        </div>
+    </div>
+    {{/if}}
+
+    {{#if ajlcArray}}
+    <div class="everyTable">
+        <h4 class="tableTitle"> 案件流程信息 </h4>
+        <div class="tableWrap">
+        <table class="tableCSS">
+        		{{{bacKTables ajlcArray "courtTitle" "ajlcArray"}}}
+        </table>
+        </div>
+    </div>
+    {{/if}}
+
+    {{#if bgtArray}}
+    <div class="everyTable">
+        <h4 class="tableTitle"> 曝光台 </h4>
+        <div class="tableWrap">
+        <table class="tableCSS">
+        		{{{bacKTables bgtArray "courtTitle" "bgtArray"}}}
+        </table>
+        </div>
+    </div>
+    {{/if}}
+</script>
+
+<!-- 通讯录 -->
+<script id="mailList-template" type="text/x-handlebars-template">
+  <div class="everyTable">
+    <table class="tableCSS">
+      <tr>
+        <th width="30%"></th>
+        <th width="70%"></th>
+      </tr>
+      <tbody>
+<!--
+	  {{#if socialsecurity_corporation_name}}
+	  <tr>
+		  <td class="tableName" >社保缴纳公司名</td>
+		  <td class="tablePhone">{{socialsecurity_corporation_name}}</td>
+	  </tr>
+	  {{/if}}
+
+	  {{#if found_corporation_name}}
+	  <tr>
+		  <td class="tableName" >公积金缴纳公司名</td>
+		  <td class="tablePhone">{{found_corporation_name}}</td>
+	  </tr>
+	  {{/if}}
+
+
+	  {{#if phone_company}}
+	  <tr>
+		  <td class="tableName" >单位电话号码</td>
+		  <td class="tablePhone">{{phone_company}}</td>
+	  </tr>
+	  {{/if}}-->
+      <tr>
+        <td class="tableName">未过滤时号码总数</td>
+        <td class="tablePhone">{{data.size}}</td>
+      </tr>
+      <tr>
+        <td class="tableName">有效号码数</td>
+        <td class="tablePhone">{{data.validSize}}</td>
+      </tr>
+      <tr>
+        <td class="tableName">无效号码占比</td>
+        <td class="tablePhone">{{data.invalidPercent}}%</td>
+      </tr>
+      <tr>
+        <td class="tableName">伪造号码占比</td>
+        <td class="tablePhone">{{data.fakePercent}}%</td>
+      </tr>
+      <tr>
+        <td class="tableName">亲属数量</td>
+        <td class="tablePhone">{{data.familySize}}</td>
+      </tr>
+      <tr>
+        <td class="tableName">通话记录与通讯录名单匹配数量（90天）</td>
+        <td class="tablePhone">{{data.callMatchNumNinety}}</td>
+      </tr>
+      <tr>
+        <td class="tableName">通讯录里号码前3位相同的不同种类数</td>
+        <td class="tablePhone">{{data.codeSize}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+    <div class="everyTable">
+        <table class="tableCSS">
+            <thead>
+                <tr>
+                    <th width="30%">姓名</th>
+                    <th width="70%">号码</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{#each data.userAddressList}}
+                <tr>
+                    <td class="tableName">{{nickname}}</td>
+                    <td class="tablePhone">{{phone}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</script>
+
+<!-- 社保报告 -->
+<script id="social-security-template" type="text/x-handlebars-template">
+	{{#if mxdataSocialsecurity}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 用户基本信息 </h4>
+		<table class="tableCSS">
+			<tbody class="moreLine">
+			<tr>
+				<td class="listTitle">养老保险缴存状态</td>
+				<td class="listText">{{mxdataSocialsecurity.endowmentStatus}}</td>
+				<td class="listTitle">失业保险缴存状态</td>
+				<td class="listText">{{mxdataSocialsecurity.unemploymentStatus}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">工商保险存缴状态</td>
+				<td class="listText">{{mxdataSocialsecurity.employmentStatus}}</td>
+				<td class="listTitle">生育保险缴存状态</td>
+				<td class="listText">{{mxdataSocialsecurity.maternityStatus}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">医疗保险缴存状态</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalStatus}}</td>
+				<td class="listTitle">医保余额(个人缴纳医保总额 - 消费的医保总额)（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalBalance}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">医保缴存月数</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalMonthCnt}}</td>
+				<td class="listTitle">医保缴存总额(个人缴纳医保总额 )（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalAmountSum}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">医保消费金额（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalMoneySum}}</td>
+				<td class="listTitle">医保消费次数</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalInsuranceCnt}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">状态</td>
+				<td class="listText">{{mxdataSocialsecurity.state}}</td>
+				<td class="listTitle">手机号记录天数</td>
+				<td class="listText">{{mxdataSocialsecurity.recordPhoneDays}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">最新公司名称</td>
+				<td class="listText">{{mxdataSocialsecurity.corporationName}}</td>
+				<td class="listTitle">医保个人缴纳金额（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.personalPayment}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">医保平均缴纳金额（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.avgMedicalAmount}}</td>
+				<td class="listTitle">医保缴纳基数（元） </td>
+				<td class="listText">{{mxdataSocialsecurity.medicalBaseNumber}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">医保保险余额（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalInsuranceBalance}}</td>
+				<td class="listTitle">医保公司缴纳金额 （元）</td>
+				<td class="listText">{{mxdataSocialsecurity.corporationPayment}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">医保最后缴纳记录时间</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalLastPayDate}}</td>
+
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+
+    <!--{{#if socialsecurityCompanyInfoList}}-->
+	<!--&lt;!&ndash;社保公司的详细&ndash;&gt;-->
+	<!--<div class="everyTable">-->
+		<!--<h4 class="tableTitle"> 模糊匹配社保相关公司</h4>-->
+		<!--<table class="tableCSS">-->
+			<!--<tbody class="moreLine">-->
+			<!--{{#each socialsecurityCompanyInfoList}}-->
+			<!--<tr>-->
+				<!--<th class="listTitle">搜索的公司名称</th>-->
+				<!--<th class="listText">{{searchCompanyName}}</th>-->
+				<!--<th class="listTitle">公司名称</th>-->
+				<!--<th class="listText">{{companyName}}</th>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">法定代表人</td>-->
+				<!--<td class="listText">{{legalName}}</td>-->
+				<!--<td class="listTitle">注册资金</td>-->
+				<!--<td class="listText">{{regMo}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">注册日期</td>-->
+				<!--<td class="listText">{{regTime}}</td>-->
+				<!--<td class="listTitle">联系电话</td>-->
+				<!--<td class="listText">{{contact}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">网站名称</td>-->
+				<!--<td class="listText">{{website}}</td>-->
+				<!--<td class="listTitle">列表全信息</td>-->
+				<!--<td class="listText">{{listInfoStr}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">地址</td>-->
+				<!--<td class="listText">{{addr}}</td>-->
+				<!--<td class="listTitle">更新时间</td>-->
+				<!--<td class="listText">{{updateTime}}</td>-->
+			<!--</tr>-->
+			<!--{{/each}}-->
+			<!--</tbody>-->
+		<!--</table>-->
+	<!--</div>-->
+    <!--{{/if}}-->
+
+</script>
+
+<!-- 公积金报告 -->
+<script id="fund-template" type="text/x-handlebars-template">
+	{{#if mxDataFund}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 用户基本信息 </h4>
+		<table class="tableCSS">
+			<tbody class="moreLine">
+			<tr>
+				<td class="listTitle">实名校验结果</td>
+				<td class="listText">{{mxDataFund.realValid }}</td>
+				<td class="listTitle">身份证卡号(公积金)</td>
+				<td class="listText">{{mxDataFund.idNo}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">当前单位和个人月缴纳总额度（元）</td>
+				<td class="listText">{{mxDataFund.monPayAmount}}</td>
+				<td class="listTitle">累计缴纳金额（元）</td>
+				<td class="listText">{{mxDataFund.sumPayAmount}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">账户余额（元）</td>
+				<td class="listText">{{mxDataFund.amount}}</td>
+				<td class="listTitle">最近三个月有无断缴记录</td>
+				<td class="listText">{{mxDataFund.nopayValid}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">累计缴纳期数</td>
+				<td class="listText">{{mxDataFund.payNpers}}</td>
+				<td class="listTitle">连续缴纳至今未断的月份数</td>
+				<td class="listText">{{mxDataFund.serialPayMons}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">是否一线城市</td>
+				<td class="listText">{{mxDataFund.payAddress}}</td>
+				<td class="listTitle">存缴状态</td>
+				<td class="listText">{{mxDataFund.payStatus}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">存缴单位数</td>
+				<td class="listText">{{mxDataFund.payUnits}}</td>
+				<td class="listTitle">是否有贷款</td>
+				<td class="listText">{{mxDataFund.isLoan}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">有贷款且逾期天数</td>
+				<td class="listText">{{mxDataFund.loanOverdueDays}}</td>
+				<td class="listTitle">状态</td>
+				<td class="listText">{{mxDataFund.state}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle renshengStyle">最新公司名称</td>
+				<td class="listText">{{mxDataFund.corporationName}}</td>
+				<td class="listTitle">平均缴纳金额（元）</td>
+				<td class="listText">{{mxDataFund.avgPayAmount}}</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+
+    <!--{{#if fundCompanyInfoList}}-->
+	<!--&lt;!&ndash;公积金公司的详细&ndash;&gt;-->
+	<!--<div class="everyTable">-->
+		<!--<h4 class="tableTitle"> 模糊匹配公积金相关公司</h4>-->
+		<!--<table class="tableCSS">-->
+			<!--{{#each fundCompanyInfoList}}-->
+			<!--<tbody class="moreLine">-->
+			<!--<tr>-->
+				<!--<th class="listTitle" >搜索的公司名称</th>-->
+				<!--<th class="listText">{{searchCompanyName}}</th>-->
+				<!--<th class="listTitle">公司名称</th>-->
+				<!--<th class="listText">{{companyName}}</th>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">法定代表人</td>-->
+				<!--<td class="listText">{{legalName}}</td>-->
+				<!--<td class="listTitle">注册资金</td>-->
+				<!--<td class="listText">{{regMo}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">注册日期</td>-->
+				<!--<td class="listText">{{regTime}}</td>-->
+				<!--<td class="listTitle">联系电话</td>-->
+				<!--<td class="listText">{{contact}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">网站名称</td>-->
+				<!--<td class="listText">{{website}}</td>-->
+				<!--<td class="listTitle" style="width:10%">列表全信息</td>-->
+				<!--<td class="listText">{{listInfoStr}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">地址</td>-->
+				<!--<td class="listText">{{addr}}</td>-->
+				<!--<td class="listTitle">更新时间</td>-->
+				<!--<td class="listText">{{updateTime}}</td>-->
+			<!--</tr>-->
+			<!--</tbody>-->
+
+			<!--{{/each}}-->
+		<!--</table>-->
+	<!--</div>-->
+    <!--{{/if}}-->
+
+</script>
+
+<!-- 人审报告 -->
+<script id="rensheng-template" type="text/x-handlebars-template">
+
+	{{#if user}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 个人信息 </h4>
+		<table class="tableCSS">
+			<tbody class="moreLine">
+			<tr>
+				<td class="tableName">姓名</td>
+				<td class="tablePhone">{{user.realName}}</td>
+				<td class="listTitle">手机号</td>
+				<td class="listText">{{user.phone}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">出生年月</td>
+				<td class="listText">{{user.birth}}</td>
+				<td class="listTitle">年龄</td>
+				<td class="listText">{{user.age}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">性别</td>
+				<td class="listText">{{user.sex}}</td>
+				<td class="listTitle">手机号归属地</td>
+				<td class="listText">{{user.mobileAddress}}</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+
+
+	{{#if mxDataFund}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 公积金信息 </h4>
+		<table class="tableCSS">
+			<tbody class="moreLine">
+			<tr>
+				<td class="listTitle renshengStyle">实名校验结果</td>
+				<td class="listText">{{mxDataFund.realValid }}</td>
+				<td class="listTitle renshengStyle">最近三个月有无断缴记录</td>
+				<td class="listText">{{mxDataFund.nopayValid}}</td>
+			</tr>
+
+			<tr>
+				<td class="listTitle renshengStyle">累计缴纳期数</td>
+				<td class="listText">{{mxDataFund.payNpers}}</td>
+				<td class="listTitle renshengStyle">连续缴纳至今未断的月份数</td>
+				<td class="listText">{{mxDataFund.serialPayMons}}</td>
+			</tr>
+
+			<tr>
+				<td class="listTitle renshengStyle">有贷款且逾期天数</td>
+				<td class="listText">{{mxDataFund.loanOverdueDays}}</td>
+				<td class="listTitle renshengStyle">存缴状态</td>
+				<td class="listText">{{mxDataFund.payStatus}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle renshengStyle">最新公司名称</td>
+				<td class="listText">{{mxDataFund.corporationName}}</td>
+				<td class="listTitle renshengStyle">平均缴纳金额（元）</td>
+				<td class="listText">{{mxDataFund.avgPayAmount}}</td>
+			</tr>
+
+			<tr>
+				<td class="listTitle">当前单位和个人月缴纳总额度</td>
+				<td class="listText">{{mxDataFund.monPayAmount}}</td>
+				<td class="listTitle">累计缴纳金额（元）</td>
+				<td class="listText">{{mxDataFund.sumPayAmount}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">账户余额（元）</td>
+				<td class="listText">{{mxDataFund.amount}}</td>
+				<td class="listTitle">身份证卡号(公积金)</td>
+				<td class="listText">{{mxDataFund.idNo}}</td>
+			</tr>
+
+			<tr>
+				<td class="listTitle">存缴单位数</td>
+				<td class="listText">{{mxDataFund.payUnits}}</td>
+				<td class="listTitle">是否有贷款</td>
+				<td class="listText">{{mxDataFund.isLoan}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">是否一线城市</td>
+				<td class="listText">{{mxDataFund.payAddress}}</td>
+				<td class="listTitle">状态</td>
+				<td class="listText">{{mxDataFund.state}}</td>
+			</tr>
+
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+
+	{{#if listFund}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 最近公积金缴纳信息 </h4>
+		<table class="tableCSS">
+			<tbody class="moreLine">
+			{{#each listFund}}
+			<tr>
+				<td class="tableName">{{corporation_name}}</td>
+				<td class="tablePhone">{{month}}</td>
+				<td class="tablePhone">{{income}}</td>
+			</tr>
+			{{/each}}
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+
+	{{#if mxdataSocialsecurity}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 社保信息 </h4>
+		<table class="tableCSS">
+			<tbody class="moreLine">
+			<tr>
+				<td class="tableName renshengStyle">单位电话号码</td>
+				<td class="tablePhone">{{phone_company}}</td>
+				<td class="listTitle renshengStyle">医保最后缴纳记录时间</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalLastPayDate}}</td>
+			</tr>
+
+			<tr>
+				<td class="listTitle renshengStyle">医保缴存月数</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalMonthCnt}}</td>
+				<td class="listTitle renshengStyle">医保缴纳基数（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalBaseNumber}}</td>
+			</tr>
+
+			<tr>
+				<td class="listTitle">养老保险缴存状态</td>
+				<td class="listText">{{mxdataSocialsecurity.endowmentStatus}}</td>
+				<td class="listTitle">失业保险缴存状态</td>
+				<td class="listText">{{mxdataSocialsecurity.unemploymentStatus}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">工商保险存缴状态</td>
+				<td class="listText">{{mxdataSocialsecurity.employmentStatus}}</td>
+				<td class="listTitle">生育保险缴存状态</td>
+				<td class="listText">{{mxdataSocialsecurity.maternityStatus}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">医疗保险缴存状态</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalStatus}}</td>
+				<td class="listTitle">医保余额(个人缴纳医保总额 - 消费的医保总额)（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalBalance}}</td>
+			</tr>
+
+			<tr>
+				<td class="listTitle">医保消费金额（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalMoneySum}}</td>
+				<td class="listTitle">医保消费次数</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalInsuranceCnt}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">状态</td>
+				<td class="listText">{{mxdataSocialsecurity.state}}</td>
+				<td class="listTitle">手机号记录天数</td>
+				<td class="listText">{{mxdataSocialsecurity.recordPhoneDays}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">最新公司名称</td>
+				<td class="listText">{{mxdataSocialsecurity.corporationName}}</td>
+				<td class="listTitle">医保个人缴纳金额（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.personalPayment}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">医保平均缴纳金额（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.avgMedicalAmount}}</td>
+				<td class="listTitle">医保缴存总额(个人缴纳医保总额 )（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalAmountSum}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">医保保险余额（元）</td>
+				<td class="listText">{{mxdataSocialsecurity.medicalInsuranceBalance}}</td>
+				<td class="listTitle">医保公司缴纳金额（元） </td>
+				<td class="listText">{{mxdataSocialsecurity.corporationPayment}}</td>
+			</tr>
+
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+
+	{{#if user}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 公司信息 </h4>
+		<table class="tableCSS">
+			<tbody class="moreLine">
+			<tr>
+				<td class="tableName renshengStyle">公司名称</td>
+				<td class="tablePhone">{{user.companyName}}</td>
+				<td class="listTitle renshengStyle">行业名称</td>
+				<td class="listText">{{user.tradeName}}</td>
+			</tr>
+
+			<tr>
+				<td class="listTitle">单位电话号码</td>
+				<td class="listText">{{user.phoneCompany}}</td>
+				<td class="listTitle">公司地址-省</td>
+				<td class="listText">{{user.companyAddrProv}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">公司地址-市</td>
+				<td class="listText">{{user.companyAddrCity}}</td>
+				<td class="listTitle">公司地址-区</td>
+				<td class="listText">{{user.companyAddrRegion}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">详细地址</td>
+				<td class="listText">{{user.companyAddrDetail}}</td>
+				<td class="listTitle">任职部门</td>
+				<td class="listText">{{user.department}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">任职岗位</td>
+				<td class="listText">{{user.position}}</td>
+				<td class="listTitle"></td>
+				<td class="listText"></td>
+			</tr>
+
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+
+
+
+	{{#if order}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 订单信息 </h4>
+		<table class="tableCSS">
+			<tbody class="moreLine">
+			<tr>
+				<td class="tableName">商品名称</td>
+				<td class="tablePhone">{{order.goodsName}}</td>
+				<td class="listTitle">商品数量</td>
+				<td class="listText">{{order.goodsAmount}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">商品单价</td>
+				<td class="listText">{{order.goodsPrice}}</td>
+				<td class="listTitle">优惠金额</td>
+				<td class="listText">{{order.discountPrice}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">订单总额</td>
+				<td class="listText">{{order.totalAmount}}</td>
+				<td class="listTitle">支付方式</td>
+				<td class="listText">{{order.payType}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">信用支付金额</td>
+				<td class="listText">{{order.creditPayAmount}}</td>
+				<td class="listTitle"></td>
+				<td class="listText"></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+
+
+	{{#if receiveInfo}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 收货信息 </h4>
+		<table class="tableCSS">
+			<tbody class="moreLine">
+			<tr>
+				<td class="tableName">收货人</td>
+				<td class="tablePhone">{{receiveInfo.receiverName}}</td>
+				<td class="listTitle">收货人联系方式</td>
+				<td class="listText">{{receiveInfo.receiverPhone}}</td>
+			</tr>
+			<tr>
+				<td class="listTitle">收货地址</td>
+				<td class="listText">{{receiveInfo.receiverAddr}}</td>
+				<td class="listTitle"></td>
+				<td class="listText"></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+
+	{{#if abnormalInfo}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 其他异常信息 </h4>
+		<table class="tableCSS">
+			<tbody class="moreLine">
+			<tr>
+				<td class="tableName">该区域分期订单数（-1：定位经纬度为空）</td>
+				<td class="tablePhone">{{abnormalInfo.areaOrderCount}}</td>
+				<td class="listTitle">收货地址距LBS位置(单位：米，-1：定位经纬度为空)</td>
+				<td class="listText">{{abnormalInfo.addressGeoDistance}}</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+
+	{{#if familyUserDirectory}}
+	<div class="everyTable">
+		<h4 class="tableTitle"> 亲人通讯录 </h4>
+		<table class="tableCSS">
+			<tbody class="moreLine">
+			{{#each familyUserDirectory}}
+			<tr>
+				<td class="tableName">{{name}}</td>
+				<td class="tablePhone">{{mobile}}</td>
+			</tr>
+			{{/each}}
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+
+	<!--社保公司的详细-->
+	<!--<div class="everyTable">-->
+		<!--<h4 class="tableTitle"> 模糊匹配社保相关公司</h4>-->
+		<!--<table class="tableCSS">-->
+			<!--<tbody class="moreLine">-->
+			<!--{{#each socialsecurityCompanyInfoList}}-->
+			<!--<tr>-->
+				<!--<th class="listTitle">搜索的公司名称</th>-->
+				<!--<th class="listText">{{searchCompanyName}}</th>-->
+				<!--<th class="listTitle">公司名称</th>-->
+				<!--<th class="listText">{{companyName}}</th>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">法定代表人</td>-->
+				<!--<td class="listText">{{legalName}}</td>-->
+				<!--<td class="listTitle">注册资金</td>-->
+				<!--<td class="listText">{{regMo}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">注册日期</td>-->
+				<!--<td class="listText">{{regTime}}</td>-->
+				<!--<td class="listTitle">联系电话</td>-->
+				<!--<td class="listText">{{contact}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">网站名称</td>-->
+				<!--<td class="listText">{{website}}</td>-->
+				<!--<td class="listTitle">列表全信息</td>-->
+				<!--<td class="listText">{{listInfoStr}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">地址</td>-->
+				<!--<td class="listText">{{addr}}</td>-->
+				<!--<td class="listTitle">更新时间</td>-->
+				<!--<td class="listText">{{updateTime}}</td>-->
+			<!--</tr>-->
+			<!--{{/each}}-->
+			<!--</tbody>-->
+		<!--</table>-->
+	<!--</div>-->
+
+
+
+
+	<!--&lt;!&ndash;公积金公司的详细&ndash;&gt;-->
+	<!--<div class="everyTable">-->
+		<!--<h4 class="tableTitle"> 模糊匹配公积金相关公司</h4>-->
+		<!--<table class="tableCSS">-->
+			<!--{{#each fundCompanyInfoList}}-->
+			<!--<tbody class="moreLine">-->
+			<!--<tr>-->
+				<!--<th class="listTitle" >搜索的公司名称</th>-->
+				<!--<th class="listText">{{searchCompanyName}}</th>-->
+				<!--<th class="listTitle">公司名称</th>-->
+				<!--<th class="listText">{{companyName}}</th>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">法定代表人</td>-->
+				<!--<td class="listText">{{legalName}}</td>-->
+				<!--<td class="listTitle">注册资金</td>-->
+				<!--<td class="listText">{{regMo}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">注册日期</td>-->
+				<!--<td class="listText">{{regTime}}</td>-->
+				<!--<td class="listTitle">联系电话</td>-->
+				<!--<td class="listText">{{contact}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">网站名称</td>-->
+				<!--<td class="listText">{{website}}</td>-->
+				<!--<td class="listTitle" style="width:10%">列表全信息</td>-->
+				<!--<td class="listText">{{listInfoStr}}</td>-->
+			<!--</tr>-->
+			<!--<tr>-->
+				<!--<td class="listTitle">地址</td>-->
+				<!--<td class="listText">{{addr}}</td>-->
+				<!--<td class="listTitle">更新时间</td>-->
+				<!--<td class="listText">{{updateTime}}</td>-->
+			<!--</tr>-->
+			<!--</tbody>-->
+
+			<!--{{/each}}-->
+		<!--</table>-->
+	<!--</div>-->
+
+
+</script>
+
+
+</script>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items>
+	<item key="superAdmin" val="18668299908" title="" desc="超级管理员账号"></item><!-- pwd56msAdmin -->
+	<item key="authzPath" val="/a" title="" desc="权限控制路径"></item>
+	<item key="indexPath" val="/a" title="" desc="维护系统首页路径"></item>
+	<item key="pageSize" val="10" title="" desc="分页每页个数"></item>
+	<item key="loginFailCount" val="3" title="" desc="登录失败几次就需要验证码"></item>
+	<item key="environment" val="${environment}" title="" desc="环境-开发-测试-生产"></item>
+</items>
+

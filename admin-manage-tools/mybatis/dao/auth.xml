@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+	<!-- 数据库驱动本地jar路径 -->
+	<classPathEntry location="E:\mavenRepository\maven\repository\mysql\mysql-connector-java\5.1.25\mysql-connector-java-5.1.25.jar" />
+
+	<!-- 全局性配置信息 -->
+	<context id="context1">
+
+		<!-- 指定生成的java文件的编码方式，因为jdk自带编码方式为GBK，此处不设置，生成的java文件会出现中文乱码问题 -->
+		<property name="javaFileEncoding" value="UTF-8" />
+
+		<!-- 插件：用于扩展或修改通过MyBatis Generator代码生成器生成的代码 -->
+		<!-- 插件1: 为生成的javaModel创建一个toString的方法 -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+		<!-- 插件2: 让生成的类实现Serializable接口，并生成序列化标记 -->
+		<plugin type="com.duobei.tools.mgb.SerializablePlugin" />
+		<!-- 1：注释构建;type-可通过实现CommentGenerator接口构建自定义的注释构建类 -->
+		<commentGenerator type="com.duobei.tools.mgb.MyCommentGenerator" />
+
+		<!-- 2：数据库连接信息 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+						connectionURL="jdbc:mysql://116.62.143.57:3306/duobei?useUnicode=true&amp;characterEncoding=utf-8"
+						userId="root" 
+						password="Hjn184736351" />
+
+		<javaModelGenerator targetProject="duobei-console-core/src/main/java" targetPackage="com.duobei.core.auth.domain" />
+		<sqlMapGenerator targetProject="duobei-console-core/src/main/resources" targetPackage="com.duobei.core.auth.dao.mapper" />
+		<javaClientGenerator targetProject="duobei-console-core/src/main/java" targetPackage="com.duobei.core.auth.dao.mapper" type="XMLMAPPER" />
+
+		<!-- 菜单-角色 -->
+		<table tableName="aa_menu" domainObjectName="Menu" alias="m">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="menu_id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="aa_role" domainObjectName="Role" alias="r">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="role_id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="aa_role_menu" domainObjectName="RoleMenu" alias="rm">
+			<property name="useActualColumnNames" value="false" />
+		</table>
+		<table tableName="aa_operator" domainObjectName="Operator" alias="o">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="op_id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="aa_operator_role" domainObjectName="OperatorRole" alias="opr">
+			<property name="useActualColumnNames" value="false" />
+		</table>
+		<table tableName="aa_operator_login_log" domainObjectName="OperatorLoginLog" alias="oll">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="aa_organ_type" domainObjectName="OrganType" alias="ot">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="organ_type_id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="aa_organ_rule" domainObjectName="OrganRule" alias="orr">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="organ_rule_id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="aa_organ" domainObjectName="Organ" alias="org">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="organ_id" sqlStatement="MySql" identity="true" />
+		</table>
+	</context>
+</generatorConfiguration>

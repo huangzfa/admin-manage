@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd">
+ 
+<description>JSTL 1.1 functions library</description>
+<display-name>JSTL functions sys</display-name>
+<tlib-version>1.1</tlib-version>
+<short-name>cfg</short-name>
+<uri>http://www.jls.cn/tag/cfg</uri>
+
+<function>
+  <description>获取权限管理路径</description>
+  <name>getAuthzPath</name>
+  <function-class>com.duobei.config.GlobalConfig</function-class>
+  <function-signature>java.lang.String getAuthzPath()</function-signature>
+  <example>${cfg:getAuthzPath()}</example>
+</function>
+
+<function>
+  <description>维护系统首页路径</description>
+  <name>getIndexPath</name>
+  <function-class>com.duobei.config.GlobalConfig</function-class>
+  <function-signature>java.lang.String getIndexPath()</function-signature>
+  <example>${cfg:getIndexPath()}</example>
+</function>
+
+<function>
+  <description>是否是超级管理员</description>
+  <name>isSuperAdmin</name>
+  <function-class>com.duobei.core.auth.helper.UserHelper</function-class>
+  <function-signature>boolean isSuperAdmin()</function-signature>
+  <example>${cfg:isSuperAdmin()}</example>
+</function>
+
+<function>
+  <description>获取每页显示数量</description>
+  <name>getPageSize</name>
+  <function-class>com.duobei.config.GlobalConfig</function-class>
+  <function-signature>int getPageSize()</function-signature>
+  <example>${cfg:getPageSize()}</example>
+</function>
+
+<function>
+  <description>获取字典对象列表</description>
+  <name>getDictList</name>
+  <function-class>com.duobei.core.sys.utils.DictUtil</function-class>
+  <function-signature>java.util.List getDictList(java.lang.String)</function-signature>
+  <example>${cfg:getDictList(dictType)}</example>  
+</function>
+
+<function>
+  <description>获取字典标签</description>
+  <name>getDictLabel</name>
+  <function-class>com.duobei.core.sys.utils.DictUtil</function-class>
+  <function-signature>java.lang.String getDictLabel(java.lang.String,java.lang.String)</function-signature>
+  <example>${cfg:getDictLabel(dictType,dictVal)}</example>  
+</function>
+
+<function>
+  <description>获取字典标签</description>
+  <name>getPmmlList</name>
+  <function-class>com.duobei.core.pmml.utils.PmmlUtil</function-class>
+  <function-signature>java.util.List getPmmlList()</function-signature>
+  <example>${cfg:getPmmlList()}</example>
+</function>
+<!-- 
+<function>
+  <description>获取省份列表</description>
+  <name>getProvinces</name>
+  <function-class>com.duobei.core.sys.utils.AreaUtil</function-class>
+  <function-signature>java.util.List getProvinces()</function-signature>
+  <example>${cfg:getProvinces()}</example>
+</function>
+ -->
+</taglib>
+

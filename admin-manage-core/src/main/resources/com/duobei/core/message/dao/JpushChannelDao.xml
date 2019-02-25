@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.message.dao.JpushChannelDao" >
+
+  <resultMap id="BaseResultMap" type="com.duobei.core.message.domain.JpushChannel" extends="com.duobei.core.message.dao.mapper.JpushChannelMapper.BaseResultMap">
+  </resultMap>
+
+  <select id="queryJpushChannelList" parameterType="com.duobei.core.message.domain.criteria.JpushChannelCriteria" resultMap="BaseResultMap">
+    select
+    a.*
+    from pub_jpush_channel a
+    <where>
+      <trim prefix="(" prefixOverrides="and" suffix=")">
+        <if test="jpushChannelCode != null and jpushChannelCode != ''">
+          AND a.jpush_channel_code LIKE CONCAT('%',#{jpushChannelCode},'%')
+        </if>
+        <if test="jpushChannelName != null and jpushChannelName != ''">
+          AND a.jpush_channel_name LIKE CONCAT('%',#{jpushChannelName},'%')
+        </if>
+        AND a.is_delete=0
+      </trim>
+    </where>
+    ORDER BY a.add_time desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+
+  <select id="getChannelByChannelCodeAndPlatform"  resultMap="BaseResultMap">
+		select
+		a.*
+		from pub_jpush_channel a
+		where a.jpush_channel_code = #{jpushChannelCode} and a.platform = #{platform}   AND a.is_delete=0
+	</select>
+
+
+</mapper>

@@ -1,0 +1,465 @@
+
+.shellidea-menu,
+.shellidea-menu * {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	outline: 0;
+}
+
+.shellidea-menu {
+	width: 100%;
+	float: left;
+	position: relative;
+	box-shadow: 2px 2px 10px 0 #868686;
+}
+
+.shellidea-menu .shellidea-menu-header {
+	width: 100%;
+	height: 130px;
+	padding-top:7px;
+	border-bottom:1px solid #eeeeee;
+}
+.shellidea-menu .shellidea-menu-header .user_head{
+	width: 115px;
+	height: 115px;
+	margin: 0 auto;
+	display: block;
+	border-radius:60px;
+	border: 3px solid #e6e6e6;
+	overflow: hidden;
+	cursor: pointer;
+}
+.shellidea-menu .shellidea-menu-header .user_head:hover{
+	animation:rotateY 2s;
+	-moz-animation:rotateY 2s; /* Firefox */
+	-webkit-animation:rotateY 2s; /* Safari and Chrome */
+	-o-animation:rotateY 2s; /* Opera */
+}
+
+.shellidea-menu .shellidea-menu-header .user_head img{
+	width: 100%;
+	height: 100%;
+}
+
+.shellidea-menu .shellidea-menu-footer {
+	width: 100%;
+	height: 50px;
+	padding-left: 22px;
+	float: left;
+	line-height: 50px;
+	font-weight: 600;
+	color: #f0f0f0;
+	background: #414956;
+}
+.shellidea-menu ul {
+	margin: 0;
+	padding: 0;
+	list-style: none
+}
+
+.shellidea-menu ul li {
+	width: 100%;
+	display: block;
+	float: left;
+	position: relative
+}
+
+.shellidea-menu ul li a {
+	width: 100%;
+	padding: 8px 15px;
+	float: left;
+	text-decoration: none;
+	background: #fff;
+	color: #555;
+	font-size: 13px;
+	position: relative;
+	/**
+	white-space: nowrap;
+	overflow: hidden;
+	*/
+}
+.shellidea-menu>ul{
+	display: none;
+}
+.shellidea-menu>ul>li.active>a,
+.shellidea-menu>ul>li:hover>a {
+	color: #2fa4e7;
+}
+
+.shellidea-menu>ul>li>a {
+	border-bottom: 1px solid #e6e6e6;
+	white-space: nowrap;
+    background-color: #f5f5f5;
+    background-image: -moz-linear-gradient(top,#fff,#f5f5f5);
+    background-image: -ms-linear-gradient(top,#fff,#f5f5f5);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fafaf9),to(#f5f5f5));
+    background-image: -webkit-linear-gradient(top,#fff,#f5f5f5);
+    background-image: -o-linear-gradient(top,#fff,#f5f5f5);
+    background-image: linear-gradient(top,#fff,#f5f5f5);
+    background-repeat: repeat-x;
+}
+
+.shellidea-menu ul li a i {
+	width: 25px;
+	float: left;
+	line-height: 18px;
+	font-size: 16px;
+	text-align: left;
+}
+.shellidea-menu ul li a i.normal {
+	width: 12px;
+	float: left;
+	line-height: 18px;
+	font-size: 12px;
+	text-align: left;
+}
+
+.shellidea-menu .submenu-indicator {
+	float: right;
+	right: 22px;
+	position: absolute;
+	line-height: 19px;
+	font-size: 20px;
+	-o-transition: transform .3s linear;
+	-moz-transition: transform .3s linear;
+	-webkit-transition: transform .3s linear;
+	-ms-transition: transform .3s linear
+}
+
+.shellidea-menu ul ul.submenu .submenu-indicator {
+	line-height: 16px
+}
+
+.shellidea-menu .submenu-indicator-minus>.submenu-indicator {
+	-ms-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg)
+}
+
+.shellidea-menu ul ul.submenu,
+.shellidea-menu ul ul.submenu li ul.submenu {
+	width: 100%;
+	display: none;
+	position: static
+}
+
+.shellidea-menu ul ul.submenu li {
+	clear: both;
+	width: 100%
+}
+
+.shellidea-menu ul ul.submenu li a {
+	padding: 6px 15px;
+	width: 100%;
+	float: left;
+	font-size: 12px;
+	border-top: none;
+	position: relative;
+	border-bottom: 1px dotted #dbdbdb;
+	color: #555;
+}
+.shellidea-menu ul ul.submenu li.active>a,
+.shellidea-menu ul ul.submenu li:hover>a {
+	background: #55b4ec;
+	color: #fff;
+}
+
+.shellidea-menu ul ul.submenu>li>a {
+	padding-left: 10px
+}
+
+.shellidea-menu ul ul.submenu>li>ul.submenu>li>a {
+	padding-left: 45px
+}
+
+.shellidea-menu ul ul.submenu>li>ul.submenu>li>ul.submenu>li>a {
+	padding-left: 60px
+}
+
+.shellidea-menu ul li .shellidea-menu-label,
+.shellidea-menu ul ul.submenu li .shellidea-menu-label {
+	min-width: 20px;
+	padding: 1px 2px 1px 1px;
+	position: absolute;
+	right: 18px;
+	top: 14px;
+	font-size: 11px;
+	font-weight: 800;
+	color: #555;
+	text-align: center;
+	line-height: 18px;
+	background: #f0f0f0;
+	border-radius: 100%
+}
+
+.shellidea-menu ul ul.submenu li .shellidea-menu-label {
+	top: 12px
+}
+
+.shellidea-ink {
+	display: block;
+	position: absolute;
+	background: rgba(255, 255, 255, 0.3);
+	border-radius: 100%;
+	-webkit-transform: scale(0);
+	-moz-transform: scale(0);
+	-ms-transform: scale(0);
+	-o-transform: scale(0);
+	transform: scale(0);
+	z-index: 10;
+}
+
+.animate-shellidea-ink {
+	-webkit-animation: ripple .5s linear;
+	-moz-animation: ripple .5s linear;
+	-ms-animation: ripple .5s linear;
+	-o-animation: ripple .5s linear;
+	animation: ripple .5s linear
+}
+
+@-webkit-keyframes ripple {
+	100% {
+		opacity: 0;
+		-webkit-transform: scale(2.5)
+	}
+}
+
+@-moz-keyframes ripple {
+	100% {
+		opacity: 0;
+		-moz-transform: scale(2.5)
+	}
+}
+
+@-o-keyframes ripple {
+	100% {
+		opacity: 0;
+		-o-transform: scale(2.5)
+	}
+}
+
+@keyframes ripple {
+	100% {
+		opacity: 0;
+		transform: scale(2.5)
+	}
+}
+
+
+/*涓婚-绾�*/
+.red1.shellidea-menu ul li a {
+	color: #b0653c;
+	background: transparent;
+}
+.red1.shellidea-menu ul ul.submenu li a {
+	color: #fff;
+}
+.red1.shellidea-menu .shellidea-menu-header{
+}
+.red1.shellidea-menu .shellidea-menu-footer{
+	
+}
+.red1.shellidea-menu>ul>li.active>a,
+.red1.shellidea-menu>ul>li:hover>a {
+	border-bottom-color: #f02c02;
+	background: #f02c02;
+	color: #fff;
+}
+.red1.shellidea-menu>ul>li>a{
+	border-bottom-color: #dec0a0;
+}
+.red1.shellidea-menu ul ul.submenu li:hover>a,
+.red1.shellidea-menu ul ul.submenu li.active>a {
+	border-left-color: #f02c02;
+}
+.red1.shellidea-menu .shellidea-menu-header .user_head{
+	border: 5px solid #FF8364;
+}
+
+@keyframes rotateY {
+  0% {
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+  }
+
+  100% {
+    -moz-transform: rotateY(360deg);
+    -ms-transform: rotateY(360deg);
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+}
+@-webkit-keyframes rotateY {
+  0% {
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+  }
+
+  100% {
+    -moz-transform: rotateY(360deg);
+    -ms-transform: rotateY(360deg);
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+}
+@-moz-keyframes rotateY {
+  0% {
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+  }
+
+  100% {
+    -moz-transform: rotateY(360deg);
+    -ms-transform: rotateY(360deg);
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+}
+@-o-keyframes rotateY {
+  0% {
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+  }
+
+  100% {
+    -moz-transform: rotateY(360deg);
+    -ms-transform: rotateY(360deg);
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+}
+
+
+/* 澶撮儴妯″潡#666666*/
+.shellidea-header {
+	position: absolute;
+	top: 0;
+    background-color: #45aeea;
+    background-image: -moz-linear-gradient(top,#54b4eb,#2fa4e7);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#54b4eb),to(#2fa4e7));
+    background-image: -webkit-linear-gradient(top,#54b4eb,#2fa4e7);
+    background-image: -o-linear-gradient(top,#54b4eb,#2fa4e7);
+    background-image: linear-gradient(to bottom,#54b4eb,#2fa4e7);
+    background-repeat: repeat-x;
+    border: 1px solid #1990d5;
+    line-height: 40px;
+    width: 100%;
+	outline: 0;
+	z-index: 1;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	color: #fff;
+	font-size: 14px;
+	text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+	-webkit-user-select:none; 
+	-moz-user-select:none; 
+	-ms-user-select:none; 
+	user-select:none;
+}
+.shellidea-header a{
+	color: #fff;
+}
+.shellidea-header .logo{
+	float: left;
+	min-width: 200px;
+	height: 40px;
+	line-height: 40px;
+	display: inline-block;
+	font-size: 20px;
+	text-align: center;
+	font-family: Helvetica, Georgia, Arial, sans-serif, 黑体;
+}
+.shellidea-header .info{
+	float: right;
+	width:215px;
+}
+.shellidea-header .info .loginout{
+	float:right;
+	width:50px;
+	cursor:pointer;
+}
+.shellidea-header .info .loginName{
+	float:left;
+	width:155px;
+	display:block;
+	white-space:nowrap; 
+	overflow:hidden; 
+	text-overflow:ellipsis;
+	cursor: pointer;
+	text-align: center;
+}
+.shellidea-header .info .loginName.active {
+    text-decoration: none;
+    background-color: #1684c2;
+    -webkit-box-shadow: inset 0 3px 8px rgba(0,0,0,0.125);
+    -moz-box-shadow: inset 0 3px 8px rgba(0,0,0,0.125);
+    box-shadow: inset 0 3px 8px rgba(0,0,0,0.125);
+}
+.shellidea-header .info .loginName:hover {
+    text-decoration: none;
+    background-color: #1684c2;
+    -webkit-box-shadow: inset 0 3px 8px rgba(0,0,0,0.125);
+    -moz-box-shadow: inset 0 3px 8px rgba(0,0,0,0.125);
+    box-shadow: inset 0 3px 8px rgba(0,0,0,0.125);
+}
+.shellidea-header .menuBox{
+	margin-right: 230px;
+}
+.shellidea-header .nav-bar {
+    line-height: inherit;
+    width: 100%;
+    min-width: 900px;
+    right: 100px;
+}
+.shellidea-header .nav-bar .menuA {
+	min-width: 70px;
+	height: 40px;
+	float: left;
+    display: inline-block;
+    line-height: 40px;
+    padding:0px 10px;
+    text-decoration: none;
+    color: #fff;
+	font-size: 14px;
+	font-family: 'Telex',sans-serif;
+	text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+    cursor:default;
+    text-align: center;
+    outline: 0;
+    border-radius:20px;
+    cursor: pointer;
+}
+/*#435478*/
+.shellidea-header .menuA:hover,.menuA.active { 
+    text-decoration: none;
+    background-color: #1684c2;
+    -webkit-box-shadow: inset 0 3px 8px rgba(0,0,0,0.125);
+    -moz-box-shadow: inset 0 3px 8px rgba(0,0,0,0.125);
+    box-shadow: inset 0 3px 8px rgba(0,0,0,0.125);
+}
+
+.shellidea-footer-layout{
+	position: absolute;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	bottom: 0;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	text-align: center;
+	color: #666666;
+	font-size: 12px;
+	border-top: 1px solid #45aeea;
+}

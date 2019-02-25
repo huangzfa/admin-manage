@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.message.dao.SmsCodeRecordDao" >
+
+  <resultMap id="BaseResultMap" type="com.duobei.core.message.domain.SmsCodeRecord" extends="com.duobei.core.message.dao.mapper.SmsCodeRecordMapper.BaseResultMap">
+  </resultMap>
+
+
+	<!--<select id="queryBankList" parameterType="com.duobei.core.message.domain.criteria.BankCriteria" resultMap="BaseResultMap">-->
+		<!--select-->
+		<!--<include refid="Base_Column_List" />-->
+		<!--from pgy_bank a-->
+		<!--<where>-->
+			<!--<trim prefix="(" prefixOverrides="and" suffix=")">-->
+				<!--<if test="bankState != null and bankState != ''">-->
+					<!--AND a.bank_state = #{bankState}-->
+				<!--</if>-->
+				<!--<if test="maintainState != null and maintainState != ''">-->
+					<!--AND a.maintain_state = #{maintainState}-->
+				<!--</if>-->
+        <!--<if test="bankName != null and bankName != ''">-->
+          <!--AND a.bank_name LIKE CONCAT('%',#{bankName},'%')-->
+        <!--</if>-->
+         <!--AND a.is_delete=0-->
+			<!--</trim>-->
+		<!--</where>-->
+		<!--ORDER BY a.add_time desc-->
+		<!--<if test="pagesize != 0">-->
+			<!--LIMIT #{offset}, #{pagesize}-->
+		<!--</if>-->
+	<!--</select>-->
+
+	<!--<select id="queryBankById" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
+		<!--select-->
+		<!--<include refid="Base_Column_List" />-->
+		<!--from pgy_bank a-->
+		<!--where a.id = #{id}-->
+    <!--AND a.is_delete=0-->
+	<!--</select>-->
+
+	<!--<select id="queryBankByBankCode" parameterType="String" resultMap="BaseResultMap">-->
+		<!--select-->
+		<!--<include refid="Base_Column_List" />-->
+		<!--from pgy_bank a-->
+		<!--where a.bank_code = #{bankCode} and a.is_delete = 0-->
+	<!--</select>-->
+
+</mapper>

@@ -1,0 +1,73 @@
+.si-layout-box {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	bottom: 0;
+	overflow: hidden;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+/*左侧布局*/
+.si-layout-left {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	overflow-x:hidden;
+	overflow-y: auto;
+}
+.si-layout-left.style1{
+	/*background: #ED5565;*/
+	background: url(../img/layout-left-back1.png) no-repeat;
+	background-size:100% 100%;
+}
+.si-layout-left.style2{
+}	
+.si-layout-left.border {
+	border: 1px solid #E5E5E5;
+	
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+/*左侧布局，当有隐藏栏时左侧布局的外层*/
+.si-layout-left-box {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	overflow: hidden;
+	z-index: 2;
+}
+.si-layout-left-box .hideBar {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	cursor: pointer;
+	background: #F7F7F7;
+	border-radius: 15px;
+}
+.si-layout-left-box .hideBar i {
+	position: absolute;
+	top: 50%;
+	font-size: 15px;
+	margin-left: 1px;
+	color: #000;
+}
+
+/**/
+.si-layout-right {
+	height: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}

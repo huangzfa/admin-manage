@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" updateCheck="false">  
+	<!--
+	name：Cache的唯一标识
+	maxElementsInMemory：内存中最大缓存对象数
+	maxElementsOnDisk：磁盘中最大缓存对象数，若是0表示无穷大
+	eternal：Element是否永久有效，一但设置了，timeout将不起作用
+	overflowToDisk：配置此属性，当内存中Element数量达到maxElementsInMemory时，Ehcache将会Element写到磁盘中
+	timeToIdleSeconds：设置Element在失效前的允许闲置时间。仅当element不是永久有效时使用，可选属性，默认值是0，也就是可闲置时间无穷大
+	timeToLiveSeconds：设置Element在失效前允许存活时间。最大时间介于创建时间和失效时间之间。仅当element不是永久有效时使用，默认是0.，也就是element存活时间无穷大 
+	diskPersistent：是否缓存虚拟机重启期数据（Server重启时将缓存序列化到本地，后再加载，保证缓存在重启后依然有效）。
+	diskExpiryThreadIntervalSeconds：磁盘失效线程运行时间间隔，默认是120秒
+	diskSpoolBufferSizeMB：这个参数设置DiskStore（磁盘缓存）的缓存区大小。默认是30MB。每个Cache都应该有自己的一个缓冲区
+	memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。默认策略是LRU（最近最少使用）。你可以设置为FIFO（先进先出）或是LFU（较少使用） 
+	
+	其中主要记录的是timeToLiveSeconds和timeToIdleSeconds；因为此俩容易搞混淆：
+	timeToLiveSeconds=x：缓存自创建日期起至失效时的间隔时间x；
+	timeToIdleSeconds=y：缓存创建以后，最后一次访问缓存的日期至失效之时的时间间隔y；
+
+	如果仅有 timeToLiveSeconds 
+	那么 自创建时间开始 间隔x后缓存失效；
+	如果没有timeToLiveSeconds 那么自最后一次访问缓存 间隔y后 缓存失效；
+	如果既有timeToLiveSeconds 也有 timeToIdleSeconds 那么取最小数算作间隔时间；min(x,y);
+	经过测试其计算原则是：若自创建缓存后一直都没有访问缓存，那么间隔x后失效，若自创建缓存后有N次访问缓存，那么计算（最后一次访问缓存时间+y ） 即：按照timeToIdleSeconds计算，但总存活时间不超过 y;举个例子：
+	timeToIdleSeconds=120；
+	timeToLiveSeconds=180；
+	上面的表示此缓存最多可以存活3分钟，如果期间超过2分钟未访问 那么此缓存失效！
+	-->
+	
+	<diskStore path="/www/cache/duobei-console" />
+	<defaultCache overflowToDisk="true" eternal="false" memoryStoreEvictionPolicy="LRU" maxElementsInMemory="10000" timeToIdleSeconds="300" timeToLiveSeconds="300" diskPersistent="false"/>
+	<!-- 
+	<cache name="BIZ_CACHE" overflowToDisk="true" eternal="false"
+		timeToIdleSeconds="86400"  timeToLiveSeconds="0"  maxElementsInMemory="100000"
+		diskPersistent="false" memoryStoreEvictionPolicy="LRU" />
+	 -->
+	 
+	<cache name="shiro-activeSessionCache"
+	         maxElementsInMemory="10000"
+	         overflowToDisk="true"
+	         eternal="false"
+	         timeToLiveSeconds="43200"
+	         timeToIdleSeconds="1800"
+	         diskPersistent="true"
+	         diskExpiryThreadIntervalSeconds="600"/>
+	 
+	 <cache name="authenticationCache"
+	         maxElementsInMemory="10000"
+	         overflowToDisk="true"
+	         eternal="false"
+	         timeToLiveSeconds="43200"
+	         timeToIdleSeconds="0"
+	         diskPersistent="false"/>
+	 
+	 <cache name="authorizationCache"
+	         maxElementsInMemory="10000"
+	         overflowToDisk="true"
+	         eternal="false"
+	         timeToLiveSeconds="43200"
+	         timeToIdleSeconds="0"
+	         diskPersistent="false"/>
+	      
+	  <cache name="SYS_CACHE"
+	         maxElementsInMemory="10000"
+	         overflowToDisk="true"
+	         eternal="false"
+	         timeToLiveSeconds="43200"
+	         timeToIdleSeconds="0"
+	         diskPersistent="false"/>   
+	 
+</ehcache>

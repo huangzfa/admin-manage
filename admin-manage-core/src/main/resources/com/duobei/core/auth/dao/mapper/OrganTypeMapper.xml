@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.auth.dao.mapper.OrganTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.duobei.core.auth.domain.OrganType" >
+    <id column="ot_organ_type_id" property="organTypeId" jdbcType="INTEGER" />
+    <result column="ot_organ_type_code" property="organTypeCode" jdbcType="VARCHAR" />
+    <result column="ot_organ_type_name" property="organTypeName" jdbcType="VARCHAR" />
+    <result column="ot_is_system" property="isSystem" jdbcType="BIT" />
+    <result column="ot_add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="ot_modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ot.organ_type_id as ot_organ_type_id, ot.organ_type_code as ot_organ_type_code, ot.organ_type_name as ot_organ_type_name, 
+    ot.is_system as ot_is_system, ot.add_time as ot_add_time, ot.modify_time as ot_modify_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.duobei.core.auth.domain.OrganTypeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from aa_organ_type ot
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from aa_organ_type ot
+    where ot.organ_type_id = #{organTypeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from aa_organ_type
+    where organ_type_id = #{organTypeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.auth.domain.OrganTypeExample" >
+    delete from aa_organ_type ot
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.auth.domain.OrganType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="organTypeId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aa_organ_type (organ_type_code, organ_type_name, is_system, 
+      add_time, modify_time)
+    values (#{organTypeCode,jdbcType=VARCHAR}, #{organTypeName,jdbcType=VARCHAR}, #{isSystem,jdbcType=BIT}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.auth.domain.OrganType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="organTypeId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aa_organ_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="organTypeCode != null" >
+        organ_type_code,
+      </if>
+      <if test="organTypeName != null" >
+        organ_type_name,
+      </if>
+      <if test="isSystem != null" >
+        is_system,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="organTypeCode != null" >
+        #{organTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="organTypeName != null" >
+        #{organTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="isSystem != null" >
+        #{isSystem,jdbcType=BIT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.auth.domain.OrganTypeExample" resultType="java.lang.Integer" >
+    select count(*) from aa_organ_type ot
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update aa_organ_type ot
+    <set >
+      <if test="record.organTypeId != null" >
+        ot.organ_type_id = #{record.organTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.organTypeCode != null" >
+        ot.organ_type_code = #{record.organTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.organTypeName != null" >
+        ot.organ_type_name = #{record.organTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSystem != null" >
+        ot.is_system = #{record.isSystem,jdbcType=BIT},
+      </if>
+      <if test="record.addTime != null" >
+        ot.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null" >
+        ot.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update aa_organ_type ot
+    set ot.organ_type_id = #{record.organTypeId,jdbcType=INTEGER},
+      ot.organ_type_code = #{record.organTypeCode,jdbcType=VARCHAR},
+      ot.organ_type_name = #{record.organTypeName,jdbcType=VARCHAR},
+      ot.is_system = #{record.isSystem,jdbcType=BIT},
+      ot.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      ot.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.auth.domain.OrganType" >
+    update aa_organ_type
+    <set >
+      <if test="organTypeCode != null" >
+        organ_type_code = #{organTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="organTypeName != null" >
+        organ_type_name = #{organTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="isSystem != null" >
+        is_system = #{isSystem,jdbcType=BIT},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where organ_type_id = #{organTypeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.auth.domain.OrganType" >
+    update aa_organ_type
+    set organ_type_code = #{organTypeCode,jdbcType=VARCHAR},
+      organ_type_name = #{organTypeName,jdbcType=VARCHAR},
+      is_system = #{isSystem,jdbcType=BIT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where organ_type_id = #{organTypeId,jdbcType=INTEGER}
+  </update>
+</mapper>

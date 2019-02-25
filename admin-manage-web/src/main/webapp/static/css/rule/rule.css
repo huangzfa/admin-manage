@@ -1,0 +1,36 @@
+body {
+	background-color: #ECF0F5;
+}
+
+* {
+	font-style: normal;
+}
+
+.f-right {
+	float: right;
+}
+
+/*头部样式 */
+.header {
+	background-color: #fff;
+	margin: 8px 8px 8px 8px;
+	padding-left: 16px;
+	padding-right: 16px;
+}
+
+.color-red{
+	color: #f00;	
+}
+
+.template {
+	display: inline-block;
+	margin-left: 12px;
+}
+
+.ivu-table .rule-able td {
+	background-color: #fff;
+}
+
+.ivu-table .rule-disable td {
+	background-color: #eee;
+}

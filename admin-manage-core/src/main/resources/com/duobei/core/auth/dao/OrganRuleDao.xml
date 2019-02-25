@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.auth.dao.OrganRuleDao" >
+
+  <resultMap id="BaseResultMap" type="com.duobei.core.auth.domain.OrganRule" extends="com.duobei.core.auth.dao.mapper.OrganRuleMapper.BaseResultMap">
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    orr.organ_rule_id as orr_organ_rule_id, orr.sup_organ_type_id as orr_sup_organ_type_id, 
+    orr.sub_organ_type_id as orr_sub_organ_type_id, orr.is_system as orr_is_system, orr.remark as orr_remark, 
+    orr.add_time as orr_add_time, orr.modify_time as orr_modify_time, orr.add_operator_id as orr_add_operator_id, 
+    orr.add_operator_name as orr_add_operator_name, orr.modify_operator_id as orr_modify_operator_id, 
+    orr.modify_operator_name as orr_modify_operator_name
+  </sql>
+  
+  <resultMap extends="BaseResultMap" id="OrganRuleVoResultMap" type="com.duobei.core.auth.domain.vo.OrganRuleVo">
+  		<result column="sup_organ_type_code" jdbcType="VARCHAR" property="supOrganTypeCode" />
+  		<result column="sup_organ_type_name" jdbcType="VARCHAR" property="supOrganTypeName" />
+  		<result column="sub_organ_type_code" jdbcType="VARCHAR" property="subOrganTypeCode" />
+  		<result column="sub_organ_type_name" jdbcType="VARCHAR" property="subOrganTypeName" />
+  </resultMap>
+  
+  <select id="queryAllOrganRule" parameterType="com.duobei.core.auth.domain.criteria.OrganCriteria" resultMap="OrganRuleVoResultMap">
+    SELECT
+      <include refid="Base_Column_List" />,
+	  sup.organ_type_code AS sup_organ_type_code,
+	  sup.organ_type_name AS sup_organ_type_name,
+	  sub.organ_type_code AS sub_organ_type_code,
+	  sub.organ_type_name AS sub_organ_type_name
+	FROM aa_organ_rule orr
+	  LEFT JOIN aa_organ_type sup
+	    ON orr.sup_organ_type_id = sup.organ_type_id
+	  LEFT JOIN aa_organ_type sub
+	    ON orr.sub_organ_type_id = sub.organ_type_id
+    ORDER BY orr.add_time
+  </select>
+  
+  <select id="queryOrganRuleById" parameterType="com.duobei.core.auth.domain.criteria.OrganCriteria" resultMap="OrganRuleVoResultMap">
+    SELECT
+      <include refid="Base_Column_List" />,
+	  sup.organ_type_name AS sup_organ_type_name,
+	  sub.organ_type_name AS sub_organ_type_name
+	FROM aa_organ_rule orr
+	  LEFT JOIN aa_organ_type sup
+	    ON orr.sup_organ_type_id = sup.organ_type_id
+	  LEFT JOIN aa_organ_type sub
+	    ON orr.sub_organ_type_id = sub.organ_type_id
+	WHERE orr.organ_rule_id = #{organRuleId}
+    ORDER BY orr.add_time
+  </select>
+</mapper>

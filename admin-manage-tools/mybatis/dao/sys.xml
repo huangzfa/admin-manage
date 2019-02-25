@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    
+  <classPathEntry location="E:\mavenRepository\maven\repository\mysql\mysql-connector-java\5.1.25\mysql-connector-java-5.1.25.jar" />
+	
+	<context id="context1">
+	   <property name="javaFileEncoding" value="UTF-8"/>
+	   <plugin type="com.duobei.tools.mgb.SerializablePlugin" />
+	   <commentGenerator type="com.duobei.tools.mgb.MyCommentGenerator" />
+	   
+	   
+	   
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://116.62.143.57:3306/duobei?useUnicode=true&amp;characterEncoding=utf-8" 
+			userId="root"
+			password="Hjn184736351" />
+			
+		<javaModelGenerator targetPackage="com.duobei.core.sys.domain" targetProject="duobei-console-core/src/main/java" >
+		</javaModelGenerator>
+		<sqlMapGenerator targetPackage="com.duobei.core.sys.dao.mapper" targetProject="duobei-console-core/src/main/resources" />
+		<javaClientGenerator targetPackage="com.duobei.core.sys.dao.mapper" targetProject="duobei-console-core/src/main/java" type="XMLMAPPER" />
+		
+		<!-- 
+		<table tableName="xxx" domainObjectName="xxx">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		 -->
+		<table tableName="sys_sms_verify_code" domainObjectName="SmsVerifyCode" alias="svc" >
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		
+		<table tableName="sys_dict" domainObjectName="Dict" alias="d" >
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		
+	</context>
+</generatorConfiguration>

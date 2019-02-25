@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.sys.dao.mapper.DictMapper" >
+  <resultMap id="BaseResultMap" type="com.duobei.core.sys.domain.Dict" >
+    <id column="d_id" property="id" jdbcType="INTEGER" />
+    <result column="d_pid" property="pid" jdbcType="INTEGER" />
+    <result column="d_p_val" property="pVal" jdbcType="VARCHAR" />
+    <result column="d_dic_code" property="dicCode" jdbcType="VARCHAR" />
+    <result column="d_dic_var" property="dicVar" jdbcType="VARCHAR" />
+    <result column="d_dic_val" property="dicVal" jdbcType="VARCHAR" />
+    <result column="d_has_child" property="hasChild" jdbcType="BIT" />
+    <result column="d_data_type" property="dataType" jdbcType="VARCHAR" />
+    <result column="d_dic_sort" property="dicSort" jdbcType="INTEGER" />
+    <result column="d_des" property="des" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    d.id as d_id, d.pid as d_pid, d.p_val as d_p_val, d.dic_code as d_dic_code, d.dic_var as d_dic_var, 
+    d.dic_val as d_dic_val, d.has_child as d_has_child, d.data_type as d_data_type, d.dic_sort as d_dic_sort, 
+    d.des as d_des
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.duobei.core.sys.domain.DictExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_dict d
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_dict d
+    where d.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_dict
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.sys.domain.DictExample" >
+    delete from sys_dict d
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.sys.domain.Dict" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_dict (pid, p_val, dic_code, 
+      dic_var, dic_val, has_child, 
+      data_type, dic_sort, des
+      )
+    values (#{pid,jdbcType=INTEGER}, #{pVal,jdbcType=VARCHAR}, #{dicCode,jdbcType=VARCHAR}, 
+      #{dicVar,jdbcType=VARCHAR}, #{dicVal,jdbcType=VARCHAR}, #{hasChild,jdbcType=BIT}, 
+      #{dataType,jdbcType=VARCHAR}, #{dicSort,jdbcType=INTEGER}, #{des,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.sys.domain.Dict" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_dict
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="pVal != null" >
+        p_val,
+      </if>
+      <if test="dicCode != null" >
+        dic_code,
+      </if>
+      <if test="dicVar != null" >
+        dic_var,
+      </if>
+      <if test="dicVal != null" >
+        dic_val,
+      </if>
+      <if test="hasChild != null" >
+        has_child,
+      </if>
+      <if test="dataType != null" >
+        data_type,
+      </if>
+      <if test="dicSort != null" >
+        dic_sort,
+      </if>
+      <if test="des != null" >
+        des,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="pVal != null" >
+        #{pVal,jdbcType=VARCHAR},
+      </if>
+      <if test="dicCode != null" >
+        #{dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dicVar != null" >
+        #{dicVar,jdbcType=VARCHAR},
+      </if>
+      <if test="dicVal != null" >
+        #{dicVal,jdbcType=VARCHAR},
+      </if>
+      <if test="hasChild != null" >
+        #{hasChild,jdbcType=BIT},
+      </if>
+      <if test="dataType != null" >
+        #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="dicSort != null" >
+        #{dicSort,jdbcType=INTEGER},
+      </if>
+      <if test="des != null" >
+        #{des,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.sys.domain.DictExample" resultType="java.lang.Integer" >
+    select count(*) from sys_dict d
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_dict d
+    <set >
+      <if test="record.id != null" >
+        d.id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.pid != null" >
+        d.pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.pVal != null" >
+        d.p_val = #{record.pVal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dicCode != null" >
+        d.dic_code = #{record.dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dicVar != null" >
+        d.dic_var = #{record.dicVar,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dicVal != null" >
+        d.dic_val = #{record.dicVal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hasChild != null" >
+        d.has_child = #{record.hasChild,jdbcType=BIT},
+      </if>
+      <if test="record.dataType != null" >
+        d.data_type = #{record.dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dicSort != null" >
+        d.dic_sort = #{record.dicSort,jdbcType=INTEGER},
+      </if>
+      <if test="record.des != null" >
+        d.des = #{record.des,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_dict d
+    set d.id = #{record.id,jdbcType=INTEGER},
+      d.pid = #{record.pid,jdbcType=INTEGER},
+      d.p_val = #{record.pVal,jdbcType=VARCHAR},
+      d.dic_code = #{record.dicCode,jdbcType=VARCHAR},
+      d.dic_var = #{record.dicVar,jdbcType=VARCHAR},
+      d.dic_val = #{record.dicVal,jdbcType=VARCHAR},
+      d.has_child = #{record.hasChild,jdbcType=BIT},
+      d.data_type = #{record.dataType,jdbcType=VARCHAR},
+      d.dic_sort = #{record.dicSort,jdbcType=INTEGER},
+      d.des = #{record.des,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.sys.domain.Dict" >
+    update sys_dict
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="pVal != null" >
+        p_val = #{pVal,jdbcType=VARCHAR},
+      </if>
+      <if test="dicCode != null" >
+        dic_code = #{dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dicVar != null" >
+        dic_var = #{dicVar,jdbcType=VARCHAR},
+      </if>
+      <if test="dicVal != null" >
+        dic_val = #{dicVal,jdbcType=VARCHAR},
+      </if>
+      <if test="hasChild != null" >
+        has_child = #{hasChild,jdbcType=BIT},
+      </if>
+      <if test="dataType != null" >
+        data_type = #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="dicSort != null" >
+        dic_sort = #{dicSort,jdbcType=INTEGER},
+      </if>
+      <if test="des != null" >
+        des = #{des,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.sys.domain.Dict" >
+    update sys_dict
+    set pid = #{pid,jdbcType=INTEGER},
+      p_val = #{pVal,jdbcType=VARCHAR},
+      dic_code = #{dicCode,jdbcType=VARCHAR},
+      dic_var = #{dicVar,jdbcType=VARCHAR},
+      dic_val = #{dicVal,jdbcType=VARCHAR},
+      has_child = #{hasChild,jdbcType=BIT},
+      data_type = #{dataType,jdbcType=VARCHAR},
+      dic_sort = #{dicSort,jdbcType=INTEGER},
+      des = #{des,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

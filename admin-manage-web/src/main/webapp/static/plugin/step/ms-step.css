@@ -1,0 +1,87 @@
+.step-body {
+	position: relative;
+	*zoom: 1;
+}
+
+.step-body:after {
+	display: block;
+	content: "";
+	height: 0;
+	clear: both;
+	overflow: hidden;
+	visibility: hidden;
+}
+
+.step-body ul {
+	padding: 0;
+	margin: 0;
+}
+
+.step-body li {
+	list-style-type: none;
+	position: relative;
+	float: left;
+	text-align: center;
+}
+
+.step-body li .step-item {
+	display: block;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	background-color: #dce0e0;
+	margin: 0 auto;
+}
+
+.step-body li .step-num {
+	position: absolute;
+	display: block;
+	margin: 3px;
+	width: 34px;
+	height: 34px;
+	text-align: center;
+	line-height: 34px;
+	border-radius: 17px;
+	font-size: 20px;
+	color: #fff;
+	background-color: #dce0e0;
+	z-index: 6;
+	text-decoration: none;
+	cursor: default;
+}
+
+.step-body li.step-active .step-num {
+	background-color: #F7274C;
+	cursor: pointer;
+}
+
+.step-body li p {
+	font-weight: bold;
+	font-size: 14px;
+	color: #999999;
+	margin: 5px 0;
+}
+
+.step-body li.step-active p {
+	color: #333333;
+}
+
+.step-bar {
+	position: absolute;
+	width: 100%;
+	border-radius: 12px;
+	background-color: #dce0e0;
+	height: 12px;
+	top: 14px;
+	z-index: 1;
+}
+
+.step-bar-active {
+	position: relative;
+	width: 0;
+	border-radius: 10px;
+	background-color: #F7274C;
+	height: 6px;
+	top: 3px;
+	z-index: 3;
+}

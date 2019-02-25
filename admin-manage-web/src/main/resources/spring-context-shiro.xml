@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+     http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd 
+     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+
+	<context:property-placeholder location="classpath:global.properties" ignore-unresolvable="true"/>  
+
+	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+    	<!-- 此处的cacheManager为spring-context-ehcache中配置 -->
+		<property name="cacheManager" ref="cacheManager"/>
+	</bean>
+	
+    <!-- session会话ID生成器 -->
+    <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
+    <!-- session会话存储方式 -->
+    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+        <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>
+        <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
+    </bean>
+    <!-- 会话Cookie模板,指定本系统SESSIONID, 默认为: JSESSIONID 问题: 与SERVLET容器名冲突, 如JETTY, TOMCAT 等默认JSESSIONID,
+		当跳出SHIRO SERVLET时如ERROR-PAGE容器会为JSESSIONID重新分配值导致登录会话丢失! -->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="tianqing.console.web.sid"/>
+        <property name="httpOnly" value="true"/>
+        <property name="path" value="/"/>
+        <property name="maxAge" value="1800000"/>
+    </bean>
+    <!-- 记住我 -->
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="tianqing.console.web.rememberMe"/>
+        <property name="httpOnly" value="true"/>
+        <property name="path" value="/"/>
+        <property name="maxAge" value="2592000"/><!-- 30天 -->
+    </bean>
+    <!-- rememberMe管理器 -->
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+    
+    <bean id="mySessionListener" class="com.duobei.console.shiro.MySessionListener"></bean>
+    <!-- session会话管理器-->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <!-- 不在地址后加JSESSIONID -->
+        <property name="sessionIdUrlRewritingEnabled" value="false" />
+        <!-- session的失效时长，单位毫秒 -->
+        <property name="globalSessionTimeout" value="7200000"/><!-- 7200000 -->
+        <!-- 是否在会话过期后会调用SessionDAO的delete方法删除会话 默认true -->  
+        <property name="deleteInvalidSessions" value="true"/>
+        <!-- 定时清理失效会话, 清理用户直接关闭浏览器造成的孤立会话   -->
+ 		<property name="sessionValidationSchedulerEnabled" value="true"/>
+		<property name="sessionValidationInterval" value="900000"/><!-- 900000 -->
+ 		<!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID --> 
+ 		<property name="sessionIdCookieEnabled" value="true"/>
+		<property name="sessionIdCookie" ref="sessionIdCookie"/>
+		<!-- session监听器 -->
+		<property name ="sessionListeners">  
+	        <list>
+	        	<ref bean="mySessionListener"/>
+	        </list>  
+	     </property>
+    </bean>
+    <!--realm配置，realm是shiro的桥梁，它主要是用来判断subject是否可以登录及权限等，获取用户基本信息，角色信息，权限信息等 -->  
+    <bean id="shiroRealm" class="com.duobei.console.shiro.MyShiroRealm">
+    	<property name="cachingEnabled" value="false"/>
+	    <property name="authenticationCachingEnabled" value="false"/>
+	    <property name="authenticationCacheName" value="authenticationCache"/>
+	    <property name="authorizationCachingEnabled" value="false"/>
+	    <property name="authorizationCacheName" value="authorizationCache"/>
+	    <property name="credentialsMatcher" ref="passwordCredentialsMatcher"/>
+    </bean>
+    <!-- 密码匹配器 -->
+    <bean id="passwordCredentialsMatcher" class="com.duobei.console.shiro.PasswordCredentialsMatcher"/>
+    
+    <!-- 安全管理器 -->  
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
+    	<!-- 如果用shiro的session，sessionMode要设置成为native,如果使用httpSession,设置为http -->
+        <property name="sessionMode" value="native" />
+        <!-- 设置session管理器 -->
+        <property name="sessionManager" ref="sessionManager" /> 
+        <!-- 记住我管理器 -->
+        <property name="rememberMeManager" ref="rememberMeManager"/>
+        <!-- 缓存 -->
+        <property name="cacheManager" ref="shiroCacheManager" />
+        <!--单个realm使用realm,如果有多个realm，使用realms属性代替  -->  
+        <property name="realm" ref="shiroRealm"></property>
+    </bean>
+    
+    <!-- Shiro 的Web过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">  
+        <property name="securityManager" ref="securityManager"/>  
+        <!-- 如果没有认证将要跳转的登陆地址，http可访问的url，如果不在表单认证过虑器FormAuthenticationFilter中指定此地址就为身份认证地址 -->
+        <property name="loginUrl" value="/tologin"/>  
+        <!--登录成功的跳转 URL,此属性用不到,因为登录成功后的处理逻辑在LoginController里硬编码为main.jsp了
+        <property name="successUrl" value="/main"/>  -->
+        <!--无权访问的跳转 URL --> 
+        <property name="unauthorizedUrl" value="/error/unauthorized"/>
+        
+        <!-- 过滤器 -->
+        <property name="filters">  
+            <map>  
+                <entry key="user">  
+                    <bean class="com.duobei.console.shiro.MyUserFilter" />  
+                </entry>
+            </map>  
+        </property>  
+        
+        <property name="filterChainDefinitions">  
+            <value>
+                <!-- 其他资源需要认证，或者符合某个角色 -->  
+                ${authzPath}/** = user
+                <!-- 其他资源可访问 -->
+                /**=anon
+            </value>  
+        </property>  
+    </bean> 
+    <!-- Shiro生命周期处理器-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>  
+</beans>

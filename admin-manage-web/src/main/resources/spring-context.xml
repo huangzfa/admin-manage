@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+     http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd 
+     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+
+	<!-- 使用Annotation自动注册Bean，解决事物失效问题：在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。  -->
+    <context:component-scan base-package="com.duobei"><!-- base-package 如果多个，用“,”分隔 -->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    
+    <!-- =============================数据源-开始========================================================= -->
+	<!-- 主数据库 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
+	      <!-- 基本属性 url、user、password -->
+	      <property name="url" value="jdbc:mysql://${db.host}:${db.port}/${db.database}?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true" />
+	      <property name="username" value="${db.user}" />
+	      <property name="password" value="${db.password}" />
+	      <!-- 初始化连接数量 -->
+	      <property name="initialSize" value="5" />
+	      <!-- 最大连接数 -->
+	      <property name="maxActive" value="200" />
+	      <!-- 最小空闲连接数 -->
+	      <property name="minIdle" value="1" /> 
+	      <!-- 最大空闲连接数 -->
+		  <!--<property name="maxIdle" value="5" />-->
+	      <!-- 获取连接等待超时的时间 -->
+	      <property name="maxWait" value="30000" />
+	      <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+	      <property name="timeBetweenEvictionRunsMillis" value="60000" />
+	      <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+	      <property name="minEvictableIdleTimeMillis" value="300000" />
+	      <!-- 用来检测连接是否有效的sql，要求是一个查询语句-->
+	      <property name="validationQuery" value="select 1" />
+	      <!-- 申请连接的时候检测 -->
+	      <property name="testWhileIdle" value="true" />
+	      <!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+	      <property name="testOnBorrow" value="false" />
+	      <!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能  -->
+	      <property name="testOnReturn" value="false" />
+	      <!-- 打开PSCache，并且指定每个连接上PSCache的大小,mysql5.5及以上版本有PSCache，建议开启-->
+	      <property name="poolPreparedStatements" value="true" />
+	      <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+	      <!-- 是否开启连接使用时间限制 
+		  <property name="removeAbandoned" value="true" />-->
+		  <!-- 连接使用时间限制 秒，超过这个使用时间将被强行关闭
+		  <property name="removeAbandonedTimeout" value="1800" /> -->
+		  
+	      <!--属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：  				
+				监控统计用的filter:stat
+				日志用的filter:log4j
+ 				防御SQL注入的filter:wall -->
+	      <property name="filters" value="stat" />
+	</bean>
+	<!-- =============================数据源-结束========================================================= -->
+	
+	<!-- =============================jdbc模板-开始========================================================= -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<!-- =============================jdbc模板-结束========================================================= -->
+	
+	<!-- =============================SqlSessionFactory-开始========================================================= -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 这里写需要扫描的各个模块下mybatis mapper.xml的包路径 -->
+		<property name="basePackage" value="com.duobei.core.**.dao,com.duobei.core.**.dao.mapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<!-- =============================SqlSessionFactory-结束========================================================= -->
+
+	<!-- =============================事物-开始========================================================= -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
+	<!-- =============================事物-结束========================================================= -->
+
+	<!--  =============================ossUtil 开始============================= -->
+	<bean id="ossClient" class="com.duobei.common.util.OSSUtil" init-method="getOSSClient">
+		<property name="ossEndPoint" value="${oss.end.point}" />
+		<property name="ossAccessKeyId" value="${oss.access.key}" />
+		<property name="ossAccessKeySecret" value="${oss.access.key.secret}" />
+		<property name="ossBucketName" value="${oss.bucket.name}" />
+		<property name="ossUrlPre" value="${oss.url.pre}" />
+		<property name="ossStorePath" value="${oss.store.path}" />
+	</bean>
+	<!--  =============================ossUtil 结束============================= -->
+
+	<!--  =============================jpushUtil 开始============================= -->
+	<bean id="messageUtil" class="com.duobei.core.utils.MessageUtil" init-method="initUtil" >
+		<property name="url" value="${pgy.message.url}"></property>
+		<property name="systemCode" value="${pgy.message.platform}"></property>
+	</bean>
+	<!--  =============================jpushUtil 结束============================= -->
+
+	<!--  =============================riskUtil 开始============================= -->
+
+
+
+</beans>

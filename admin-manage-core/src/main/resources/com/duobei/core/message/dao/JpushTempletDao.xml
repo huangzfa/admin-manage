@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.message.dao.JpushTempletDao" >
+
+  <resultMap id="BaseResultMap" type="com.duobei.core.message.domain.JpushTemplet" extends="com.duobei.core.message.dao.mapper.JpushTempletMapper.BaseResultMap">
+  </resultMap>
+
+
+  <select id="queryJpushTempletList" parameterType="com.duobei.core.message.domain.criteria.JpushTempletCriteria" resultMap="BaseResultMap">
+    select
+    a.*
+    from pub_jpush_templet a
+    <where>
+      <trim prefix="(" prefixOverrides="and" suffix=")">
+        <if test="templetCode != null and templetCode != ''">
+          AND a.templet_code LIKE CONCAT('%',#{templetCode},'%')
+        </if>
+        <if test="templetTitle != null and templetTitle != ''">
+          AND a.templet_title LIKE CONCAT('%',#{templetTitle},'%')
+        </if>
+        AND a.is_delete=0
+      </trim>
+    </where>
+    ORDER BY a.add_time desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+
+  <select id="getTempletByTempletCodeAndPlatform" parameterType="String" resultMap="BaseResultMap">
+		select
+		a.*
+		from pub_jpush_templet a
+		where a.templet_code = #{templetCode} and a.platform = #{platform}
+	</select>
+
+</mapper>

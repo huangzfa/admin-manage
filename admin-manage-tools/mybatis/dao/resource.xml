@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+	<!-- 数据库驱动本地jar路径 -->
+	<classPathEntry location="C:\Users\acer\.m2\repository\mysql\mysql-connector-java\5.1.25\mysql-connector-java-5.1.25.jar" />
+
+	<!-- 全局性配置信息 -->
+	<context id="context1">
+
+		<!-- 指定生成的java文件的编码方式，因为jdk自带编码方式为GBK，此处不设置，生成的java文件会出现中文乱码问题 -->
+		<property name="javaFileEncoding" value="UTF-8" />
+
+		<!-- 插件：用于扩展或修改通过MyBatis Generator代码生成器生成的代码 -->
+		<!-- 插件1: 为生成的javaModel创建一个toString的方法 -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+		<!-- 插件2: 让生成的类实现Serializable接口，并生成序列化标记 -->
+		<plugin type="com.duobei.tools.mgb.SerializablePlugin" />
+		<!-- 1：注释构建;type-可通过实现CommentGenerator接口构建自定义的注释构建类 -->
+		<commentGenerator type="com.duobei.tools.mgb.MyCommentGenerator" />
+
+		<!-- 2：数据库连接信息 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+						connectionURL="jdbc:mysql://116.62.143.57:3306/duobei?useUnicode=true&amp;characterEncoding=utf-8"
+						userId="root" 
+						password="Hjn184736351" />
+
+		<javaModelGenerator targetProject="duobei-console-core/src/main/java" targetPackage="com.duobei.core.resource.domain" />
+		<sqlMapGenerator targetProject="duobei-console-core/src/main/resources" targetPackage="com.duobei.core.resource.dao.mapper" />
+		<javaClientGenerator targetProject="duobei-console-core/src/main/java" targetPackage="com.duobei.core.resource.dao.mapper" type="XMLMAPPER" />
+
+		<!--业务开关-->
+		<table tableName="pgy_biz_resource" domainObjectName="BizResource" alias="bresource">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+	</context>
+</generatorConfiguration>

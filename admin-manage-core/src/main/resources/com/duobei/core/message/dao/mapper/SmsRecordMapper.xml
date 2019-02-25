@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.message.dao.mapper.SmsRecordMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.message.domain.SmsRecord">
+    <id column="sr_id" jdbcType="INTEGER" property="id" />
+    <result column="sr_platform" jdbcType="VARCHAR" property="platform" />
+    <result column="sr_templet_code" jdbcType="VARCHAR" property="templetCode" />
+    <result column="sr_send_account" jdbcType="VARCHAR" property="sendAccount" />
+    <result column="sr_content" jdbcType="VARCHAR" property="content" />
+    <result column="sr_status" jdbcType="INTEGER" property="status" />
+    <result column="sr_date_formate" jdbcType="INTEGER" property="dateFormate" />
+    <result column="sr_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="sr_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="sr_is_delete" jdbcType="INTEGER" property="isDelete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sr.id as sr_id, sr.platform as sr_platform, sr.templet_code as sr_templet_code, sr.send_account as sr_send_account, 
+    sr.content as sr_content, sr.status as sr_status, sr.date_formate as sr_date_formate, 
+    sr.add_time as sr_add_time, sr.modify_time as sr_modify_time, sr.is_delete as sr_is_delete
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.message.domain.SmsRecordExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pub_sms_record sr
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pub_sms_record sr
+    where sr.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pub_sms_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.message.domain.SmsRecordExample">
+    delete from pub_sms_record sr
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.message.domain.SmsRecord">
+    insert into pub_sms_record (id, platform, templet_code, 
+      send_account, content, status, 
+      date_formate, add_time, modify_time, 
+      is_delete)
+    values (#{id,jdbcType=INTEGER}, #{platform,jdbcType=VARCHAR}, #{templetCode,jdbcType=VARCHAR}, 
+      #{sendAccount,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{dateFormate,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.message.domain.SmsRecord">
+    insert into pub_sms_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="platform != null">
+        platform,
+      </if>
+      <if test="templetCode != null">
+        templet_code,
+      </if>
+      <if test="sendAccount != null">
+        send_account,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="dateFormate != null">
+        date_formate,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="platform != null">
+        #{platform,jdbcType=VARCHAR},
+      </if>
+      <if test="templetCode != null">
+        #{templetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sendAccount != null">
+        #{sendAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="dateFormate != null">
+        #{dateFormate,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.message.domain.SmsRecordExample" resultType="java.lang.Long">
+    select count(*) from pub_sms_record sr
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pub_sms_record sr
+    <set>
+      <if test="record.id != null">
+        sr.id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.platform != null">
+        sr.platform = #{record.platform,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templetCode != null">
+        sr.templet_code = #{record.templetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendAccount != null">
+        sr.send_account = #{record.sendAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null">
+        sr.content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        sr.status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.dateFormate != null">
+        sr.date_formate = #{record.dateFormate,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null">
+        sr.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        sr.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDelete != null">
+        sr.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pub_sms_record sr
+    set sr.id = #{record.id,jdbcType=INTEGER},
+      sr.platform = #{record.platform,jdbcType=VARCHAR},
+      sr.templet_code = #{record.templetCode,jdbcType=VARCHAR},
+      sr.send_account = #{record.sendAccount,jdbcType=VARCHAR},
+      sr.content = #{record.content,jdbcType=VARCHAR},
+      sr.status = #{record.status,jdbcType=INTEGER},
+      sr.date_formate = #{record.dateFormate,jdbcType=INTEGER},
+      sr.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      sr.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      sr.is_delete = #{record.isDelete,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.message.domain.SmsRecord">
+    update pub_sms_record
+    <set>
+      <if test="platform != null">
+        platform = #{platform,jdbcType=VARCHAR},
+      </if>
+      <if test="templetCode != null">
+        templet_code = #{templetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sendAccount != null">
+        send_account = #{sendAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="dateFormate != null">
+        date_formate = #{dateFormate,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.message.domain.SmsRecord">
+    update pub_sms_record
+    set platform = #{platform,jdbcType=VARCHAR},
+      templet_code = #{templetCode,jdbcType=VARCHAR},
+      send_account = #{sendAccount,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      date_formate = #{dateFormate,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

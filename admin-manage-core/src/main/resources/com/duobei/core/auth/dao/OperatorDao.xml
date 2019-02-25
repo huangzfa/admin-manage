@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.auth.dao.OperatorDao" >
+  
+  <resultMap id="BaseResultMap" type="com.duobei.core.auth.domain.Operator" extends="com.duobei.core.auth.dao.mapper.OperatorMapper.BaseResultMap">
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    o.op_id as o_op_id, o.login_name as o_login_name, o.login_pwd as o_login_pwd, o.real_name as o_real_name, 
+    o.operator_state as o_operator_state, o.organ_id as o_organ_id, o.session_id as o_session_id, 
+    o.login_ip as o_login_ip, o.login_time as o_login_time, o.last_login_ip as o_last_login_ip, 
+    o.last_login_time as o_last_login_time, o.add_time as o_add_time, o.modify_time as o_modify_time, 
+    o.add_operator_id as o_add_operator_id, o.add_operator_name as o_add_operator_name, 
+    o.modify_operator_id as o_modify_operator_id, o.modify_operator_name as o_modify_operator_name, 
+    o.is_delete as o_is_delete
+  </sql>
+  
+  <resultMap extends="BaseResultMap" id="OperatorVoResultMap" type="com.duobei.core.auth.domain.vo.OperatorVo">
+  	<result column="organName" jdbcType="VARCHAR" property="organName" />
+  </resultMap>
+  
+  <select id="queryOperatorByLoginName" parameterType="com.duobei.core.auth.domain.criteria.UserCriteria" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aa_operator o
+    where o.login_name = #{loginName} AND o.is_delete = 0
+  </select>
+  
+  <select id="queryOperatorVoById" parameterType="com.duobei.core.auth.domain.criteria.UserCriteria" resultMap="OperatorVoResultMap">
+    select 
+      <include refid="Base_Column_List" />,
+	  org.organ_name AS organName
+    from aa_operator o,
+    	aa_organ org
+    where o.op_id = #{opId}
+        AND o.is_delete = 0
+    	AND o.organ_id=org.organ_id
+  </select>
+  
+  <select id="countByCriteria" parameterType="com.duobei.core.auth.domain.criteria.UserCriteria" resultType="java.lang.Integer">
+  	SELECT
+	  COUNT(*)
+	FROM aa_organ org,
+	  aa_operator o
+	WHERE org.path LIKE CONCAT('%',#{pathLike},'%')
+	    AND org.organ_id = o.organ_id
+	    AND o.is_delete = 0
+	    <if test="loginName != null and loginName != ''">
+	    AND o.login_name LIKE CONCAT('%',#{loginName},'%')
+	    </if>
+	    <if test="realName != null and realName != ''">
+	    AND o.real_name LIKE CONCAT('%',#{realName},'%')
+	    </if>
+  </select>
+  
+  <select id="queryOperatorList" parameterType="com.duobei.core.auth.domain.criteria.UserCriteria" resultMap="OperatorVoResultMap">
+	SELECT
+	  <include refid="Base_Column_List" />,
+	  org.organ_name AS organName
+	FROM aa_organ org,
+	  aa_operator o
+	WHERE org.path LIKE CONCAT('%',#{pathLike},'%')
+	      AND org.organ_id = o.organ_id
+	      AND o.is_delete = 0
+	      <if test="loginName != null and loginName != ''">
+	      AND o.login_name LIKE CONCAT('%',#{loginName},'%')
+	      </if>
+	      <if test="realName != null and realName != ''">
+		  AND o.real_name LIKE CONCAT('%',#{realName},'%')
+		  </if>
+	ORDER BY o.add_time
+	<if test="pagesize != 0">
+		LIMIT #{offset}, #{pagesize}
+	</if>
+  </select>
+  
+  <select id="queryOperatorPermission" parameterType="com.duobei.core.auth.domain.criteria.UserCriteria" resultType="java.lang.String">
+    SELECT DISTINCT
+	  m.auth_tag
+	FROM aa_operator_role opr,
+	  aa_role_menu rm,
+	  aa_menu m
+	WHERE opr.op_id = #{opId}
+	    AND opr.role_id = rm.role_id
+	    AND rm.menu_id = m.menu_id
+	    AND m.menu_type = #{menuTypeZd}
+	    AND m.state = #{menuStateZd}
+  </select>
+</mapper>

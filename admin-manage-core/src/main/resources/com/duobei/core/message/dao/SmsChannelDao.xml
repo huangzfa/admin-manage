@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.message.dao.SmsChannelDao" >
+
+  <resultMap id="BaseResultMap" type="com.duobei.core.message.domain.SmsChannel" extends="com.duobei.core.message.dao.mapper.SmsChannelMapper.BaseResultMap">
+  </resultMap>
+
+
+	<select id="querySmsChannelList" parameterType="com.duobei.core.message.domain.criteria.SmsChannelCriteria" resultMap="BaseResultMap">
+		select
+		a.*
+		from pub_sms_channel a
+		<where>
+			<trim prefix="(" prefixOverrides="and" suffix=")">
+				<if test="smsChannelCode != null and smsChannelCode != ''">
+          AND a.sms_channel_code LIKE CONCAT('%',#{smsChannelCode},'%')
+				</if>
+        <if test="smsChannelName != null and smsChannelName != ''">
+          AND a.sms_channel_name LIKE CONCAT('%',#{smsChannelName},'%')
+        </if>
+        <if test="smsUserfulCode != null and smsUserfulCode != ''">
+          AND a.sms_userful_code = #{smsUserfulCode}
+        </if>
+         AND a.is_delete=0
+			</trim>
+		</where>
+		ORDER BY a.add_time desc
+		<if test="pagesize != 0">
+			LIMIT #{offset}, #{pagesize}
+		</if>
+	</select>
+
+
+	<select id="getChannelByChannelCodeAndPlatform" parameterType="String" resultMap="BaseResultMap">
+		select
+		a.*
+		from pub_sms_channel a
+		where a.sms_channel_code = #{smsChannelCode} and a.platform = #{platform}
+	</select>
+
+	<select id="getSmsStyleVo" resultType="com.duobei.core.message.vo.SmsStyleVo">
+        SELECT
+        a.sms_userful_code as userfulCode,a.sms_userful_name as userfulName
+        FROM
+        pub_sms_channel a
+        WHERE
+        a.is_delete = 0
+        GROUP BY a.sms_userful_code
+    </select>
+
+	<select id="getByPlatformAndUserfulCodeAndStatus"  resultMap="BaseResultMap">
+		select
+		a.*
+		from pub_sms_channel a
+		where a.sms_userful_code = #{smsUserfulCode} and a.platform = #{platform}
+		and a.status = #{status} and   a.is_delete = 0
+	</select>
+
+</mapper>

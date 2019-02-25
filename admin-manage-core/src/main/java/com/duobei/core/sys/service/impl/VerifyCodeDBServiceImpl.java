@@ -6,12 +6,9 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.duobei.common.constant.BizConstant;
-import com.duobei.common.enums.TemplateCodeEnum;
 import com.duobei.common.util.Constants;
 import com.duobei.common.vo.SmsVo;
 import com.duobei.core.handler.VerifyCodeFailHandler;
-import com.duobei.core.message.dao.SmsTempletDao;
-import com.duobei.core.message.domain.SmsTemplet;
 import com.duobei.core.utils.MessageUtil;
 import com.pgy.data.handler.service.PgyDataHandlerService;
 import com.pgy.data.handler.service.impl.PgyDataHandlerServiceImpl;
@@ -23,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import com.duobei.common.util.RegExpValidatorUtils;
 import com.duobei.config.GlobalConfig;
-import com.duobei.core.sms.service.impl.SmsUtile;
 import com.duobei.core.sys.dao.SmsVerifyCodeDao;
 import com.duobei.core.sys.dao.mapper.SmsVerifyCodeMapper;
 import com.duobei.core.sys.domain.SmsVerifyCode;
@@ -42,8 +38,6 @@ public class VerifyCodeDBServiceImpl implements VerifyCodeService {
 	private MessageUtil messageUtil;
 	@Autowired
 	private VerifyCodeFailHandler verifyCodeFailHandler;
-	@Autowired
-	private SmsTempletDao smsTempletDao;
 	
 
 	@Override
@@ -107,11 +101,11 @@ public class VerifyCodeDBServiceImpl implements VerifyCodeService {
 				smsVo.setVerifyCode(verifyCode);
 				smsVo.setMobile(mobile);
 				smsVo.setParamsJson(JSONObject.toJSONString(map));
-				SmsTemplet smsTemplet = smsTempletDao.getTempletByTempletCodeAndPlatform(TemplateCodeEnum.findByType(smsBizType),BizConstant.PLATFORM);
+/*				SmsTemplet smsTemplet = smsTempletDao.getTempletByTempletCodeAndPlatform(TemplateCodeEnum.findByType(smsBizType),BizConstant.PLATFORM);
 				if( smsTemplet == null ){
 					throw new RuntimeException("短信模板不存在");
-				}
-				smsVo.setSmsTemptCode(smsTemplet.getTempletCode());
+				}*/
+				smsVo.setSmsTemptCode(null);
 				smsVo.setSystemCode(BizConstant.PLATFORM);
 				messageUtil.sendSms(smsVo);
 			}

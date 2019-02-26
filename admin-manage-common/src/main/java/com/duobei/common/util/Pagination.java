@@ -61,21 +61,6 @@ public abstract class Pagination implements Serializable {
 	}
 
 	/**
-	 * @return 分页大小
-	 */
-	public int getPagesize() {
-		return pagesize;
-	}
-
-	/**
-	 * @param pagesize
-	 *            分页大小
-	 */
-	public void setPagesize(int pagesize) {
-		this.pagesize = pagesize;
-	}
-
-	/**
 	 * @return 当前页
 	 */
 	public int getPage() {
@@ -94,21 +79,6 @@ public abstract class Pagination implements Serializable {
 			pageNum = 1;
 		}
 		this.page = pageNum;
-	}
-
-	/**
-	 * @return 记录总数
-	 */
-	public int getTotal() {
-		return total;
-	}
-
-	/**
-	 * @param total
-	 *            记录总数
-	 */
-	public void setTotal(int total) {
-		this.total = total;
 	}
 
 	/**
@@ -138,22 +108,6 @@ public abstract class Pagination implements Serializable {
 			totalPage = totalCount / pageSize + 1;
 		}
 		return totalPage;
-	}
-
-
-	/**
-	 * @param sort
-	 *            需排序的字段
-	 */
-	public void setSort(String sort) {
-		this.sort = sort;
-	}
-
-	/**
-	 * @return 排序方式。升序或降序
-	 */
-	public String getOrder() {
-		return "ASC".equalsIgnoreCase(order) ? "ASC" : "DESC";
 	}
 
 	/**

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.product.dao.ProductDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.product.domain.ProductBusiness" extends="com.duobei.core.product.dao.mapper.ProductBusinessMapper.BaseResultMap">
+    </resultMap>
+
+    <select id="getLists" resultType="com.duobei.core.product.domain.Product" parameterType="com.duobei.core.product.domain.criteria.ProductCriteria">
+        SELECT   * FROM yy_product
+        where is_delete = 0 order by id desc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <select id="countByCriteria" parameterType="com.duobei.core.product.domain.criteria.ProductCriteria" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM yy_product  where is_delete = 0
+    </select>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="com.duobei.core.product.domain.Product">
+        SELECT * FROM yy_product  where is_delete = 0 and id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getByCode" parameterType="java.lang.String" resultType="com.duobei.core.product.domain.Product">
+        SELECT * FROM yy_product  where is_delete = 0 and product_code = #{code,jdbcType=VARCHAR}
+    </select>
+</mapper>

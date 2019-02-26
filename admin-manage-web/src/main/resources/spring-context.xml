@@ -63,11 +63,11 @@
 	</bean>
 	<!-- 管理后台数据库 -->
 	<bean id="manageDataSource" parent="parentDataSource">
-		<property name="url" value="jdbc:mysql://${db.host}:${db.port}/pgy_platform_manage?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true" />
+		<property name="url" value="jdbc:mysql://${db.host}:${db.port}/${db.database1}?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true" />
 	</bean>
 	<!-- 运营数据库 -->
 	<bean id="operateDataSource" parent="parentDataSource">
-		<property name="url" value="jdbc:mysql://${db.host}:${db.port}/pgy_platform_operation?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true" />
+		<property name="url" value="jdbc:mysql://${db.host}:${db.port}/${db.database2}?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true" />
 	</bean>
 
 	<bean id="dataSource" class="com.duobei.common.datasource.DynamicDataSource">

@@ -3,8 +3,7 @@
  */
 package com.duobei.core.utils;
 
-import com.duobei.exception.DuobeiException;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.ManageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +47,7 @@ public class SerializeUtil {
             bos.close();
             rv = bos.toByteArray();
         } catch (IOException e) {
-            throw new DuobeiException("serializeList ioexception",e);
+            throw new ManageException("serializeList ioexception",e);
         } finally {
             try{
                 if(os != null){
@@ -58,7 +57,7 @@ public class SerializeUtil {
                     bos.close();
                 }
             }catch (IOException e) {
-                throw new DuobeiException("",e);
+                throw new ManageException("",e);
             }
         }
         return rv;
@@ -94,11 +93,11 @@ public class SerializeUtil {
         } catch (IOException e) {
             logger.warn("Caught IOException decoding %d bytes of data",
                     in == null ? 0 : in.length, e);
-            throw new DuobeiException("unserializeList ioexception",e);
+            throw new ManageException("unserializeList ioexception",e);
         } catch (ClassNotFoundException e) {
             logger.warn("Caught CNFE decoding %d bytes of data",
                     in == null ? 0 : in.length, e);
-            throw new DuobeiException("unserializeList cnfexception",e);
+            throw new ManageException("unserializeList cnfexception",e);
         } finally {
             try{
                 if(is != null){
@@ -108,7 +107,7 @@ public class SerializeUtil {
                     bis.close();
                 }
             }catch (IOException e) {
-                throw new DuobeiException("",e);
+                throw new ManageException("",e);
             }
         }
         return list;
@@ -131,7 +130,7 @@ public class SerializeUtil {
             byte[] bytes = baos.toByteArray();
             return bytes;
         } catch (Exception e) {
-            throw new DuobeiException("serialize exception",e);
+            throw new ManageException("serialize exception",e);
         }
     }
 
@@ -149,7 +148,7 @@ public class SerializeUtil {
             ObjectInputStream ois = new ObjectInputStream(bais);
             return ois.readObject();
         } catch (Exception e) {
-            throw new DuobeiException("unserialize exception",e);
+            throw new ManageException("unserialize exception",e);
         }
     }
 }

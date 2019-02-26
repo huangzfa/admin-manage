@@ -6,7 +6,7 @@ import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.auth.service.MenuService;
 import com.duobei.core.sys.domain.OssUploadResult;
 import com.duobei.core.sys.service.CommonService;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import javax.servlet.http.HttpServletRequest;

@@ -10,7 +10,7 @@ import com.duobei.core.auth.service.OperatorService;
 import com.duobei.core.sys.domain.SmsVerifyCode;
 import com.duobei.core.sys.service.VerifyCodeService;
 import com.duobei.dic.ZD;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
 import java.util.Set;
 
 

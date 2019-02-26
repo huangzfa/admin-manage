@@ -1,4 +1,4 @@
-package main.java.com.duobei.console.web.controller.auth;
+package com.duobei.console.web.controller.auth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import com.duobei.core.auth.domain.credential.OperatorCredential;
 import com.duobei.core.auth.helper.MenuHelper;
 import com.duobei.core.auth.service.MenuService;
 import com.duobei.dic.ZD;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 @Controller
 @RequestMapping(value = "${authzPath}/sys/menu")

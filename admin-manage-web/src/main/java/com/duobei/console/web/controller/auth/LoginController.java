@@ -17,7 +17,7 @@ import com.duobei.core.auth.service.OperatorLoginLogService;
 import com.duobei.core.auth.service.OperatorService;
 import com.duobei.core.sys.service.VerifyCodeService;
 import com.duobei.dic.ZD;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;

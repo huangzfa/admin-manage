@@ -8,13 +8,10 @@ import com.duobei.common.vo.JpushVo;
 import com.duobei.common.vo.SmsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
-@Component(value = "messageUtil")
 public class MessageUtil {
 
     private static final Logger log = LoggerFactory.getLogger(MessageUtil.class);
@@ -76,10 +73,9 @@ public class MessageUtil {
         JPUSH_CUSTOM_INTERFACE =  getUrl()+"/message/jpush/pushCustom";
    }
 
-
-
-
-    private ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    //核心线程数，最大线程数为10。超时时间为5秒,在任务完成后限制超过5秒就会被回收
+    private ExecutorService executorService = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
+            10, 5,TimeUnit.SECONDS,new SynchronousQueue<>());
     /**
      * 发送短信
      * @param smsVo

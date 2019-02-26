@@ -1,7 +1,7 @@
 package com.duobei.core.auth.service;
 
 import com.duobei.core.auth.domain.VerifyCodeFail;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 import java.util.HashMap;
 

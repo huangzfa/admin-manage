@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.duobei.core.auth.domain.Menu;
 import com.duobei.core.auth.domain.credential.OperatorCredential;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 public interface MenuService {
 	

@@ -36,7 +36,7 @@ import com.duobei.core.auth.service.OperatorService;
 import com.duobei.core.auth.service.OrganService;
 import com.duobei.dic.ZD;
 import com.duobei.dic.ZDHelper;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

@@ -4,7 +4,7 @@ import com.duobei.core.auth.dao.VerifyCodeFailDao;
 import com.duobei.core.auth.dao.mapper.VerifyCodeFailMapper;
 import com.duobei.core.auth.domain.VerifyCodeFail;
 import com.duobei.core.auth.service.VerifyCodeFailService;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

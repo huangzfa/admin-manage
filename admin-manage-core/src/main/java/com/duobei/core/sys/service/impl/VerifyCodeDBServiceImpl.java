@@ -24,7 +24,7 @@ import com.duobei.core.sys.dao.SmsVerifyCodeDao;
 import com.duobei.core.sys.dao.mapper.SmsVerifyCodeMapper;
 import com.duobei.core.sys.domain.SmsVerifyCode;
 import com.duobei.core.sys.service.VerifyCodeService;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 @Service("VerifyCodeService")
 public class VerifyCodeDBServiceImpl implements VerifyCodeService {

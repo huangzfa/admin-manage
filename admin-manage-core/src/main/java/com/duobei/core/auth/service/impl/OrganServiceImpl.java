@@ -28,7 +28,7 @@ import com.duobei.core.auth.domain.criteria.OrganCriteria;
 import com.duobei.core.auth.domain.vo.OrganRuleVo;
 import com.duobei.core.auth.domain.vo.OrganVo;
 import com.duobei.core.auth.service.OrganService;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 @Service("OrganService")
 public class OrganServiceImpl implements OrganService {

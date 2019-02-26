@@ -11,7 +11,10 @@ public interface BizConstant {
     Integer INT_ZERO = 0;
     Integer INT_ONE = 1;
 
-    String PLATFORM="duobei";
-    String RISK_SUCCESS="SUCCESS";
-    String RISK_FAULT="FAULT";
+    String BIZ_CODE_DESC = "code";//服务化统一返回code 字符
+    Integer BIZ_SUCCESS_CODE = 1000;//服务化统一返回成功编码
+    String BIZ_MSG_DESC = "msg";//服务化统一返回msg字符
+    String BIZE_DATA_DESC = "data";//服务化统一返回data 字符
+
+    String PLATFORM = "duobei";
 }

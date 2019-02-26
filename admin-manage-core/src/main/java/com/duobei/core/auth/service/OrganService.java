@@ -10,7 +10,7 @@ import com.duobei.core.auth.domain.credential.OperatorCredential;
 import com.duobei.core.auth.domain.criteria.OrganCriteria;
 import com.duobei.core.auth.domain.vo.OrganRuleVo;
 import com.duobei.core.auth.domain.vo.OrganVo;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 /**
  * 组织结构服务类

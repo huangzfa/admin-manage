@@ -10,7 +10,7 @@ import com.duobei.core.auth.domain.OperatorRoleKey;
 import com.duobei.core.auth.domain.credential.OperatorCredential;
 import com.duobei.core.auth.domain.criteria.UserCriteria;
 import com.duobei.core.auth.domain.vo.OperatorVo;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 public interface OperatorService {
 

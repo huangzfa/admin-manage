@@ -15,7 +15,7 @@ import com.duobei.common.vo.ListVo;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.sys.domain.Dict;
 import com.duobei.core.sys.service.DictService;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 @Controller
 @RequestMapping(value = "${authzPath}/sys/dict")

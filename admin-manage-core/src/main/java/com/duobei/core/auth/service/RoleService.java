@@ -7,7 +7,7 @@ import com.duobei.core.auth.domain.RoleMenuKey;
 import com.duobei.core.auth.domain.credential.OperatorCredential;
 import com.duobei.core.auth.domain.criteria.RoleCriteria;
 import com.duobei.core.auth.domain.vo.RoleVo;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 public interface RoleService {
 

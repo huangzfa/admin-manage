@@ -4,16 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.duobei.common.http.OkHttpUtil;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**风控调用
  * Created by huangzhongfa on 2018/12/21.

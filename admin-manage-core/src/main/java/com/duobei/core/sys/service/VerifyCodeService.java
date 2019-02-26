@@ -1,7 +1,7 @@
 package com.duobei.core.sys.service;
 
 import com.duobei.core.sys.domain.SmsVerifyCode;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 public interface VerifyCodeService {
 

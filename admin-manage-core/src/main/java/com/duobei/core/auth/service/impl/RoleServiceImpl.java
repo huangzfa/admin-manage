@@ -27,7 +27,7 @@ import com.duobei.core.auth.domain.criteria.RoleCriteria;
 import com.duobei.core.auth.domain.vo.RoleVo;
 import com.duobei.core.auth.service.RoleService;
 import com.duobei.dic.ZDHelper;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 @Service("RoleService")
 public class RoleServiceImpl implements RoleService {

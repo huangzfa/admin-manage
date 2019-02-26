@@ -17,7 +17,7 @@ import com.duobei.core.auth.domain.criteria.MenuCriteria;
 import com.duobei.core.auth.helper.MenuHelper;
 import com.duobei.core.auth.service.MenuService;
 import com.duobei.dic.ZD;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 @Service("MenuService")
 public class MenuServiceImpl implements MenuService {

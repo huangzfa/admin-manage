@@ -1,4 +1,4 @@
-package main.java.com.duobei.console.web.controller.auth;
+package com.duobei.console.web.controller.auth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ import com.duobei.core.auth.domain.credential.OperatorCredential;
 import com.duobei.core.auth.domain.criteria.OrganCriteria;
 import com.duobei.core.auth.domain.vo.OrganVo;
 import com.duobei.core.auth.service.OrganService;
-import com.duobei.exception.TqException;
+import com.duobei.common.exception.TqException;
 
 @Controller
 @RequestMapping(value = "${authzPath}/sys/organ")

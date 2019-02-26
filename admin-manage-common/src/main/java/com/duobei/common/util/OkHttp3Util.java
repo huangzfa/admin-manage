@@ -1,9 +1,20 @@
 package com.duobei.common.util;
 
+import com.alibaba.fastjson.JSON;
+import com.duobei.common.constant.BizConstant;
+import com.duobei.common.exception.TqException;
+import com.duobei.common.http.OkHttpUtil;
+import com.duobei.common.util.lang.StringUtil;
 import okhttp3.*;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**http工具类
+ * @author huangzhongfa
+ * @description
+ * @date 2019/2/25
+ */
 public class OkHttp3Util {
 
     /**

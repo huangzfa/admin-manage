@@ -7,14 +7,28 @@
 
     <select id="getLists" resultType="com.duobei.core.product.domain.Product" parameterType="com.duobei.core.product.domain.criteria.ProductCriteria">
         SELECT   * FROM yy_product
-        where is_delete = 0 order by id desc
+        where 1=1
+        <if test="productName != null and productName != '' ">
+            and product_name like "%"#{name,jdbcType=VARCHAR}"%"
+        </if>
+        <if test="merchantId != null and merchantId != '' ">
+            and merchant_id = #{merchantId,jdbcType=INTEGER}
+        </if>
+        order by id desc
         <if test="pagesize != 0">
             LIMIT #{offset}, #{pagesize}
         </if>
     </select>
 
     <select id="countByCriteria" parameterType="com.duobei.core.product.domain.criteria.ProductCriteria" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM yy_product  where is_delete = 0
+        SELECT COUNT(*) FROM yy_product where 1=1
+        <if test="productName != null and productName != '' ">
+            and product_name like "%"#{name,jdbcType=VARCHAR}"%"
+        </if>
+        <if test="merchantId != null and merchantId != '' ">
+            and merchant_id = #{merchantId,jdbcType=INTEGER}
+        </if>
+        order by id desc
     </select>
 
     <select id="getById" parameterType="java.lang.Integer" resultType="com.duobei.core.product.domain.Product">

@@ -6,6 +6,7 @@ import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.product.domain.Product;
 import com.duobei.core.product.domain.criteria.ProductCriteria;
+import com.duobei.core.product.service.MerchantService;
 import com.duobei.core.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -27,6 +28,8 @@ public class ProductController extends BaseController{
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private MerchantService merchantService;
 
     /**
      * 产品列表页
@@ -36,6 +39,7 @@ public class ProductController extends BaseController{
     @RequiresPermissions("product:list:view")
     @RequestMapping(value = "/list")
     public String index(Model model){
+        model.addAttribute("merchantList",merchantService.getAll());
         return "product/list";
     }
 

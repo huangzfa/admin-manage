@@ -3,7 +3,7 @@
 <!doctype html>
 <html>
 <head>
-<title>多贝业务后台</title>
+<title>业务后台</title>
 <link rel="shortcut icon" href="/static/img/icon.png">
 <sys:jscss jscss="jquery,webfont,bootstrap,css,siMenu,siLayout,easyui,layer,jbox,si"/>
 <!--  -->
@@ -129,7 +129,7 @@ $(function(){
 				<span class="loginName"><i class="fa fa-user"></i> 你好：${user.realName }</span>
 			</div>
 			<div class="menuBox">
-				<span class="logo">多贝业务后台</span>
+				<span class="logo">业务后台</span>
 				<c:if test="${not empty menus}">
 					<c:forEach items="${menus}" var="m" varStatus="mStatus">
 						<a class="menuA" code="${m.menuTag}" href="javascript:void(0);">${m.menuName}</a>

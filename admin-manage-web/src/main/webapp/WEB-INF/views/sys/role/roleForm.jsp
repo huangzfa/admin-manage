@@ -136,12 +136,26 @@ $(function(){
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">产品/数据权限：</label>
+			<div class="controls">
+				<div class="form-group">
+					<c:forEach items="${redirectType}" var="type">
+
+					</c:forEach>
+					<label class="checkbox-inline">
+						<input type="checkbox"  value="option1" name="roleData">游戏
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">角色授权:</label>
 			<div class="controls">
 				<div id="menuTree" class="ztree" style="margin-top:3px;float:left;"></div>
 				<form:hidden path="menuIds"/>
 			</div>
 		</div>
+
 		<div class="control-group">
 			<label class="control-label">说明：</label>
 			<div class="controls">

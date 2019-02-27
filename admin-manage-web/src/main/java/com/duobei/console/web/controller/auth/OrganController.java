@@ -19,12 +19,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
-import com.duobei.core.auth.domain.Organ;
-import com.duobei.core.auth.domain.OrganType;
-import com.duobei.core.auth.domain.credential.OperatorCredential;
-import com.duobei.core.auth.domain.criteria.OrganCriteria;
-import com.duobei.core.auth.domain.vo.OrganVo;
-import com.duobei.core.auth.service.OrganService;
+import com.duobei.core.manage.auth.domain.Organ;
+import com.duobei.core.manage.auth.domain.OrganType;
+import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.auth.domain.criteria.OrganCriteria;
+import com.duobei.core.manage.auth.domain.vo.OrganVo;
+import com.duobei.core.manage.auth.service.OrganService;
 import com.duobei.common.exception.TqException;
 
 @Controller

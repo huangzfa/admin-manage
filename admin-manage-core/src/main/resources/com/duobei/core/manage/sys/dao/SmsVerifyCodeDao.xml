@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.manage.sys.dao.SmsVerifyCodeDao" >
+  <resultMap id="BaseResultMap" type="com.duobei.core.manage.sys.domain.SmsVerifyCode" extends="com.duobei.core.manage.sys.dao.mapper.SmsVerifyCodeMapper.BaseResultMap">
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    svc.id as svc_id, svc.mobile as svc_mobile, svc.sms_biz_type as svc_sms_biz_type, 
+    svc.verify_code as svc_verify_code, svc.invalid_time as svc_invalid_time, svc.add_time as svc_add_time, 
+    svc.modify_time as svc_modify_time
+  </sql>
+  
+  <select id="queryLastSmsVerifyCode" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_sms_verify_code svc
+    where svc.mobile = #{mobile}
+    and svc.sms_biz_type = #{smsBizType}
+    ORDER BY id DESC
+	LIMIT 1
+  </select>
+</mapper>

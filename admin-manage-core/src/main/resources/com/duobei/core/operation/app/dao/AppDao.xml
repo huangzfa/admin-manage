@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.app.dao.AppDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.app.domain.App" extends="com.duobei.core.operation.app.dao.mapper.AppMapper.BaseResultMap">
+    </resultMap>
+</mapper>

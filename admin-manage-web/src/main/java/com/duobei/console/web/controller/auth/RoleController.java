@@ -2,6 +2,7 @@ package com.duobei.console.web.controller.auth;
 
 import java.util.List;
 
+import com.duobei.core.manage.auth.service.RoleDataAuthService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +17,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
-import com.duobei.core.auth.domain.Menu;
-import com.duobei.core.auth.domain.RoleMenuKey;
-import com.duobei.core.auth.domain.credential.OperatorCredential;
-import com.duobei.core.auth.domain.criteria.RoleCriteria;
-import com.duobei.core.auth.domain.vo.RoleVo;
-import com.duobei.core.auth.service.MenuService;
-import com.duobei.core.auth.service.RoleService;
+import com.duobei.core.manage.auth.domain.Menu;
+import com.duobei.core.manage.auth.domain.RoleMenuKey;
+import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.auth.domain.criteria.RoleCriteria;
+import com.duobei.core.manage.auth.domain.vo.RoleVo;
+import com.duobei.core.manage.auth.service.MenuService;
+import com.duobei.core.manage.auth.service.RoleService;
 import com.duobei.dic.ZD;
 import com.duobei.common.exception.TqException;
 
@@ -34,6 +35,8 @@ public class RoleController extends BaseController {
 	private RoleService roleService;
 	@Autowired
 	private MenuService menuService;
+	@Autowired
+	private RoleDataAuthService roleDataAuthService;
 
 	@RequiresPermissions("sys:role:view")
 	@RequestMapping(value = "/list")
@@ -76,6 +79,8 @@ public class RoleController extends BaseController {
 						role.getMenuIdList().add(rm.getMenuId());
 					}
 				}
+				//查询数据权限
+				model.addAttribute("roleData",roleDataAuthService.getByRoleId(role.getRoleId()));
 			} else {
 				role.setRoleState(ZD.state_open);
 			}

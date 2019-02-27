@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.manage.auth.dao.mapper.OperatorLoginLogMapper" >
+  <resultMap id="BaseResultMap" type="com.duobei.core.manage.auth.domain.OperatorLoginLog" >
+    <id column="oll_id" property="id" jdbcType="BIGINT" />
+    <result column="oll_op_id" property="opId" jdbcType="INTEGER" />
+    <result column="oll_session_id" property="sessionId" jdbcType="VARCHAR" />
+    <result column="oll_login_type" property="loginType" jdbcType="VARCHAR" />
+    <result column="oll_ip" property="ip" jdbcType="VARCHAR" />
+    <result column="oll_reason" property="reason" jdbcType="VARCHAR" />
+    <result column="oll_add_time" property="addTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    oll.id as oll_id, oll.op_id as oll_op_id, oll.session_id as oll_session_id, oll.login_type as oll_login_type, 
+    oll.ip as oll_ip, oll.reason as oll_reason, oll.add_time as oll_add_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.duobei.core.manage.auth.domain.OperatorLoginLogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from aa_operator_login_log oll
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from aa_operator_login_log oll
+    where oll.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from aa_operator_login_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.manage.auth.domain.OperatorLoginLogExample" >
+    delete from aa_operator_login_log oll
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.manage.auth.domain.OperatorLoginLog" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aa_operator_login_log (op_id, session_id, login_type, 
+      ip, reason, add_time
+      )
+    values (#{opId,jdbcType=INTEGER}, #{sessionId,jdbcType=VARCHAR}, #{loginType,jdbcType=VARCHAR}, 
+      #{ip,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.manage.auth.domain.OperatorLoginLog" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aa_operator_login_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="opId != null" >
+        op_id,
+      </if>
+      <if test="sessionId != null" >
+        session_id,
+      </if>
+      <if test="loginType != null" >
+        login_type,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="opId != null" >
+        #{opId,jdbcType=INTEGER},
+      </if>
+      <if test="sessionId != null" >
+        #{sessionId,jdbcType=VARCHAR},
+      </if>
+      <if test="loginType != null" >
+        #{loginType,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.manage.auth.domain.OperatorLoginLogExample" resultType="java.lang.Integer" >
+    select count(*) from aa_operator_login_log oll
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update aa_operator_login_log oll
+    <set >
+      <if test="record.id != null" >
+        oll.id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.opId != null" >
+        oll.op_id = #{record.opId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sessionId != null" >
+        oll.session_id = #{record.sessionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginType != null" >
+        oll.login_type = #{record.loginType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ip != null" >
+        oll.ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reason != null" >
+        oll.reason = #{record.reason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null" >
+        oll.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update aa_operator_login_log oll
+    set oll.id = #{record.id,jdbcType=BIGINT},
+      oll.op_id = #{record.opId,jdbcType=INTEGER},
+      oll.session_id = #{record.sessionId,jdbcType=VARCHAR},
+      oll.login_type = #{record.loginType,jdbcType=VARCHAR},
+      oll.ip = #{record.ip,jdbcType=VARCHAR},
+      oll.reason = #{record.reason,jdbcType=VARCHAR},
+      oll.add_time = #{record.addTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.manage.auth.domain.OperatorLoginLog" >
+    update aa_operator_login_log
+    <set >
+      <if test="opId != null" >
+        op_id = #{opId,jdbcType=INTEGER},
+      </if>
+      <if test="sessionId != null" >
+        session_id = #{sessionId,jdbcType=VARCHAR},
+      </if>
+      <if test="loginType != null" >
+        login_type = #{loginType,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.manage.auth.domain.OperatorLoginLog" >
+    update aa_operator_login_log
+    set op_id = #{opId,jdbcType=INTEGER},
+      session_id = #{sessionId,jdbcType=VARCHAR},
+      login_type = #{loginType,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      reason = #{reason,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

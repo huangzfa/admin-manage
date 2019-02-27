@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.manage.auth.dao.OperatorRoleDao" >
+  
+  <resultMap id="BaseResultMap" type="com.duobei.core.manage.auth.domain.OperatorRoleKey" extends="com.duobei.core.manage.auth.dao.mapper.OperatorRoleMapper.BaseResultMap">
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    opr.op_id as opr_op_id, opr.role_id as opr_role_id
+  </sql>
+  
+  <select id="queryOperatorRoleIds" resultMap="BaseResultMap" parameterType="com.duobei.core.manage.auth.domain.criteria.RoleCriteria" >
+    SELECT 
+    <include refid="Base_Column_List" />
+	FROM aa_operator_role opr, aa_role r
+	WHERE opr.op_id = #{opId}
+	    AND opr.role_id = r.role_id
+	    AND r.role_state = #{roleStateZd}
+  </select>
+
+  <select id="getRoleByOpIds"  resultType="com.duobei.core.manage.auth.domain.vo.OperatorRoleVo">
+     select a.*,b.role_name as roleName from aa_operator_role a,aa_role b where a.role_id=b.role_id and b.role_state = 10
+     and a.op_id
+     <foreach collection="opIds" open="in(" close=")" item="opId" separator=",">
+          #{opId}
+     </foreach>
+  </select>
+</mapper>

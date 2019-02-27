@@ -28,7 +28,7 @@
 <function>
   <description>是否是超级管理员</description>
   <name>isSuperAdmin</name>
-  <function-class>com.duobei.core.auth.helper.UserHelper</function-class>
+  <function-class>com.duobei.core.manage.auth.helper.UserHelper</function-class>
   <function-signature>boolean isSuperAdmin()</function-signature>
   <example>${cfg:isSuperAdmin()}</example>
 </function>
@@ -44,7 +44,7 @@
 <function>
   <description>获取字典对象列表</description>
   <name>getDictList</name>
-  <function-class>com.duobei.core.sys.utils.DictUtil</function-class>
+  <function-class>com.duobei.core.manage.sys.utils.DictUtil</function-class>
   <function-signature>java.util.List getDictList(java.lang.String)</function-signature>
   <example>${cfg:getDictList(dictType)}</example>  
 </function>
@@ -52,7 +52,7 @@
 <function>
   <description>获取字典标签</description>
   <name>getDictLabel</name>
-  <function-class>com.duobei.core.sys.utils.DictUtil</function-class>
+  <function-class>com.duobei.core.manage.sys.utils.DictUtil</function-class>
   <function-signature>java.lang.String getDictLabel(java.lang.String,java.lang.String)</function-signature>
   <example>${cfg:getDictLabel(dictType,dictVal)}</example>  
 </function>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.app.dao.AppExamineDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.app.domain.AppExamine" extends="com.duobei.core.operation.app.dao.mapper.AppExamineMapper.BaseResultMap">
+    </resultMap>
+
+    <select id="getPageList" resultType="com.duobei.core.operation.app.domain.AppExamine" parameterType="com.duobei.core.operation.app.domain.criteria.AppExamineCriteria">
+        select * from yy_app_examine where is_delete = 0 order by id desc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <select id="countCriteria" resultType="java.lang.Long" parameterType="com.duobei.core.operation.app.domain.criteria.AppExamineCriteria">
+        select count(*) from yy_app_examine where is_delete = 0 order by id desc
+    </select>
+</mapper>

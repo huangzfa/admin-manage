@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.duobei.core.product.dao.ProductAuhConfigDao" >
-
-    <resultMap id="BaseResultMap" type="com.duobei.core.product.domain.ProductAuhConfig" extends="com.duobei.core.product.dao.mapper.ProductAuhConfigMapper.BaseResultMap">
-    </resultMap>
-</mapper>

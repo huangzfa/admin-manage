@@ -1,7 +1,6 @@
 package com.duobei.core.sms;
 
-import com.duobei.core.sys.service.VerifyCodeService;
-import com.duobei.common.exception.TqException;
+import com.duobei.core.manage.sys.service.VerifyCodeService;
 
 public class SmsTask implements Runnable {
 

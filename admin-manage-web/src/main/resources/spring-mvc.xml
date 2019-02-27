@@ -16,7 +16,7 @@
 	<context:property-placeholder location="classpath:global.properties" ignore-unresolvable="true"/>  
 	
 	<!-- 使用Annotation自动注册Bean,只扫描@Controller,Use-dafault-filters=”false”的情况下：<context:exclude-filter>指定的不扫描，<context:include-filter>指定的扫描-->
-	<context:component-scan base-package="com.duobei.console" use-default-filters="false"><!-- base-package 如果多个，用“,”分隔 -->
+	<context:component-scan base-package="com.duobei" use-default-filters="false"><!-- base-package 如果多个，用“,”分隔 -->
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>  
 	</context:component-scan>

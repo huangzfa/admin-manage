@@ -24,7 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.duobei.common.util.HtmlUtil;
-import com.duobei.core.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 
 public class BaseController {
 	protected static final Logger logger = LoggerFactory.getLogger(BaseController.class);

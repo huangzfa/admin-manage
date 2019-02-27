@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.duobei.console.web.controller.base.BaseController;
-import com.duobei.core.auth.domain.OrganType;
-import com.duobei.core.auth.domain.credential.OperatorCredential;
-import com.duobei.core.auth.service.OrganService;
+import com.duobei.core.manage.auth.domain.OrganType;
+import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.auth.service.OrganService;
 import com.duobei.common.exception.TqException;
 
 @Controller

@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.manage.auth.dao.mapper.OperatorMapper" >
+  <resultMap id="BaseResultMap" type="com.duobei.core.manage.auth.domain.Operator" >
+    <id column="o_op_id" property="opId" jdbcType="INTEGER" />
+    <result column="o_login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="o_login_pwd" property="loginPwd" jdbcType="VARCHAR" />
+    <result column="o_real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="o_operator_state" property="operatorState" jdbcType="VARCHAR" />
+    <result column="o_organ_id" property="organId" jdbcType="INTEGER" />
+    <result column="o_session_id" property="sessionId" jdbcType="VARCHAR" />
+    <result column="o_login_ip" property="loginIp" jdbcType="VARCHAR" />
+    <result column="o_login_time" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="o_last_login_ip" property="lastLoginIp" jdbcType="VARCHAR" />
+    <result column="o_last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="o_add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="o_modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="o_add_operator_id" property="addOperatorId" jdbcType="INTEGER" />
+    <result column="o_add_operator_name" property="addOperatorName" jdbcType="VARCHAR" />
+    <result column="o_modify_operator_id" property="modifyOperatorId" jdbcType="INTEGER" />
+    <result column="o_modify_operator_name" property="modifyOperatorName" jdbcType="VARCHAR" />
+    <result column="o_is_delete" property="isDelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    o.op_id as o_op_id, o.login_name as o_login_name, o.login_pwd as o_login_pwd, o.real_name as o_real_name, 
+    o.operator_state as o_operator_state, o.organ_id as o_organ_id, o.session_id as o_session_id, 
+    o.login_ip as o_login_ip, o.login_time as o_login_time, o.last_login_ip as o_last_login_ip, 
+    o.last_login_time as o_last_login_time, o.add_time as o_add_time, o.modify_time as o_modify_time, 
+    o.add_operator_id as o_add_operator_id, o.add_operator_name as o_add_operator_name, 
+    o.modify_operator_id as o_modify_operator_id, o.modify_operator_name as o_modify_operator_name, 
+    o.is_delete as o_is_delete
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.duobei.core.manage.auth.domain.OperatorExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from aa_operator o
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from aa_operator o
+    where o.op_id = #{opId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from aa_operator
+    where op_id = #{opId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.manage.auth.domain.OperatorExample" >
+    delete from aa_operator o
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.manage.auth.domain.Operator" >
+    <selectKey resultType="java.lang.Integer" keyProperty="opId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aa_operator (login_name, login_pwd, real_name, 
+      operator_state, organ_id, session_id, 
+      login_ip, login_time, last_login_ip, 
+      last_login_time, add_time, modify_time, 
+      add_operator_id, add_operator_name, modify_operator_id, 
+      modify_operator_name, is_delete)
+    values (#{loginName,jdbcType=VARCHAR}, #{loginPwd,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
+      #{operatorState,jdbcType=VARCHAR}, #{organId,jdbcType=INTEGER}, #{sessionId,jdbcType=VARCHAR}, 
+      #{loginIp,jdbcType=VARCHAR}, #{loginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}, 
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, 
+      #{addOperatorId,jdbcType=INTEGER}, #{addOperatorName,jdbcType=VARCHAR}, #{modifyOperatorId,jdbcType=INTEGER}, 
+      #{modifyOperatorName,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.manage.auth.domain.Operator" >
+    <selectKey resultType="java.lang.Integer" keyProperty="opId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aa_operator
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="loginName != null" >
+        login_name,
+      </if>
+      <if test="loginPwd != null" >
+        login_pwd,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="operatorState != null" >
+        operator_state,
+      </if>
+      <if test="organId != null" >
+        organ_id,
+      </if>
+      <if test="sessionId != null" >
+        session_id,
+      </if>
+      <if test="loginIp != null" >
+        login_ip,
+      </if>
+      <if test="loginTime != null" >
+        login_time,
+      </if>
+      <if test="lastLoginIp != null" >
+        last_login_ip,
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="addOperatorId != null" >
+        add_operator_id,
+      </if>
+      <if test="addOperatorName != null" >
+        add_operator_name,
+      </if>
+      <if test="modifyOperatorId != null" >
+        modify_operator_id,
+      </if>
+      <if test="modifyOperatorName != null" >
+        modify_operator_name,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPwd != null" >
+        #{loginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorState != null" >
+        #{operatorState,jdbcType=VARCHAR},
+      </if>
+      <if test="organId != null" >
+        #{organId,jdbcType=INTEGER},
+      </if>
+      <if test="sessionId != null" >
+        #{sessionId,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIp != null" >
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null" >
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null" >
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null" >
+        #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="addOperatorName != null" >
+        #{addOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyOperatorId != null" >
+        #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorName != null" >
+        #{modifyOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.manage.auth.domain.OperatorExample" resultType="java.lang.Integer" >
+    select count(*) from aa_operator o
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update aa_operator o
+    <set >
+      <if test="record.opId != null" >
+        o.op_id = #{record.opId,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginName != null" >
+        o.login_name = #{record.loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginPwd != null" >
+        o.login_pwd = #{record.loginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realName != null" >
+        o.real_name = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatorState != null" >
+        o.operator_state = #{record.operatorState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.organId != null" >
+        o.organ_id = #{record.organId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sessionId != null" >
+        o.session_id = #{record.sessionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginIp != null" >
+        o.login_ip = #{record.loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginTime != null" >
+        o.login_time = #{record.loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastLoginIp != null" >
+        o.last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastLoginTime != null" >
+        o.last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addTime != null" >
+        o.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null" >
+        o.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addOperatorId != null" >
+        o.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.addOperatorName != null" >
+        o.add_operator_name = #{record.addOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyOperatorId != null" >
+        o.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifyOperatorName != null" >
+        o.modify_operator_name = #{record.modifyOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDelete != null" >
+        o.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update aa_operator o
+    set o.op_id = #{record.opId,jdbcType=INTEGER},
+      o.login_name = #{record.loginName,jdbcType=VARCHAR},
+      o.login_pwd = #{record.loginPwd,jdbcType=VARCHAR},
+      o.real_name = #{record.realName,jdbcType=VARCHAR},
+      o.operator_state = #{record.operatorState,jdbcType=VARCHAR},
+      o.organ_id = #{record.organId,jdbcType=INTEGER},
+      o.session_id = #{record.sessionId,jdbcType=VARCHAR},
+      o.login_ip = #{record.loginIp,jdbcType=VARCHAR},
+      o.login_time = #{record.loginTime,jdbcType=TIMESTAMP},
+      o.last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+      o.last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      o.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      o.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      o.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      o.add_operator_name = #{record.addOperatorName,jdbcType=VARCHAR},
+      o.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      o.modify_operator_name = #{record.modifyOperatorName,jdbcType=VARCHAR},
+      o.is_delete = #{record.isDelete,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.manage.auth.domain.Operator" >
+    update aa_operator
+    <set >
+      <if test="loginName != null" >
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPwd != null" >
+        login_pwd = #{loginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorState != null" >
+        operator_state = #{operatorState,jdbcType=VARCHAR},
+      </if>
+      <if test="organId != null" >
+        organ_id = #{organId,jdbcType=INTEGER},
+      </if>
+      <if test="sessionId != null" >
+        session_id = #{sessionId,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIp != null" >
+        login_ip = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null" >
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null" >
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null" >
+        add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="addOperatorName != null" >
+        add_operator_name = #{addOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyOperatorId != null" >
+        modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorName != null" >
+        modify_operator_name = #{modifyOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where op_id = #{opId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.manage.auth.domain.Operator" >
+    update aa_operator
+    set login_name = #{loginName,jdbcType=VARCHAR},
+      login_pwd = #{loginPwd,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      operator_state = #{operatorState,jdbcType=VARCHAR},
+      organ_id = #{organId,jdbcType=INTEGER},
+      session_id = #{sessionId,jdbcType=VARCHAR},
+      login_ip = #{loginIp,jdbcType=VARCHAR},
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      add_operator_name = #{addOperatorName,jdbcType=VARCHAR},
+      modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+      modify_operator_name = #{modifyOperatorName,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where op_id = #{opId,jdbcType=INTEGER}
+  </update>
+</mapper>

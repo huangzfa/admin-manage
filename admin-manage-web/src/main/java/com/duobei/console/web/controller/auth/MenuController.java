@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.duobei.console.web.controller.base.BaseController;
-import com.duobei.core.auth.domain.Menu;
-import com.duobei.core.auth.domain.credential.OperatorCredential;
-import com.duobei.core.auth.helper.MenuHelper;
-import com.duobei.core.auth.service.MenuService;
+import com.duobei.core.manage.auth.domain.Menu;
+import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.auth.helper.MenuHelper;
+import com.duobei.core.manage.auth.service.MenuService;
 import com.duobei.dic.ZD;
 import com.duobei.common.exception.TqException;
 

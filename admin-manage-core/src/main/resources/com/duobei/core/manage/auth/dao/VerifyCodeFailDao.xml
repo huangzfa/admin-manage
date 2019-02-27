@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.manage.auth.dao.VerifyCodeFailDao" >
+
+  <resultMap id="BaseResultMap" type="com.duobei.core.manage.auth.domain.VerifyCodeFail" extends="com.duobei.core.manage.auth.dao.mapper.VerifyCodeFailMapper.BaseResultMap">
+  </resultMap>
+  
+  <select id="getByParam" parameterType="java.util.HashMap" resultType="com.duobei.core.manage.auth.domain.VerifyCodeFail">
+    select * from aa_verify_code_fail where 1=1
+    <if test="gmtTime!=nul">
+        and gmt_time = #{gmtTime,jdbcType=INTEGER}
+    </if>
+      <if test="loginName!=nul">
+          and login_name = #{loginName,jdbcType=VARCHAR}
+      </if>
+      order by id desc limit 1
+  </select>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.manage.sys.dao.DictDao" >
+
+  <resultMap id="BaseResultMap" type="com.duobei.core.manage.sys.domain.Dict" extends="com.duobei.core.manage.sys.dao.mapper.DictMapper.BaseResultMap">
+  </resultMap>
+ 
+  <sql id="Base_Column_List" >
+    d.id as d_id, d.pid as d_pid, d.p_val as d_p_val, d.dic_code as d_dic_code, d.dic_var as d_dic_var, 
+    d.dic_val as d_dic_val, d.has_child as d_has_child, d.data_type as d_data_type, d.dic_sort as d_dic_sort, 
+    d.des as d_des
+  </sql>
+  
+  <select id="queryDictByDictType" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+      <include refid="com.duobei.core.manage.sys.dao.mapper.DictMapper.Base_Column_List" />
+      FROM sys_dict d
+      WHERE d.pid = (SELECT id FROM sys_dict WHERE dic_val = #{dictType})
+      ORDER BY d.dic_sort ASC
+  </select>
+  
+  <select id="queryDictByPId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+	<include refid="com.duobei.core.manage.sys.dao.mapper.DictMapper.Base_Column_List" />
+	FROM sys_dict d
+	WHERE d.pid = #{pId}
+	ORDER BY d.dic_sort ASC
+  </select>
+
+  <select id="getDictOneByType" parameterType="java.lang.String" resultType="com.duobei.core.manage.sys.domain.Dict" >
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sys_dict d
+    WHERE dic_var = #{dictType,jdbcType=VARCHAR}
+    order by d.dic_sort ASC
+    limit 1
+  </select>
+
+
+</mapper>

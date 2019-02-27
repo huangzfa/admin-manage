@@ -7,7 +7,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.duobei.core.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 
 public class AuthorizationTag extends TagSupport {
 	private static final long serialVersionUID = 8419598654703684473L;

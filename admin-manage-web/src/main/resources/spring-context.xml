@@ -91,13 +91,26 @@
 	
 	<!-- =============================SqlSessionFactory-开始========================================================= -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
+		<property name="dataSource" ref="manageDataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<!-- 这里写需要扫描的各个模块下mybatis mapper.xml的包路径 -->
-		<property name="basePackage" value="com.duobei.core.**.dao,com.duobei.core.**.dao.mapper" />
+		<!-- 该属性实际上就是起到一个过滤的作用，如果设置了该属性，那么MyBatis的接口只有包含该注解，才会被扫描进去。-->
+		<property name="basePackage" value="com.duobei.core.manage.**.dao,com.duobei.core.manage.**.dao.mapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="sqlSessionFactory1" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="operateDataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 这里写需要扫描的各个模块下mybatis mapper.xml的包路径 -->
+		<!-- 该属性实际上就是起到一个过滤的作用，如果设置了该属性，那么MyBatis的接口只有包含该注解，才会被扫描进去。-->
+		<property name="annotationClass" value="com.duobei.common.annotation.DataSourceSwitch"/>
+		<property name="basePackage" value="com.duobei.core.operation.**.dao,com.duobei.core.operation.**.dao.mapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory1" />
 	</bean>
 	<!-- =============================SqlSessionFactory-结束========================================================= -->
 
@@ -134,7 +147,7 @@
 	<!--  =============================ossUtil 结束============================= -->
 
 	<!--  =============================jpushUtil 开始============================= -->
-	<bean id="messageUtil" class="com.duobei.core.utils.MessageUtil" init-method="initUtil" >
+	<bean id="messageUtil" class="com.duobei.utils.MessageUtil" init-method="initUtil" >
 		<property name="url" value="${pgy.message.url}"></property>
 		<property name="systemCode" value="${pgy.message.platform}"></property>
 	</bean>

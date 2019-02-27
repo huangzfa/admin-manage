@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.manage.auth.dao.OrganDao" >
+
+  <resultMap id="BaseResultMap" type="com.duobei.core.manage.auth.domain.Organ" extends="com.duobei.core.manage.auth.dao.mapper.OrganMapper.BaseResultMap">
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    org.organ_id as org_organ_id, org.organ_type_id as org_organ_type_id, org.parent_organ_id as org_parent_organ_id, 
+    org.parent_organ_type_id as org_parent_organ_type_id, org.organ_code as org_organ_code, 
+    org.organ_name as org_organ_name, org.organ_level as org_organ_level, org.organ_sort as org_organ_sort, 
+    org.is_parent as org_is_parent, org.path as org_path, org.add_time as org_add_time, 
+    org.modify_time as org_modify_time, org.add_operator_id as org_add_operator_id, org.add_operator_name as org_add_operator_name, 
+    org.modify_operator_id as org_modify_operator_id, org.modify_operator_name as org_modify_operator_name
+  </sql>
+  
+  <resultMap extends="BaseResultMap" id="OrganVoResultMap" type="com.duobei.core.manage.auth.domain.vo.OrganVo">
+    <result column="organ_type_code" jdbcType="VARCHAR" property="organTypeCode" />
+    <result column="organ_type_name" jdbcType="VARCHAR" property="organTypeName" />
+  </resultMap>
+  
+  <select id="queryByOrganId" parameterType="java.lang.Integer" resultMap="OrganVoResultMap">
+    SELECT
+	  <include refid="Base_Column_List" />,
+	  ot.organ_type_code AS organ_type_code,
+	  ot.organ_type_name AS organ_type_name
+	FROM aa_organ org,
+	  aa_organ_type ot
+	WHERE org.organ_id = #{organId}
+	    AND org.organ_type_id = ot.organ_type_id
+  </select>
+  
+  <select id="queryOrganByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+	  <include refid="Base_Column_List" />
+	FROM aa_organ org
+	WHERE org.organ_code = #{organCode}
+  </select>
+  
+  <select id="queryOrganListByParent" parameterType="com.duobei.core.manage.auth.domain.criteria.OrganCriteria" resultMap="OrganVoResultMap">
+	SELECT
+	  <include refid="Base_Column_List" />,
+	  ot.organ_type_code AS organ_type_code,
+	  ot.organ_type_name AS organ_type_name
+	FROM aa_organ org LEFT JOIN aa_organ_type ot 
+	ON org.organ_type_id=ot.organ_type_id
+	WHERE org.path LIKE CONCAT('%',#{pathLike},'%')
+	ORDER BY org.organ_level,org.organ_sort,org.add_time
+	<if test="pagesize != 0">
+		LIMIT #{offset}, #{pagesize}
+	</if>
+  </select>
+</mapper>

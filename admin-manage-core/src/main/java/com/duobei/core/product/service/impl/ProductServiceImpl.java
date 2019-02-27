@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
         int total = pgyProductDao.countByCriteria(criteria);
         List<Product> list = null;
         if (total > 0) {
-            list = pgyProductDao.getLists(criteria);
+            list = pgyProductDao.getPageList(criteria);
         }
         DataSourceHandle.clearDataSourceType();
         return new ListVo<Product>(total, list);

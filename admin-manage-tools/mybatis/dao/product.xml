@@ -3,7 +3,7 @@
 <generatorConfiguration>
 
 	<!-- 数据库驱动本地jar路径 -->
-	<classPathEntry location="C:\Users\acer\.m2\repository\mysql\mysql-connector-java\5.1.25\mysql-connector-java-5.1.25.jar" />
+	<classPathEntry location="D:\maven\MavenRepository\MavenRepository\repo\mysql\mysql-connector-java\5.1.25\mysql-connector-java-5.1.25.jar" />
 
 	<!-- 全局性配置信息 -->
 	<context id="context1">
@@ -21,13 +21,13 @@
 
 		<!-- 2：数据库连接信息 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-						connectionURL="jdbc:mysql://47.96.0.60:3306/duobei?useUnicode=true&amp;characterEncoding=utf-8"
+						connectionURL="jdbc:mysql://47.96.0.60:3306/pgy_platform_operation?useUnicode=true&amp;characterEncoding=utf-8"
 						userId="root"
 						password="Mi&amp;rong369" />
 
-		<javaModelGenerator targetProject="duobei-console-core/src/main/java" targetPackage="com.duobei.core.product.domain" />
-		<sqlMapGenerator targetProject="duobei-console-core/src/main/resources" targetPackage="com.duobei.core.product.dao.mapper" />
-		<javaClientGenerator targetProject="duobei-console-core/src/main/java" targetPackage="com.duobei.core.product.dao.mapper" type="XMLMAPPER" />
+		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.product.domain" />
+		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.product.dao.mapper" />
+		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.product.dao.mapper" type="XMLMAPPER" />
 
 		<!-- 用户 -->
 <!--		<table tableName="pgy_user" domainObjectName="User">
@@ -75,7 +75,8 @@
                 <generatedKey column="id" sqlStatement="MySql" identity="true" />
             </table> -->
 		<!--用户产品认证情况-->
-		  <table tableName="pgy_product_risk_record" domainObjectName="ProductRiskRecord" alias="priskrecord">
+
+		<table tableName="sh_merchant" domainObjectName="Merchant" alias="m">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>

@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.duobei.core.product.domain.ProductBusiness" extends="com.duobei.core.product.dao.mapper.ProductBusinessMapper.BaseResultMap">
     </resultMap>
 
-    <select id="getLists" resultType="com.duobei.core.product.domain.Product" parameterType="com.duobei.core.product.domain.criteria.ProductCriteria">
+    <select id="getPageList" resultType="com.duobei.core.product.domain.Product" parameterType="com.duobei.core.product.domain.criteria.ProductCriteria">
         SELECT   * FROM yy_product
         where 1=1
         <if test="productName != null and productName != '' ">
@@ -32,10 +32,14 @@
     </select>
 
     <select id="getById" parameterType="java.lang.Integer" resultType="com.duobei.core.product.domain.Product">
-        SELECT * FROM yy_product  where is_delete = 0 and id = #{id,jdbcType=INTEGER}
+        SELECT * FROM yy_product  where state = 1 and  id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="getByCode" parameterType="java.lang.String" resultType="com.duobei.core.product.domain.Product">
-        SELECT * FROM yy_product  where is_delete = 0 and product_code = #{code,jdbcType=VARCHAR}
+        SELECT * FROM yy_product  where state = 1 and  product_code = #{code,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getAll" resultType="com.duobei.core.product.domain.Product">
+        SELECT * FROM yy_product  where state = 1 a
     </select>
 </mapper>

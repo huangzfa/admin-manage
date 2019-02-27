@@ -1,5 +1,6 @@
 package com.duobei.core.app.service.impl;
 
+import com.duobei.annotation.DataSourceSwitch;
 import com.duobei.common.datasource.DataSourceConst;
 import com.duobei.common.datasource.DataSourceHandle;
 import com.duobei.common.vo.ListVo;
@@ -29,14 +30,15 @@ public class AppExamineServiceImpl implements AppExamineService {
      * @return
      */
     @Override
+    @DataSourceSwitch(dataSource = DataSourceConst.OPERATE)
     public ListVo<AppExamine> getPageList(AppExamineCriteria criteria){
-        DataSourceHandle.setDataSourceType(DataSourceConst.OPERATE);
+
         Long total = appExamineDao.countCriteria(criteria);
         List<AppExamine> appExamineVos = null;
         if (total > 0) {
             appExamineVos = appExamineDao.queryAppList(criteria);
         }
-        DataSourceHandle.clearDataSourceType();
+
         return new ListVo<AppExamine>(total.intValue(),appExamineVos);
     }
 }

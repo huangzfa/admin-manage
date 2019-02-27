@@ -28,13 +28,15 @@ public class AppExamineServiceImpl implements AppExamineService {
      */
     @Override
     public ListVo<AppExamine> getPageList(AppExamineCriteria criteria){
-
+        //1
         Long total = appExamineDao.countCriteria(criteria);
         List<AppExamine> appExamineVos = null;
         if (total > 0) {
             appExamineVos = appExamineDao.queryAppList(criteria);
         }
-
+        //2
         return new ListVo<AppExamine>(total.intValue(),appExamineVos);
     }
+
+
 }

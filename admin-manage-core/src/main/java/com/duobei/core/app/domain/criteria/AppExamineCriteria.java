@@ -8,5 +8,5 @@ import com.duobei.common.util.Pagination;
  * @date 2019/2/26
  */
 public class AppExamineCriteria extends Pagination {
-
+    private Integer appId;
 }

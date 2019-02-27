@@ -1,5 +1,8 @@
 package com.duobei.core.auth.domain.credential;
 
+import com.duobei.core.app.domain.App;
+import com.duobei.core.product.domain.Product;
+import com.sun.tools.javac.util.List;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -39,6 +42,7 @@ public class OperatorCredential implements Serializable{
 	private long sessionTimeout;//会话有效时间
 	private String lastLoginIp;//上次登录ip
 	private Date lastLoginTime;//上次登录时间
-
+	private List<Product> productList;//角色产品权限
+	private List<App> appList;//角色应用权限
 
 }

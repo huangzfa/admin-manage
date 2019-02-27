@@ -1,5 +1,7 @@
 package com.duobei.core.app.dao;
 
+import com.duobei.annotation.DataSourceSwitch;
+import com.duobei.common.datasource.DataSourceConst;
 import com.duobei.core.app.domain.criteria.AppExamineCriteria;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
  * @description
  * @date 2019/2/26
  */
+@DataSourceSwitch(dataSource = DataSourceConst.OPERATE)
 public interface AppExamineDao {
 
     /**

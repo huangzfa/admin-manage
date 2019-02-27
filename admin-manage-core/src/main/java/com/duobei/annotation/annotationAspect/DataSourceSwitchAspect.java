@@ -19,7 +19,7 @@ public class DataSourceSwitchAspect {
     }
     @Around("dataSourceSwitchFcuntion()&&@annotation(dataSourceSwitch)")
     public void beforeSwitch(ProceedingJoinPoint proceedingJoinPoint, DataSourceSwitch dataSourceSwitch ) throws Throwable {
-        DataSourceHandle.setDataSourceType(DataSourceConst.OPERATE);
+        DataSourceHandle.setDataSourceType(dataSourceSwitch.dataSource());
         Object result = null;
         result = proceedingJoinPoint.proceed();
         DataSourceHandle.clearDataSourceType();

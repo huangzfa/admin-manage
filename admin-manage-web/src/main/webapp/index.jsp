@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<title>多贝业务后台</title>
+<title>业务后台</title>
 <link rel="shortcut icon" href="/static/img/icon.png">
 <link rel="stylesheet" type="text/css" href="/static/css/common/iview.css">
 <link rel="stylesheet" type="text/css" href="/static/plugin/layer/mobile/need/layer.css">
@@ -25,7 +25,7 @@
 <body id="login-body">
 	<div id="app">
 		<Card style="width:350px" id="login-card">
-			<p slot="title">欢迎登录多贝业务后台</p>
+			<p slot="title">欢迎登录业务后台</p>
 			<i-input v-model="userName" maxlength="24" @keyup.enter.native="doLogin">
 				<span slot="prepend">账号：</span>
 			</i-input> 

@@ -45,24 +45,38 @@
         getData(1,pageSize);
 
         function getData(pageNum, pageSize){
+            var appQuery = $('#appQuery').val();
           $('#tt').datagrid('loading');
           hjnUtils.ajax({
             type:'post',
-            url:'${ctxA}/ac/apppage/apppageList',
-            data:'page='+pageNum+'&pagesize='+pageSize,
+            url:'${ctxA}/app/pageConfig/appPageConfigList',
+            data:{'page':pageNum,'pagesize':pageSize,'appId':appQuery},
             dataType:'json',
             success:function(data){
               $('#tt').datagrid('loaded');
+
               if(data.code==1){
                 $('#tt').datagrid('loadData', data.list);
                 datalist=data.list;
                 console.log(datalist.total)
-                if(datalist.total > 4){
+            /*    if(datalist.total > 4){
                   $('.chooseTwo').css('display','block')
-                  $('.chooseTwo a').css('color','#ccc')
-                }else{
+                  $('.chooseTwo a').css('color','#ccc')*/
+
+                    $('#appQuery').html("")
+                    for (var i = 0; i < data.appList.length; i++) {
+                        var option = ""
+                        if (appQuery == data.appList[i].id) {
+                            option = "<option value= '" + data.appList[i].id + "'selected = 'selected'>" + data.appList[i].appName + "</option>"
+                        } else {
+                            option = "<option value= '" + data.appList[i].id + "'>" + data.appList[i].appName + "</option>"
+                        }
+                        $(option).appendTo($("#appQuery"));
+                    }
+            /*    }else{
                   $('.chooseOne').css('display','block')
                 }
+*/
                 // console.log(datalist.total+'22222222')
 
               }else{
@@ -92,11 +106,11 @@
 
       function optionformater(value,row,index){
         var opStr='';
-        <shiro:hasPermission name="ac:apppage:edit">
-        opStr+='<a class="si-option-a" href="${ctxA}/ac/apppage/form?id='+row.id+'">编辑</a>';
-        if (row.menuName != '借钱' && row.menuName != '我的'){
-          opStr+='<a class="si-option-a" href="${ctxA}/ac/apppage/delete?id='+row.id+'" onclick="return confirmx(\'确定要删除该应用页面吗？\', this.href)">删除</a>';
-        }
+        <shiro:hasPermission name="app:pageConfig:edit">
+        opStr+='<a class="si-option-a" href="${ctxA}/app/pageConfig/form?id='+row.id+'&appId='+ $('#appQuery').val();+'">编辑</a>';
+        /*if (row.menuName != '借钱' && row.menuName != '我的'){
+          opStr+='<a class="si-option-a" href="${ctxA}/app/pageConfig/delete?id='+row.id+'" onclick="return confirmx(\'确定要删除该应用页面吗？\', this.href)">删除</a>';
+        }*/
         </shiro:hasPermission>
         return opStr;
       }
@@ -105,11 +119,24 @@
 <body>
 <ul class="nav nav-tabs" style="margin-bottom:3px;">
 	<li class="active"><a href="javascript:void(0);">应用页面配置</a></li>
-	<shiro:hasPermission name="ac:apppage:edit">
-			<li class="chooseTwo" style="display:none"><a href="${ctxA}/ac/apppage/form" onclick="return false;" style="cursor: default;" >新增菜单</a></li>
-			<li class="chooseOne" style="display:none"><a href="${ctxA}/ac/apppage/form" >新增菜单</a></li>
+	<shiro:hasPermission name="app:pageConfig:edit">
+			<%--<li class="chooseTwo" style="display:none"><a href="${ctxA}/app/pageConfig/form" onclick="return false;" style="cursor: default;" >新增菜单</a></li>--%>
+			<li class="chooseOne" <%--style="display:none"--%>><a href="${ctxA}/app/pageConfig/form" >新增菜单</a></li>
 	</shiro:hasPermission>
 </ul>
+<div class="breadcrumb form-search" style="margin-bottom:0;">
+	<ul class="ul-form">
+		<li>
+			<label>选择应用：</label>
+			<select id="appQuery">
+			</select>
+		</li>
+		<li class="btns">
+			<input id="search" class="btn btn-primary" type="submit" value="查询" />
+		</li>
+		<li class="clearfix"></li>
+	</ul>
+</div>
 <div class="si-warp" style="top:95px;">
 	<sys:message content="${message}" isShowBox="false" />
 	<table id="tt" class="easyui-datagrid"
@@ -117,7 +144,6 @@
 		<thead>
 		<tr>
 			<th data-options="field:'menuName',width:185,align:'center',halign:'center',fixed:true">菜单名称</th>
-			<th data-options="field:'pageTemplet',width:185,align:'center',halign:'center',fixed:true">页面模板</th>
 			<th data-options="field:'menuSort',width:154,align:'center',halign:'center',fixed:true">排序</th>
 			<th data-options="field:'iconUrl',width:185,align:'center',halign:'center',fixed:true,formatter:iconurlformater">icon图片</th>
 			<th data-options="field:'selectIconUrl',width:185,align:'center',halign:'center',fixed:true,formatter:iconclickurlformater">icon点击效果</th>

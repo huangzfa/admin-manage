@@ -1,8 +1,8 @@
 package com.duobei.core.manage.auth.domain.credential;
 
-import com.duobei.core.app.domain.App;
-import com.duobei.core.product.domain.Product;
-import com.sun.tools.javac.util.List;
+import com.duobei.core.operation.app.domain.App;
+import com.duobei.core.operation.product.domain.Product;
+import java.util.List;
 import lombok.Data;
 
 import java.io.Serializable;

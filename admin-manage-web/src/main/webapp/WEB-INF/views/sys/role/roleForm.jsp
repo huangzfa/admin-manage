@@ -31,8 +31,17 @@ $(function(){
 				ids.push(nd.id);
 			}
 			$("#menuIds").val(ids);
-			//alert($("#menuIds").val());
-			//return false;
+            var ids = [];
+            $("#inputForm input:checkbox").each(function(){
+                if($(this).prop("checked")==true){
+                    ids.push($(this).val())
+				}
+			})
+			if( ids.length == 0){
+                alert("请选择产品");
+                return false;
+			}
+			$("#roleProductIds").val(ids.join(","));
 			loading('正在提交，请稍等...');
 			form.submit();
 		},
@@ -121,6 +130,7 @@ $(function(){
 	<sys:message content="${message}"/>
 	<form:form id="inputForm" modelAttribute="role" action="${ctxA}/sys/role/save" method="post" class="form-horizontal">
 		<form:hidden path="roleId"/>
+		<input type="hidden" name="roleProductIds" id="roleProductIds">
 		<div class="control-group">
 			<label class="control-label">角色名称：</label>
 			<div class="controls">
@@ -139,12 +149,11 @@ $(function(){
 			<label class="control-label">产品/数据权限：</label>
 			<div class="controls">
 				<div class="form-group">
-					<c:forEach items="${redirectType}" var="type">
-
+					<c:forEach items="${roleData}" var="data">
+						<label class="checkbox-inline">
+							<input type="checkbox"  value="${data.productId}" role_product_id="${data.id}" name="roleData">${data.productName}
+						</label>
 					</c:forEach>
-					<label class="checkbox-inline">
-						<input type="checkbox"  value="option1" name="roleData">游戏
-					</label>
 				</div>
 			</div>
 		</div>

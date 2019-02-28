@@ -15,4 +15,75 @@
     <select id="countCriteria" resultType="java.lang.Long" parameterType="com.duobei.core.operation.app.domain.criteria.AppExamineCriteria">
         select count(*) from yy_app_examine where is_delete = 0 order by id desc
     </select>
+
+    <insert id="save" parameterType="com.duobei.core.operation.app.domain.AppExamine">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into yy_app_examine
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="appId != null">
+                app_id,
+            </if>
+            <if test="appOsType != null">
+                app_os_type,
+            </if>
+            <if test="channelId != null">
+                channel_id,
+            </if>
+            <if test="versionNumber != null">
+                version_number,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+            <if test="addOperatorId != null">
+                add_operator_id,
+            </if>
+            <if test="modifyOperatorId != null">
+                modify_operator_id,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">
+                #{productId,jdbcType=INTEGER},
+            </if>
+            <if test="appId != null">
+                #{appId,jdbcType=INTEGER},
+            </if>
+            <if test="appOsType != null">
+                #{appOsType,jdbcType=VARCHAR},
+            </if>
+            <if test="channelId != null">
+                #{channelId,jdbcType=INTEGER},
+            </if>
+            <if test="versionNumber != null">
+                #{versionNumber,jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addOperatorId != null">
+                #{addOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="modifyOperatorId != null">
+                #{modifyOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
 </mapper>

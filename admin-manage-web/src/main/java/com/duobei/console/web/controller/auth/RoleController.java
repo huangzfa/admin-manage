@@ -79,8 +79,6 @@ public class RoleController extends BaseController {
 						role.getMenuIdList().add(rm.getMenuId());
 					}
 				}
-				//查询数据权限
-				model.addAttribute("roleData",roleDataAuthService.getByRoleId(role.getRoleId()));
 			} else {
 				role.setRoleState(ZD.state_open);
 			}
@@ -98,6 +96,8 @@ public class RoleController extends BaseController {
 		}
 		model.addAttribute("role", role);
 		model.addAttribute("menuList", menuList);
+		//查询数据权限
+		model.addAttribute("roleData",roleDataAuthService.getByRoleId(role.getRoleId()));
 		return "sys/role/roleForm";
 	}
 

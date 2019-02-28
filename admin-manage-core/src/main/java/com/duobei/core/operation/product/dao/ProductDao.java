@@ -1,7 +1,6 @@
 package com.duobei.core.operation.product.dao;
 
-import com.duobei.common.annotation.DataSourceSwitch;
-import com.duobei.common.datasource.DataSourceConst;
+
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
 import org.apache.ibatis.annotations.Param;
@@ -14,7 +13,6 @@ import java.util.List;
  * @description
  * @date 2019/2/26
  */
-@DataSourceSwitch(dataSource = DataSourceConst.OPERATE)
 @Repository
 public interface ProductDao {
     /**

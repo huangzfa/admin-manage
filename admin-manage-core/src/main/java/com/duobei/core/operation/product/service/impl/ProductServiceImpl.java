@@ -1,7 +1,5 @@
 package com.duobei.core.operation.product.service.impl;
 
-import com.duobei.common.datasource.DataSourceConst;
-import com.duobei.common.datasource.DataSourceHandle;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.dao.ProductDao;
 import com.duobei.core.operation.product.domain.Product;
@@ -31,13 +29,11 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public ListVo<Product> getLists(ProductCriteria criteria) {
-        DataSourceHandle.setDataSourceType(DataSourceConst.OPERATE);
         int total = pgyProductDao.countByCriteria(criteria);
         List<Product> list = null;
         if (total > 0) {
             list = pgyProductDao.getPageList(criteria);
         }
-        DataSourceHandle.clearDataSourceType();
         return new ListVo<Product>(total, list);
     }
 

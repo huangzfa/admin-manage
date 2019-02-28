@@ -1,7 +1,7 @@
 package com.duobei.core.operation.app.dao;
 
-import com.duobei.common.annotation.DataSourceSwitch;
-import com.duobei.common.datasource.DataSourceConst;
+
+import com.duobei.core.operation.app.domain.AppExamine;
 import com.duobei.core.operation.app.domain.criteria.AppExamineCriteria;
 
 import java.util.List;
@@ -11,7 +11,6 @@ import java.util.List;
  * @description
  * @date 2019/2/26
  */
-@DataSourceSwitch(dataSource = DataSourceConst.OPERATE)
 public interface AppExamineDao {
 
     /**
@@ -26,5 +25,7 @@ public interface AppExamineDao {
      * @param criteria
      * @return
      */
-    List queryAppList(AppExamineCriteria criteria);
+    List getPageList(AppExamineCriteria criteria);
+
+    int save(AppExamine appExamine);
 }

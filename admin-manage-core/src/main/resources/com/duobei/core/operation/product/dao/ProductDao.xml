@@ -40,6 +40,6 @@
     </select>
 
     <select id="getAll" resultType="com.duobei.core.operation.product.domain.Product">
-        SELECT * FROM yy_product  where state = 1 a
+        SELECT * FROM yy_product  where state = 1 order by id desc;
     </select>
 </mapper>

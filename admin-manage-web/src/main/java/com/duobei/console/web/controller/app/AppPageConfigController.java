@@ -1,12 +1,13 @@
-package main.java.com.duobei.console.web.controller.app;
+/*
+package com.duobei.console.web.controller.app;
 
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
-import com.duobei.core.app.domain.AppPageConfig;
+import com.duobei.core.operation.app.domain.AppPageConfig;
 import com.duobei.core.app.domain.criteria.AppPageConfigCriteria;
 import com.duobei.core.app.service.AppPageConfigService;
-import com.duobei.core.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,3 +123,4 @@ public class AppPageConfigController extends  BaseController{
 	}
 
 }
+*/

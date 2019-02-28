@@ -17,75 +17,50 @@
     <context:component-scan base-package="com.duobei"><!-- base-package 如果多个，用“,”分隔 -->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
     </context:component-scan>
-	<!-- 切面 -->
-	<aop:aspectj-autoproxy proxy-target-class="true"/>
-    <!-- =============================数据源-开始========================================================= -->
-	<!-- 父级配置数据库 -->
-	<bean id="parentDataSource" class="com.alibaba.druid.pool.DruidDataSource">
-	      <!-- 基本属性 url、user、password -->
-	      <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-	      <property name="username" value="${db.user}" />
-	      <property name="password" value="${db.password}" />
-	      <!-- 初始化连接数量 -->
-	      <property name="initialSize" value="5" />
-	      <!-- 最大连接数 -->
-	      <property name="maxActive" value="200" />
-	      <!-- 最小空闲连接数 -->
-	      <property name="minIdle" value="1" /> 
-	      <!-- 最大空闲连接数 -->
-		  <!--<property name="maxIdle" value="5" />-->
-	      <!-- 获取连接等待超时的时间 -->
-	      <property name="maxWait" value="30000" />
-	      <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-	      <property name="timeBetweenEvictionRunsMillis" value="60000" />
-	      <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-	      <property name="minEvictableIdleTimeMillis" value="300000" />
-	      <!-- 用来检测连接是否有效的sql，要求是一个查询语句-->
-	      <property name="validationQuery" value="select 1" />
-	      <!-- 申请连接的时候检测 -->
-	      <property name="testWhileIdle" value="true" />
-	      <!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
-	      <property name="testOnBorrow" value="false" />
-	      <!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能  -->
-	      <property name="testOnReturn" value="false" />
-	      <!-- 打开PSCache，并且指定每个连接上PSCache的大小,mysql5.5及以上版本有PSCache，建议开启-->
-	      <property name="poolPreparedStatements" value="true" />
-	      <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
-	      <!-- 是否开启连接使用时间限制 
-		  <property name="removeAbandoned" value="true" />-->
-		  <!-- 连接使用时间限制 秒，超过这个使用时间将被强行关闭
-		  <property name="removeAbandonedTimeout" value="1800" /> -->
-		  
-	      <!--属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：  				
-				监控统计用的filter:stat
-				日志用的filter:log4j
- 				防御SQL注入的filter:wall -->
-	      <property name="filters" value="stat" />
+
+	<!-- =============================数据源-开始========================================================= -->
+	<bean id="manageDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean">
+		<property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"/>
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="20" />
+		<property name="maxIdleTime" value="60" />
+		<property name="reapTimeout" value="20000" />
+		<property name="uniqueResourceName" value="one" />
+		<property name="xaProperties">
+			<props>
+				<prop key="url">jdbc:mysql://${db.host1}:${db.port1}/${db.database1}?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true</prop>
+				<prop key="user">${db.user1}</prop>
+				<prop key="password">${db.password1}</prop>
+			</props>
+		</property>
+
 	</bean>
-	<!-- 管理后台数据库 -->
-	<bean id="manageDataSource" parent="parentDataSource">
-		<property name="url" value="jdbc:mysql://${db.host}:${db.port}/${db.database1}?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true" />
-	</bean>
-	<!-- 运营数据库 -->
-	<bean id="operateDataSource" parent="parentDataSource">
-		<property name="url" value="jdbc:mysql://${db.host}:${db.port}/${db.database2}?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true" />
+	<bean id="operateDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean">
+		<property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"/>
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="20" />
+		<property name="maxIdleTime" value="60" />
+		<property name="reapTimeout" value="20000" />
+		<property name="uniqueResourceName" value="two" />
+		<property name="xaProperties">
+			<props>
+				<prop key="url">jdbc:mysql://${db.host2}:${db.port2}/${db.database2}?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true</prop>
+				<prop key="user">${db.user2}</prop>
+				<prop key="password">${db.password2}</prop>
+			</props>
+		</property>
+
 	</bean>
 
-	<bean id="dataSource" class="com.duobei.common.datasource.DynamicDataSource">
-		<property name="targetDataSources">
-			<map key-type="java.lang.String">
-				<entry value-ref="manageDataSource" key="MANAGE"></entry>
-				<entry value-ref="operateDataSource" key="OPERATE"></entry>
-			</map>
-		</property>
-		<property name="defaultTargetDataSource" ref="manageDataSource"></property>
-	</bean>
 
 	<!-- =============================数据源-结束========================================================= -->
 	
 	<!-- =============================jdbc模板-开始========================================================= -->
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<property name="dataSource" ref="dataSource"></property>
+	<bean id="jdbcTemplate1" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="manageDataSource"></property>
+	</bean>
+	<bean id="jdbcTemplate2" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="operateDataSource"></property>
 	</bean>
 	<!-- =============================jdbc模板-结束========================================================= -->
 	
@@ -108,31 +83,32 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<!-- 这里写需要扫描的各个模块下mybatis mapper.xml的包路径 -->
 		<!-- 该属性实际上就是起到一个过滤的作用，如果设置了该属性，那么MyBatis的接口只有包含该注解，才会被扫描进去。-->
+<!--
 		<property name="annotationClass" value="com.duobei.common.annotation.DataSourceSwitch"/>
+-->
 		<property name="basePackage" value="com.duobei.core.operation.**.dao,com.duobei.core.operation.**.dao.mapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory1" />
 	</bean>
 	<!-- =============================SqlSessionFactory-结束========================================================= -->
 
 	<!-- =============================事物-开始========================================================= -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="manageDataSource" />
-	</bean>
-	
-	<bean id="transactionTemplate1" class="org.springframework.transaction.support.TransactionTemplate">
-		<property name="transactionManager" ref="transactionManager" />
+	<!-- 分布式事务 -->
+	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
+		<property name="forceShutdown" value="true"/>
 	</bean>
 
-	<tx:annotation-driven transaction-manager="transactionOperate" />
-	<bean id="transactionOperate" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="operateDataSource" />
+	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+		<property name="transactionTimeout" value="300"/>
 	</bean>
 
-	<bean id="transactionTemplate2" class="org.springframework.transaction.support.TransactionTemplate">
-		<property name="transactionManager" ref="transactionOperate" />
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+		<property name="transactionManager" ref="atomikosTransactionManager"/>
+		<property name="userTransaction" ref="atomikosUserTransaction"/>
 	</bean>
+
+	<tx:annotation-driven/>
+
 	<!-- =============================事物-结束========================================================= -->
 
 	<!--  =============================ossUtil 开始============================= -->

@@ -1,7 +1,6 @@
 package com.duobei.core.operation.product.dao;
 
-import com.duobei.common.annotation.DataSourceSwitch;
-import com.duobei.common.datasource.DataSourceConst;
+
 import com.duobei.core.operation.product.domain.Merchant;
 import com.duobei.core.operation.product.domain.criteria.MerchantCriteria;
 
@@ -12,7 +11,6 @@ import java.util.List;
  * @description
  * @date 2019/2/27
  */
-@DataSourceSwitch(dataSource = DataSourceConst.OPERATE)
 public interface MerchantDao {
 
     /**

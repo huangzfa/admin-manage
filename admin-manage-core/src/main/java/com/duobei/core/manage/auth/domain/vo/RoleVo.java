@@ -3,23 +3,18 @@ package com.duobei.core.manage.auth.domain.vo;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import com.duobei.core.manage.auth.domain.Role;
 
+@Data
 public class RoleVo extends Role {
 	private static final long serialVersionUID = 5075147890339116774L;
 	
 	private List<Integer> menuIdList = new ArrayList<Integer>();
 	private boolean checked=false;//是否拥有该角色
-	
-    public boolean isChecked() {
-		return checked;
-	}
-
-	public void setChecked(boolean checked) {
-		this.checked = checked;
-	}
+	private String roleProductIds;
 
 	public List<Integer> getMenuIdList() {
 		return menuIdList;

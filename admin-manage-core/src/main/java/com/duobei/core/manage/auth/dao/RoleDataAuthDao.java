@@ -21,4 +21,10 @@ public interface RoleDataAuthDao {
      * @return
      */
     List<RoleDataAuth> getByRoleId(@Param("roleId") Integer roleId);
+
+    void saveBatch(@Param("list") List<RoleDataAuth> list);
+
+    void deleteByRoleId(@Param("roleId") Integer roleId);
+
+    List<RoleDataAuth> getByListRoleId(@Param("roleIds") List<Integer> roleIds);
 }

@@ -42,4 +42,12 @@
     <select id="getAll" resultType="com.duobei.core.operation.product.domain.Product">
         SELECT * FROM yy_product  where state = 1 order by id desc;
     </select>
+
+    <select id="getByArrayList" resultType="com.duobei.core.operation.product.domain.Product">
+        SELECT * FROM yy_product  where state = 1 and id in
+        <foreach collection="productIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by id desc;
+    </select>
 </mapper>

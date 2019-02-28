@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.duobei.common.util.lang.StringUtil;
+import com.duobei.core.manage.auth.service.RoleDataAuthService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +33,8 @@ import com.duobei.dic.ZDHelper;
 import com.duobei.common.exception.TqException;
 
 @Service("RoleService")
+@Slf4j
 public class RoleServiceImpl implements RoleService {
-	private final static Logger log = LoggerFactory.getLogger(RoleServiceImpl.class);
 
 	@Autowired
 	private RoleMapper roleMapper;
@@ -43,6 +46,8 @@ public class RoleServiceImpl implements RoleService {
 	private RoleMenuDao roleMenuDao;
 	@Autowired
 	private OperatorRoleMapper operatorRoleMapper;
+	@Autowired
+	private RoleDataAuthService roleDataAuthService;
 
 	@Override
 	public ListVo<RoleVo> queryRoleList(OperatorCredential credential, RoleCriteria roleCriteria) throws TqException {
@@ -88,6 +93,9 @@ public class RoleServiceImpl implements RoleService {
 		if (role == null) {
 			throw new TqException("角色数据不能为空");
 		}
+		if(StringUtil.isBlank(role.getRoleProductIds())){
+			throw new TqException("请勾选产品id");
+		}
 		// 基础校验
 		beanValidator(role);
 		role.setAddOperatorId(credential.getOpId());
@@ -111,6 +119,9 @@ public class RoleServiceImpl implements RoleService {
 				}
 			}
 		}
+		roleDataAuthService.save(roleId,role.getRoleProductIds());
+		RoleCriteria criteria = new RoleCriteria();
+		credential.setProductList(roleDataAuthService.getByOpId(credential.getOpId()));
 	}
 
 	@Override
@@ -123,6 +134,9 @@ public class RoleServiceImpl implements RoleService {
 		}
 		if (role.getRoleId() == null) {
 			throw new TqException("角色id不能为空");
+		}
+		if(StringUtil.isBlank(role.getRoleProductIds())){
+			throw new TqException("请勾选产品id");
 		}
 		// 基础校验
 		beanValidator(role);
@@ -178,6 +192,10 @@ public class RoleServiceImpl implements RoleService {
 				}
 			}
 		}
+		roleDataAuthService.save(roleId,role.getRoleProductIds());
+		RoleCriteria criteria = new RoleCriteria();
+		credential.setProductList(roleDataAuthService.getByOpId(credential.getOpId()));
+
 	}
 
 	// 验证角色

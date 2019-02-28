@@ -34,7 +34,7 @@ public class AppExamineServiceImpl implements AppExamineService {
      * @return
      */
     @Override
-    public ListVo<AppExamine> getPageList(AppExamineCriteria criteria) throws Exception{
+    public ListVo<AppExamine> getPageList(AppExamineCriteria criteria) {
         Long total = appExamineDao.countCriteria(criteria);
         List<AppExamine> appExamineVos = null;
         if (total > 0) {

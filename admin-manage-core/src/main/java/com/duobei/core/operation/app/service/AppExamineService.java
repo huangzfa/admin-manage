@@ -15,5 +15,5 @@ public interface AppExamineService {
      * @param appExamineCriteria
      * @return
      */
-    ListVo<AppExamine> getPageList(AppExamineCriteria appExamineCriteria) throws Exception;
+    ListVo<AppExamine> getPageList(AppExamineCriteria appExamineCriteria) ;
 }

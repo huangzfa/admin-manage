@@ -1,9 +1,13 @@
 package com.duobei.core.manage.auth.service.impl;
 
 
+import com.duobei.common.exception.TqException;
+import com.duobei.core.manage.auth.dao.OperatorRoleDao;
 import com.duobei.core.manage.auth.dao.RoleDataAuthDao;
 import com.duobei.core.manage.auth.domain.RoleDataAuth;
+import com.duobei.core.manage.auth.domain.vo.OperatorRoleVo;
 import com.duobei.core.manage.auth.domain.vo.RoleDataAuthVo;
+import com.duobei.core.manage.auth.domain.vo.RoleVo;
 import com.duobei.core.manage.auth.service.RoleDataAuthService;
 import com.duobei.core.operation.product.dao.ProductDao;
 import com.duobei.core.operation.product.domain.Product;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author huangzhongfa
@@ -25,6 +30,8 @@ public class RoleDataAuthServiceImpl implements RoleDataAuthService {
     private RoleDataAuthDao roleDataAuthDao;
     @Autowired
     private ProductDao productDao;
+    @Autowired
+    private OperatorRoleDao operatorRoleDao;
 
 
     /**
@@ -51,5 +58,39 @@ public class RoleDataAuthServiceImpl implements RoleDataAuthService {
             voList.add(vo);
         }
         return voList;
+    }
+
+    @Override
+    public void save(Integer roleId,String productIds) {
+        String[] arrId = productIds.split(",");
+        roleDataAuthDao.deleteByRoleId(roleId);
+        List<RoleDataAuth> list = new ArrayList<>();
+        for( String productId :arrId){
+            RoleDataAuth auth = new RoleDataAuth();
+            auth.setProductId(Integer.parseInt(productId));
+            auth.setRoleId(roleId);
+            list.add(auth);
+        }
+        roleDataAuthDao.saveBatch(list);
+
+    }
+
+    /**
+     * 返回登录用户所拥有的产品权限
+     * @param opId
+     * @return
+     */
+    @Override
+    public List<Product> getByOpId(Integer opId){
+        List<Integer> opIds = new ArrayList<>();
+        opIds.add(opId);
+        //获取用户所有角色权限
+        List<OperatorRoleVo> roleList= operatorRoleDao.getRoleByOpIds(opIds);
+        List<Integer> roleIds = roleList.stream().map(OperatorRoleVo::getRoleId).collect(Collectors.toList());
+        //获取该用户角色数据关联表
+        List<RoleDataAuth> roleDataAuths = roleDataAuthDao.getByListRoleId(roleIds);
+        List<Integer> productIds = roleDataAuths.stream().map(RoleDataAuth::getProductId).collect(Collectors.toList());
+        //获取该用户的产品
+        return productDao.getByArrayList(productIds);
     }
 }

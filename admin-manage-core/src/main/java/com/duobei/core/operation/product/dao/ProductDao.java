@@ -62,4 +62,11 @@ public interface ProductDao {
      * @return
      */
     int save(Product record);
+
+    /**
+     *
+     * @param productIds
+     * @return
+     */
+    List<Product> getByArrayList(@Param("productIds") List<Integer> productIds);
 }

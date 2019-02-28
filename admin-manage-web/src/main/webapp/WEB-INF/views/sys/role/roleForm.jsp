@@ -151,7 +151,7 @@ $(function(){
 				<div class="form-group">
 					<c:forEach items="${roleData}" var="data">
 						<label class="checkbox-inline">
-							<input type="checkbox" checked="${data.checked}" value="${data.productId}" role_product_id="${data.id}" name="roleData">${data.productName}
+							<input type="checkbox" ${data.checked} value="${data.productId}" role_product_id="${data.id}" name="roleData">${data.productName}
 						</label>
 					</c:forEach>
 				</div>

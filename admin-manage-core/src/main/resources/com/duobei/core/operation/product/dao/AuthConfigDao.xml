@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.AuthConfig" extends="com.duobei.core.operation.product.dao.mapper.AuthConfigMapper.BaseResultMap">
     </resultMap>
 
-    <select id="getListPage" resultType="com.duobei.core.authConfig.domain.AuthConfig" parameterType="com.duobei.core.authConfig.domain.criteria.AuthConfigCriteria">
+    <select id="getListPage" resultType="com.duobei.core.operation.product.domain.AuthConfig" parameterType="com.duobei.core.operation.product.domain.criteria.AuthConfigCriteria">
         SELECT   * FROM yy_auth_config
         where is_delete = 0 order by auth_sort asc
         <if test="pagesize != 0">
@@ -180,7 +180,7 @@
     </update>
 
     <!-- 查询所有有效认证项-->
-    <select id="getAll" resultType="com.duobei.core.authConfig.domain.AuthConfig" parameterType="java.lang.String">
+    <select id="getAll" resultType="com.duobei.core.operation.product.domain.AuthConfig" parameterType="java.lang.String">
         select * from yy_auth_config where is_delete = 0 order by id desc
     </select>
 </mapper>

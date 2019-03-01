@@ -123,12 +123,14 @@ public class AppPageConfigController extends  BaseController{
 			appPageConfig.setProductId(0);
 			appPageConfig.setIsEnable(0);
 			appPageConfig.setMenuType(2);
+			appPageConfig.setIsExamine(0);
 			appPageConfig.setMenuCode(MD5Util.encrypt(appPageConfig.getId()+appPageConfig.getMenuName()));
 			/**/
 			appPageConfig.setModifyOperatorId(credential.getOpId());
 			appPageConfig.setModifyTime(new Date());
 			if (appPageConfig.getId() == null) {
 				appPageConfig.setAddOperatorId(credential.getOpId());
+				appPageConfig.setAddTime(appPageConfig.getModifyTime());
 				appPageConfigService.addAppPageConfig(appPageConfig);
 			} else {
 				appPageConfig.setAddTime(appPageConfig.getModifyTime());

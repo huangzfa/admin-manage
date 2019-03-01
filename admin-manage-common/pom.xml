@@ -310,12 +310,12 @@
 		  <version>3.11.0</version>
 	  </dependency>
 	  <!-- https://mvnrepository.com/artifact/com.squareup.okio/okio -->
-	  <dependency>
+	 <!-- <dependency>
 		  <groupId>com.squareup.okio</groupId>
 		  <artifactId>okio</artifactId>
 		  <version>2.2.1</version>
-	  </dependency>
-	  <dependency>
+	  </dependency>-->
+	<dependency>
 		  <groupId>org.projectlombok</groupId>
 		  <artifactId>lombok</artifactId>
 		  <version>1.16.22</version>

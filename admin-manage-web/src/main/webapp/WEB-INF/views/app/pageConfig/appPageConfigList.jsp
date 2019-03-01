@@ -58,21 +58,27 @@
               if(data.code==1){
                 $('#tt').datagrid('loadData', data.list);
                 datalist=data.list;
-                console.log(datalist.total)
+               	debugger;
             /*    if(datalist.total > 4){
                   $('.chooseTwo').css('display','block')
                   $('.chooseTwo a').css('color','#ccc')*/
-
+				  	var nowAppId = 0;
+                  $('#menuOperation').attr("href","#");
                     $('#appQuery').html("")
                     for (var i = 0; i < data.appList.length; i++) {
                         var option = ""
                         if (appQuery == data.appList[i].id) {
-                            option = "<option value= '" + data.appList[i].id + "'selected = 'selected'>" + data.appList[i].appName + "</option>"
+                            option = "<option value= '" + data.appList[i].id + "'selected = 'selected'>" + data.appList[i].appName + "</option>";
+                            nowAppId = appList[i].id;
                         } else {
-                            option = "<option value= '" + data.appList[i].id + "'>" + data.appList[i].appName + "</option>"
+                            option = "<option value= '" + data.appList[i].id + "'>" + data.appList[i].appName + "</option>";
                         }
                         $(option).appendTo($("#appQuery"));
                     }
+                    if (nowAppId == -1){
+                        nowAppId = appList[0].id;
+                    }
+                  $('#menuOperation').attr("href","${ctxA}/app/pageConfig/form?appId="+nowAppId);
             /*    }else{
                   $('.chooseOne').css('display','block')
                 }
@@ -121,7 +127,7 @@
 	<li class="active"><a href="javascript:void(0);">应用页面配置</a></li>
 	<shiro:hasPermission name="app:pageConfig:edit">
 			<%--<li class="chooseTwo" style="display:none"><a href="${ctxA}/app/pageConfig/form" onclick="return false;" style="cursor: default;" >新增菜单</a></li>--%>
-			<li class="chooseOne" <%--style="display:none"--%>><a href="${ctxA}/app/pageConfig/form" >新增菜单</a></li>
+			<li class="chooseOne" <%--style="display:none"--%>><a id="menuOperation" href="#" >新增菜单</a></li>
 	</shiro:hasPermission>
 </ul>
 <div class="breadcrumb form-search" style="margin-bottom:0;">

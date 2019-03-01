@@ -120,9 +120,7 @@ public class AppPageConfigController extends  BaseController{
 			/**
 			 * 暂时未默认值
 			 */
-			appPageConfig.setProductId(0);
-			appPageConfig.setIsEnable(0);
-			appPageConfig.setMenuType(2);
+
 			appPageConfig.setMenuCode(MD5Util.encrypt(appPageConfig.getId()+appPageConfig.getMenuName()));
 			/**/
 			appPageConfig.setModifyOperatorId(credential.getOpId());

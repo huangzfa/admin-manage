@@ -14,7 +14,7 @@ public interface AppPageConfigDao {
 
     int updateAppPageConfig(AppPageConfig appPageConfig);
 
-    int deleteAppPageConfig(AppPageConfig id);
+    int deleteAppPageConfig(AppPageConfig appPageConfig);
 
     int addAppPageConfig(AppPageConfig appPageConfig);
 

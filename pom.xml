@@ -31,7 +31,7 @@
 		<mybatis.ehcache.version>1.0.0</mybatis.ehcache.version>
 		<!-- MySql -->
 		<commons.dbcp.version>1.4</commons.dbcp.version>
-		<mysql.connector.java.version>5.1.25</mysql.connector.java.version>
+		<mysql.connector.java.version>5.1.32</mysql.connector.java.version>
 		<pagehelper.version>4.1.4</pagehelper.version>
 		<pmml.evaluator.version>1.4.3</pmml.evaluator.version>
 	</properties>

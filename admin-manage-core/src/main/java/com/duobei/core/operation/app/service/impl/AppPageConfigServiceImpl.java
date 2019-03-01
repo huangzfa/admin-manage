@@ -43,9 +43,9 @@ public class AppPageConfigServiceImpl implements AppPageConfigService {
 
         Long total = appPageConfigMapper.countByExample(example);
         List<AppPageConfig> appPages = null;
-        if (total > 0) {
+/*        if (total > 0) {*/
             appPages = appPageConfigDao.queryAppPageList(appPageConfigCriteria);
-        }
+//        }
         return new ListVo<AppPageConfig>(total.intValue() , appPages);
     }
 

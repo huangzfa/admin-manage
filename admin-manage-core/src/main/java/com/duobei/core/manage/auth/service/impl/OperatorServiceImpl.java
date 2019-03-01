@@ -37,7 +37,6 @@ import com.duobei.core.manage.auth.service.OrganService;
 import com.duobei.dic.ZD;
 import com.duobei.dic.ZDHelper;
 import com.duobei.common.exception.TqException;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 运维人员服务类
@@ -335,7 +334,6 @@ public class OperatorServiceImpl implements OperatorService {
 	}
 
 	@Override
-	@Transactional(rollbackFor = TqException.class)
 	public void modifyLoginPwd(Integer opId, String oldPassword, String newPassword) throws TqException {
 		if (opId == null) {
 			throw new TqException("员工id不能为空");
@@ -376,7 +374,6 @@ public class OperatorServiceImpl implements OperatorService {
 	}
 
 	@Override
-	@Transactional(rollbackFor = TqException.class)
 	public void updateOperatorForLogin(OperatorCredential credential) throws TqException{
 		if (credential == null) {
 			throw new RuntimeException("登录失败");

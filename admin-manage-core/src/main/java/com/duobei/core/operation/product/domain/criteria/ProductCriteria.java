@@ -13,4 +13,6 @@ public class ProductCriteria extends Pagination {
 
     private String productName;
 
+    private Integer merchantId;
+
 }

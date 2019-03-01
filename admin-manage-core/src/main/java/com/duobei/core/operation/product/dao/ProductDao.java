@@ -3,6 +3,7 @@ package com.duobei.core.operation.product.dao;
 
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
+import com.duobei.core.operation.product.domain.vo.ProductVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +21,7 @@ public interface ProductDao {
      * @param criteria
      * @return
      */
-    List<Product> getPageList(ProductCriteria criteria);
+    List<ProductVo> getPageList(ProductCriteria criteria);
 
     /**
      * 数量查询

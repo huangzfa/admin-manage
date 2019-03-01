@@ -6,13 +6,16 @@
     </resultMap>
 
     <select id="getPageList" resultType="com.duobei.core.operation.product.domain.Product" parameterType="com.duobei.core.operation.product.domain.criteria.ProductCriteria">
-        SELECT   * FROM yy_product
+        select a.*,b.merchant_name from yy_product a left join sh_merchant b on a.merchant_id=b.id
         where 1=1
         <if test="productName != null and productName != '' ">
-            and product_name like "%"#{name,jdbcType=VARCHAR}"%"
+            and a.product_name like "%"#{productName,jdbcType=VARCHAR}"%"
         </if>
         <if test="merchantId != null and merchantId != '' ">
-            and merchant_id = #{merchantId,jdbcType=INTEGER}
+            and a.merchant_id = #{merchantId,jdbcType=INTEGER}
+        </if>
+        <if test="merchantName != null and merchantName != '' ">
+            and b.merchant_name = #{merchantName,jdbcType=INTEGER}
         </if>
         order by id desc
         <if test="pagesize != 0">

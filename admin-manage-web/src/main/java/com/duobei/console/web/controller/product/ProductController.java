@@ -1,11 +1,13 @@
 package com.duobei.console.web.controller.product;
 
+import com.alibaba.fastjson.JSON;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
+import com.duobei.core.operation.product.domain.vo.ProductVo;
 import com.duobei.core.operation.product.service.MerchantService;
 import com.duobei.core.operation.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +41,7 @@ public class ProductController extends BaseController{
     @RequiresPermissions("product:list:view")
     @RequestMapping(value = "/list")
     public String index(Model model){
-        model.addAttribute("merchantList",merchantService.getAll());
+        model.addAttribute("merchantList", JSON.toJSONString(merchantService.getAll()));
         return "product/list";
     }
 
@@ -58,7 +60,7 @@ public class ProductController extends BaseController{
             if (criteria.getPagesize()==0) {
                 criteria.setPagesize(GlobalConfig.getPageSize());
             }
-            ListVo<Product> list = productService.getLists(criteria);
+            ListVo<ProductVo> list = productService.getLists(criteria);
             return successJsonResult("success", "list", list);
         }catch (Exception e) {
             if (e instanceof TqException) {

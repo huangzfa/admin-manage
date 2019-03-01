@@ -3,6 +3,7 @@ package com.duobei.core.operation.product.service;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
+import com.duobei.core.operation.product.domain.vo.ProductVo;
 
 /**
  * @author huangzhongfa
@@ -15,7 +16,7 @@ public interface ProductService {
      * @param criteria
      * @return
      */
-    ListVo<Product> getLists(ProductCriteria criteria);
+    ListVo<ProductVo> getLists(ProductCriteria criteria);
 
     /**
      * 根据主键查询产品

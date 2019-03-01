@@ -1,5 +1,6 @@
 package com.duobei.core.operation.app.service;
 
+import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.app.domain.AppExamine;
 import com.duobei.core.operation.app.domain.criteria.AppExamineCriteria;
@@ -15,5 +16,5 @@ public interface AppExamineService {
      * @param appExamineCriteria
      * @return
      */
-    ListVo<AppExamine> getPageList(AppExamineCriteria appExamineCriteria) ;
+    ListVo<AppExamine> getPageList(AppExamineCriteria appExamineCriteria) throws TqException;
 }

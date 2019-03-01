@@ -4,6 +4,7 @@ import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.dao.ProductDao;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
+import com.duobei.core.operation.product.domain.vo.ProductVo;
 import com.duobei.core.operation.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductDao pgyProductDao;
+    private ProductDao productDao;
 
     /**
      * 分页查询
@@ -28,23 +29,23 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public ListVo<Product> getLists(ProductCriteria criteria) {
-        int total = pgyProductDao.countByCriteria(criteria);
-        List<Product> list = null;
+    public ListVo<ProductVo> getLists(ProductCriteria criteria) {
+        int total = productDao.countByCriteria(criteria);
+        List<ProductVo> list = null;
         if (total > 0) {
-            list = pgyProductDao.getPageList(criteria);
+            list = productDao.getPageList(criteria);
         }
-        return new ListVo<Product>(total, list);
+        return new ListVo<ProductVo>(total, list);
     }
 
     @Override
     public Product getById(Integer id) {
-        return pgyProductDao.getById(id);
+        return productDao.getById(id);
     }
 
     @Override
     public Product getByCode(String code) {
-        return pgyProductDao.getByCode(code);
+        return productDao.getByCode(code);
     }
 
     /**
@@ -54,6 +55,6 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public int editState(Product record){
-        return pgyProductDao.update(record);
+        return productDao.update(record);
     }
 }

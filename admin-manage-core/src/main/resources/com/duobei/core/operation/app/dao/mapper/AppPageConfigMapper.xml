@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="com.duobei.core.operation.app.domain.AppPageConfig">
     <id column="apc_id" jdbcType="INTEGER" property="id" />
     <result column="apc_product_id" jdbcType="INTEGER" property="productId" />
-    <result column="apc_app_id" jdbcType="INTEGER" property="appId" />
     <result column="apc_menu_name" jdbcType="VARCHAR" property="menuName" />
     <result column="apc_menu_code" jdbcType="VARCHAR" property="menuCode" />
     <result column="apc_is_enable" jdbcType="BIT" property="isEnable" />
@@ -79,11 +78,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    apc.id as apc_id, apc.product_id as apc_product_id, apc.app_id as apc_app_id, apc.menu_name as apc_menu_name, 
-    apc.menu_code as apc_menu_code, apc.is_enable as apc_is_enable, apc.menu_sort as apc_menu_sort, 
-    apc.menu_type as apc_menu_type, apc.menu_val as apc_menu_val, apc.icon_url as apc_icon_url, 
-    apc.select_icon_url as apc_select_icon_url, apc.is_examine as apc_is_examine, apc.add_time as apc_add_time, 
-    apc.modify_time as apc_modify_time, apc.add_operator_id as apc_add_operator_id, apc.modify_operator_id as apc_modify_operator_id, 
+    apc.id as apc_id, apc.product_id as apc_product_id, apc.menu_name as apc_menu_name,
+    apc.menu_code as apc_menu_code, apc.is_enable as apc_is_enable, apc.menu_sort as apc_menu_sort,
+    apc.menu_type as apc_menu_type, apc.menu_val as apc_menu_val, apc.icon_url as apc_icon_url,
+    apc.select_icon_url as apc_select_icon_url, apc.is_examine as apc_is_examine, apc.add_time as apc_add_time,
+    apc.modify_time as apc_modify_time, apc.add_operator_id as apc_add_operator_id, apc.modify_operator_id as apc_modify_operator_id,
     apc.is_delete as apc_is_delete
   </sql>
   <select id="selectByExample" parameterType="com.duobei.core.operation.app.domain.AppPageConfigExample" resultMap="BaseResultMap">
@@ -101,7 +100,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from cf_app_page_config apc
     where apc.id = #{id,jdbcType=INTEGER}
@@ -120,18 +119,18 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into cf_app_page_config (product_id, app_id, menu_name, 
-      menu_code, is_enable, menu_sort, 
-      menu_type, menu_val, icon_url, 
-      select_icon_url, is_examine, add_time, 
-      modify_time, add_operator_id, modify_operator_id, 
-      is_delete)
-    values (#{productId,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, 
-      #{menuCode,jdbcType=VARCHAR}, #{isEnable,jdbcType=BIT}, #{menuSort,jdbcType=INTEGER}, 
-      #{menuType,jdbcType=TINYINT}, #{menuVal,jdbcType=VARCHAR}, #{iconUrl,jdbcType=VARCHAR}, 
-      #{selectIconUrl,jdbcType=VARCHAR}, #{isExamine,jdbcType=BIT}, #{addTime,jdbcType=TIMESTAMP}, 
-      #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, 
-      #{isDelete,jdbcType=INTEGER})
+    insert into cf_app_page_config (product_id, menu_name, menu_code,
+    is_enable, menu_sort, menu_type,
+    menu_val, icon_url, select_icon_url,
+    is_examine, add_time, modify_time,
+    add_operator_id, modify_operator_id, is_delete
+    )
+    values (#{productId,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuCode,jdbcType=VARCHAR},
+    #{isEnable,jdbcType=BIT}, #{menuSort,jdbcType=INTEGER}, #{menuType,jdbcType=TINYINT},
+    #{menuVal,jdbcType=VARCHAR}, #{iconUrl,jdbcType=VARCHAR}, #{selectIconUrl,jdbcType=VARCHAR},
+    #{isExamine,jdbcType=BIT}, #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP},
+    #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -141,9 +140,6 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="productId != null">
         product_id,
-      </if>
-      <if test="appId != null">
-        app_id,
       </if>
       <if test="menuName != null">
         menu_name,
@@ -191,9 +187,6 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="productId != null">
         #{productId,jdbcType=INTEGER},
-      </if>
-      <if test="appId != null">
-        #{appId,jdbcType=INTEGER},
       </if>
       <if test="menuName != null">
         #{menuName,jdbcType=VARCHAR},
@@ -254,9 +247,6 @@
       <if test="record.productId != null">
         apc.product_id = #{record.productId,jdbcType=INTEGER},
       </if>
-      <if test="record.appId != null">
-        apc.app_id = #{record.appId,jdbcType=INTEGER},
-      </if>
       <if test="record.menuName != null">
         apc.menu_name = #{record.menuName,jdbcType=VARCHAR},
       </if>
@@ -307,22 +297,21 @@
   <update id="updateByExample" parameterType="map">
     update cf_app_page_config apc
     set apc.id = #{record.id,jdbcType=INTEGER},
-      apc.product_id = #{record.productId,jdbcType=INTEGER},
-      apc.app_id = #{record.appId,jdbcType=INTEGER},
-      apc.menu_name = #{record.menuName,jdbcType=VARCHAR},
-      apc.menu_code = #{record.menuCode,jdbcType=VARCHAR},
-      apc.is_enable = #{record.isEnable,jdbcType=BIT},
-      apc.menu_sort = #{record.menuSort,jdbcType=INTEGER},
-      apc.menu_type = #{record.menuType,jdbcType=TINYINT},
-      apc.menu_val = #{record.menuVal,jdbcType=VARCHAR},
-      apc.icon_url = #{record.iconUrl,jdbcType=VARCHAR},
-      apc.select_icon_url = #{record.selectIconUrl,jdbcType=VARCHAR},
-      apc.is_examine = #{record.isExamine,jdbcType=BIT},
-      apc.add_time = #{record.addTime,jdbcType=TIMESTAMP},
-      apc.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
-      apc.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
-      apc.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
-      apc.is_delete = #{record.isDelete,jdbcType=INTEGER}
+    apc.product_id = #{record.productId,jdbcType=INTEGER},
+    apc.menu_name = #{record.menuName,jdbcType=VARCHAR},
+    apc.menu_code = #{record.menuCode,jdbcType=VARCHAR},
+    apc.is_enable = #{record.isEnable,jdbcType=BIT},
+    apc.menu_sort = #{record.menuSort,jdbcType=INTEGER},
+    apc.menu_type = #{record.menuType,jdbcType=TINYINT},
+    apc.menu_val = #{record.menuVal,jdbcType=VARCHAR},
+    apc.icon_url = #{record.iconUrl,jdbcType=VARCHAR},
+    apc.select_icon_url = #{record.selectIconUrl,jdbcType=VARCHAR},
+    apc.is_examine = #{record.isExamine,jdbcType=BIT},
+    apc.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+    apc.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+    apc.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+    apc.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+    apc.is_delete = #{record.isDelete,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -332,9 +321,6 @@
     <set>
       <if test="productId != null">
         product_id = #{productId,jdbcType=INTEGER},
-      </if>
-      <if test="appId != null">
-        app_id = #{appId,jdbcType=INTEGER},
       </if>
       <if test="menuName != null">
         menu_name = #{menuName,jdbcType=VARCHAR},
@@ -384,410 +370,6 @@
   <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
     update cf_app_page_config
     set product_id = #{productId,jdbcType=INTEGER},
-      app_id = #{appId,jdbcType=INTEGER},
-      menu_name = #{menuName,jdbcType=VARCHAR},
-      menu_code = #{menuCode,jdbcType=VARCHAR},
-      is_enable = #{isEnable,jdbcType=BIT},
-      menu_sort = #{menuSort,jdbcType=INTEGER},
-      menu_type = #{menuType,jdbcType=TINYINT},
-      menu_val = #{menuVal,jdbcType=VARCHAR},
-      icon_url = #{iconUrl,jdbcType=VARCHAR},
-      select_icon_url = #{selectIconUrl,jdbcType=VARCHAR},
-      is_examine = #{isExamine,jdbcType=BIT},
-      add_time = #{addTime,jdbcType=TIMESTAMP},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      add_operator_id = #{addOperatorId,jdbcType=INTEGER},
-      modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
-      is_delete = #{isDelete,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <resultMap id="BaseResultMap" type="com.duobei.core.operation.app.domain.AppPageConfig">
-    <id column="apppageconfig_id" jdbcType="INTEGER" property="id" />
-    <result column="apppageconfig_product_id" jdbcType="INTEGER" property="productId" />
-    <result column="apppageconfig_app_id" jdbcType="INTEGER" property="appId" />
-    <result column="apppageconfig_menu_name" jdbcType="VARCHAR" property="menuName" />
-    <result column="apppageconfig_menu_code" jdbcType="VARCHAR" property="menuCode" />
-    <result column="apppageconfig_is_enable" jdbcType="BIT" property="isEnable" />
-    <result column="apppageconfig_menu_sort" jdbcType="INTEGER" property="menuSort" />
-    <result column="apppageconfig_menu_type" jdbcType="TINYINT" property="menuType" />
-    <result column="apppageconfig_menu_val" jdbcType="VARCHAR" property="menuVal" />
-    <result column="apppageconfig_icon_url" jdbcType="VARCHAR" property="iconUrl" />
-    <result column="apppageconfig_select_icon_url" jdbcType="VARCHAR" property="selectIconUrl" />
-    <result column="apppageconfig_is_examine" jdbcType="BIT" property="isExamine" />
-    <result column="apppageconfig_add_time" jdbcType="TIMESTAMP" property="addTime" />
-    <result column="apppageconfig_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="apppageconfig_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
-    <result column="apppageconfig_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
-    <result column="apppageconfig_is_delete" jdbcType="INTEGER" property="isDelete" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    apppageconfig.id as apppageconfig_id, apppageconfig.product_id as apppageconfig_product_id, 
-    apppageconfig.app_id as apppageconfig_app_id, apppageconfig.menu_name as apppageconfig_menu_name, 
-    apppageconfig.menu_code as apppageconfig_menu_code, apppageconfig.is_enable as apppageconfig_is_enable, 
-    apppageconfig.menu_sort as apppageconfig_menu_sort, apppageconfig.menu_type as apppageconfig_menu_type, 
-    apppageconfig.menu_val as apppageconfig_menu_val, apppageconfig.icon_url as apppageconfig_icon_url, 
-    apppageconfig.select_icon_url as apppageconfig_select_icon_url, apppageconfig.is_examine as apppageconfig_is_examine, 
-    apppageconfig.add_time as apppageconfig_add_time, apppageconfig.modify_time as apppageconfig_modify_time, 
-    apppageconfig.add_operator_id as apppageconfig_add_operator_id, apppageconfig.modify_operator_id as apppageconfig_modify_operator_id, 
-    apppageconfig.is_delete as apppageconfig_is_delete
-  </sql>
-  <select id="selectByExample" parameterType="com.duobei.core.operation.app.domain.AppPageConfigExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from cf_app_page_config apppageconfig
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from cf_app_page_config apppageconfig
-    where apppageconfig.id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from cf_app_page_config
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.duobei.core.operation.app.domain.AppPageConfigExample">
-    delete from cf_app_page_config apppageconfig
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into cf_app_page_config (product_id, app_id, menu_name, 
-      menu_code, is_enable, menu_sort, 
-      menu_type, menu_val, icon_url, 
-      select_icon_url, is_examine, add_time, 
-      modify_time, add_operator_id, modify_operator_id, 
-      is_delete)
-    values (#{productId,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, 
-      #{menuCode,jdbcType=VARCHAR}, #{isEnable,jdbcType=BIT}, #{menuSort,jdbcType=INTEGER}, 
-      #{menuType,jdbcType=TINYINT}, #{menuVal,jdbcType=VARCHAR}, #{iconUrl,jdbcType=VARCHAR}, 
-      #{selectIconUrl,jdbcType=VARCHAR}, #{isExamine,jdbcType=BIT}, #{addTime,jdbcType=TIMESTAMP}, 
-      #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, 
-      #{isDelete,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into cf_app_page_config
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="productId != null">
-        product_id,
-      </if>
-      <if test="appId != null">
-        app_id,
-      </if>
-      <if test="menuName != null">
-        menu_name,
-      </if>
-      <if test="menuCode != null">
-        menu_code,
-      </if>
-      <if test="isEnable != null">
-        is_enable,
-      </if>
-      <if test="menuSort != null">
-        menu_sort,
-      </if>
-      <if test="menuType != null">
-        menu_type,
-      </if>
-      <if test="menuVal != null">
-        menu_val,
-      </if>
-      <if test="iconUrl != null">
-        icon_url,
-      </if>
-      <if test="selectIconUrl != null">
-        select_icon_url,
-      </if>
-      <if test="isExamine != null">
-        is_examine,
-      </if>
-      <if test="addTime != null">
-        add_time,
-      </if>
-      <if test="modifyTime != null">
-        modify_time,
-      </if>
-      <if test="addOperatorId != null">
-        add_operator_id,
-      </if>
-      <if test="modifyOperatorId != null">
-        modify_operator_id,
-      </if>
-      <if test="isDelete != null">
-        is_delete,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="productId != null">
-        #{productId,jdbcType=INTEGER},
-      </if>
-      <if test="appId != null">
-        #{appId,jdbcType=INTEGER},
-      </if>
-      <if test="menuName != null">
-        #{menuName,jdbcType=VARCHAR},
-      </if>
-      <if test="menuCode != null">
-        #{menuCode,jdbcType=VARCHAR},
-      </if>
-      <if test="isEnable != null">
-        #{isEnable,jdbcType=BIT},
-      </if>
-      <if test="menuSort != null">
-        #{menuSort,jdbcType=INTEGER},
-      </if>
-      <if test="menuType != null">
-        #{menuType,jdbcType=TINYINT},
-      </if>
-      <if test="menuVal != null">
-        #{menuVal,jdbcType=VARCHAR},
-      </if>
-      <if test="iconUrl != null">
-        #{iconUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="selectIconUrl != null">
-        #{selectIconUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="isExamine != null">
-        #{isExamine,jdbcType=BIT},
-      </if>
-      <if test="addTime != null">
-        #{addTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifyTime != null">
-        #{modifyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="addOperatorId != null">
-        #{addOperatorId,jdbcType=INTEGER},
-      </if>
-      <if test="modifyOperatorId != null">
-        #{modifyOperatorId,jdbcType=INTEGER},
-      </if>
-      <if test="isDelete != null">
-        #{isDelete,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.duobei.core.operation.app.domain.AppPageConfigExample" resultType="java.lang.Long">
-    select count(*) from cf_app_page_config apppageconfig
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update cf_app_page_config apppageconfig
-    <set>
-      <if test="record.id != null">
-        apppageconfig.id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.productId != null">
-        apppageconfig.product_id = #{record.productId,jdbcType=INTEGER},
-      </if>
-      <if test="record.appId != null">
-        apppageconfig.app_id = #{record.appId,jdbcType=INTEGER},
-      </if>
-      <if test="record.menuName != null">
-        apppageconfig.menu_name = #{record.menuName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.menuCode != null">
-        apppageconfig.menu_code = #{record.menuCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isEnable != null">
-        apppageconfig.is_enable = #{record.isEnable,jdbcType=BIT},
-      </if>
-      <if test="record.menuSort != null">
-        apppageconfig.menu_sort = #{record.menuSort,jdbcType=INTEGER},
-      </if>
-      <if test="record.menuType != null">
-        apppageconfig.menu_type = #{record.menuType,jdbcType=TINYINT},
-      </if>
-      <if test="record.menuVal != null">
-        apppageconfig.menu_val = #{record.menuVal,jdbcType=VARCHAR},
-      </if>
-      <if test="record.iconUrl != null">
-        apppageconfig.icon_url = #{record.iconUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="record.selectIconUrl != null">
-        apppageconfig.select_icon_url = #{record.selectIconUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isExamine != null">
-        apppageconfig.is_examine = #{record.isExamine,jdbcType=BIT},
-      </if>
-      <if test="record.addTime != null">
-        apppageconfig.add_time = #{record.addTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.modifyTime != null">
-        apppageconfig.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.addOperatorId != null">
-        apppageconfig.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
-      </if>
-      <if test="record.modifyOperatorId != null">
-        apppageconfig.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
-      </if>
-      <if test="record.isDelete != null">
-        apppageconfig.is_delete = #{record.isDelete,jdbcType=INTEGER},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update cf_app_page_config apppageconfig
-    set apppageconfig.id = #{record.id,jdbcType=INTEGER},
-      apppageconfig.product_id = #{record.productId,jdbcType=INTEGER},
-      apppageconfig.app_id = #{record.appId,jdbcType=INTEGER},
-      apppageconfig.menu_name = #{record.menuName,jdbcType=VARCHAR},
-      apppageconfig.menu_code = #{record.menuCode,jdbcType=VARCHAR},
-      apppageconfig.is_enable = #{record.isEnable,jdbcType=BIT},
-      apppageconfig.menu_sort = #{record.menuSort,jdbcType=INTEGER},
-      apppageconfig.menu_type = #{record.menuType,jdbcType=TINYINT},
-      apppageconfig.menu_val = #{record.menuVal,jdbcType=VARCHAR},
-      apppageconfig.icon_url = #{record.iconUrl,jdbcType=VARCHAR},
-      apppageconfig.select_icon_url = #{record.selectIconUrl,jdbcType=VARCHAR},
-      apppageconfig.is_examine = #{record.isExamine,jdbcType=BIT},
-      apppageconfig.add_time = #{record.addTime,jdbcType=TIMESTAMP},
-      apppageconfig.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
-      apppageconfig.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
-      apppageconfig.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
-      apppageconfig.is_delete = #{record.isDelete,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
-    update cf_app_page_config
-    <set>
-      <if test="productId != null">
-        product_id = #{productId,jdbcType=INTEGER},
-      </if>
-      <if test="appId != null">
-        app_id = #{appId,jdbcType=INTEGER},
-      </if>
-      <if test="menuName != null">
-        menu_name = #{menuName,jdbcType=VARCHAR},
-      </if>
-      <if test="menuCode != null">
-        menu_code = #{menuCode,jdbcType=VARCHAR},
-      </if>
-      <if test="isEnable != null">
-        is_enable = #{isEnable,jdbcType=BIT},
-      </if>
-      <if test="menuSort != null">
-        menu_sort = #{menuSort,jdbcType=INTEGER},
-      </if>
-      <if test="menuType != null">
-        menu_type = #{menuType,jdbcType=TINYINT},
-      </if>
-      <if test="menuVal != null">
-        menu_val = #{menuVal,jdbcType=VARCHAR},
-      </if>
-      <if test="iconUrl != null">
-        icon_url = #{iconUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="selectIconUrl != null">
-        select_icon_url = #{selectIconUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="isExamine != null">
-        is_examine = #{isExamine,jdbcType=BIT},
-      </if>
-      <if test="addTime != null">
-        add_time = #{addTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifyTime != null">
-        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="addOperatorId != null">
-        add_operator_id = #{addOperatorId,jdbcType=INTEGER},
-      </if>
-      <if test="modifyOperatorId != null">
-        modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
-      </if>
-      <if test="isDelete != null">
-        is_delete = #{isDelete,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
-    update cf_app_page_config
-    set product_id = #{productId,jdbcType=INTEGER},
-      app_id = #{appId,jdbcType=INTEGER},
       menu_name = #{menuName,jdbcType=VARCHAR},
       menu_code = #{menuCode,jdbcType=VARCHAR},
       is_enable = #{isEnable,jdbcType=BIT},

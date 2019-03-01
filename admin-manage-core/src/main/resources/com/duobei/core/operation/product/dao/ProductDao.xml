@@ -56,7 +56,7 @@
     </select>
 
     <!--根据认证项code查询-->
-    <select id="getByAuthCode" parameterType="java.lang.String" resultType="com.duobei.core.product.domain.Product">
+    <select id="getByAuthCode" parameterType="java.lang.String" resultType="com.duobei.core.operation.product.domain.Product">
         select DISTINCT(a.id) ,a.product_name from yy_product a left join yy_product_auth_config b on a.id=b.product_id where     b.auth_code =#{code,jdbcType=VARCHAR} order by a.id desc
     </select>
 </mapper>

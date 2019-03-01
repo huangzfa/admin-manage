@@ -70,4 +70,11 @@ public interface ProductDao {
      * @return
      */
     List<Product> getByArrayList(@Param("productIds") List<Integer> productIds);
+
+    /**
+     * 查询code关联了哪些产品
+     * @param code
+     * @return
+     */
+    List<Product> getByAuthCode(@Param("code") String code);
 }

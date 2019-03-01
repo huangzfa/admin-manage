@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.product.dao.mapper.AuthConfigMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.AuthConfig">
+    <id column="ac_id" jdbcType="INTEGER" property="id" />
+    <result column="ac_auth_name" jdbcType="VARCHAR" property="authName" />
+    <result column="ac_auth_code" jdbcType="VARCHAR" property="authCode" />
+    <result column="ac_auth_type" jdbcType="VARCHAR" property="authType" />
+    <result column="ac_page_type" jdbcType="VARCHAR" property="pageType" />
+    <result column="ac_auth_state" jdbcType="VARCHAR" property="authState" />
+    <result column="ac_auth_sort" jdbcType="INTEGER" property="authSort" />
+    <result column="ac_un_img" jdbcType="VARCHAR" property="unImg" />
+    <result column="ac_ing_img" jdbcType="VARCHAR" property="ingImg" />
+    <result column="ac_success_img" jdbcType="VARCHAR" property="successImg" />
+    <result column="ac_fail_img" jdbcType="VARCHAR" property="failImg" />
+    <result column="ac_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="ac_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="ac_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="ac_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
+    <result column="ac_is_delete" jdbcType="BIGINT" property="isDelete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ac.id as ac_id, ac.auth_name as ac_auth_name, ac.auth_code as ac_auth_code, ac.auth_type as ac_auth_type, 
+    ac.page_type as ac_page_type, ac.auth_state as ac_auth_state, ac.auth_sort as ac_auth_sort, 
+    ac.un_img as ac_un_img, ac.ing_img as ac_ing_img, ac.success_img as ac_success_img, 
+    ac.fail_img as ac_fail_img, ac.add_time as ac_add_time, ac.modify_time as ac_modify_time, 
+    ac.add_operator_id as ac_add_operator_id, ac.modify_operator_id as ac_modify_operator_id, 
+    ac.is_delete as ac_is_delete
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yy_auth_config ac
+    where ac.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from yy_auth_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.operation.product.domain.AuthConfig">
+    insert into yy_auth_config (id, auth_name, auth_code, 
+      auth_type, page_type, auth_state, 
+      auth_sort, un_img, ing_img, 
+      success_img, fail_img, add_time, 
+      modify_time, add_operator_id, modify_operator_id, 
+      is_delete)
+    values (#{id,jdbcType=INTEGER}, #{authName,jdbcType=VARCHAR}, #{authCode,jdbcType=VARCHAR}, 
+      #{authType,jdbcType=VARCHAR}, #{pageType,jdbcType=VARCHAR}, #{authState,jdbcType=VARCHAR}, 
+      #{authSort,jdbcType=INTEGER}, #{unImg,jdbcType=VARCHAR}, #{ingImg,jdbcType=VARCHAR}, 
+      #{successImg,jdbcType=VARCHAR}, #{failImg,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.operation.product.domain.AuthConfig">
+    insert into yy_auth_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="authName != null">
+        auth_name,
+      </if>
+      <if test="authCode != null">
+        auth_code,
+      </if>
+      <if test="authType != null">
+        auth_type,
+      </if>
+      <if test="pageType != null">
+        page_type,
+      </if>
+      <if test="authState != null">
+        auth_state,
+      </if>
+      <if test="authSort != null">
+        auth_sort,
+      </if>
+      <if test="unImg != null">
+        un_img,
+      </if>
+      <if test="ingImg != null">
+        ing_img,
+      </if>
+      <if test="successImg != null">
+        success_img,
+      </if>
+      <if test="failImg != null">
+        fail_img,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id,
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="authName != null">
+        #{authName,jdbcType=VARCHAR},
+      </if>
+      <if test="authCode != null">
+        #{authCode,jdbcType=VARCHAR},
+      </if>
+      <if test="authType != null">
+        #{authType,jdbcType=VARCHAR},
+      </if>
+      <if test="pageType != null">
+        #{pageType,jdbcType=VARCHAR},
+      </if>
+      <if test="authState != null">
+        #{authState,jdbcType=VARCHAR},
+      </if>
+      <if test="authSort != null">
+        #{authSort,jdbcType=INTEGER},
+      </if>
+      <if test="unImg != null">
+        #{unImg,jdbcType=VARCHAR},
+      </if>
+      <if test="ingImg != null">
+        #{ingImg,jdbcType=VARCHAR},
+      </if>
+      <if test="successImg != null">
+        #{successImg,jdbcType=VARCHAR},
+      </if>
+      <if test="failImg != null">
+        #{failImg,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update yy_auth_config ac
+    <set>
+      <if test="record.id != null">
+        ac.id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.authName != null">
+        ac.auth_name = #{record.authName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authCode != null">
+        ac.auth_code = #{record.authCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authType != null">
+        ac.auth_type = #{record.authType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pageType != null">
+        ac.page_type = #{record.pageType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authState != null">
+        ac.auth_state = #{record.authState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authSort != null">
+        ac.auth_sort = #{record.authSort,jdbcType=INTEGER},
+      </if>
+      <if test="record.unImg != null">
+        ac.un_img = #{record.unImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ingImg != null">
+        ac.ing_img = #{record.ingImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.successImg != null">
+        ac.success_img = #{record.successImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.failImg != null">
+        ac.fail_img = #{record.failImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null">
+        ac.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        ac.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addOperatorId != null">
+        ac.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifyOperatorId != null">
+        ac.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDelete != null">
+        ac.is_delete = #{record.isDelete,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update yy_auth_config ac
+    set ac.id = #{record.id,jdbcType=INTEGER},
+      ac.auth_name = #{record.authName,jdbcType=VARCHAR},
+      ac.auth_code = #{record.authCode,jdbcType=VARCHAR},
+      ac.auth_type = #{record.authType,jdbcType=VARCHAR},
+      ac.page_type = #{record.pageType,jdbcType=VARCHAR},
+      ac.auth_state = #{record.authState,jdbcType=VARCHAR},
+      ac.auth_sort = #{record.authSort,jdbcType=INTEGER},
+      ac.un_img = #{record.unImg,jdbcType=VARCHAR},
+      ac.ing_img = #{record.ingImg,jdbcType=VARCHAR},
+      ac.success_img = #{record.successImg,jdbcType=VARCHAR},
+      ac.fail_img = #{record.failImg,jdbcType=VARCHAR},
+      ac.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      ac.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      ac.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      ac.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      ac.is_delete = #{record.isDelete,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.product.domain.AuthConfig">
+    update yy_auth_config
+    <set>
+      <if test="authName != null">
+        auth_name = #{authName,jdbcType=VARCHAR},
+      </if>
+      <if test="authCode != null">
+        auth_code = #{authCode,jdbcType=VARCHAR},
+      </if>
+      <if test="authType != null">
+        auth_type = #{authType,jdbcType=VARCHAR},
+      </if>
+      <if test="pageType != null">
+        page_type = #{pageType,jdbcType=VARCHAR},
+      </if>
+      <if test="authState != null">
+        auth_state = #{authState,jdbcType=VARCHAR},
+      </if>
+      <if test="authSort != null">
+        auth_sort = #{authSort,jdbcType=INTEGER},
+      </if>
+      <if test="unImg != null">
+        un_img = #{unImg,jdbcType=VARCHAR},
+      </if>
+      <if test="ingImg != null">
+        ing_img = #{ingImg,jdbcType=VARCHAR},
+      </if>
+      <if test="successImg != null">
+        success_img = #{successImg,jdbcType=VARCHAR},
+      </if>
+      <if test="failImg != null">
+        fail_img = #{failImg,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.product.domain.AuthConfig">
+    update yy_auth_config
+    set auth_name = #{authName,jdbcType=VARCHAR},
+      auth_code = #{authCode,jdbcType=VARCHAR},
+      auth_type = #{authType,jdbcType=VARCHAR},
+      page_type = #{pageType,jdbcType=VARCHAR},
+      auth_state = #{authState,jdbcType=VARCHAR},
+      auth_sort = #{authSort,jdbcType=INTEGER},
+      un_img = #{unImg,jdbcType=VARCHAR},
+      ing_img = #{ingImg,jdbcType=VARCHAR},
+      success_img = #{successImg,jdbcType=VARCHAR},
+      fail_img = #{failImg,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

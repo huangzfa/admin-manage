@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.product.dao.ProductAuhConfigDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.ProductAuthConfig" extends="com.duobei.core.operation.product.dao.mapper.ProductAuhConfigMapper.BaseResultMap">
+    </resultMap>
+
+    <update id="updateAuthState" parameterType="java.lang.String">
+        update yy_product_auth_config set
+        <if test="authState != null and authState != '' or authState==0">
+            auth_state = #{authState,jdbcType=VARCHAR}
+        </if>
+         where  auth_id=#{authId,jdbcType=INTEGER} and auth_code = #{authCode,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

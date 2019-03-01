@@ -18,7 +18,7 @@ public class TestGenerator {
             boolean overwrite = true;
             String path = TestGenerator.class.getResource("/").getPath()+"../../";
             System.out.println(path);
-            File configFile = new File(path + "mybatis/dao/borrow.xml");
+            File configFile = new File(path + "mybatis/dao/operational.xml");
             ConfigurationParser cp = new ConfigurationParser(warnings);
             Configuration config = cp.parseConfiguration(configFile);
             DefaultShellCallback callback = new DefaultShellCallback(overwrite);

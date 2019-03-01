@@ -2,22 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.duobei.core.operation.app.dao.mapper.AppPageConfigMapper">
   <resultMap id="BaseResultMap" type="com.duobei.core.operation.app.domain.AppPageConfig">
-    <id column="apc_id" jdbcType="INTEGER" property="id" />
-    <result column="apc_product_id" jdbcType="INTEGER" property="productId" />
-    <result column="apc_menu_name" jdbcType="VARCHAR" property="menuName" />
-    <result column="apc_menu_code" jdbcType="VARCHAR" property="menuCode" />
-    <result column="apc_is_enable" jdbcType="BIT" property="isEnable" />
-    <result column="apc_menu_sort" jdbcType="INTEGER" property="menuSort" />
-    <result column="apc_menu_type" jdbcType="TINYINT" property="menuType" />
-    <result column="apc_menu_val" jdbcType="VARCHAR" property="menuVal" />
-    <result column="apc_icon_url" jdbcType="VARCHAR" property="iconUrl" />
-    <result column="apc_select_icon_url" jdbcType="VARCHAR" property="selectIconUrl" />
-    <result column="apc_is_examine" jdbcType="BIT" property="isExamine" />
-    <result column="apc_add_time" jdbcType="TIMESTAMP" property="addTime" />
-    <result column="apc_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="apc_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
-    <result column="apc_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
-    <result column="apc_is_delete" jdbcType="INTEGER" property="isDelete" />
+    <id column="apppageconfig_id" jdbcType="INTEGER" property="id" />
+    <result column="apppageconfig_product_id" jdbcType="INTEGER" property="productId" />
+    <result column="apppageconfig_app_id" jdbcType="INTEGER" property="appId" />
+    <result column="apppageconfig_menu_name" jdbcType="VARCHAR" property="menuName" />
+    <result column="apppageconfig_menu_code" jdbcType="VARCHAR" property="menuCode" />
+    <result column="apppageconfig_is_enable" jdbcType="BIT" property="isEnable" />
+    <result column="apppageconfig_menu_sort" jdbcType="INTEGER" property="menuSort" />
+    <result column="apppageconfig_menu_type" jdbcType="TINYINT" property="menuType" />
+    <result column="apppageconfig_menu_val" jdbcType="VARCHAR" property="menuVal" />
+    <result column="apppageconfig_icon_url" jdbcType="VARCHAR" property="iconUrl" />
+    <result column="apppageconfig_select_icon_url" jdbcType="VARCHAR" property="selectIconUrl" />
+    <result column="apppageconfig_is_examine" jdbcType="BIT" property="isExamine" />
+    <result column="apppageconfig_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="apppageconfig_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="apppageconfig_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="apppageconfig_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
+    <result column="apppageconfig_is_delete" jdbcType="INTEGER" property="isDelete" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -78,12 +79,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    apc.id as apc_id, apc.product_id as apc_product_id, apc.menu_name as apc_menu_name, 
-    apc.menu_code as apc_menu_code, apc.is_enable as apc_is_enable, apc.menu_sort as apc_menu_sort, 
-    apc.menu_type as apc_menu_type, apc.menu_val as apc_menu_val, apc.icon_url as apc_icon_url, 
-    apc.select_icon_url as apc_select_icon_url, apc.is_examine as apc_is_examine, apc.add_time as apc_add_time, 
-    apc.modify_time as apc_modify_time, apc.add_operator_id as apc_add_operator_id, apc.modify_operator_id as apc_modify_operator_id, 
-    apc.is_delete as apc_is_delete
+    apppageconfig.id as apppageconfig_id, apppageconfig.product_id as apppageconfig_product_id, 
+    apppageconfig.app_id as apppageconfig_app_id, apppageconfig.menu_name as apppageconfig_menu_name, 
+    apppageconfig.menu_code as apppageconfig_menu_code, apppageconfig.is_enable as apppageconfig_is_enable, 
+    apppageconfig.menu_sort as apppageconfig_menu_sort, apppageconfig.menu_type as apppageconfig_menu_type, 
+    apppageconfig.menu_val as apppageconfig_menu_val, apppageconfig.icon_url as apppageconfig_icon_url, 
+    apppageconfig.select_icon_url as apppageconfig_select_icon_url, apppageconfig.is_examine as apppageconfig_is_examine, 
+    apppageconfig.add_time as apppageconfig_add_time, apppageconfig.modify_time as apppageconfig_modify_time, 
+    apppageconfig.add_operator_id as apppageconfig_add_operator_id, apppageconfig.modify_operator_id as apppageconfig_modify_operator_id, 
+    apppageconfig.is_delete as apppageconfig_is_delete
   </sql>
   <select id="selectByExample" parameterType="com.duobei.core.operation.app.domain.AppPageConfigExample" resultMap="BaseResultMap">
     select
@@ -91,7 +95,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from cf_app_page_config apc
+    from cf_app_page_config apppageconfig
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -102,15 +106,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from cf_app_page_config apc
-    where apc.id = #{id,jdbcType=INTEGER}
+    from cf_app_page_config apppageconfig
+    where apppageconfig.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cf_app_page_config
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.duobei.core.operation.app.domain.AppPageConfigExample">
-    delete from cf_app_page_config apc
+    delete from cf_app_page_config apppageconfig
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -119,18 +123,18 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into cf_app_page_config (product_id, menu_name, menu_code, 
-      is_enable, menu_sort, menu_type, 
-      menu_val, icon_url, select_icon_url, 
-      is_examine, add_time, modify_time, 
-      add_operator_id, modify_operator_id, is_delete
-      )
-    values (#{productId,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuCode,jdbcType=VARCHAR}, 
-      #{isEnable,jdbcType=BIT}, #{menuSort,jdbcType=INTEGER}, #{menuType,jdbcType=TINYINT}, 
-      #{menuVal,jdbcType=VARCHAR}, #{iconUrl,jdbcType=VARCHAR}, #{selectIconUrl,jdbcType=VARCHAR}, 
-      #{isExamine,jdbcType=BIT}, #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, 
-      #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
-      )
+    insert into cf_app_page_config (product_id, app_id, menu_name, 
+      menu_code, is_enable, menu_sort, 
+      menu_type, menu_val, icon_url, 
+      select_icon_url, is_examine, add_time, 
+      modify_time, add_operator_id, modify_operator_id, 
+      is_delete)
+    values (#{productId,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, 
+      #{menuCode,jdbcType=VARCHAR}, #{isEnable,jdbcType=BIT}, #{menuSort,jdbcType=INTEGER}, 
+      #{menuType,jdbcType=TINYINT}, #{menuVal,jdbcType=VARCHAR}, #{iconUrl,jdbcType=VARCHAR}, 
+      #{selectIconUrl,jdbcType=VARCHAR}, #{isExamine,jdbcType=BIT}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -140,6 +144,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="productId != null">
         product_id,
+      </if>
+      <if test="appId != null">
+        app_id,
       </if>
       <if test="menuName != null">
         menu_name,
@@ -188,6 +195,9 @@
       <if test="productId != null">
         #{productId,jdbcType=INTEGER},
       </if>
+      <if test="appId != null">
+        #{appId,jdbcType=INTEGER},
+      </if>
       <if test="menuName != null">
         #{menuName,jdbcType=VARCHAR},
       </if>
@@ -233,61 +243,64 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.duobei.core.operation.app.domain.AppPageConfigExample" resultType="java.lang.Long">
-    select count(*) from cf_app_page_config apc
+    select count(*) from cf_app_page_config apppageconfig
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update cf_app_page_config apc
+    update cf_app_page_config apppageconfig
     <set>
       <if test="record.id != null">
-        apc.id = #{record.id,jdbcType=INTEGER},
+        apppageconfig.id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.productId != null">
-        apc.product_id = #{record.productId,jdbcType=INTEGER},
+        apppageconfig.product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.appId != null">
+        apppageconfig.app_id = #{record.appId,jdbcType=INTEGER},
       </if>
       <if test="record.menuName != null">
-        apc.menu_name = #{record.menuName,jdbcType=VARCHAR},
+        apppageconfig.menu_name = #{record.menuName,jdbcType=VARCHAR},
       </if>
       <if test="record.menuCode != null">
-        apc.menu_code = #{record.menuCode,jdbcType=VARCHAR},
+        apppageconfig.menu_code = #{record.menuCode,jdbcType=VARCHAR},
       </if>
       <if test="record.isEnable != null">
-        apc.is_enable = #{record.isEnable,jdbcType=BIT},
+        apppageconfig.is_enable = #{record.isEnable,jdbcType=BIT},
       </if>
       <if test="record.menuSort != null">
-        apc.menu_sort = #{record.menuSort,jdbcType=INTEGER},
+        apppageconfig.menu_sort = #{record.menuSort,jdbcType=INTEGER},
       </if>
       <if test="record.menuType != null">
-        apc.menu_type = #{record.menuType,jdbcType=TINYINT},
+        apppageconfig.menu_type = #{record.menuType,jdbcType=TINYINT},
       </if>
       <if test="record.menuVal != null">
-        apc.menu_val = #{record.menuVal,jdbcType=VARCHAR},
+        apppageconfig.menu_val = #{record.menuVal,jdbcType=VARCHAR},
       </if>
       <if test="record.iconUrl != null">
-        apc.icon_url = #{record.iconUrl,jdbcType=VARCHAR},
+        apppageconfig.icon_url = #{record.iconUrl,jdbcType=VARCHAR},
       </if>
       <if test="record.selectIconUrl != null">
-        apc.select_icon_url = #{record.selectIconUrl,jdbcType=VARCHAR},
+        apppageconfig.select_icon_url = #{record.selectIconUrl,jdbcType=VARCHAR},
       </if>
       <if test="record.isExamine != null">
-        apc.is_examine = #{record.isExamine,jdbcType=BIT},
+        apppageconfig.is_examine = #{record.isExamine,jdbcType=BIT},
       </if>
       <if test="record.addTime != null">
-        apc.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+        apppageconfig.add_time = #{record.addTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.modifyTime != null">
-        apc.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+        apppageconfig.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.addOperatorId != null">
-        apc.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+        apppageconfig.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
       </if>
       <if test="record.modifyOperatorId != null">
-        apc.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+        apppageconfig.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
       </if>
       <if test="record.isDelete != null">
-        apc.is_delete = #{record.isDelete,jdbcType=INTEGER},
+        apppageconfig.is_delete = #{record.isDelete,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -295,23 +308,24 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update cf_app_page_config apc
-    set apc.id = #{record.id,jdbcType=INTEGER},
-      apc.product_id = #{record.productId,jdbcType=INTEGER},
-      apc.menu_name = #{record.menuName,jdbcType=VARCHAR},
-      apc.menu_code = #{record.menuCode,jdbcType=VARCHAR},
-      apc.is_enable = #{record.isEnable,jdbcType=BIT},
-      apc.menu_sort = #{record.menuSort,jdbcType=INTEGER},
-      apc.menu_type = #{record.menuType,jdbcType=TINYINT},
-      apc.menu_val = #{record.menuVal,jdbcType=VARCHAR},
-      apc.icon_url = #{record.iconUrl,jdbcType=VARCHAR},
-      apc.select_icon_url = #{record.selectIconUrl,jdbcType=VARCHAR},
-      apc.is_examine = #{record.isExamine,jdbcType=BIT},
-      apc.add_time = #{record.addTime,jdbcType=TIMESTAMP},
-      apc.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
-      apc.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
-      apc.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
-      apc.is_delete = #{record.isDelete,jdbcType=INTEGER}
+    update cf_app_page_config apppageconfig
+    set apppageconfig.id = #{record.id,jdbcType=INTEGER},
+      apppageconfig.product_id = #{record.productId,jdbcType=INTEGER},
+      apppageconfig.app_id = #{record.appId,jdbcType=INTEGER},
+      apppageconfig.menu_name = #{record.menuName,jdbcType=VARCHAR},
+      apppageconfig.menu_code = #{record.menuCode,jdbcType=VARCHAR},
+      apppageconfig.is_enable = #{record.isEnable,jdbcType=BIT},
+      apppageconfig.menu_sort = #{record.menuSort,jdbcType=INTEGER},
+      apppageconfig.menu_type = #{record.menuType,jdbcType=TINYINT},
+      apppageconfig.menu_val = #{record.menuVal,jdbcType=VARCHAR},
+      apppageconfig.icon_url = #{record.iconUrl,jdbcType=VARCHAR},
+      apppageconfig.select_icon_url = #{record.selectIconUrl,jdbcType=VARCHAR},
+      apppageconfig.is_examine = #{record.isExamine,jdbcType=BIT},
+      apppageconfig.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      apppageconfig.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      apppageconfig.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      apppageconfig.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      apppageconfig.is_delete = #{record.isDelete,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -321,6 +335,9 @@
     <set>
       <if test="productId != null">
         product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null">
+        app_id = #{appId,jdbcType=INTEGER},
       </if>
       <if test="menuName != null">
         menu_name = #{menuName,jdbcType=VARCHAR},
@@ -370,6 +387,7 @@
   <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
     update cf_app_page_config
     set product_id = #{productId,jdbcType=INTEGER},
+      app_id = #{appId,jdbcType=INTEGER},
       menu_name = #{menuName,jdbcType=VARCHAR},
       menu_code = #{menuCode,jdbcType=VARCHAR},
       is_enable = #{isEnable,jdbcType=BIT},

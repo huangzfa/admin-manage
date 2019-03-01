@@ -116,12 +116,12 @@
 
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/ac/apppage/list?id=${object.id}">应用页面配置</a></li>
+    <li><a href="${ctxA}/app/pageConfig/list?id=${object.id}">应用页面配置</a></li>
     <li class="active">
-        <shiro:hasPermission name="ac:apppage:edit">
+        <shiro:hasPermission name="app:pageConfig:edit">
             <a href="javascript:void(0);">${not empty object.id?'修改':'添加'}菜单</a>
         </shiro:hasPermission>
-        <shiro:lacksPermission name="ac:apppage:edit">
+        <shiro:lacksPermission name="app:pageConfig:edit">
             <a href="javascript:void(0);">查看菜单</a>
         </shiro:lacksPermission>
     </li>
@@ -129,8 +129,9 @@
 <div class="si-warp">
     <br/>
     <sys:message content="${message}"/>
-    <form:form id="inputForm" modelAttribute="apppage" action="${ctxA}/ac/apppage/save" method="post" class="form-horizontal">
+    <form:form id="inputForm" modelAttribute="appPageConfig" action="${ctxA}/app/pageConfig/save" method="post" class="form-horizontal">
         <form:hidden path="id" />
+        <form:hidden path="appId" />
         <div class="control-group">
             <label class="control-label">菜单名称：</label>
             <div class="controls">
@@ -138,11 +139,11 @@
                 <span class="help-inline"><font color="red">*</font></span>
             </div>
         </div>
-        <div class="control-group">
+     <%--   <div class="control-group">
             <label class="control-label">选择模板：</label>
             <div class="controls">
                 <c:choose>
-                    <c:when test="${apppage.pageTemplet != null}">
+                    <c:when test="${appPageConfig.pageTemplet != null}">
                         <form:input path="pageTemplet" htmlEscape="false"  maxlength="50" class="input-xlarge" readonly="true" />
                     </c:when>
                     <c:otherwise>
@@ -151,7 +152,7 @@
                 </c:choose>
                 <span class="help-inline"><font color="red">*</font></span>
             </div>
-        </div>
+        </div>--%>
         <div class="control-group">
             <label class="control-label">排序：</label>
             <div class="controls">
@@ -160,12 +161,7 @@
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">模板链接：</label>
-            <div class="controls">
-                <form:input path="menuVal" htmlEscape="false" maxlength="200" class="input-xlarge"/>
-            </div>
-        </div>
+
         <div class="control-group">
             <label class="control-label">icon：</label>
             <div class="controls">
@@ -177,9 +173,9 @@
                 </div>
                 <div class="controls">
                     <ul style="margin-left: 6%;">
-                        <small class="help-block owner_ID">建议尺寸：48*48</small>
                         <small class="help-block owner_ID">图片格式：PNG、JPG、JPEG、GIF</small>
-                        <small class="help-block owner_ID">图片大小：100kb以内</small>
+                        <small class="help-block owner_ID">图片大小：10kb以内</small>
+                        <small class="help-block owner_ID">建议尺寸：48*48</small>
                     </ul>
                 </div>
             </div>
@@ -196,20 +192,25 @@
                 </div>
                 <div class="controls">
                     <ul style="margin-left: 6%;">
-                        <small class="help-block owner_ID">建议尺寸：48*48</small>
                         <small class="help-block owner_ID">图片格式：PNG、JPG、JPEG、GIF</small>
-                        <small class="help-block owner_ID">图片大小：100kb以内</small>
+                        <small class="help-block owner_ID">图片大小：10kb以内</small>
+                        <small class="help-block owner_ID">建议尺寸：48*48</small>
                     </ul>
                 </div>
             </div>
         </div>
-
+        <div class="control-group">
+            <label class="control-label">模板链接：</label>
+            <div class="controls">
+                <form:input path="menuVal" htmlEscape="false" maxlength="200" class="input-xlarge"/>
+            </div>
+        </div>
 
         <div class="form-actions">
-            <shiro:hasPermission name="ac:apppage:edit">
+            <shiro:hasPermission name="app:pageConfig:edit">
                 <input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/ac/apppage/list?id=${object.id}'"/>
+            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/app/pageConfig/list?id=${object.id}'"/>
         </div>
     </form:form>
 

@@ -1,13 +1,19 @@
-/*
+
 package com.duobei.console.web.controller.app;
 
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.encrypt.MD5Util;
+import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
+import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.app.domain.AppPageConfig;
-import com.duobei.core.app.domain.criteria.AppPageConfigCriteria;
-import com.duobei.core.app.service.AppPageConfigService;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.operation.app.domain.criteria.AppPageConfigCriteria;
+import com.duobei.core.operation.app.service.AppPageConfigService;
+
+import java.util.*;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.duobei.console.web.controller.base.BaseController;
+import sun.security.provider.MD5;
 
 @Controller
 @RequestMapping(value = "${authzPath}/app/pageConfig")
@@ -48,8 +55,33 @@ public class AppPageConfigController extends  BaseController{
 			appPageConfigCriteria.setPagesize(GlobalConfig.getPageSize());
 		}
 		try {
-			ListVo<AppPageConfig> list = appPageConfigService.queryAppPageList(appPageConfigCriteria);
-			return successJsonResult("success", "list", list);
+		    //TODO 用户权限
+//			List<App> appList = credential.getAppList();
+            List<App> appList = new ArrayList<>();
+            App app1 = new App();
+            app1.setAppName("美期钱包");
+            app1.setId(1);
+            app1.setAppKey("mqqb");
+            appList.add(app1);
+
+            App app2 = new App();
+            app2.setAppName("巧花");
+            app2.setId(2);
+            app2.setAppKey("qh");
+            appList.add(app2);
+            if (appList == null){
+				return failJsonResult("应用权限不足");
+			}
+			//给与默认查询的应用
+			if (StringUtil.isEmpty(appPageConfigCriteria.getAppId())){
+				appPageConfigCriteria.setAppId(appList.get(0).getId());
+			}
+			ListVo<AppPageConfig> list = appPageConfigService.queryAppPageConfigList(appPageConfigCriteria);
+			Map<String,Object> dataMap = new HashMap<>();
+			dataMap.put("list",list);
+			//查询条件-审批状态
+			dataMap.put("appList",appList);
+			return successJsonResult(dataMap,"success");
 		} catch (Exception e) {
 			if (e instanceof TqException) {
 				return failJsonResult(e.getMessage());
@@ -62,10 +94,10 @@ public class AppPageConfigController extends  BaseController{
 
 	@RequiresPermissions(PERMISSIONPRE+"view")
 	@RequestMapping(value = "/form")
-	public String form(@ModelAttribute("apppage") AppPage appPage, Model model,RedirectAttributes redirectAttributes){
+	public String form(@ModelAttribute("appPageConfig") AppPageConfig appPageConfig, Model model,RedirectAttributes redirectAttributes){
 		try {
-			if (appPage.getId() != null) {
-				appPage = appPageService.queryAppPageById(appPage.getId());
+			if (appPageConfig.getId() != null) {
+                appPageConfig = appPageConfigService.queryAppPageConfigById(appPageConfig.getId());
 			}
 		} catch (Exception e) {
 			if (e instanceof TqException) {
@@ -76,19 +108,31 @@ public class AppPageConfigController extends  BaseController{
 			}
 			return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list";
 		}
-		model.addAttribute("apppage", appPage);
-		return ADDRESSPRE+"appPageForm";
+		model.addAttribute("appPageConfig", appPageConfig);
+		return ADDRESSPRE+"appPageConfigForm";
 		}
 
 	@RequiresPermissions({ PERMISSIONPRE+"edit" })
 	@RequestMapping(value = "/save")
-	public String save(AppPage appPage, Model model, RedirectAttributes redirectAttributes) {
+	public String save(AppPageConfig appPageConfig, Model model, RedirectAttributes redirectAttributes) {
 		OperatorCredential credential = getCredential();
 		try {
-			if (appPage.getId() == null) {
-				appPageService.addAppPage(credential, appPage);
+			/**
+			 * 暂时未默认值
+			 */
+			appPageConfig.setProductId(0);
+			appPageConfig.setIsEnable(0);
+			appPageConfig.setMenuType(2);
+			appPageConfig.setMenuCode(MD5Util.encrypt(appPageConfig.getId()+appPageConfig.getMenuName()));
+			/**/
+			appPageConfig.setModifyOperatorId(credential.getOpId());
+			appPageConfig.setModifyTime(new Date());
+			if (appPageConfig.getId() == null) {
+				appPageConfig.setAddOperatorId(credential.getOpId());
+				appPageConfigService.addAppPageConfig(appPageConfig);
 			} else {
-				appPageService.updateAppPage(credential, appPage);
+				appPageConfig.setAddTime(appPageConfig.getModifyTime());
+                appPageConfigService.updateAppPageConfig(appPageConfig);
 			}
 		} catch (Exception e) {
 			if (e instanceof TqException) {
@@ -97,7 +141,7 @@ public class AppPageConfigController extends  BaseController{
 				log.warn("save"+DESC+"异常", e);
 				addFaildMessage(model, "请查看错误日志");
 			}
-			return form(appPage, model,redirectAttributes);
+			return form(appPageConfig, model,redirectAttributes);
 		}
 		addMessage(redirectAttributes, "保存"+DESC+"成功!");
 		return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list";
@@ -108,7 +152,11 @@ public class AppPageConfigController extends  BaseController{
 	public String delete(Integer id, RedirectAttributes redirectAttributes) {
 		OperatorCredential credential = getCredential();
 		try {
-			appPageService.deleteAppPage(credential, id);
+			AppPageConfig appPageConfig = new AppPageConfig();
+			appPageConfig.setId(id);
+			appPageConfig.setModifyTime(new Date());
+			appPageConfig.setModifyOperatorId(credential.getOpId());
+			appPageConfigService.deleteAppPageConfig(appPageConfig);
 		} catch (Exception e) {
 			if (e instanceof TqException) {
 				addFaildMessage(redirectAttributes, e.getMessage());
@@ -123,4 +171,4 @@ public class AppPageConfigController extends  BaseController{
 	}
 
 }
-*/
+

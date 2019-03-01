@@ -2,8 +2,75 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.duobei.core.operation.app.dao.AppPageConfigDao" >
 
-    <resultMap id="BaseResultMap" type="com.duobei.core.operation.app.domain.AppPageConfig" extends="com.duobei.core.operation.app.dao.mapper.AppPageConfigMapper.BaseResultMap">
 
-    </resultMap>
+    <sql id="Base_Column_List">
+    apppageconfig.id as id, apppageconfig.product_id as product_id,
+    apppageconfig.app_id as app_id, apppageconfig.menu_name as menu_name,
+    apppageconfig.menu_code as menu_code, apppageconfig.is_enable as is_enable,
+    apppageconfig.menu_sort as menu_sort, apppageconfig.menu_type as menu_type,
+    apppageconfig.menu_val as menu_val, apppageconfig.icon_url as icon_url,
+    apppageconfig.select_icon_url as select_icon_url, apppageconfig.is_examine as is_examine,
+    apppageconfig.add_time as add_time, apppageconfig.modify_time as modify_time,
+    apppageconfig.add_operator_id as add_operator_id, apppageconfig.modify_operator_id as modify_operator_id,
+    apppageconfig.is_delete as is_delete
+  </sql>
 
+    <insert id="addAppPageConfig" parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
+       INSERT INTO cf_app_page_config(product_id,app_id, menu_name
+       , menu_code, is_enable, menu_sort, menu_type, menu_val
+       , icon_url, select_icon_url, is_examine,add_time
+       , modify_time, add_operator_id, modify_operator_id)
+       VALUES ( #{productId},#{appId},#{menuName}
+       , #{menuCode}, #{isEnable},#{menuSort}, #{menuType}, #{menuVal}
+       , #{iconUrl}, #{selectIconUrl}, #{isExamine}, #{addTime}
+       ,#{modifyTime}, #{addOperatorId}, #{modifyOperatorId})
+
+    </insert>
+
+    <update id="updateAppPageConfig" parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
+        update cf_app_page_config
+        set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId}
+        <if test="menuName != null and menuName !=''">
+            ,menu_name = #{menuName}
+        </if>
+        <if test="menuCode != null and menuCode !=''">
+            ,menu_code = #{menuCode}
+        </if>
+        <if test="isEnable != null">
+            ,is_enable = #{isEnable}
+        </if>
+        <if test="menuSort != null">
+            ,menu_sort = #{menuSort}
+        </if>
+        <if test="menuType != null">
+            ,menu_type #{menuType}
+        </if>
+        <if test="menuVal != null and menuVal != ''">
+            ,menu_val = #{menuVal}
+        </if>
+        <if test="iconUrl != null and iconUrl != ''">
+            ,icon_url = #{iconUrl}
+        </if>
+        <if test="selectIconUrl != null and selectIconUrl != ''">
+            ,select_icon_url = #{selectIconUrl}
+        </if>
+        <if test="isExamine != null">
+            ,is_examine = #{isExamine}
+        </if>
+        where id = #{id} and is_delete = 0
+    </update>
+    
+    <update id="deleteAppPageConfig" parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
+        update cf_app_page_config
+        set is_delete = #{id},modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId}
+        where id = #{id} and is_delete = 0
+    </update>
+
+    <select id="queryAppPageList" resultType="com.duobei.core.operation.app.domain.AppPageConfig" parameterType="com.duobei.core.operation.app.domain.criteria.AppPageConfigCriteria">
+        select <include refid="Base_Column_List"/> from cf_app_page_config apppageconfig where apppageconfig.is_delete = 0 and apppageconfig.app_id = #{appId}
+        ORDER BY apppageconfig.menu_sort asc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
 </mapper>

@@ -5,11 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.duobei.common.exception.TqException;
+import com.duobei.core.operation.app.domain.App;
+import com.duobei.core.operation.product.domain.Product;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -100,6 +105,33 @@ public class BaseController {
 
 	protected void addFaildMessage(RedirectAttributes redirectAttributes, String messages) {
 		redirectAttributes.addFlashAttribute("message", ERROR_MSG + messages);
+	}
+
+	/**
+	 * 验证数据权限
+	 * @param params
+	 * @throws TqException
+	 */
+	protected void validAuthData  (Integer... params) throws TqException{
+		OperatorCredential credential = getCredential();
+		if( credential == null ){
+			throw  new TqException("登录过期，请重新登录");
+		}
+		if ( credential.getProductList() == null ){
+			return;
+		}
+		if( params.length > 0  && params[0]!=null){
+			List<Integer> list = credential.getProductList().stream().map(Product::getId).collect(Collectors.toList());
+			if( !list.contains(params[0]) ){
+				throw  new TqException("您没有改产品的操作权限");
+			}
+		}
+		if( params.length > 1  && params[1]!=null){
+			List<Integer> list = credential.getAppList().stream().map(App::getId).collect(Collectors.toList());
+			if( !list.contains(params[1]) ){
+				throw  new TqException("您没有改应用的操作权限");
+			}
+		}
 	}
 
 	/**

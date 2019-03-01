@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.product.dao.AuthConfigDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.AuthConfig" extends="com.duobei.core.operation.product.dao.mapper.AuthConfigMapper.BaseResultMap">
+    </resultMap>
+
+    <select id="getListPage" resultType="com.duobei.core.authConfig.domain.AuthConfig" parameterType="com.duobei.core.authConfig.domain.criteria.AuthConfigCriteria">
+        SELECT   * FROM yy_auth_config
+        where is_delete = 0 order by auth_sort asc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.duobei.core.operation.product.domain.AuthConfig">
+        insert into yy_auth_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="authName != null">
+                auth_name,
+            </if>
+            <if test="authCode != null">
+                auth_code,
+            </if>
+            <if test="authType != null">
+                auth_type,
+            </if>
+            <if test="pageType != null">
+                page_type,
+            </if>
+            <if test="authState != null">
+                auth_state,
+            </if>
+            <if test="authSort != null">
+                auth_sort,
+            </if>
+            <if test="unImg != null">
+                un_img,
+            </if>
+            <if test="ingImg != null">
+                ing_img,
+            </if>
+            <if test="successImg != null">
+                success_img,
+            </if>
+            <if test="failImg != null">
+                fail_img,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+            <if test="addOperatorId != null">
+                add_operator_id,
+            </if>
+            <if test="modifyOperatorId != null">
+                modify_operator_id,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="authName != null">
+                #{authName,jdbcType=VARCHAR},
+            </if>
+            <if test="authCode != null">
+                #{authCode,jdbcType=VARCHAR},
+            </if>
+            <if test="authType != null">
+                #{authType,jdbcType=VARCHAR},
+            </if>
+            <if test="pageType != null">
+                #{pageType,jdbcType=VARCHAR},
+            </if>
+            <if test="authState != null">
+                #{authState,jdbcType=VARCHAR},
+            </if>
+            <if test="authSort != null">
+                #{authSort,jdbcType=INTEGER},
+            </if>
+            <if test="unImg != null">
+                #{unImg,jdbcType=VARCHAR},
+            </if>
+            <if test="ingImg != null">
+                #{ingImg,jdbcType=VARCHAR},
+            </if>
+            <if test="successImg != null">
+                #{successImg,jdbcType=VARCHAR},
+            </if>
+            <if test="failImg != null">
+                #{failImg,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addOperatorId != null">
+                #{addOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="modifyOperatorId != null">
+                #{modifyOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.duobei.core.operation.product.domain.AuthConfig">
+        update yy_auth_config ac
+        <set>
+            <if test="record.id != null">
+                ac.id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.authName != null">
+                ac.auth_name = #{record.authName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.authCode != null">
+                ac.auth_code = #{record.authCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.authType != null">
+                ac.auth_type = #{record.authType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.pageType != null">
+                ac.page_type = #{record.pageType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.authState != null">
+                ac.auth_state = #{record.authState,jdbcType=VARCHAR},
+            </if>
+            <if test="record.authSort != null">
+                ac.auth_sort = #{record.authSort,jdbcType=INTEGER},
+            </if>
+            <if test="record.unImg != null">
+                ac.un_img = #{record.unImg,jdbcType=VARCHAR},
+            </if>
+            <if test="record.ingImg != null">
+                ac.ing_img = #{record.ingImg,jdbcType=VARCHAR},
+            </if>
+            <if test="record.successImg != null">
+                ac.success_img = #{record.successImg,jdbcType=VARCHAR},
+            </if>
+            <if test="record.failImg != null">
+                ac.fail_img = #{record.failImg,jdbcType=VARCHAR},
+            </if>
+            <if test="record.addTime != null">
+                ac.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyTime != null">
+                ac.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.addOperatorId != null">
+                ac.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="record.modifyOperatorId != null">
+                ac.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="record.isDelete != null">
+                ac.is_delete = #{record.isDelete,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateState" parameterType="java.util.HashMap">
+        update yy_auth_config set
+        <if test="authState != null and authState != '' or authState==0">
+            auth_state = #{authState,jdbcType=VARCHAR}
+        </if>
+        where is_delete = 0 and auth_code = #{code,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 查询所有有效认证项-->
+    <select id="getAll" resultType="com.duobei.core.authConfig.domain.AuthConfig" parameterType="java.lang.String">
+        select * from yy_auth_config where is_delete = 0 order by id desc
+    </select>
+</mapper>

@@ -4,4 +4,12 @@
 
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.app.domain.App" extends="com.duobei.core.operation.app.dao.mapper.AppMapper.BaseResultMap">
     </resultMap>
+    <!-- 根据多个产品id查询 -->
+    <select id="getByProductIds" resultType="com.duobei.core.operation.app.domain.App">
+        SELECT DISTINCT * FROM yy_app  where is_delete = 0 and product_id in
+        <foreach collection="productIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by id desc;
+    </select>
 </mapper>

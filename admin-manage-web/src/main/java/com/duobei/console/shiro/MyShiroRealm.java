@@ -15,6 +15,7 @@ import com.duobei.core.manage.auth.service.OperatorService;
 import com.duobei.core.manage.auth.service.RoleDataAuthService;
 import com.duobei.core.manage.sys.domain.SmsVerifyCode;
 import com.duobei.core.manage.sys.service.VerifyCodeService;
+import com.duobei.core.operation.app.service.AppService;
 import com.duobei.dic.ZD;
 import com.duobei.common.exception.TqException;
 import org.apache.shiro.SecurityUtils;
@@ -44,6 +45,8 @@ public class MyShiroRealm extends AuthorizingRealm {
 	private VerifyCodeService verifyCodeService;
 	@Autowired
 	private RoleDataAuthService roleDataAuthService;
+	@Autowired
+	private AppService appService;
 
 
 
@@ -80,6 +83,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 			pwd = operator.getLoginPwd();
 		}
 		credential.setProductList(roleDataAuthService.getByOpId(operator.getOpId()));
+		credential.setAppList(appService.getByProductIds(credential.getProductList()));
 		log.info("获取用户信息" + pwd + "===================>" + JSON.toJSONString(credential));
 		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(credential, // 用户
 				pwd, // 密码

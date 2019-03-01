@@ -65,6 +65,25 @@
                 }
             });
         }
+        function stateformater(value,row,index){
+            if(value=='1'){
+                return "启用";
+            }else if(value=='0'){
+                return "停用";
+            }
+            return '未知';
+        }
+        function optionformater(value,row,index){
+            var opStr='';
+            <shiro:hasPermission name="product:list:edit">
+            var productState = 0;
+            if( row.productState == 0) productState = 1;
+            opStr+='<a class="si-option-a" href="${ctxA}/product/form?productCode='+row.productCode+'">修改</a>';
+            opStr+="<a class='si-option-a' href='javascript:editState(\""+row.productCode+"\",\""+productState+"\")'>"+(row.productState==1?"禁用":"启用")+"</a>";
+            opStr+='<a class="si-option-a" href="${ctxA}/product/form?productCode='+row.productCode+'">配置产品</a>';
+            </shiro:hasPermission>
+            return opStr;
+        }
         function optionformater(value,row,index){
             var opStr='';
             <shiro:hasPermission name="product:list:edit">
@@ -72,7 +91,30 @@
             </shiro:hasPermission>
             return opStr;
         }
-
+        function editState(productCode,productState){
+            var title = "确定启用该产品吗";
+            if(productState == 0){
+                title = "确定禁用该产品吗";
+            }
+            top.$.jBox.confirm(title,'系统提示',function(v,h,f){
+                if(v=='ok'){
+                    jQuery.post("${ctxA}/product/editState", {'productCode':productCode,'productState':productState},
+                        function(data) {
+                            if (data.code ==1) {
+                                top.layer.alert("操作完成", {
+                                    icon: 6,
+                                    end: function(){
+                                        getData();
+                                    }
+                                });
+                            } else {
+                                top.layer.alert(data.msg, {icon: 5});
+                            }
+                            return;
+                        }, "json");
+                }
+            })
+        }
 
     </script>
 </head>
@@ -107,6 +149,7 @@
             <th data-options="field:'productName',width:180,align:'center',halign:'center',fixed:true">产品名称</th>
             <th data-options="field:'merchantName',width:180,align:'center',halign:'center',fixed:true">所属商户</th>
             <th data-options="field:'showMaxQuota',width:200,align:'center',halign:'center',fixed:true">域名</th>
+            <th data-options="field:'state',width:200,align:'center',halign:'center',fixed:true,formatter:stateformater">状态</th>
             <th data-options="field:'modifyTime',width:160,align:'center',halign:'center',fixed:true">更新时间</th>
             <th data-options="field:'option',width:180,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
         </tr>

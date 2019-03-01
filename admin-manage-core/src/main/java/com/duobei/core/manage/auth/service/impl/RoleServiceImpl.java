@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.core.manage.auth.service.RoleDataAuthService;
+import com.duobei.core.operation.app.service.AppService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -48,6 +49,8 @@ public class RoleServiceImpl implements RoleService {
 	private OperatorRoleMapper operatorRoleMapper;
 	@Autowired
 	private RoleDataAuthService roleDataAuthService;
+	@Autowired
+	private AppService appService;
 
 	@Override
 	public ListVo<RoleVo> queryRoleList(OperatorCredential credential, RoleCriteria roleCriteria) throws TqException {
@@ -122,6 +125,7 @@ public class RoleServiceImpl implements RoleService {
 		roleDataAuthService.save(roleId,role.getRoleProductIds());
 		RoleCriteria criteria = new RoleCriteria();
 		credential.setProductList(roleDataAuthService.getByOpId(credential.getOpId()));
+		credential.setAppList(appService.getByProductIds(credential.getProductList()));
 	}
 
 	@Override
@@ -195,6 +199,7 @@ public class RoleServiceImpl implements RoleService {
 		roleDataAuthService.save(roleId,role.getRoleProductIds());
 		RoleCriteria criteria = new RoleCriteria();
 		credential.setProductList(roleDataAuthService.getByOpId(credential.getOpId()));
+		credential.setAppList(appService.getByProductIds(credential.getProductList()));
 
 	}
 

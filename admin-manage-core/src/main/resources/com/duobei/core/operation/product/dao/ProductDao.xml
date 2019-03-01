@@ -47,7 +47,7 @@
     </select>
 
     <!-- 根据多个产品id查询 -->
-    <select id="getByProductIdS" resultType="com.duobei.core.operation.product.domain.Product">
+    <select id="getByProductIds" resultType="com.duobei.core.operation.product.domain.Product">
         SELECT * FROM yy_product  where state = 1 and id in
         <foreach collection="productIds" index="index" item="item" open="(" separator="," close=")">
             #{item}

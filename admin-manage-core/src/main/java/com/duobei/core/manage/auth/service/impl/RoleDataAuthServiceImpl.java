@@ -91,6 +91,6 @@ public class RoleDataAuthServiceImpl implements RoleDataAuthService {
         List<RoleDataAuth> roleDataAuths = roleDataAuthDao.getByListRoleId(roleIds);
         List<Integer> productIds = roleDataAuths.stream().map(RoleDataAuth::getProductId).collect(Collectors.toList());
         //获取该用户的产品
-        return productDao.getByArrayList(productIds);
+        return productDao.getByProductIds(productIds);
     }
 }

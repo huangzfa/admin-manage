@@ -69,7 +69,7 @@ public interface ProductDao {
      * @param productIds
      * @return
      */
-    List<Product> getByArrayList(@Param("productIds") List<Integer> productIds);
+    List<Product> getByProductIds(@Param("productIds") List<Integer> productIds);
 
     /**
      * 查询code关联了哪些产品

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.duobei.core.operation.product.dao.ProductDao" >
 
-    <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.ProductBusiness" extends="com.duobei.core.operation.product.dao.mapper.ProductBusinessMapper.BaseResultMap">
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.Product" extends="com.duobei.core.operation.product.dao.mapper.ProductMapper.BaseResultMap">
     </resultMap>
 
     <select id="getPageList" resultType="com.duobei.core.operation.product.domain.Product" parameterType="com.duobei.core.operation.product.domain.criteria.ProductCriteria">
@@ -47,7 +47,7 @@
     </select>
 
     <!-- 根据多个产品id查询 -->
-    <select id="getByProductIdS" resultType="com.duobei.core.operation.product.domain.Product">
+    <select id="getByProductIds" resultType="com.duobei.core.operation.product.domain.Product">
         SELECT * FROM yy_product  where state = 1 and id in
         <foreach collection="productIds" index="index" item="item" open="(" separator="," close=")">
             #{item}

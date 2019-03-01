@@ -32,7 +32,7 @@ public class AppPageConfig implements Serializable {
     /**
      * 是否启用【0：禁用，1：启用】
      */
-    private Boolean isEnable;
+    private Integer isEnable;
 
     /**
      * 菜单排序
@@ -42,7 +42,7 @@ public class AppPageConfig implements Serializable {
     /**
      * 菜单类型【1：h5，2：原生】
      */
-    private Byte menuType;
+    private Integer menuType;
 
     /**
      * 菜单链接值：h5时为URL，原生时为页面code
@@ -62,7 +62,7 @@ public class AppPageConfig implements Serializable {
     /**
      * 是否是应用审核状态下使用【0：非审核使用，1：审核使用】
      */
-    private Boolean isExamine;
+    private Integer isExamine;
 
     /**
      * 
@@ -137,11 +137,11 @@ public class AppPageConfig implements Serializable {
         this.menuCode = menuCode;
     }
 
-    public Boolean getIsEnable() {
+    public Integer getIsEnable() {
         return isEnable;
     }
 
-    public void setIsEnable(Boolean isEnable) {
+    public void setIsEnable(Integer isEnable) {
         this.isEnable = isEnable;
     }
 
@@ -153,11 +153,11 @@ public class AppPageConfig implements Serializable {
         this.menuSort = menuSort;
     }
 
-    public Byte getMenuType() {
+    public Integer getMenuType() {
         return menuType;
     }
 
-    public void setMenuType(Byte menuType) {
+    public void setMenuType(Integer menuType) {
         this.menuType = menuType;
     }
 
@@ -185,11 +185,11 @@ public class AppPageConfig implements Serializable {
         this.selectIconUrl = selectIconUrl;
     }
 
-    public Boolean getIsExamine() {
+    public Integer getIsExamine() {
         return isExamine;
     }
 
-    public void setIsExamine(Boolean isExamine) {
+    public void setIsExamine(Integer isExamine) {
         this.isExamine = isExamine;
     }
 

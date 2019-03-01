@@ -525,52 +525,52 @@ public class AppPageConfigExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableEqualTo(Boolean value) {
+        public Criteria andIsEnableEqualTo(Integer value) {
             addCriterion("apc.is_enable =", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableNotEqualTo(Boolean value) {
+        public Criteria andIsEnableNotEqualTo(Integer value) {
             addCriterion("apc.is_enable <>", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableGreaterThan(Boolean value) {
+        public Criteria andIsEnableGreaterThan(Integer value) {
             addCriterion("apc.is_enable >", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andIsEnableGreaterThanOrEqualTo(Integer value) {
             addCriterion("apc.is_enable >=", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableLessThan(Boolean value) {
+        public Criteria andIsEnableLessThan(Integer value) {
             addCriterion("apc.is_enable <", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableLessThanOrEqualTo(Boolean value) {
+        public Criteria andIsEnableLessThanOrEqualTo(Integer value) {
             addCriterion("apc.is_enable <=", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableIn(List<Boolean> values) {
+        public Criteria andIsEnableIn(List<Integer> values) {
             addCriterion("apc.is_enable in", values, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableNotIn(List<Boolean> values) {
+        public Criteria andIsEnableNotIn(List<Integer> values) {
             addCriterion("apc.is_enable not in", values, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableBetween(Boolean value1, Boolean value2) {
+        public Criteria andIsEnableBetween(Integer value1, Integer value2) {
             addCriterion("apc.is_enable between", value1, value2, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andIsEnableNotBetween(Integer value1, Integer value2) {
             addCriterion("apc.is_enable not between", value1, value2, "isEnable");
             return (Criteria) this;
         }
@@ -645,52 +645,52 @@ public class AppPageConfigExample {
             return (Criteria) this;
         }
 
-        public Criteria andMenuTypeEqualTo(Byte value) {
+        public Criteria andMenuTypeEqualTo(Integer value) {
             addCriterion("apc.menu_type =", value, "menuType");
             return (Criteria) this;
         }
 
-        public Criteria andMenuTypeNotEqualTo(Byte value) {
+        public Criteria andMenuTypeNotEqualTo(Integer value) {
             addCriterion("apc.menu_type <>", value, "menuType");
             return (Criteria) this;
         }
 
-        public Criteria andMenuTypeGreaterThan(Byte value) {
+        public Criteria andMenuTypeGreaterThan(Integer value) {
             addCriterion("apc.menu_type >", value, "menuType");
             return (Criteria) this;
         }
 
-        public Criteria andMenuTypeGreaterThanOrEqualTo(Byte value) {
+        public Criteria andMenuTypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("apc.menu_type >=", value, "menuType");
             return (Criteria) this;
         }
 
-        public Criteria andMenuTypeLessThan(Byte value) {
+        public Criteria andMenuTypeLessThan(Integer value) {
             addCriterion("apc.menu_type <", value, "menuType");
             return (Criteria) this;
         }
 
-        public Criteria andMenuTypeLessThanOrEqualTo(Byte value) {
+        public Criteria andMenuTypeLessThanOrEqualTo(Integer value) {
             addCriterion("apc.menu_type <=", value, "menuType");
             return (Criteria) this;
         }
 
-        public Criteria andMenuTypeIn(List<Byte> values) {
+        public Criteria andMenuTypeIn(List<Integer> values) {
             addCriterion("apc.menu_type in", values, "menuType");
             return (Criteria) this;
         }
 
-        public Criteria andMenuTypeNotIn(List<Byte> values) {
+        public Criteria andMenuTypeNotIn(List<Integer> values) {
             addCriterion("apc.menu_type not in", values, "menuType");
             return (Criteria) this;
         }
 
-        public Criteria andMenuTypeBetween(Byte value1, Byte value2) {
+        public Criteria andMenuTypeBetween(Integer value1, Integer value2) {
             addCriterion("apc.menu_type between", value1, value2, "menuType");
             return (Criteria) this;
         }
 
-        public Criteria andMenuTypeNotBetween(Byte value1, Byte value2) {
+        public Criteria andMenuTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("apc.menu_type not between", value1, value2, "menuType");
             return (Criteria) this;
         }
@@ -915,52 +915,52 @@ public class AppPageConfigExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsExamineEqualTo(Boolean value) {
+        public Criteria andIsExamineEqualTo(Integer value) {
             addCriterion("apc.is_examine =", value, "isExamine");
             return (Criteria) this;
         }
 
-        public Criteria andIsExamineNotEqualTo(Boolean value) {
+        public Criteria andIsExamineNotEqualTo(Integer value) {
             addCriterion("apc.is_examine <>", value, "isExamine");
             return (Criteria) this;
         }
 
-        public Criteria andIsExamineGreaterThan(Boolean value) {
+        public Criteria andIsExamineGreaterThan(Integer value) {
             addCriterion("apc.is_examine >", value, "isExamine");
             return (Criteria) this;
         }
 
-        public Criteria andIsExamineGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andIsExamineGreaterThanOrEqualTo(Integer value) {
             addCriterion("apc.is_examine >=", value, "isExamine");
             return (Criteria) this;
         }
 
-        public Criteria andIsExamineLessThan(Boolean value) {
+        public Criteria andIsExamineLessThan(Integer value) {
             addCriterion("apc.is_examine <", value, "isExamine");
             return (Criteria) this;
         }
 
-        public Criteria andIsExamineLessThanOrEqualTo(Boolean value) {
+        public Criteria andIsExamineLessThanOrEqualTo(Integer value) {
             addCriterion("apc.is_examine <=", value, "isExamine");
             return (Criteria) this;
         }
 
-        public Criteria andIsExamineIn(List<Boolean> values) {
+        public Criteria andIsExamineIn(List<Integer> values) {
             addCriterion("apc.is_examine in", values, "isExamine");
             return (Criteria) this;
         }
 
-        public Criteria andIsExamineNotIn(List<Boolean> values) {
+        public Criteria andIsExamineNotIn(List<Integer> values) {
             addCriterion("apc.is_examine not in", values, "isExamine");
             return (Criteria) this;
         }
 
-        public Criteria andIsExamineBetween(Boolean value1, Boolean value2) {
+        public Criteria andIsExamineBetween(Integer value1, Integer value2) {
             addCriterion("apc.is_examine between", value1, value2, "isExamine");
             return (Criteria) this;
         }
 
-        public Criteria andIsExamineNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andIsExamineNotBetween(Integer value1, Integer value2) {
             addCriterion("apc.is_examine not between", value1, value2, "isExamine");
             return (Criteria) this;
         }

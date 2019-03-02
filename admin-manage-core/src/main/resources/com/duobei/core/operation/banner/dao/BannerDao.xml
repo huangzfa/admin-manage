@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.banner.dao.BannerDao">
+
+  <sql id="Base_Column_List">
+    banner.id as banner_id, banner.product_id as product_id, banner.app_id as app_id,
+    banner.img_url as img_url, banner.banner_title as banner_title, banner.banner_type as banner_type,
+    banner.redirect_type as redirect_type, banner.redirect_url as redirect_url,
+    banner.remark as remark, banner.sort as sort, banner.is_need_login as is_need_login,
+    banner.is_enable as is_enable, banner.add_time as add_time, banner.modify_time as modify_time,
+    banner.add_operator_id as add_operator_id, banner.modify_operator_id as modify_operator_id,
+    banner.is_delete as is_delete
+  </sql>
+  
+  <select id="queryList" parameterType="com.duobei.core.operation.banner.domain.criteria.BannerCriteria" resultType="com.duobei.core.operation.banner.domain.Banner">
+    SELECT <include refid="Base_Column_List"/>
+    FROM yy_banner banner
+    WHERE banner.is_delete = 0 and banner.app_id = #{app_id}
+    <if test="bannerTitle != null and bannerTitle != ''">
+    and banner.banner_title = #{bannerTitle}
+    </if>
+    <if test="bannerType != null and bannerType != ''">
+      and banner.banner_type = #{bannerType}
+    </if>
+    <if test="isEnable != null">
+      and banner.is_enable = #{bannerTitle}
+    </if>
+    ORDER BY banner.sort asc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+  <select id="getById" parameterType="Integer" resultType="com.duobei.core.operation.banner.domain.Banner">
+    select <include refid="Base_Column_List"/> from yy_banner
+    where is_delete = 0 and id = #{id}
+  </select>
+
+  <insert id="save" parameterType="com.duobei.core.operation.banner.domain.Banner">
+    insert into yy_banner(product_id, app_id, img_url
+    , banner_title, banner_type, redirect_type, redirect_url
+    , remark, sort, is_need_login, is_enable, add_time, modify_time
+    , add_operator_id, modify_operator_id, is_delete)
+    values(#{productId},#{appId},#{imgUrl}
+    ,#{bannerTitle},#{bannerType},#{redirectType},#{redirectUrl}
+    ,#{remark},#{sort},#{isNeedLogin},#{isEnable},#{addTime},#{modifyTime}
+    ,#{addOperatorId},#{modifyOperatorId})
+  </insert>
+
+  <update id="update" parameterType="com.duobei.core.operation.banner.domain.Banner">
+    update yy_banner
+    set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId}
+    <if test="imgUrl != '' and imgUrl != null">
+      ,img_url = #{imgUrl}
+    </if>
+    <if test="bannerTitle != '' and bannerTitle != null">
+      ,banner_title = #{bannerTitle}
+    </if>
+    <if test="bannerType != '' and bannerType != null">
+      ,banner_type = #{bannerType}
+    </if>
+    <if test="redirectType != '' and redirectType != null">
+      ,redirect_type = #{redirectType}
+    </if>
+    <if test="redirectUrl != '' and redirectUrl != null">
+      ,redirect_url = #{redirectUrl}
+    </if>
+    <if test="remark != '' and remark != null">
+      ,remark = #{remark}
+    </if>
+    <if test="sort != null">
+      ,sort = #{sort}
+    </if>
+    <if test="isNeedLogin != null">
+      ,is_need_login = #{isNeedLogin}
+    </if>
+    <if test="isEnable != null">
+      ,is_enable = #{isEnable}
+    </if>
+    where is_delete = 0 and id = #{id}
+  </update>
+
+  <update id="updateStatus" parameterType="com.duobei.core.operation.banner.domain.Banner">
+     update yy_banner
+    set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId},is_enable = #{isEnable}
+    where id = #{id} and is_delete = #{isDelete}
+  </update>
+</mapper>

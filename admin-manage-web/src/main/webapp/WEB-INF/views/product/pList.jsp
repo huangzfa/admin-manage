@@ -79,8 +79,8 @@
             var productState = 0;
             if( row.productState == 0) productState = 1;
             opStr+='<a class="si-option-a" href="${ctxA}/product/form?productCode='+row.productCode+'">修改</a>';
-            opStr+="<a class='si-option-a' href='javascript:editState(\""+row.productCode+"\",\""+productState+"\")'>"+(row.productState==1?"禁用":"启用")+"</a>";
-            opStr+='<a class="si-option-a" href="${ctxA}/product/form?productCode='+row.productCode+'">配置产品</a>';
+            //opStr+="<a class='si-option-a' href='javascript:editState(\""+row.productCode+"\",\""+productState+"\")'>"+(row.productState==1?"禁用":"启用")+"</a>";
+            opStr+='<a class="si-option-a" href="${ctxA}/product/pConfig?productCode='+row.productCode+'">配置产品</a>';
             </shiro:hasPermission>
             return opStr;
         }

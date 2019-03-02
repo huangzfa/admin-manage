@@ -23,19 +23,27 @@
 		<property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"/>
 		<property name="minPoolSize" value="5" />
 		<property name="maxPoolSize" value="20" />
-		<!--(秒)最最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。-->
+		<!--最大闲置时间，超过最小连接池连接的连接将将关闭。若为0则永不丢弃。-->
 		<property name="maxIdleTime" value="60" />
 		<!--（毫秒）最大获取数据时间，如果不设置这个值，Atomikos使用默认的5分钟，那么在处理大批量数据读取的时候，一旦超过5分钟，就会抛出类似 Resultset is close 的错误.-->
 		<property name="reapTimeout" value="0" />
 		<!-- （毫秒）一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），0不限制 -->
 		<property name="maxLifetime" value="0" />
+		<!--获取连接失败重新获等待最大时间，在这个时间内如果有可用连接，将返回-->
+		<property name="borrowConnectionTimeout" value="30" />
+		<!--用于测试的SQL语句一定要写(不知道问什么)-->
+		<property name="testQuery" value="select 1" />
+		<!--java数据库连接池，最大可等待获取datasouce的时间-->
+		<property name="loginTimeout" value="0"/>
+		<!--连接回收时间-->
+		<property name="maintenanceInterval" value="60" />
 
 	</bean>
 	<bean id="manageDataSource" parent="parentSource">
 		<property name="uniqueResourceName" value="one" />
 		<property name="xaProperties">
 			<props>
-				<prop key="url">jdbc:mysql://${db.host1}:${db.port1}/${db.database1}?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true</prop>
+				<prop key="url">jdbc:mysql://${db.host1}:${db.port1}/${db.database1}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true</prop>
 				<prop key="user">${db.user1}</prop>
 				<prop key="password">${db.password1}</prop>
 			</props>
@@ -46,7 +54,7 @@
 		<property name="uniqueResourceName" value="two" />
 		<property name="xaProperties">
 			<props>
-				<prop key="url">jdbc:mysql://${db.host2}:${db.port2}/${db.database2}?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true</prop>
+				<prop key="url">jdbc:mysql://${db.host2}:${db.port2}/${db.database2}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true</prop>
 				<prop key="user">${db.user2}</prop>
 				<prop key="password">${db.password2}</prop>
 			</props>

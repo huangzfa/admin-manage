@@ -19,4 +19,10 @@ public interface AppDao {
      * @return
      */
     List<App> getByProductIds(@Param("productIds") List<Integer> productIds);
+
+    /**
+     *
+     * @return
+     */
+    List<App> getAll();
 }

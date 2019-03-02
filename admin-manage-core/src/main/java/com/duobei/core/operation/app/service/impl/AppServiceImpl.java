@@ -36,4 +36,13 @@ public class AppServiceImpl implements AppService{
         List<Integer> productIds = list.stream().map(Product::getId).collect(Collectors.toList());
         return appDao.getByProductIds(productIds);
     }
+
+    /**
+     * 查询所有app列表
+     * @return
+     */
+    @Override
+    public List<App> getAll(){
+        return appDao.getAll();
+    }
 }

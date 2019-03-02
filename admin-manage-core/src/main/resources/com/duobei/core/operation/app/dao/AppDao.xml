@@ -12,4 +12,8 @@
         </foreach>
         order by id desc;
     </select>
+
+    <select id="getAll" resultType="com.duobei.core.operation.app.domain.App">
+        select * from yy_app where is_delete = 0;
+    </select>
 </mapper>

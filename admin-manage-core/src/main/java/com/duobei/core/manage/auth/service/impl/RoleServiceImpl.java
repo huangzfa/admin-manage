@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.duobei.common.util.lang.StringUtil;
+import com.duobei.core.manage.auth.helper.UserHelper;
 import com.duobei.core.manage.auth.service.RoleDataAuthService;
 import com.duobei.core.operation.app.service.AppService;
+import com.duobei.core.operation.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -51,6 +53,8 @@ public class RoleServiceImpl implements RoleService {
 	private RoleDataAuthService roleDataAuthService;
 	@Autowired
 	private AppService appService;
+	@Autowired
+	private ProductService productService;
 
 	@Override
 	public ListVo<RoleVo> queryRoleList(OperatorCredential credential, RoleCriteria roleCriteria) throws TqException {
@@ -123,9 +127,15 @@ public class RoleServiceImpl implements RoleService {
 			}
 		}
 		roleDataAuthService.save(roleId,role.getRoleProductIds());
-		RoleCriteria criteria = new RoleCriteria();
-		credential.setProductList(roleDataAuthService.getByOpId(credential.getOpId()));
-		credential.setAppList(appService.getByProductIds(credential.getProductList()));
+		//判断是不是超级管理
+		if( UserHelper.isSuperAdmin()){
+			credential.setProductList(productService.getAll());
+			credential.setAppList(appService.getAll());
+		}else{
+			credential.setProductList(roleDataAuthService.getByOpId(credential.getOpId()));
+			credential.setAppList(appService.getByProductIds(credential.getProductList()));
+		}
+
 	}
 
 	@Override
@@ -197,9 +207,14 @@ public class RoleServiceImpl implements RoleService {
 			}
 		}
 		roleDataAuthService.save(roleId,role.getRoleProductIds());
-		RoleCriteria criteria = new RoleCriteria();
-		credential.setProductList(roleDataAuthService.getByOpId(credential.getOpId()));
-		credential.setAppList(appService.getByProductIds(credential.getProductList()));
+		//判断是不是超级管理
+		if( UserHelper.isSuperAdmin()){
+			credential.setProductList(productService.getAll());
+			credential.setAppList(appService.getAll());
+		}else{
+			credential.setProductList(roleDataAuthService.getByOpId(credential.getOpId()));
+			credential.setAppList(appService.getByProductIds(credential.getProductList()));
+		}
 
 	}
 

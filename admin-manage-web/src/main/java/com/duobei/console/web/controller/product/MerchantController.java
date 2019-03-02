@@ -81,7 +81,7 @@ public class MerchantController extends BaseController {
     @RequiresPermissions("merchant:list:edit")
     @RequestMapping(value = "/form")
     public String form(Model model, String merchantNo) {
-        if (StringUtil.isBlank(merchantNo)) {
+        if (!StringUtil.isBlank(merchantNo)) {
             model.addAttribute("merchant", merchantService.getByMerchantNo(merchantNo));
         }
         return "merchant/form";
@@ -105,10 +105,11 @@ public class MerchantController extends BaseController {
                 throw new TqException("登录过期，请重新登录");
             }
             if (merchant.getId() == null) {
-                merchant.setModifyOperatorId(credential.getOpId());
-                merchant.setModifyTime(new Date());
+                merchant.setAddOperatorId(credential.getOpId());
                 merchantService.save(merchant);
             } else {
+                merchant.setModifyOperatorId(credential.getOpId());
+                merchant.setModifyTime(new Date());
                 merchantService.update(merchant);
             }
             return simpleSuccessJsonResult("success");

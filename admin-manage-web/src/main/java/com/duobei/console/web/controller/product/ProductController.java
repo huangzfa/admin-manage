@@ -101,7 +101,7 @@ public class ProductController extends BaseController {
     @RequiresPermissions("product:list:edit")
     @RequestMapping(value = "/mpForm")
     public String mpForm(Model model, String productCode) {
-        if (StringUtil.isBlank(productCode)) {
+        if (!StringUtil.isBlank(productCode)) {
             model.addAttribute("product", productService.getByCode(productCode));
         }
         model.addAttribute("merchants",merchantService.getAll());
@@ -117,7 +117,7 @@ public class ProductController extends BaseController {
     @RequiresPermissions("product:list:edit")
     @RequestMapping(value = "/pForm")
     public String pForm(Model model, String productCode) {
-        if (StringUtil.isBlank(productCode)) {
+        if (!StringUtil.isBlank(productCode)) {
             Product product = productService.getByCode(productCode);
             model.addAttribute("product", product);
             if( product !=null ){
@@ -136,7 +136,7 @@ public class ProductController extends BaseController {
     @RequiresPermissions("product:list:edit")
     @RequestMapping(value = "/pConfig")
     public String pConfig(Model model, String productCode) {
-        if (StringUtil.isBlank(productCode)) {
+        if (!StringUtil.isBlank(productCode)) {
             Product product = productService.getByCode(productCode);
             model.addAttribute("product", product);
             if( product !=null ){
@@ -164,10 +164,11 @@ public class ProductController extends BaseController {
                 throw new TqException("登录过期，请重新登录");
             }
             if (product.getId() == null) {
-                product.setModifyOperatorId(credential.getOpId());
-                product.setModifyTime(new Date());
+                product.setAddOperatorId(credential.getOpId());
                 productService.save(product);
             } else {
+                product.setModifyOperatorId(credential.getOpId());
+                product.setModifyTime(new Date());
                 productService.update(product);
             }
             return simpleSuccessJsonResult("success");

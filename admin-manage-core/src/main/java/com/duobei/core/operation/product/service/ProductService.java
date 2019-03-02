@@ -6,6 +6,8 @@ import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
 import com.duobei.core.operation.product.domain.vo.ProductVo;
 
+import java.util.List;
+
 /**
  * @author huangzhongfa
  * @description
@@ -51,6 +53,12 @@ public interface ProductService {
      * @param product
      */
     void save(Product product) throws TqException;
+
+    /**
+     * 查询所有产品
+     * @return
+     */
+    List<Product> getAll();
 
 
 }

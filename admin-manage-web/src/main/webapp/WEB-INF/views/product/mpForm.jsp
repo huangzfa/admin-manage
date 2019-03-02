@@ -13,10 +13,10 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/merchant/list">商户列表</a></li>
+    <li><a href="${ctxA}/merchant/list">产品列表</a></li>
     <li class="active">
-        <shiro:hasPermission name="merchant:list:edit">
-            <a href="javascript:void(0);">${not empty authConfig.id?'修改':'添加'}商户</a>
+        <shiro:hasPermission name="product:list:edit">
+            <a href="javascript:void(0);">${not empty product.id?'修改':'添加'}商户</a>
         </shiro:hasPermission>
     </li>
 </ul>
@@ -28,13 +28,13 @@
         <div class="control-group">
             <label class="control-label">产品名称：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写商户名称" type="text" name="merchantName" id="merchantName" maxlength="32" value="${authConfig.authName}"></input>
+                <input type="text" class="form-control valid" descripe="请填写产品名称" type="text" name="productName" id="productName" maxlength="32" value="${product.productName}"></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">所属商户：</label>
             <div class="controls">
-                <select  name="merchantId" id="merchantId" class="selectpicker show-tick form-control valid" descripe="请选择商户"">
+                <select  name="merchantId" id="merchantId" class="selectpicker show-tick form-control valid" descripe="请选择商户">
                     <option value="">请选择</option>
                     <c:forEach items="${merchants}" var="merchant">
                         <option value="${merchant.id}" ${not empty product && product.merchantId==merchant.id?"selected":''}>${merchant.merchantName}</option>

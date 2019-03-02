@@ -73,7 +73,7 @@
         function optionformater(value,row,index){
             var opStr='';
             <shiro:hasPermission name="product:list:edit">
-               opStr+='<a class="si-option-a" href="${ctxA}/product/form?productCode='+row.productCode+'">修改</a>';
+               opStr+='<a class="si-option-a" href="${ctxA}/product/mpForm?productCode='+row.productCode+'">修改</a>';
             </shiro:hasPermission>
             return opStr;
         }
@@ -85,7 +85,7 @@
 <ul class="nav nav-tabs" style="margin-bottom: 5px;">
     <li class="active"><a href="javascript:void(0);">产品列表</a></li>
     <shiro:hasPermission name="product:list:edit">
-        <li><a href="${ctxA}/product/form">添加产品</a></li>
+        <li><a href="${ctxA}/product/mpForm">添加产品</a></li>
     </shiro:hasPermission>
 </ul>
 <div class="breadcrumb form-search" style="margin-bottom:0;">

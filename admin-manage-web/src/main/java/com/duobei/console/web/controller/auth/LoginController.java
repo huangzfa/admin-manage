@@ -13,11 +13,16 @@ import com.duobei.console.shiro.UsernamePasswordCaptchaToken;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.Operator;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.auth.helper.UserHelper;
 import com.duobei.core.manage.auth.service.OperatorLoginLogService;
 import com.duobei.core.manage.auth.service.OperatorService;
+import com.duobei.core.manage.auth.service.RoleDataAuthService;
 import com.duobei.core.manage.sys.service.VerifyCodeService;
+import com.duobei.core.operation.app.service.AppService;
+import com.duobei.core.operation.product.service.ProductService;
 import com.duobei.dic.ZD;
 import com.duobei.common.exception.TqException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -47,11 +52,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
+@Slf4j
 public class LoginController extends BaseController {
-	private final static Logger log = LoggerFactory.getLogger(LoginController.class);
 
 	public final static String isNeedVerifyCodeKey = "isNeedVerifyCode";
-
 
 	@Autowired
 	private OperatorService operatorService;
@@ -59,6 +63,13 @@ public class LoginController extends BaseController {
 	private VerifyCodeService verifyCodeService;
 	@Autowired
 	private OperatorLoginLogService operatorLoginLogService;
+	@Autowired
+	private RoleDataAuthService roleDataAuthService;
+	@Autowired
+	private AppService appService;
+	@Autowired
+	private ProductService productService;
+
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -147,7 +158,14 @@ public class LoginController extends BaseController {
 			Session shiroSession = subject.getSession();
 			credential.setSessionCreateTime(shiroSession.getStartTimestamp());
 			credential.setSessionTimeout(shiroSession.getTimeout());
-
+			//判断是否是超级管理员
+			if( UserHelper.isSuperAdmin()){
+				credential.setProductList(productService.getAll());
+				credential.setAppList(appService.getAll());
+			}else{
+				credential.setProductList(roleDataAuthService.getByOpId(operator.getOpId()));
+				credential.setAppList(appService.getByProductIds(credential.getProductList()));
+			}
 			// 登录成功后更新信息
 			operatorService.updateOperatorForLogin(credential);
 			// 登录后记录日志

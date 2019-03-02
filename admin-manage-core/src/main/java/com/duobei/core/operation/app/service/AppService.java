@@ -17,4 +17,10 @@ public interface AppService {
      * @return
      */
     List<App> getByProductIds(List<Product> list);
+
+    /**
+     * 查询所有app列表
+     * @return
+     */
+    List<App> getAll();
 }

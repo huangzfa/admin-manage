@@ -11,6 +11,7 @@ import com.duobei.core.operation.product.domain.vo.ProductVo;
 import com.duobei.core.operation.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -74,6 +75,7 @@ public class ProductServiceImpl implements ProductService {
      * @param product
      */
     @Override
+    @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
     public void update(Product product) throws TqException{
         if( productDao.update(product) <1){
             throw new TqException("修改失败");
@@ -90,5 +92,14 @@ public class ProductServiceImpl implements ProductService {
         if( productDao.save(product) <1){
             throw new TqException("添加失败");
         }
+    }
+
+    /**
+     * 查询所有产品
+     * @return
+     */
+    @Override
+    public List<Product> getAll(){
+        return productDao.getAll();
     }
 }

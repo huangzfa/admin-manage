@@ -54,37 +54,36 @@
             dataType:'json',
             success:function(data){
               $('#tt').datagrid('loaded');
-
               if(data.code==1){
-                $('#tt').datagrid('loadData', data.list);
-                datalist=data.list;
-               	debugger;
+
             /*    if(datalist.total > 4){
                   $('.chooseTwo').css('display','block')
                   $('.chooseTwo a').css('color','#ccc')*/
-				  	var nowAppId = 0;
+				  	var nowAppId = -1;
                   $('#menuOperation').attr("href","#");
                     $('#appQuery').html("")
                     for (var i = 0; i < data.appList.length; i++) {
                         var option = ""
                         if (appQuery == data.appList[i].id) {
                             option = "<option value= '" + data.appList[i].id + "'selected = 'selected'>" + data.appList[i].appName + "</option>";
-                            nowAppId = appList[i].id;
+                            nowAppId = data.appList[i].id;
                         } else {
                             option = "<option value= '" + data.appList[i].id + "'>" + data.appList[i].appName + "</option>";
                         }
                         $(option).appendTo($("#appQuery"));
                     }
                     if (nowAppId == -1){
-                        nowAppId = appList[0].id;
+                            nowAppId = data.appList[0].id;
                     }
                   $('#menuOperation').attr("href","${ctxA}/app/pageConfig/form?appId="+nowAppId);
+				  $('#appId').val(nowAppId);
             /*    }else{
                   $('.chooseOne').css('display','block')
                 }
 */
                 // console.log(datalist.total+'22222222')
-
+                  $('#tt').datagrid('loadData', data.list);
+                  datalist=data.list;
               }else{
                 top.$.jBox.tip(data.msg);
 
@@ -95,7 +94,9 @@
             }
           });
         }
-
+          $('#search').click(function(){
+              getData(1,pageSize);
+          });
       });
 
       function iconurlformater(value,row,index){
@@ -112,12 +113,17 @@
 
       function optionformater(value,row,index){
         var opStr='';
-        <shiro:hasPermission name="app:pageConfig:edit">
-        opStr+='<a class="si-option-a" href="${ctxA}/app/pageConfig/form?id='+row.id+'&appId='+ $('#appQuery').val();+'">编辑</a>';
+
+        opStr+='<a class="si-option-a" href="${ctxA}/app/pageConfig/form?id='+row.id+'&appId='+ $('#appId').val()+'">编辑</a>';
+        if(row.isEnable == 1){
+            opStr+='<a class="si-option-a" href="${ctxA}/app/pageConfig/updateStatus?id='+row.id+'&appId='+ $('#appId').val()+'&isEnable='+0+'">禁用</a>';
+        }else{
+            opStr+='<a class="si-option-a" href="${ctxA}/app/pageConfig/updateStatus?id='+row.id+'&appId='+ $('#appId').val()+'&isEnable='+1+'">启用</a>';
+        }
+
         /*if (row.menuName != '借钱' && row.menuName != '我的'){
           opStr+='<a class="si-option-a" href="${ctxA}/app/pageConfig/delete?id='+row.id+'" onclick="return confirmx(\'确定要删除该应用页面吗？\', this.href)">删除</a>';
         }*/
-        </shiro:hasPermission>
         return opStr;
       }
 	</script>
@@ -127,9 +133,10 @@
 	<li class="active"><a href="javascript:void(0);">应用页面配置</a></li>
 	<shiro:hasPermission name="app:pageConfig:edit">
 			<%--<li class="chooseTwo" style="display:none"><a href="${ctxA}/app/pageConfig/form" onclick="return false;" style="cursor: default;" >新增菜单</a></li>--%>
-			<li class="chooseOne" <%--style="display:none"--%>><a id="menuOperation" href="#" >新增菜单</a></li>
+			<li class="chooseOne" <%--style="display:none"--%>><a id="menuOperation" href="#" >新增配置</a></li>
 	</shiro:hasPermission>
 </ul>
+<input type="hidden" name="" id="appId">
 <div class="breadcrumb form-search" style="margin-bottom:0;">
 	<ul class="ul-form">
 		<li>
@@ -146,14 +153,14 @@
 <div class="si-warp" style="top:95px;">
 	<sys:message content="${message}" isShowBox="false" />
 	<table id="tt" class="easyui-datagrid"
-		   data-options="idField:'apppageId',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
+		   data-options="idField:'id',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
 		<thead>
 		<tr>
-			<th data-options="field:'menuName',width:185,align:'center',halign:'center',fixed:true">菜单名称</th>
-			<th data-options="field:'menuSort',width:154,align:'center',halign:'center',fixed:true">排序</th>
-			<th data-options="field:'iconUrl',width:185,align:'center',halign:'center',fixed:true,formatter:iconurlformater">icon图片</th>
-			<th data-options="field:'selectIconUrl',width:185,align:'center',halign:'center',fixed:true,formatter:iconclickurlformater">icon点击效果</th>
-			<th data-options="field:'option',width:185,align:'center',halign:'center',fixed:true,formatter:optionformater">操作</th>
+			<th data-options="field:'menuName',width:185,align:'center',align:'center',fixed:true">菜单名称</th>
+			<th data-options="field:'menuSort',width:154,align:'center',align:'center',fixed:true">排序</th>
+			<th data-options="field:'iconUrl',width:185,align:'center',align:'center',fixed:true,formatter:iconurlformater">icon图片</th>
+			<th data-options="field:'selectIconUrl',width:185,align:'center',align:'center',fixed:true,formatter:iconclickurlformater">icon点击效果</th>
+			<th data-options="field:'option',width:185,align:'center',align:'center',fixed:true,formatter:optionformater">操作</th>
 		</tr>
 		</thead>
 	</table>

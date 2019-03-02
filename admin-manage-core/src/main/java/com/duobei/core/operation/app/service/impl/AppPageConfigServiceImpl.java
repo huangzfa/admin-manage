@@ -43,16 +43,17 @@ public class AppPageConfigServiceImpl implements AppPageConfigService {
 
         Long total = appPageConfigMapper.countByExample(example);
         List<AppPageConfig> appPages = null;
-/*        if (total > 0) {*/
+        if (total > 0) {
             appPages = appPageConfigDao.queryAppPageList(appPageConfigCriteria);
-//        }
+        }
         return new ListVo<AppPageConfig>(total.intValue() , appPages);
     }
 
     @Override
     public AppPageConfig queryAppPageConfigById(Integer id) {
-        return null;
+        return appPageConfigDao.getAppPageConfigById(id);
     }
+
 
     @Override
     public void deleteAppPageConfig(AppPageConfig appPageConfig) throws TqException {
@@ -71,11 +72,18 @@ public class AppPageConfigServiceImpl implements AppPageConfigService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void updateAppPageConfig( AppPageConfig appPageConfig) throws TqException {
         int count = appPageConfigDao.updateAppPageConfig(appPageConfig);
         if(count != 1){
             throw new TqException(DESC+"修改失败");
+        }
+    }
+
+    @Override
+    public void updateIsEnable(AppPageConfig appPageConfig) throws TqException {
+        int count = appPageConfigDao.updateIsEnable(appPageConfig);
+        if(count != 1){
+            throw new TqException(DESC+"修改状态失败,刷新后重试");
         }
     }
 }

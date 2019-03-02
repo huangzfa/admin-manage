@@ -116,10 +116,10 @@
 
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/app/pageConfig/list?id=${object.id}">应用页面配置</a></li>
+    <li><a href="${ctxA}/app/pageConfig/list?">应用页面配置</a></li>
     <li class="active">
         <shiro:hasPermission name="app:pageConfig:edit">
-            <a href="javascript:void(0);">${not empty object.id?'修改':'添加'}菜单</a>
+            <a href="javascript:void(0);">${not empty appPageConfig.id?'修改':'添加'}配置</a>
         </shiro:hasPermission>
         <shiro:lacksPermission name="app:pageConfig:edit">
             <a href="javascript:void(0);">查看菜单</a>
@@ -167,7 +167,7 @@
             <div class="controls">
                 <form:hidden path="iconUrl" htmlEscape="false"/>
                 <div class="thumbImgBox">
-                        <img id="imgPic" class="imgPic" src="${not empty apppage.iconUrl?apppage.iconUrl:'/static/img/dftimage.png'}" />
+                        <img id="imgPic" class="imgPic" src="${not empty appPageConfig.iconUrl?appPageConfig.iconUrl:'/static/img/dftimage.png'}" />
                         <input type="file" style="margin-left:40px;" id="new_file" placeholder="请选择文件">
                         <div class="update" id="update" style="margin-right:40px;" type="primary">上传图片</div>
                 </div>
@@ -186,7 +186,7 @@
             <div class="controls">
                 <form:hidden path="selectIconUrl" htmlEscape="false"/>
                 <div class="thumbImgBox">
-                    <img id="imgPic1" class="imgPic" src="${not empty apppage.selectIconUrl?apppage.selectIconUrl:'/static/img/dftimage.png'}" />
+                    <img id="imgPic1" class="imgPic" src="${not empty appPageConfig.selectIconUrl?appPageConfig.selectIconUrl:'/static/img/dftimage.png'}" />
                     <input type="file" style="margin-left:40px;" id="new_file1" placeholder="请选择文件">
                     <div class="update" id="update1" style="margin-right:40px;" type="primary">上传图片</div>
                 </div>
@@ -210,7 +210,7 @@
             <shiro:hasPermission name="app:pageConfig:edit">
                 <input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/app/pageConfig/list?id=${object.id}'"/>
+            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/app/pageConfig/list?appId=${appPageConfig.appId}'"/>
         </div>
     </form:form>
 

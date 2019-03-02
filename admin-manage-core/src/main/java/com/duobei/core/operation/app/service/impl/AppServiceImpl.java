@@ -1,13 +1,16 @@
 package com.duobei.core.operation.app.service.impl;
 
 import com.duobei.core.operation.app.dao.AppDao;
+import com.duobei.core.operation.app.dao.mapper.AppMapper;
 import com.duobei.core.operation.app.domain.App;
+import com.duobei.core.operation.app.domain.AppPageConfig;
 import com.duobei.core.operation.app.service.AppService;
 import com.duobei.core.operation.product.domain.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,9 @@ public class AppServiceImpl implements AppService{
 
     @Autowired
     private AppDao appDao;
+
+    @Resource
+    private AppMapper appMapper;
 
     /**
      * 根据产品查询app
@@ -44,5 +50,10 @@ public class AppServiceImpl implements AppService{
     @Override
     public List<App> getAll(){
         return appDao.getAll();
+    }
+
+    @Override
+    public App getAppById(Integer id) {
+        return appMapper.selectByPrimaryKey(id);
     }
 }

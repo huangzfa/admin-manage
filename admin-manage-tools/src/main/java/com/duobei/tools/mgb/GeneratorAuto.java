@@ -24,7 +24,7 @@ public class GeneratorAuto {
             List<String> warnings = new ArrayList<>();
             boolean overwrite = true;
             String path = GeneratorAuto.class.getResource("/").getPath() + "../../";
-            File configFile = new File(path + "mybatis/dao/operational.xml");
+            File configFile = new File(path + "mybatis/dao/market.xml");
             ConfigurationParser cp = new ConfigurationParser(warnings);
             Configuration config = cp.parseConfiguration(configFile);
             DefaultShellCallback callback = new DefaultShellCallback(overwrite);

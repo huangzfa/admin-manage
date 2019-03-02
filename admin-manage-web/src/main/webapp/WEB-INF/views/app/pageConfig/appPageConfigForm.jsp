@@ -116,7 +116,7 @@
 
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/app/pageConfig/list?">应用页面配置</a></li>
+    <li><a href="${ctxA}/app/pageConfig/list?appId=${appPageConfig.appId}">应用页面配置</a></li>
     <li class="active">
         <shiro:hasPermission name="app:pageConfig:edit">
             <a href="javascript:void(0);">${not empty appPageConfig.id?'修改':'添加'}配置</a>

@@ -35,7 +35,10 @@
             }
             if( appId!=''){
                 $("#appId").val(appId);
-			}
+            }else{
+                $("#appId").val(list[0].id);
+            }
+            $('#menuOperation').attr("href","${ctxA}/app/pageConfig/form?appId="+ $("#appId").val());
             pager=$('#tt').datagrid('getPager');
             pager.pagination({
                 onSelectPage:function(number, size){
@@ -67,6 +70,7 @@
                 dataType:'json',
                 success:function(data){
                     if(data.code==1){
+                        $('#menuOperation').attr("href","${ctxA}/app/pageConfig/form?appId="+ $("#appId").val());
                         $('#tt').datagrid('loadData', data.list);
                         pager.pagination({
                             pageSize: pageSize,//每页显示的记录条数，默认为10

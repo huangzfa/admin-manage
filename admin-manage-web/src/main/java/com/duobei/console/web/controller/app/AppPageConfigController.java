@@ -1,22 +1,18 @@
 
 package com.duobei.console.web.controller.app;
 
+import com.alibaba.fastjson.JSON;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.encrypt.MD5Util;
-import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
-import com.duobei.core.operation.app.domain.App;
-import com.duobei.core.operation.app.domain.AppPageConfig;
+import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.operation.app.domain.AppPageConfig;
 import com.duobei.core.operation.app.domain.criteria.AppPageConfigCriteria;
 import com.duobei.core.operation.app.service.AppPageConfigService;
-
-import java.util.*;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,14 +20,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.duobei.console.web.controller.base.BaseController;
-import sun.security.provider.MD5;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+/**
+ * @author huocai
+ * @description
+ * @date 2019/2/26
+ */
 
 @Controller
 @RequestMapping(value = "${authzPath}/app/pageConfig")
+@Slf4j
 public class AppPageConfigController extends  BaseController{
-	private final static Logger log = LoggerFactory.getLogger(
-      AppPageConfigController.class);
 
 	private final static String PERMISSIONPRE = "app:pageConfig:";
 	private final static String ADDRESSPRE = "app/pageConfig/";
@@ -39,48 +41,46 @@ public class AppPageConfigController extends  BaseController{
 	@Autowired
 	private AppPageConfigService appPageConfigService;
 
+	/**
+	 *应用菜单配置
+	 * @param model
+	 * @return
+	 */
 	@RequiresPermissions(PERMISSIONPRE+"view")
 	@RequestMapping(value = "/list")
-	public String list() {
+	public String list(Model model,Integer appId) {
+		OperatorCredential credential = getCredential();
+		model.addAttribute("appLists", JSON.toJSONString(credential.getAppList()));
+		model.addAttribute("appId",appId);
 		return ADDRESSPRE+"appPageConfigList";
 	}
 
+	/**
+	 * ajax查询
+	 * @param appPageConfigCriteria
+	 * @return
+	 * @throws TqException
+	 */
 	@RequiresPermissions(PERMISSIONPRE+"view")
 	@ResponseBody
 	@RequestMapping(value = "/appPageConfigList")
-	public String appPageConfigList(AppPageConfigCriteria appPageConfigCriteria) {
+	public String appPageConfigList(AppPageConfigCriteria appPageConfigCriteria) throws TqException{
 
 		OperatorCredential credential = getCredential();
-		if (appPageConfigCriteria.getPagesize() == 0) {
-			appPageConfigCriteria.setPagesize(GlobalConfig.getPageSize());
-		}
 		try {
-		    //TODO 用户权限
-//			List<App> appList = credential.getAppList();
-            List<App> appList = new ArrayList<>();
-            App app1 = new App();
-            app1.setAppName("美期钱包");
-            app1.setId(1);
-            app1.setAppKey("mqqb");
-            appList.add(app1);
-
-            App app2 = new App();
-            app2.setAppName("巧花");
-            app2.setId(2);
-            app2.setAppKey("qh");
-            appList.add(app2);
-            if (appList == null){
-				return failJsonResult("应用权限不足");
+			if( credential == null){
+                throw new TqException("登录过期，请重新登录");
 			}
-			//给与默认查询的应用
-			if (StringUtil.isEmpty(appPageConfigCriteria.getAppId())){
-				appPageConfigCriteria.setAppId(appList.get(0).getId());
+			if (appPageConfigCriteria.getPagesize() == 0) {
+				appPageConfigCriteria.setPagesize(GlobalConfig.getPageSize());
+			}
+			//验证数据权限
+			if( appPageConfigCriteria.getAppId() !=null){
+				validAuthData(null,appPageConfigCriteria.getAppId());
 			}
 			ListVo<AppPageConfig> list = appPageConfigService.queryAppPageConfigList(appPageConfigCriteria);
 			Map<String,Object> dataMap = new HashMap<>();
 			dataMap.put("list",list);
-			//查询条件-审批状态
-			dataMap.put("appList",appList);
 			return successJsonResult(dataMap,"success");
 		} catch (Exception e) {
 			if (e instanceof TqException) {
@@ -92,6 +92,13 @@ public class AppPageConfigController extends  BaseController{
 		}
 	}
 
+	/**
+	 *
+	 * @param appPageConfig
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequiresPermissions(PERMISSIONPRE+"view")
 	@RequestMapping(value = "/form")
 	public String form(@ModelAttribute("appPageConfig") AppPageConfig appPageConfig, Model model,RedirectAttributes redirectAttributes){
@@ -110,8 +117,15 @@ public class AppPageConfigController extends  BaseController{
 		}
  		model.addAttribute("appPageConfig", appPageConfig);
 		return ADDRESSPRE+"appPageConfigForm";
-		}
+	}
 
+	/**
+	 *
+	 * @param appPageConfig
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequiresPermissions({ PERMISSIONPRE+"edit" })
 	@RequestMapping(value = "/save")
 	public String save(AppPageConfig appPageConfig, Model model, RedirectAttributes redirectAttributes) {
@@ -148,6 +162,14 @@ public class AppPageConfigController extends  BaseController{
 		return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list?appId="+appPageConfig.getAppId();
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @param appId
+	 * @param isEnable
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequiresPermissions({ PERMISSIONPRE+"edit" })
 	@RequestMapping(value = "/updateStatus")
 	public String updateStatus(Integer id,Integer appId ,Integer isEnable, RedirectAttributes redirectAttributes) {
@@ -172,7 +194,12 @@ public class AppPageConfigController extends  BaseController{
 		return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list?appId="+appId;
 	}
 
-
+	/**
+	 *
+	 * @param id
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequiresPermissions({ PERMISSIONPRE+"edit" })
 	@RequestMapping(value = "/delete")
 	public String delete(Integer id, RedirectAttributes redirectAttributes) {

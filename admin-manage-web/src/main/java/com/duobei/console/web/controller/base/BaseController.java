@@ -123,13 +123,13 @@ public class BaseController {
 		if( params.length > 0  && params[0]!=null){
 			List<Integer> list = credential.getProductList().stream().map(Product::getId).collect(Collectors.toList());
 			if( !list.contains(params[0]) ){
-				throw  new TqException("您没有改产品的操作权限");
+				throw  new TqException("您没有该产品的操作权限");
 			}
 		}
 		if( params.length > 1  && params[1]!=null){
 			List<Integer> list = credential.getAppList().stream().map(App::getId).collect(Collectors.toList());
 			if( !list.contains(params[1]) ){
-				throw  new TqException("您没有改应用的操作权限");
+				throw  new TqException("您没有该应用的操作权限");
 			}
 		}
 	}

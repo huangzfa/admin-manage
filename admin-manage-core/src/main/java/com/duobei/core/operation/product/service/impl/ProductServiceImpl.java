@@ -1,5 +1,8 @@
 package com.duobei.core.operation.product.service.impl;
 
+import com.duobei.common.exception.TqException;
+import com.duobei.common.util.encrypt.MD5Util;
+import com.duobei.common.util.lang.DateUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.dao.ProductDao;
 import com.duobei.core.operation.product.domain.Product;
@@ -9,6 +12,7 @@ import com.duobei.core.operation.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +47,11 @@ public class ProductServiceImpl implements ProductService {
         return productDao.getById(id);
     }
 
+    /**
+     * 根据产品code查询
+     * @param code
+     * @return
+     */
     @Override
     public Product getByCode(String code) {
         return productDao.getByCode(code);
@@ -54,7 +63,32 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public int editState(Product record){
-        return productDao.update(record);
+    public void editState(Product record) throws TqException{
+        if( productDao.update(record) < 1){
+            throw new TqException("禁用失败");
+        }
+    }
+
+    /**
+     * 修改商户
+     * @param product
+     */
+    @Override
+    public void update(Product product) throws TqException{
+        if( productDao.update(product) <1){
+            throw new TqException("修改失败");
+        }
+    }
+
+    /**
+     * 添加商户
+     * @param product
+     */
+    @Override
+    public void save(Product product) throws TqException{
+        product.setProductCode(MD5Util.encrypt(DateUtil.getTimeStr(new Date())));
+        if( productDao.save(product) <1){
+            throw new TqException("添加失败");
+        }
     }
 }

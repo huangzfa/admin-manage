@@ -1,15 +1,11 @@
 package com.duobei.console.shiro;
 
 import com.alibaba.fastjson.JSON;
+import com.duobei.common.exception.TqException;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.config.GlobalConfig;
-import com.duobei.core.manage.auth.dao.OperatorRoleDao;
-import com.duobei.core.manage.auth.dao.RoleDao;
 import com.duobei.core.manage.auth.domain.Operator;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
-import com.duobei.core.manage.auth.domain.criteria.RoleCriteria;
-import com.duobei.core.manage.auth.domain.vo.OperatorRoleVo;
-import com.duobei.core.manage.auth.domain.vo.RoleVo;
 import com.duobei.core.manage.auth.helper.UserHelper;
 import com.duobei.core.manage.auth.service.OperatorService;
 import com.duobei.core.manage.auth.service.RoleDataAuthService;
@@ -17,7 +13,6 @@ import com.duobei.core.manage.sys.domain.SmsVerifyCode;
 import com.duobei.core.manage.sys.service.VerifyCodeService;
 import com.duobei.core.operation.app.service.AppService;
 import com.duobei.dic.ZD;
-import com.duobei.common.exception.TqException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;

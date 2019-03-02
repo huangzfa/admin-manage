@@ -1,5 +1,6 @@
 package com.duobei.core.operation.product.service;
 
+import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
@@ -37,5 +38,19 @@ public interface ProductService {
      * @param record
      * @return
      */
-    int editState(Product record);
+    void editState(Product record) throws TqException;
+
+    /**
+     * 修改产品
+     * @param product
+     */
+    void update(Product product) throws TqException;
+
+    /**
+     * 添加产品
+     * @param product
+     */
+    void save(Product product) throws TqException;
+
+
 }

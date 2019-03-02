@@ -88,7 +88,6 @@ public class AuthConfigController extends com.duobei.console.web.controller.base
         }
         model.addAttribute("authTypes", DictUtil.getDictList(ZD.authType));
         model.addAttribute("pageTypes", DictUtil.getDictList(ZD.aPMenuType));
-        model.addAttribute("matchTypes", DictUtil.getDictList(ZD.matchType));
         return "product/authConfig/authForm";
     }
 

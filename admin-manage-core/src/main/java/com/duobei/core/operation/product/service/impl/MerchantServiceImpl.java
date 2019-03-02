@@ -1,7 +1,7 @@
 package com.duobei.core.operation.product.service.impl;
 
-import com.duobei.common.datasource.DataSourceConst;
-import com.duobei.common.datasource.DataSourceHandle;
+import com.duobei.common.constant.BizConstant;
+import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.dao.MerchantDao;
 import com.duobei.core.operation.product.domain.Merchant;
@@ -28,13 +28,11 @@ public class MerchantServiceImpl implements MerchantService {
      */
     @Override
     public ListVo<Merchant> getPageList(MerchantCriteria criteria){
-        DataSourceHandle.setDataSourceType(DataSourceConst.OPERATE);
         int total = merchantDao.countByCriteria(criteria);
         List<Merchant> list = null;
         if (total > 0) {
             list = merchantDao.getPageList(criteria);
         }
-        DataSourceHandle.clearDataSourceType();
         return new ListVo<Merchant>(total, list);
     }
 
@@ -52,8 +50,10 @@ public class MerchantServiceImpl implements MerchantService {
      * @param merchant
      */
     @Override
-    public void update(Merchant merchant){
-
+    public void update(Merchant merchant) throws TqException{
+        if( merchantDao.update(merchant) <1){
+            throw new TqException("修改失败");
+        }
     }
 
     /**
@@ -61,7 +61,37 @@ public class MerchantServiceImpl implements MerchantService {
      * @param merchant
      */
     @Override
-    public void save(Merchant merchant){
+    public void save(Merchant merchant) throws TqException{
+        Merchant one = merchantDao.getLastOne();
+        if( one == null ){
+            merchant.setMerchantNo(BizConstant.MERCHANT_NO);
+        }else{
+            //商户号加1
+            Integer nextNo = Integer.parseInt(one.getMerchantNo())+1;
+            merchant.setMerchantNo(nextNo+"");
+        }
+        if( merchantDao.save(merchant) <1){
+            throw new TqException("添加失败");
+        }
+    }
 
+    /**
+     * 根据商户编号查询
+     * @param merchantNo
+     * @return
+     */
+    @Override
+    public  Merchant getByMerchantNo(String merchantNo){
+        return merchantDao.getByMerchantNo(merchantNo);
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Merchant getById(Integer id){
+        return merchantDao.getById(id);
     }
 }

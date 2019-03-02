@@ -1,5 +1,6 @@
 package com.duobei.core.operation.product.service;
 
+import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.domain.Merchant;
 import com.duobei.core.operation.product.domain.criteria.MerchantCriteria;
@@ -30,11 +31,25 @@ public interface MerchantService {
      * 修改商户
      * @param merchant
      */
-    void update(Merchant merchant);
+    void update(Merchant merchant) throws TqException;
 
     /**
      * 添加商户
      * @param merchant
      */
-    void save(Merchant merchant);
+    void save(Merchant merchant) throws TqException;
+
+    /**
+     * 根据商户编号查询
+     * @param merchantNo
+     * @return
+     */
+    Merchant getByMerchantNo(String merchantNo);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    Merchant getById(Integer id);
 }

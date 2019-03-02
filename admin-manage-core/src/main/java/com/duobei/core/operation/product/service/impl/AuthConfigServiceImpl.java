@@ -107,7 +107,7 @@ public class AuthConfigServiceImpl implements AuthConfigService {
         }
         //如果是禁用
         if( authState.equals("0") ){
-            List<Product> list = productDao.getByAuthCode(code);
+            List<Product> list = productDao.getByAuthId(entity.getId());
             if( list.size() >0 ){
                 String msg = "操作失败,该认证项在"+list.get(0).getProductName();
                 if( list.size() > 1){

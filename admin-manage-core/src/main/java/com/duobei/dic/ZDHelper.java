@@ -31,14 +31,6 @@ public class ZDHelper {
 		return (ZD.osType_ios==osType||ZD.osType_an==osType);
 	}
 	/**
-	 * 校验支付类型
-	 * @param payType
-	 * @return
-	 */
-	public static boolean validatePayType(Integer payType) {
-		return (ZD.payType_zfb==payType||ZD.payType_wx==payType);
-	}
-	/**
 	 * 校验用户状态
 	 * @param profileState
 	 * @return

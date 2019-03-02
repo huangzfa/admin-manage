@@ -84,13 +84,7 @@
             </shiro:hasPermission>
             return opStr;
         }
-        function optionformater(value,row,index){
-            var opStr='';
-            <shiro:hasPermission name="product:list:edit">
-               opStr+='<a class="si-option-a" href="${ctxA}/product/form?productCode='+row.productCode+'">修改</a>';
-            </shiro:hasPermission>
-            return opStr;
-        }
+
         function editState(productCode,productState){
             var title = "确定启用该产品吗";
             if(productState == 0){
@@ -121,9 +115,6 @@
 <body>
 <ul class="nav nav-tabs" style="margin-bottom: 5px;">
     <li class="active"><a href="javascript:void(0);">产品列表</a></li>
-    <shiro:hasPermission name="product:list:edit">
-        <li><a href="${ctxA}/product/form">添加产品</a></li>
-    </shiro:hasPermission>
 </ul>
 <div class="breadcrumb form-search" style="margin-bottom:0;">
     <ul class="ul-form">
@@ -148,7 +139,7 @@
             <th data-options="field:'productCode',width:180,align:'center',halign:'center',fixed:true">产品编码</th>
             <th data-options="field:'productName',width:180,align:'center',halign:'center',fixed:true">产品名称</th>
             <th data-options="field:'merchantName',width:180,align:'center',halign:'center',fixed:true">所属商户</th>
-            <th data-options="field:'showMaxQuota',width:200,align:'center',halign:'center',fixed:true">域名</th>
+            <th data-options="field:'',width:200,align:'center',halign:'center',fixed:true">域名</th>
             <th data-options="field:'state',width:200,align:'center',halign:'center',fixed:true,formatter:stateformater">状态</th>
             <th data-options="field:'modifyTime',width:160,align:'center',halign:'center',fixed:true">更新时间</th>
             <th data-options="field:'option',width:180,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>

@@ -3,6 +3,7 @@ package com.duobei.core.operation.product.dao;
 
 import com.duobei.core.operation.product.domain.Merchant;
 import com.duobei.core.operation.product.domain.criteria.MerchantCriteria;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,14 +15,14 @@ import java.util.List;
 public interface MerchantDao {
 
     /**
-     *
+     *分页查询
      * @param criteria
      * @return
      */
     List<Merchant> getPageList(MerchantCriteria criteria);
 
     /**
-     *
+     *分页查询求total数量
      * @param criteria
      * @return
      */
@@ -36,11 +37,31 @@ public interface MerchantDao {
      * 修改商户
      * @param merchant
      */
-    void update(Merchant merchant);
+    int update(Merchant merchant);
 
     /**
      * 添加商户
      * @param merchant
      */
-    void save(Merchant merchant);
+    int save(Merchant merchant);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    Merchant getById(Integer id);
+
+    /**
+     *
+     * @param merchantNo
+     * @return
+     */
+    Merchant getByMerchantNo(@Param("merchantNo") String merchantNo);
+
+    /**
+     * 查询数据库中最后一个商户
+     * @return
+     */
+    Merchant getLastOne();
 }

@@ -73,8 +73,8 @@ public interface ProductDao {
 
     /**
      * 查询code关联了哪些产品
-     * @param code
+     * @param authId
      * @return
      */
-    List<Product> getByAuthCode(@Param("code") String code);
+    List<Product> getByAuthId(@Param("authId") Integer authId);
 }

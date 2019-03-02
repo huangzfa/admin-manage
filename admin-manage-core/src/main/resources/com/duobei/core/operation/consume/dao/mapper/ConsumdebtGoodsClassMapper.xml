@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.consume.dao.mapper.ConsumdebtGoodsClassMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.operation.consume.domain.ConsumdebtGoodsClass">
+    <id column="cgc_id" jdbcType="INTEGER" property="id" />
+    <result column="cgc_class_code" jdbcType="VARCHAR" property="classCode" />
+    <result column="cgc_class_name" jdbcType="VARCHAR" property="className" />
+    <result column="cgc_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="cgc_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="cgc_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="cgc_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
+    <result column="cgc_is_delete" jdbcType="INTEGER" property="isDelete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cgc.id as cgc_id, cgc.class_code as cgc_class_code, cgc.class_name as cgc_class_name, 
+    cgc.add_time as cgc_add_time, cgc.modify_time as cgc_modify_time, cgc.add_operator_id as cgc_add_operator_id, 
+    cgc.modify_operator_id as cgc_modify_operator_id, cgc.is_delete as cgc_is_delete
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsClassExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from yy_consumdebt_goods_class cgc
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yy_consumdebt_goods_class cgc
+    where cgc.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from yy_consumdebt_goods_class
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsClassExample">
+    delete from yy_consumdebt_goods_class cgc
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsClass">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into yy_consumdebt_goods_class (class_code, class_name, add_time, 
+      modify_time, add_operator_id, modify_operator_id, 
+      is_delete)
+    values (#{classCode,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsClass">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into yy_consumdebt_goods_class
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="classCode != null">
+        class_code,
+      </if>
+      <if test="className != null">
+        class_name,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id,
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="classCode != null">
+        #{classCode,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsClassExample" resultType="java.lang.Long">
+    select count(*) from yy_consumdebt_goods_class cgc
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update yy_consumdebt_goods_class cgc
+    <set>
+      <if test="record.id != null">
+        cgc.id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.classCode != null">
+        cgc.class_code = #{record.classCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.className != null">
+        cgc.class_name = #{record.className,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null">
+        cgc.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        cgc.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addOperatorId != null">
+        cgc.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifyOperatorId != null">
+        cgc.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDelete != null">
+        cgc.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update yy_consumdebt_goods_class cgc
+    set cgc.id = #{record.id,jdbcType=INTEGER},
+      cgc.class_code = #{record.classCode,jdbcType=VARCHAR},
+      cgc.class_name = #{record.className,jdbcType=VARCHAR},
+      cgc.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      cgc.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      cgc.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      cgc.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      cgc.is_delete = #{record.isDelete,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsClass">
+    update yy_consumdebt_goods_class
+    <set>
+      <if test="classCode != null">
+        class_code = #{classCode,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsClass">
+    update yy_consumdebt_goods_class
+    set class_code = #{classCode,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

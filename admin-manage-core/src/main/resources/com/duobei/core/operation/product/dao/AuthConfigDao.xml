@@ -12,7 +12,9 @@
             LIMIT #{offset}, #{pagesize}
         </if>
     </select>
-
+    <select id="countByCriteria" parameterType="com.duobei.core.operation.product.domain.criteria.AuthConfigCriteria">
+        SELECT   * FROM yy_auth_config where is_delete = 0 order by auth_sort asc
+    </select>
     <insert id="save" parameterType="com.duobei.core.operation.product.domain.AuthConfig">
         insert into yy_auth_config
         <trim prefix="(" suffix=")" suffixOverrides=",">

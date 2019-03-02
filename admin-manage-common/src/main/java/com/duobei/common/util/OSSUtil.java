@@ -157,6 +157,7 @@ public class OSSUtil {
         try (InputStream inputStream = file.getInputStream()) {
             //上传文件
             ossUtil.getOSSClient().putObject(ossUtil.getOssBucketName(), fileName, inputStream);
+            ossUtil.getOSSClient().shutdown();
             return fileName;
         } catch (Exception e) {
             e.printStackTrace();

@@ -8,9 +8,9 @@
     <update id="updateAuthState" parameterType="java.lang.String">
         update yy_product_auth_config set
         <if test="authState != null and authState != '' or authState==0">
-            auth_state = #{authState,jdbcType=VARCHAR}
+            is_enable = #{authState,jdbcType=VARCHAR}
         </if>
-         where  auth_id=#{authId,jdbcType=INTEGER} and auth_code = #{authCode,jdbcType=VARCHAR}
+         where  auth_id=#{authId,jdbcType=INTEGER}
     </update>
 
 </mapper>

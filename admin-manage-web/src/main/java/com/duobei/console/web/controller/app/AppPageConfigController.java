@@ -106,9 +106,9 @@ public class AppPageConfigController extends  BaseController{
 				log.warn("查询"+DESC+"异常", e);
 				addFaildMessage(redirectAttributes, "查询"+DESC+"异常，请查看错误日志");
 			}
-			return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list";
+			return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list?appId="+appPageConfig.getAppId();
 		}
-		model.addAttribute("appPageConfig", appPageConfig);
+ 		model.addAttribute("appPageConfig", appPageConfig);
 		return ADDRESSPRE+"appPageConfigForm";
 		}
 
@@ -133,7 +133,6 @@ public class AppPageConfigController extends  BaseController{
 				appPageConfig.setAddTime(appPageConfig.getModifyTime());
 				appPageConfigService.addAppPageConfig(appPageConfig);
 			} else {
-				appPageConfig.setAddTime(appPageConfig.getModifyTime());
                 appPageConfigService.updateAppPageConfig(appPageConfig);
 			}
 		} catch (Exception e) {
@@ -146,8 +145,33 @@ public class AppPageConfigController extends  BaseController{
 			return form(appPageConfig, model,redirectAttributes);
 		}
 		addMessage(redirectAttributes, "保存"+DESC+"成功!");
-		return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list";
+		return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list?appId="+appPageConfig.getAppId();
 	}
+
+	@RequiresPermissions({ PERMISSIONPRE+"edit" })
+	@RequestMapping(value = "/updateStatus")
+	public String updateStatus(Integer id,Integer appId ,Integer isEnable, RedirectAttributes redirectAttributes) {
+		OperatorCredential credential = getCredential();
+		try {
+			AppPageConfig appPageConfig = new AppPageConfig();
+			appPageConfig.setId(id);
+			appPageConfig.setModifyTime(new Date());
+			appPageConfig.setModifyOperatorId(credential.getOpId());
+			appPageConfig.setIsEnable(isEnable);
+			appPageConfigService.updateIsEnable(appPageConfig);
+		} catch (Exception e) {
+			if (e instanceof TqException) {
+				addFaildMessage(redirectAttributes, e.getMessage());
+			} else {
+				log.warn("update isEnable"+DESC+"异常", e);
+				addFaildMessage(redirectAttributes, "启用/禁用"+DESC+"异常，请查看错误日志");
+			}
+			return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list?appId="+appId;
+		}
+		addMessage(redirectAttributes, "启用/禁用"+DESC+"成功");
+		return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list?appId="+appId;
+	}
+
 
 	@RequiresPermissions({ PERMISSIONPRE+"edit" })
 	@RequestMapping(value = "/delete")

@@ -40,4 +40,10 @@ public interface AppPageConfigService {
      * @param appPageConfig
      */
     void updateAppPageConfig(AppPageConfig appPageConfig) throws TqException;
+
+    /**
+     * 禁用/启用
+     * @param appPageConfig
+     */
+    void updateIsEnable(AppPageConfig appPageConfig) throws TqException;
 }

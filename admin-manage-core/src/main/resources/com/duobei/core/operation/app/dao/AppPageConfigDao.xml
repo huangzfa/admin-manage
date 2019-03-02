@@ -43,7 +43,7 @@
             ,menu_sort = #{menuSort}
         </if>
         <if test="menuType != null">
-            ,menu_type #{menuType}
+            ,menu_type = #{menuType}
         </if>
         <if test="menuVal != null and menuVal != ''">
             ,menu_val = #{menuVal}
@@ -73,4 +73,14 @@
             LIMIT #{offset}, #{pagesize}
         </if>
     </select>
+
+    <select id="getAppPageConfigById"  resultType="com.duobei.core.operation.app.domain.AppPageConfig" parameterType="Integer">
+        select <include refid="Base_Column_List"/> from cf_app_page_config apppageconfig where apppageconfig.is_delete = 0 and apppageconfig.id = #{id}
+    </select>
+
+    <update id="updateIsEnable"  parameterType="com.duobei.core.operation.app.domain.AppPageConfig">
+         update cf_app_page_config
+        set is_enable = #{isEnable},modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId}
+        where id = #{id} and is_delete = 0
+    </update>
 </mapper>

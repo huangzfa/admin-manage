@@ -20,4 +20,8 @@ public interface AppPageConfigDao {
 
 
     List<AppPageConfig> queryAppPageList(AppPageConfigCriteria appPageConfigCriteria);
+
+    AppPageConfig getAppPageConfigById(Integer id);
+
+    int updateIsEnable(AppPageConfig appPageConfig);
 }

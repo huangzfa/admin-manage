@@ -25,14 +25,18 @@
 						userId="root"
 						password="Mi&amp;rong369" />
 
-		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.banner.domain" />
-		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.operation.banner.dao.mapper" />
-		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.banner.dao.mapper" type="XMLMAPPER" />
+		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.startupPage.domain" />
+		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.operation.startupPage.dao.mapper" />
+		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.startupPage.dao.mapper" type="XMLMAPPER" />
 
 		<!--业务开关-->
-		<table tableName="yy_banner" domainObjectName="AppPageConfig" alias="banner">
+	<!--	<table tableName="yy_banner" domainObjectName="AppPageConfig" alias="banner">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>
+		</table>-->
+		<table tableName="yy_startup_page" domainObjectName="StartupPage" alias="startup_page">
+                <property name="useActualColumnNames" value="false" />
+                <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            </table>
 	</context>
 </generatorConfiguration>

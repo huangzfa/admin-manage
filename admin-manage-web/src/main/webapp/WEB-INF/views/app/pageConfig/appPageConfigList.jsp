@@ -102,7 +102,7 @@
         }
 
         function optionformater(value,row,index){
-           var opStr='<a class="si-option-a" href="${ctxA}/app/pageConfig/form?id='+row.id+'&appId='+ $('#appId').val()+'">编辑</a>';
+           var opStr='<a class="si-option-a" href="${ctxA}/app/pageConfig/form?id='+row.id+'&appId='+ row.appId+'">编辑</a>';
            if(row.isEnable == 1){
               opStr+='<a class="si-option-a" href="${ctxA}/app/pageConfig/updateStatus?id='+row.id+'&appId='+ $('#appId').val()+'&isEnable='+0+'">禁用</a>';
            }else{

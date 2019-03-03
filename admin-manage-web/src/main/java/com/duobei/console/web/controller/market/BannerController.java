@@ -1,4 +1,4 @@
-package main.java.com.duobei.console.web.controller.market;
+package com.duobei.console.web.controller.market;
 
 import com.alibaba.fastjson.JSON;
 import com.duobei.common.exception.TqException;
@@ -59,9 +59,9 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
      * @return
      */
     @RequiresPermissions("market:banner:view")
-    @RequestMapping(value = "/getBannerData")
+    @RequestMapping(value = "/bannerList")
     @ResponseBody
-    public String getProductData(BannerCriteria criteria ){
+    public String getBannerList(BannerCriteria criteria ){
         OperatorCredential credential = getCredential();
         //验证用户权限
         try {
@@ -110,12 +110,14 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             model.addAttribute("banner", bannerService.getById(id));
         }else{
             Banner banner = new Banner();
+            banner.setRedirectType(ZD.redirectType_url);
+            banner.setBannerType(ZD.bannerType_borrowTop);
             banner.setAppId(appId);
             model.addAttribute("banner",banner);
         }
         model.addAttribute("bannerType", DictUtil.getDictList(ZD.bannerType));
         model.addAttribute("redirectType", DictUtil.getDictList(ZD.redirectType));
-        return "market/banner/form";
+        return "market/banner/bannerForm";
     }
 
     /**
@@ -137,11 +139,14 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             if( entity.getAppId() !=null ){
                 validAuthData(null,entity.getAppId());
             }else{
-                throw  new TqException("应用数据查询失败");
+                throw new TqException("数据操作权限失败");
             }
 
             if( entity.getRedirectType().equals(ZD.redirectType_no)){
                 entity.setRedirectUrl("");
+            }
+            if (entity.getSort() == null){
+                entity.setSort(0);
             }
             entity.setModifyTime(new Date());
             entity.setModifyOperatorId(credential.getOpId());
@@ -163,12 +168,12 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             }
             return simpleSuccessJsonResult("success");
         } catch (Exception e) {
-            if (e instanceof RuntimeException) {
+       /*     if (e instanceof RuntimeException) {
                 return failJsonResult(e.getMessage());
-            }else{
+            }else{*/
                 log.warn("save轮播图异常", e);
                 return failJsonResult("save轮播图异常");
-            }
+          //  }
 
         }
 
@@ -185,13 +190,13 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
     @RequiresPermissions({ "market:banner:edit" })
     @RequestMapping(value = "/editState")
     @ResponseBody
-    public String editState(Integer id ,Integer bannerState) throws RuntimeException{
+    public String editState(Integer id ,Integer isEnable) throws RuntimeException{
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {
                 throw new RuntimeException("登录过期，请重新登录");
             }
-            if( bannerState == null || id == null){
+            if( isEnable == null || id == null){
                 throw new RuntimeException("参数为空");
             }
             //查询轮播是否存在
@@ -201,18 +206,19 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             }
             Banner banner1 = new Banner();
             banner1.setId(banner.getId());
+            banner1.setIsEnable(isEnable);
             banner1.setModifyTime(new Date());
             banner1.setModifyOperatorId(credential.getOpId());
             bannerService.updateStatus(banner1);
             return simpleSuccessJsonResult("success");
 
         } catch (Exception e) {
-            if (e instanceof RuntimeException) {
+            /*if (e instanceof RuntimeException) {
                 return failJsonResult(e.getMessage());
-            }else{
+            }else{*/
                 log.warn("editState轮播图异常", e);
                 return failJsonResult("editState轮播图异常");
-            }
+          /*  }*/
         }
     }
 

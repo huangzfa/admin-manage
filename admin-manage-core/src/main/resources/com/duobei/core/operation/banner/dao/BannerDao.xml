@@ -3,7 +3,7 @@
 <mapper namespace="com.duobei.core.operation.banner.dao.BannerDao">
 
   <sql id="Base_Column_List">
-    banner.id as banner_id, banner.product_id as product_id, banner.app_id as app_id,
+    banner.id as id, banner.product_id as product_id, banner.app_id as app_id,
     banner.img_url as img_url, banner.banner_title as banner_title, banner.banner_type as banner_type,
     banner.redirect_type as redirect_type, banner.redirect_url as redirect_url,
     banner.remark as remark, banner.sort as sort, banner.is_need_login as is_need_login,
@@ -15,7 +15,7 @@
   <select id="queryList" parameterType="com.duobei.core.operation.banner.domain.criteria.BannerCriteria" resultType="com.duobei.core.operation.banner.domain.Banner">
     SELECT <include refid="Base_Column_List"/>
     FROM yy_banner banner
-    WHERE banner.is_delete = 0 and banner.app_id = #{app_id}
+    WHERE banner.is_delete = 0 and banner.app_id = #{appId}
     <if test="bannerTitle != null and bannerTitle != ''">
     and banner.banner_title = #{bannerTitle}
     </if>
@@ -32,15 +32,15 @@
   </select>
 
   <select id="getById" parameterType="Integer" resultType="com.duobei.core.operation.banner.domain.Banner">
-    select <include refid="Base_Column_List"/> from yy_banner
-    where is_delete = 0 and id = #{id}
+    select <include refid="Base_Column_List"/> from yy_banner banner
+    where banner.is_delete = 0 and banner.id = #{id}
   </select>
 
   <insert id="save" parameterType="com.duobei.core.operation.banner.domain.Banner">
     insert into yy_banner(product_id, app_id, img_url
     , banner_title, banner_type, redirect_type, redirect_url
     , remark, sort, is_need_login, is_enable, add_time, modify_time
-    , add_operator_id, modify_operator_id, is_delete)
+    , add_operator_id, modify_operator_id)
     values(#{productId},#{appId},#{imgUrl}
     ,#{bannerTitle},#{bannerType},#{redirectType},#{redirectUrl}
     ,#{remark},#{sort},#{isNeedLogin},#{isEnable},#{addTime},#{modifyTime}
@@ -83,6 +83,12 @@
   <update id="updateStatus" parameterType="com.duobei.core.operation.banner.domain.Banner">
      update yy_banner
     set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId},is_enable = #{isEnable}
-    where id = #{id} and is_delete = #{isDelete}
+    where id = #{id} and is_delete = 0
+  </update>
+
+  <update id="delete" parameterType="com.duobei.core.operation.banner.domain.Banner">
+     update yy_banner
+    set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId},is_delete = #{id}
+    where id = #{id} and is_delete = 0
   </update>
 </mapper>

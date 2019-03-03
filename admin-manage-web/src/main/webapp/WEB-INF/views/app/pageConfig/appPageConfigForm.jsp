@@ -255,7 +255,7 @@
     let oMyForm = new FormData();
     oMyForm.append("file", $('#new_file1')[0].files[0]);
     console.log($('#new_file1')[0].files[0]);
-    let url = '${ctxA}/common/uploadImage?maxFileSize=100&enableFileTypes='+enableFileTypes;
+    let url = '${ctxA}/common/uploadImage?maxFileSize=10&enableFileTypes='+enableFileTypes;
     if ($('#new_file1')[0].files[0]) {
       $.ajax({
         url: url,

@@ -18,7 +18,7 @@
         var typeList ='${bannerType}';
         bannerType = eval("("+typeList+")");
         for( var i = 0;i<bannerType.length;i++){
-            $("#type").append("<option value='"+bannerType[i].dicVal+"'>"+bannerType[i].dicCode+"</option>");
+            $("#bannerType").append("<option value='"+bannerType[i].dicVal+"'>"+bannerType[i].dicCode+"</option>");
 		}
         var appLists ='${appLists}';
         list = eval("("+appLists+")");
@@ -51,9 +51,9 @@
     });
     function getData(){
         var data = {
-            'bannerState':$('#bannerState').val(),
-			'titleName':$('#titleName').val(),
-            'type':$('#type').val(),
+            'isEnable':$('#isEnable').val(),
+			'bannerTitle':$('#bannerTitle').val(),
+            'bannerType':$('#bannerType').val(),
 			'appId':$("#appId").val(),
 			'page':pageNum,
 			'pagesize':pageSize,
@@ -63,11 +63,12 @@
 		}
         hjnUtils.ajax({
             type:'post',
-            url:'${ctxA}/market/banner/getBannerData',
+            url:'${ctxA}/market/banner/bannerList',
             data:data,
             dataType:'json',
             success:function(data){
                 if(data.code==1){
+                    $('#menuOperation').attr("href","${ctxA}/market/banner/form?appId="+ $("#appId").val());
                     $('#tt').datagrid('loadData', data.list);
                     pager.pagination({
                         pageSize: pageSize,//每页显示的记录条数，默认为10
@@ -114,11 +115,11 @@
 
         var opStr='';
         <shiro:hasPermission name="market:banner:edit">
-			opStr+='<a class="si-option-a" href="${ctxA}/market/banner/form?id='+row.id+'">修改</a>';
+			opStr+='<a class="si-option-a" href="${ctxA}/market/banner/form?id='+row.id+'&appId='+ row.appId+'">修改</a>';
 			opStr+="<a class='si-option-a' href='javascript:del(\""+row.id+"\")'>删除</a>";
-			var bannerState = 0;
-			if( row.bannerState == 0) bannerState = 1;
-			opStr+="<a class='si-option-a' href='javascript:editState(\""+row.id+"\",\""+bannerState+"\")'>"+(row.bannerState==0?"启用":"禁用")+"</a>";
+			var isEnable = 0;
+			if( row.isEnable == 0) isEnable = 1;
+			opStr+="<a class='si-option-a' href='javascript:editState(\""+row.id+"\",\""+isEnable+"\")'>"+(row.isEnable==0?"启用":"禁用")+"</a>";
         </shiro:hasPermission>
         return opStr;
     }
@@ -167,14 +168,14 @@
         })
 	}
 
-    function editState(id,bannerState){
+    function editState(id,isEnable){
         var msg = "确定禁用该轮播图吗";
-        if( bannerState == 1){
+        if( isEnable == 1){
             msg = "确定启用该轮播图吗";
 		}
         top.$.jBox.confirm(msg,'系统提示',function(v,h,f){
             if(v=='ok'){
-                jQuery.post("${ctxA}/market/banner/editState", {'id':id,'bannerState':bannerState},
+                jQuery.post("${ctxA}/market/banner/editState", {'id':id,'isEnable':isEnable},
                     function(data) {
                         if (data.code ==1) {
                             top.layer.alert("操作完成", {
@@ -198,7 +199,7 @@
 <ul class="nav nav-tabs" style="margin-bottom: 5px;">
 	<li class="active"><a href="javascript:void(0);">轮播列表</a></li>
 	<shiro:hasPermission name="market:banner:edit">
-		<li><a href="${ctxA}/market/banner/form">添加轮播图</a></li>
+		<li><a id="menuOperation"  href="">添加轮播图</a></li>
 	</shiro:hasPermission>
 </ul>
 <div class="breadcrumb form-search" style="margin-bottom:0;">
@@ -210,17 +211,17 @@
 		</li>
 		<li>
 			<label>轮播图名称：</label>
-			<input id="titleName" placeholder="请输入轮播图名称" class="input-large" type="text" value="" maxlength="50" />
+			<input id="bannerTitle" placeholder="请输入轮播图名称" class="input-large" type="text" value="" maxlength="50" />
 		</li>
 		<li>
 			<label>轮播位置：</label>
-			<select  name="type" id="type" class="selectpicker show-tick form-control" >
+			<select  name="bannerType" id="bannerType" class="selectpicker show-tick form-control" >
 				<option value="">请选择轮播位置</option>
 			</select>
 		</li>
 		<li>
 			<label>状态：</label>
-			<select  name="bannerState" id="bannerState" class="selectpicker show-tick form-control" >
+			<select  name="isEnable" id="isEnable" class="selectpicker show-tick form-control" >
 					<option value="">状态</option>
 					<option value="1">已启用</option>
 					<option value="0">已禁用</option>
@@ -243,7 +244,7 @@
 		<thead>
 		<tr>
 			<th data-options="field:'id',width:80,align:'center',halign:'center',fixed:true">id</th>
-			<th data-options="field:'imageUrl',width:120,align:'center',halign:'center',fixed:true,formatter:iconurlformater">图片</th>
+			<th data-options="field:'imgUrl',width:120,align:'center',halign:'center',fixed:true,formatter:iconurlformater">图片</th>
 			<th data-options="field:'bannerTitle',width:160,align:'center',halign:'center',fixed:true">轮播名称</th>
 			<th data-options="field:'bannerType',width:160,align:'center',halign:'center',fixed:true,formatter:typeformater">所属位置</th>
 			<th data-options="field:'redirectType',width:160,align:'center',halign:'center',fixed:true,formatter:redirectformater">类型</th>

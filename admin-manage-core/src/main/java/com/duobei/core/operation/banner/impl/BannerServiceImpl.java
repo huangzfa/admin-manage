@@ -41,15 +41,15 @@ public class BannerServiceImpl implements BannerService {
         criteria.andAppIdEqualTo(bannerCriteria.getAppId());
         /* 统计 */
         //轮播图名称条件
-        if (StringUtil.isNotEmpty(bannerCriteria.getTitleName())){
-            criteria.andBannerTitleEqualTo(bannerCriteria.getTitleName());
+        if (StringUtil.isNotEmpty(bannerCriteria.getBannerTitle())){
+            criteria.andBannerTitleEqualTo(bannerCriteria.getBannerTitle());
         }
         //轮播图位置条件
         if (StringUtil.isNotEmpty(bannerCriteria.getBannerType())){
             criteria.andBannerTypeEqualTo(bannerCriteria.getBannerType());
         }
         //轮播图状态条件
-        if (bannerCriteria.getIsEnable() == null){
+        if (bannerCriteria.getIsEnable() != null){
             criteria.andIsEnableEqualTo(bannerCriteria.getIsEnable());
         }
         Long total = bannerMapper.countByExample(example);
@@ -84,7 +84,7 @@ public class BannerServiceImpl implements BannerService {
     @Override
   //  @Transactional(rollbackFor = RuntimeException.class)
     public void delete(Banner entity) throws RuntimeException{
-        if( bannerDao.update(entity) !=1){
+        if( bannerDao.delete(entity) !=1){
             throw new RuntimeException("banner删除失败");
         }
     }

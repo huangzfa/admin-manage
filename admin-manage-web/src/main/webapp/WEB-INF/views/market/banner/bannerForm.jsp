@@ -13,7 +13,7 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/market/banner/list">轮播图列表</a></li>
+    <li><a href="${ctxA}/market/banner/list?appId=${banner.appId}">轮播图列表</a></li>
     <li class="active">
         <shiro:hasPermission name="market:banner:edit">
             <a href="javascript:void(0);">${not empty banner.id?'修改':'添加'}轮播图</a>
@@ -22,21 +22,21 @@
 </ul>
 <div class="si-warp">
     <br/>
-    <form:form id="bannerForm" modelAttribute="banner"   action="${ctxA}/market/banner/save" method="post" class="form-horizontal">
+    <form:form id="bannerForm" modelAttribute="banner"  action="${ctxA}/market/banner/save" method="post" class="form-horizontal">
         <input type="hidden" name="id" value="${not empty banner.id?banner.id:''}">
-        <input type="hidden" name="bannerState" value="${banner.bannerState}">
+        <input type="hidden" id = "appId" name="appId" value="${banner.appId}">
         <div class="control-group">
             <label class="control-label">轮播名称：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写轮播名称" type="text" name="titleName" id="titleName" maxlength="20" value="${banner.titleName}" style="width: 300px;"></input>
+                <input type="text" class="form-control valid" descripe="请填写轮播名称" type="text" name="bannerTitle" id="bannerTitle" maxlength="20" value="${banner.bannerTitle}" style="width: 300px;"></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">轮播位置：</label>
             <div class="controls">
-                <select  name="type" id="type" class="selectpicker show-tick form-control valid" descripe="请选择轮播位置" style="width: 315px;">
+                <select  name="bannerType" id="bannerType" class="selectpicker show-tick form-control valid" descripe="请选择轮播位置" style="width: 315px;">
                     <c:forEach items="${bannerType}" var="type">
-                        <option value="${type.dicVal}" ${not empty banner && banner.type==type.dicVal?"selected":''}>${type.dicCode}</option>
+                        <option value="${type.dicVal}" ${not empty banner && banner.bannerType==type.dicVal?"selected":''}>${type.dicCode}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -46,7 +46,7 @@
             <div class="controls">
                 <c:forEach items="${redirectType}" var="type">
                     <label class="radio-inline">
-                        <input type="radio"  value="${type.dicVal}" name="redirectType"  ${(empty banner.redirectType || banner.redirectType==type.dicVal)?"checked":''}><span>${type.dicCode}</span>
+                        <input type="radio"  value="${type.dicVal}" name="redirectType"  ${(not empty banner.redirectType && banner.redirectType==type.dicVal)?"checked":''}><span>${type.dicCode}</span>
                     </label>
                 </c:forEach>
 
@@ -56,10 +56,10 @@
             <label class="col-sm-1 control-label">是否需要登录:</label>
             <div class="controls">
                     <label class="radio-inline">
-                        <input type="radio"  value="0" name="needLogin"  ${(empty banner.needLogin || banner.needLogin=='0')?"checked":''}><span>不需要</span>
+                        <input type="radio"  value="0" name="isNeedLogin"  ${(empty banner.isNeedLogin || banner.isNeedLogin=='0')?"checked":''}><span>不需要</span>
                     </label>
                     <label class="radio-inline">
-                        <input type="radio"  value="1" name="needLogin"  ${not empty banner && banner.needLogin=='1'?"checked":''}><span>需要</span>
+                        <input type="radio"  value="1" name="isNeedLogin"  ${not empty banner && banner.isNeedLogin=='1'?"checked":''}><span>需要</span>
                     </label>
             </div>
         </div>
@@ -72,18 +72,18 @@
         <div class="control-group">
             <label class="control-label">上传图片：</label>
             <div class="controls">
-                <input type="hidden" value="${banner.imageUrl}" name="imageUrl" id="imageUrl"  class="valid" descripe="请上传图片">
+                <input type="hidden" value="${banner.imgUrl}" name="imgUrl" id="imgUrl"  class="valid" descripe="请上传图片">
                 <div class="thumbImgBox">
                     <ul style="float: left">
-                        <li class="upload_button" id="uploadImgIcon1" filename="imageUrl" sort="1" style="width: 100px;height: 100px;">
-                            <a target="_blank" ><img src="${not empty banner.imageUrl?banner.imageUrl:'/static/img/upload.png'}" class="img-thumbnail"  width="100px" height="100px"></a>
+                        <li class="upload_button" id="uploadImgIcon1" filename="imgUrl" sort="1" style="width: 100px;height: 100px;">
+                            <a target="_blank" ><img src="${not empty banner.imgUrl?banner.imgUrl:'/static/img/upload.png'}" class="img-thumbnail"  width="100px" height="100px"></a>
                         </li>
                     </ul>
                     <ul style="margin-left: 3%;float: left">
                         <small class="help-block owner_ID">点击图片即可重新上传</small>
                         <small class="help-block owner_ID">建议尺寸：702*300</small>
                         <small class="help-block owner_ID">图片格式：PNG、JPG、JPEG、GIF</small>
-                        <small class="help-block owner_ID">图片大小：100kb以内</small>
+                        <small class="help-block owner_ID">图片大小：200kb以内</small>
                     </ul>
                 </div>
             </div>
@@ -91,20 +91,20 @@
         <div class="control-group">
             <label class="control-label">轮播描述：</label>
             <div class="controls">
-                <input type="text" class="form-control"  type="text" name="descripe" id="descripe" maxlength="20" value="${banner.descripe}" style="width: 300px;"></input>
+                <input type="text" class="form-control"  type="text" name="remark" id="remark" maxlength="100" value="${banner.remark}" style="width: 300px;"></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">序号：</label>
             <div class="controls">
-                <input type="text" class="form-control" type="text" placeholder="不填默认为1" name="sort" id="sort" maxlength="6" value="${banner.sort}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' style="width: 300px;"></input>
+                <input type="text" class="form-control" type="text" placeholder="不填默认为0" name="sort" id="sort" maxlength="6" value="${banner.sort}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' style="width: 300px;"></input>
             </div>
         </div>
         <div class="form-actions">
             <shiro:hasPermission name="market:banner:edit">
                 <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;"/>&nbsp;
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/market/banner/list'"/>
+            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/market/banner/list?appId=${banner.appId}'"/>
         </div>
     </form:form>
 
@@ -118,7 +118,7 @@
             var s = self.attr('sort');
             var filename = self.attr('filename');
             $("#uploadImgIcon"+s).upload({
-                action:"${ctxA}/common/uploadIcon?ImgFileSize=100", //表单提交的地址
+                action:"${ctxA}/common/uploadIcon?ImgFileSize=200", //表单提交的地址
                 name:"imageFile",
                 onComplete:function (data) { //提交表单之后
                     if(data!=""){
@@ -173,7 +173,7 @@
                 top.layer.alert("操作成功", {
                     icon: 6,
                     end: function(){
-                        window.location.href="${ctxA}/market/banner/list";
+                        window.location.href="${ctxA}/market/banner/list?appId="+$("#appId").val();
                     }
                 });
             } else {
@@ -182,7 +182,7 @@
         }, "json");
     }
     function checkNumber(input) {
-        var re = /^[1-9]+[0-9]*]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+        var re = /^[0-9]*]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
         if (!re.test(input)) {
             return false;
         }else{

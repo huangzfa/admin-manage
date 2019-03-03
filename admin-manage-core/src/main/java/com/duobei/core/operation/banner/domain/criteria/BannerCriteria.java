@@ -14,7 +14,7 @@ public class BannerCriteria extends Pagination {
 
     private String bannerType;
 
-    private String titleName;
+    private String bannerTitle;
 
     private Integer isEnable;
 }

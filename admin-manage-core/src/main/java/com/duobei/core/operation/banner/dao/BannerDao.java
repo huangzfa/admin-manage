@@ -24,4 +24,6 @@ public interface BannerDao {
     int save(Banner entity);
 
     int updateStatus(Banner entity);
+
+    int delete(Banner entity);
 }

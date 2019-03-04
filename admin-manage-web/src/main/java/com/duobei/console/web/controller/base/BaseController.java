@@ -127,6 +127,7 @@ public class BaseController {
 			}
 		}
 		if( params.length > 1  && params[1]!=null){
+
 			List<Integer> list = credential.getAppList().stream().map(App::getId).collect(Collectors.toList());
 			if( !list.contains(params[1]) ){
 				throw  new TqException("您没有该应用的操作权限");

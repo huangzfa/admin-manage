@@ -116,7 +116,7 @@
 
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/app/pageConfig/list?">应用页面配置</a></li>
+    <li><a href="${ctxA}/app/pageConfig/list?appId=${appPageConfig.appId}">应用页面配置</a></li>
     <li class="active">
         <shiro:hasPermission name="app:pageConfig:edit">
             <a href="javascript:void(0);">${not empty appPageConfig.id?'修改':'添加'}配置</a>
@@ -255,7 +255,7 @@
     let oMyForm = new FormData();
     oMyForm.append("file", $('#new_file1')[0].files[0]);
     console.log($('#new_file1')[0].files[0]);
-    let url = '${ctxA}/common/uploadImage?maxFileSize=100&enableFileTypes='+enableFileTypes;
+    let url = '${ctxA}/common/uploadImage?maxFileSize=10&enableFileTypes='+enableFileTypes;
     if ($('#new_file1')[0].files[0]) {
       $.ajax({
         url: url,

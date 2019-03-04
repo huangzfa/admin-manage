@@ -31,12 +31,11 @@ public class DictKeyGenerator {
 			cfg.setObjectWrapper(new DefaultObjectWrapper());
 
 			Template temp = cfg.getTemplate("/admin-manage-tools/src/main/resources/ZD.ftl");
-
 			/* Create a data-model */
 			Map<String, List<DictVo>> root = new HashMap<String, List<DictVo>>();
 			root.put("dctList", dctList);
 
-			File f = new File("D:\\javaweb\\admin-manage\\admin-manage-core\\src\\main\\java\\com\\duobei\\dic\\ZD.java");
+			File f = new File("D:\\workproject\\server-porject\\admin-manage\\admin-manage-core\\src\\main\\java\\com\\duobei\\dic\\ZD.java");
 
 			if (f.exists()) {
 				System.out.println("Deleting the old file.");

@@ -9,9 +9,9 @@ public interface ZD {
     public String redirectType = "redirectType";
 	
 	/**
-	 *  银行状态
+	 *  APP升级范围
 	 */
-    public String bankState = "bankState";
+    public String upgradeRangeState = "upgradeRangeState";
 	
 	/**
 	 *  终端系统类型
@@ -24,14 +24,34 @@ public interface ZD {
     public String notifyBizType = "notifyBizType";
 	
 	/**
-	 *  银行维护状态
-	 */
-    public String bankMintainState = "bankMaintainState";
-	
-	/**
 	 *  菜单类型
 	 */
     public String aPMenuType = "aPMenuType";
+	
+	/**
+	 *  审核状态
+	 */
+    public String aPMenuExamState = "aPMenuExamState";
+	
+	/**
+	 *  认证类型
+	 */
+    public String authType = "authType";
+	
+	/**
+	 *  app升级状态
+	 */
+    public String appUpgradeState = "appUpgradeState";
+	
+	/**
+	 *  渠道类型
+	 */
+    public String channelType = "channelType";
+	
+	/**
+	 *  轮播图类型
+	 */
+    public String bannerType = "bannerType";
 	
 	/**
 	 *  登录类型
@@ -44,34 +64,14 @@ public interface ZD {
     public String couponType = "couponType";
 	
 	/**
-	 *  审核状态
-	 */
-    public String aPMenuExamState = "aPMenuExamState";
-	
-	/**
 	 *  渠道样式模板
 	 */
     public String channelStylebtTempt = "channelStylebtTempt";
 	
 	/**
-	 *  认证类型
+	 *  银行维护状态
 	 */
-    public String authType = "authType";
-	
-	/**
-	 *  渠道类型
-	 */
-    public String channelType = "channelType";
-	
-	/**
-	 *  APP升级范围
-	 */
-    public String upgradeRangeState = "upgradeRangeState";
-	
-	/**
-	 *  app升级状态
-	 */
-    public String appUpgradeState = "appUpgradeState";
+    public String bankMintainState = "bankMaintainState";
 	
 	/**
 	 *  APP是否强制升级
@@ -79,9 +79,9 @@ public interface ZD {
     public String appUpgradeIsForce = "appUpgradeIsForce";
 	
 	/**
-	 *  菜单类型
+	 *  用户状态
 	 */
-    public String menuType = "menuType";
+    public String profileState = "profileState";
 	
 	/**
 	 *  菜单打开方式
@@ -89,19 +89,9 @@ public interface ZD {
     public String menuOpenType = "menuOpenType";
 	
 	/**
-	 *  系统类型
+	 *  菜单类型
 	 */
-    public String systemType = "systemType";
-	
-	/**
-	 *  状态
-	 */
-    public String state = "state";
-	
-	/**
-	 *  用户状态
-	 */
-    public String profileState = "profileState";
+    public String menuType = "menuType";
 	
 	/**
 	 *  性别
@@ -109,19 +99,34 @@ public interface ZD {
     public String gender = "gender";
 	
 	/**
+	 *  状态
+	 */
+    public String state = "state";
+	
+	/**
+	 *  银行状态
+	 */
+    public String bankState = "bankState";
+	
+	/**
+	 *  系统类型
+	 */
+    public String systemType = "systemType";
+	
+	/**
 	 *  数据状态
 	 */
     public String dataState = "dataState";
 	
 	/**
-	 *  菜单类型-菜单- 
-	 */
-    public String menuType_m = "m";
-	
-	/**
 	 *  菜单类型-权限项- 
 	 */
     public String menuType_mo = "mo";
+	
+	/**
+	 *  菜单类型-菜单- 
+	 */
+    public String menuType_m = "m";
 	
 	/**
 	 *  菜单打开方式-默认- 
@@ -244,14 +249,14 @@ public interface ZD {
     public String authType_supply = "2";
 	
 	/**
-	 *  渠道类型-其他- 
-	 */
-    public int channelType_other = 3;
-	
-	/**
 	 *  渠道类型-渠道- 
 	 */
     public int channelType_h5 = 0;
+	
+	/**
+	 *  渠道类型-其他- 
+	 */
+    public int channelType_other = 3;
 	
 	/**
 	 *  渠道类型-应用市场- 
@@ -339,6 +344,11 @@ public interface ZD {
     public String redirectType_no = "no";
 	
 	/**
+	 *  链接类型-商品- 
+	 */
+    public String redirectType_shop = "shop";
+	
+	/**
 	 *  优惠券类型-借款券- 
 	 */
     public int couponType_jkq = 1;
@@ -352,9 +362,9 @@ public interface ZD {
 	 *  登录类型-登录- 
 	 */
     public int loginType_in = 1;
-
+	
 	/**
-	 *  登录类型-多贝-
+	 *  登录类型-多贝- 
 	 */
     public String platform_duobei = "duobei";
 	
@@ -367,4 +377,44 @@ public interface ZD {
 	 *  登录类型-修改密码- 
 	 */
     public int notifyBizType_update = 4;
+	
+	/**
+	 *  轮播图类型-借钱页顶部轮播图- 
+	 */
+    public String bannerType_borrowTop = "borrowTop";
+	
+	/**
+	 *  轮播图类型-额度页面banner- 
+	 */
+    public String bannerType_quota = "quota";
+	
+	/**
+	 *  轮播图类型-注册页底部广告位- 
+	 */
+    public String bannerType_regBottom = "regBottom";
+	
+	/**
+	 *  轮播图类型-强风控审核成功页- 
+	 */
+    public String bannerType_strongRiskSucess = "strongRiskSucess";
+	
+	/**
+	 *  轮播图类型-银行卡还款成功页- 
+	 */
+    public String bannerType_bankRepaySuccess = "bankRepaySuccess";
+	
+	/**
+	 *  轮播图类型-借贷超市轮播- 
+	 */
+    public String bannerType_dcMarket = "dcMarket";
+	
+	/**
+	 *  轮播图类型-借贷超市中部广告位- 
+	 */
+    public String bannerType_dcCenter = "dcCenter";
+	
+	/**
+	 *  轮播图类型-借钱页底部贷超- 
+	 */
+    public String bannerType_borrowBottom = "borrowBottom";
 }

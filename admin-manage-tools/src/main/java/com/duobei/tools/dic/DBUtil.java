@@ -23,9 +23,9 @@ public class DBUtil {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		String url = "jdbc:mysql://116.62.143.57:3306/duobei?useUnicode=true&amp;characterEncoding=utf-8";
+		String url = "jdbc:mysql://47.96.0.60:3306/pgy_platform_manage?useUnicode=true&amp;characterEncoding=utf-8";
 
-		conn = DriverManager.getConnection(url, "root", "Hjn184736351");
+		conn = DriverManager.getConnection(url, "root", "Mi&rong369");
 
 		return conn;
 

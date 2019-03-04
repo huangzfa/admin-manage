@@ -8,9 +8,11 @@ import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.app.domain.AppPageConfig;
 import com.duobei.core.operation.app.domain.criteria.AppPageConfigCriteria;
 import com.duobei.core.operation.app.service.AppPageConfigService;
+import com.duobei.core.operation.app.service.AppService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,8 +41,11 @@ public class AppPageConfigController extends  BaseController{
 	private final static String PERMISSIONPRE = "app:pageConfig:";
 	private final static String ADDRESSPRE = "app/pageConfig/";
 	private final static String DESC = "应用页面";
-	@Autowired
+
+	@Resource
 	private AppPageConfigService appPageConfigService;
+	@Resource
+	private AppService appService;
 
 	/**
 	 *应用菜单配置
@@ -50,7 +56,13 @@ public class AppPageConfigController extends  BaseController{
 	@RequestMapping(value = "/list")
 	public String list(Model model,Integer appId) {
 		OperatorCredential credential = getCredential();
+		/**
+		 * app下拉框
+		 */
 		model.addAttribute("appLists", JSON.toJSONString(credential.getAppList()));
+		/**
+		 * appId条件
+		 */
 		model.addAttribute("appId",appId);
 		return ADDRESSPRE+"appPageConfigList";
 	}
@@ -68,16 +80,22 @@ public class AppPageConfigController extends  BaseController{
 
 		OperatorCredential credential = getCredential();
 		try {
+			//登录判断
 			if( credential == null){
                 throw new TqException("登录过期，请重新登录");
-			}
-			if (appPageConfigCriteria.getPagesize() == 0) {
-				appPageConfigCriteria.setPagesize(GlobalConfig.getPageSize());
 			}
 			//验证数据权限
 			if( appPageConfigCriteria.getAppId() !=null){
 				validAuthData(null,appPageConfigCriteria.getAppId());
+			}else{
+				throw  new TqException("应用数据查询失败");
 			}
+			//页数赋值
+			if (appPageConfigCriteria.getPagesize() == 0) {
+				appPageConfigCriteria.setPagesize(GlobalConfig.getPageSize());
+			}
+
+			//获取数据列表
 			ListVo<AppPageConfig> list = appPageConfigService.queryAppPageConfigList(appPageConfigCriteria);
 			Map<String,Object> dataMap = new HashMap<>();
 			dataMap.put("list",list);
@@ -103,6 +121,13 @@ public class AppPageConfigController extends  BaseController{
 	@RequestMapping(value = "/form")
 	public String form(@ModelAttribute("appPageConfig") AppPageConfig appPageConfig, Model model,RedirectAttributes redirectAttributes){
 		try {
+			//验证数据权限
+			if( appPageConfig.getAppId() !=null){
+				validAuthData(null,appPageConfig.getAppId());
+			}else{
+				throw  new TqException("应用数据查询失败");
+			}
+			//如果存在id 则是修改操作，查询相关信息
 			if (appPageConfig.getId() != null) {
                 appPageConfig = appPageConfigService.queryAppPageConfigById(appPageConfig.getId());
 			}
@@ -131,18 +156,31 @@ public class AppPageConfigController extends  BaseController{
 	public String save(AppPageConfig appPageConfig, Model model, RedirectAttributes redirectAttributes) {
 		OperatorCredential credential = getCredential();
 		try {
-			/**
-			 * 暂时未默认值
-			 */
-			appPageConfig.setProductId(0);
-			appPageConfig.setIsEnable(0);
-			appPageConfig.setMenuType(2);
-			appPageConfig.setIsExamine(0);
-			appPageConfig.setMenuCode(MD5Util.encrypt(appPageConfig.getId()+appPageConfig.getMenuName()));
-			/**/
+			//验证数据权限
+			if( appPageConfig.getAppId() !=null){
+				validAuthData(null,appPageConfig.getAppId());
+			}else{
+				throw  new TqException("应用数据查询失败");
+			}
+
 			appPageConfig.setModifyOperatorId(credential.getOpId());
 			appPageConfig.setModifyTime(new Date());
 			if (appPageConfig.getId() == null) {
+				/**
+				 *  根据应用id查询产品信息
+				 */
+				App app = appService.getAppById(appPageConfig.getAppId());
+				appPageConfig.setProductId(app.getProductId());
+				/**
+				 * 新增配置： 默认不启用 ，人审/未人审和原生H5 原型图暂未提供该功能，询问产品后，默认为为未人审和原生
+				 */
+				appPageConfig.setIsExamine(0);
+				appPageConfig.setIsEnable(0);
+				appPageConfig.setMenuType(2);
+				/**
+				 *  随机生成菜单编码 MD5（应用id+菜单名称）
+				 */
+				appPageConfig.setMenuCode(MD5Util.encrypt(appPageConfig.getAppId()+appPageConfig.getMenuName()));
 				appPageConfig.setAddOperatorId(credential.getOpId());
 				appPageConfig.setAddTime(appPageConfig.getModifyTime());
 				appPageConfigService.addAppPageConfig(appPageConfig);
@@ -163,7 +201,7 @@ public class AppPageConfigController extends  BaseController{
 	}
 
 	/**
-	 *
+	 * 启用/禁用
 	 * @param id
 	 * @param appId
 	 * @param isEnable
@@ -175,11 +213,23 @@ public class AppPageConfigController extends  BaseController{
 	public String updateStatus(Integer id,Integer appId ,Integer isEnable, RedirectAttributes redirectAttributes) {
 		OperatorCredential credential = getCredential();
 		try {
+			//验证数据权限
+			if( appId !=null){
+				validAuthData(null,appId);
+			}else{
+				throw new TqException("应用数据查询失败");
+			}
+			AppPageConfig oldConfig = appPageConfigService.queryAppPageConfigById(id);
+			if (oldConfig == null){
+				throw new TqException("应用配置不存在");
+			}
+			//获取实体类信息
 			AppPageConfig appPageConfig = new AppPageConfig();
 			appPageConfig.setId(id);
 			appPageConfig.setModifyTime(new Date());
 			appPageConfig.setModifyOperatorId(credential.getOpId());
 			appPageConfig.setIsEnable(isEnable);
+			//启用/禁用
 			appPageConfigService.updateIsEnable(appPageConfig);
 		} catch (Exception e) {
 			if (e instanceof TqException) {
@@ -195,13 +245,13 @@ public class AppPageConfigController extends  BaseController{
 	}
 
 	/**
-	 *
+	 * 删除（禁用）
 	 * @param id
 	 * @param redirectAttributes
 	 * @return
 	 */
 	@RequiresPermissions({ PERMISSIONPRE+"edit" })
-	@RequestMapping(value = "/delete")
+	//@RequestMapping(value = "/delete")
 	public String delete(Integer id, RedirectAttributes redirectAttributes) {
 		OperatorCredential credential = getCredential();
 		try {

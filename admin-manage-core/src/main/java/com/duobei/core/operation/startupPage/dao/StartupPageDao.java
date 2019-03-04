@@ -7,6 +7,10 @@ import com.duobei.core.operation.startupPage.domain.StartupPage;
  * @description
  * @date 2019/3/2
  */
-public interface StartUpPageDao {
+public interface StartupPageDao {
     StartupPage getByAppId(Integer appId);
+
+    int updateById(StartupPage startupPage);
+
+    int save(StartupPage startupPage);
 }

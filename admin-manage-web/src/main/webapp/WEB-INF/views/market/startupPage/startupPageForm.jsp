@@ -35,11 +35,11 @@
         <div class="control-group">
             <label class="control-label">广告的图片：</label>
             <div class="controls">
-                <input type="hidden" value="${banner.imgUrl}" name="imgUrl" id="imgUrl"  class="valid" descripe="请上传图片">
+                <input type="hidden" value="${startupPage.imgUrl}" name="imgUrl" id="imgUrl"  class="valid" descripe="请上传图片">
                 <div class="thumbImgBox">
                     <ul style="float: left">
                         <li class="upload_button" id="uploadImgIcon1" filename="imgUrl" sort="1" style="width: 100px;height: 100px;">
-                            <a target="_blank" ><img src="${not empty banner.imgUrl?banner.imgUrl:'/static/img/upload.png'}" class="img-thumbnail"  width="100px" height="100px"></a>
+                            <a target="_blank" ><img src="${not empty startupPage.imgUrl?startupPage.imgUrl:'/static/img/upload.png'}" class="img-thumbnail"  width="100px" height="100px"></a>
                         </li>
                     </ul>
                     <ul style="margin-left: 3%;float: left">
@@ -95,7 +95,7 @@
                 top.layer.alert("操作成功", {
                     icon: 6,
                     end: function(){
-                        window.location.href="${ctxA}/marker/starupPage/save";
+                        window.location.href="${ctxA}/marker/starupPage/update";
                     }
                 });
             } else {

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.startupPage.dao.StartupPageDao">
+
+  <sql id="Base_Column_List">
+    startup_page.id as id, startup_page.product_id as product_id,
+    startup_page.app_id as app_id, startup_page.img_url as img_url,
+    startup_page.redirect_type as redirect_type, startup_page.redirect_url as redirect_url,
+    startup_page.remark as remark, startup_page.sort as sort,
+    startup_page.is_need_login as is_need_login, startup_page.is_enable as is_enable,
+    startup_page.add_time as add_time, startup_page.modify_time as modify_time,
+    startup_page.add_operator_id as add_operator_id, startup_page.modify_operator_id as modify_operator_id,
+    startup_page.is_delete as is_delete
+  </sql>
+
+  <select id="getByAppId" parameterType="Integer" resultType="com.duobei.core.operation.startupPage.domain.StartupPage">
+    select <include refid="Base_Column_List"/>
+    from yy_startup_page startup_page
+    where startup_page.is_delete = 0 and startup_page.app_id = #{appId}
+    limit 1
+  </select>
+
+  <update id="updateById" parameterType="com.duobei.core.operation.startupPage.domain.StartupPage">
+    update yy_startup_page
+    set modify_time = #{modifyTime} ,modify_operator_id = #{modifyOperatorId}
+    <if test="redirectUrl != null and redirectUrl !=''">
+     ,redirect_url  = #{redirectUrl}
+    </if>
+    <if test="imgUrl != null and imgUrl !=''">
+      ,img_url  = #{imgUrl}
+    </if>
+    where is_delete = 0 and id = #{id}
+
+  </update>
+
+  <insert id="save" parameterType="com.duobei.core.operation.startupPage.domain.StartupPage">
+    insert into yy_startup_page(product_id, app_id, img_url, redirect_type
+    , redirect_url, remark, modify_time, add_operator_id, modify_operator_id,add_time)
+    values (#{productId},#{appId},#{imgUrl},#{redirectType}
+    ,#{redirectUrl},#{remark},#{modifyTime},#{addOperatorId},#{modifyOperatorId},#{addTime})
+  </insert>
+</mapper>

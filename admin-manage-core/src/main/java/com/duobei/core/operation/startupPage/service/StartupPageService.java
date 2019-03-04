@@ -7,11 +7,23 @@ import com.duobei.core.operation.startupPage.domain.StartupPage;
  * @description
  * @date 2019/3/2
  */
-public interface StartUpPageService {
+public interface StartupPageService {
     /**
      * 根据appId获取
      * @param appId
      * @return
      */
     StartupPage getByAppId(Integer appId);
+
+    /**
+     * 根据id修改启动页
+     * @param startupPage
+     */
+    void updateById(StartupPage startupPage);
+
+    /**
+     * 新增
+     * @param startupPage
+     */
+    void save(StartupPage startupPage);
 }

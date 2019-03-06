@@ -39,4 +39,11 @@
     values (#{productId},#{appId},#{imgUrl},#{redirectType}
     ,#{redirectUrl},#{remark},#{modifyTime},#{addOperatorId},#{modifyOperatorId},#{addTime})
   </insert>
+
+    <update id="updateIsEnableById" parameterType="com.duobei.core.operation.startupPage.domain.StartupPage">
+        update yy_startup_page
+        set modify_time = #{modifyTime} ,modify_operator_id = #{modifyOperatorId},is_enable = #{isEnable}
+        where is_delete = 0 and id = #{id}
+
+    </update>
 </mapper>

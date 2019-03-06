@@ -26,4 +26,10 @@ public interface StartupPageService {
      * @param startupPage
      */
     void save(StartupPage startupPage);
+
+    /**
+     * 根据id修改状态
+     * @param startupPage
+     */
+    void updateIsEnableById(StartupPage startupPage);
 }

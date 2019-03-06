@@ -41,4 +41,12 @@ public class StartupPageServiceImpl implements StartupPageService {
             throw new RuntimeException("新增启动页配置失败");
         }
     }
+
+    @Override
+    public void updateIsEnableById(StartupPage startupPage) {
+        int count = startUpPageDao.updateIsEnableById(startupPage);
+        if (count != 1){
+            throw new RuntimeException("新增启动页配置失败");
+        }
+    }
 }

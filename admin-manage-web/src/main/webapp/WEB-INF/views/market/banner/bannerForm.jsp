@@ -8,6 +8,7 @@
     <!--  -->
     <style type="text/css">
         .upload_button{list-style:none}
+
     </style>
 
 </head>
@@ -28,13 +29,13 @@
         <div class="control-group">
             <label class="control-label">轮播名称：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写轮播名称" type="text" name="bannerTitle" id="bannerTitle" maxlength="20" value="${banner.bannerTitle}" style="width: 300px;"></input>
+                <input type="text" class="form-control valid" descripe="请填写轮播名称" type="text" name="bannerTitle" id="bannerTitle" maxlength="20" value="${banner.bannerTitle}"></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">轮播位置：</label>
             <div class="controls">
-                <select  name="bannerType" id="bannerType" class="selectpicker show-tick form-control valid" descripe="请选择轮播位置" style="width: 315px;">
+                <select  name="bannerType" id="bannerType" class="selectpicker show-tick form-control valid" descripe="请选择轮播位置" style="width: 15%;">
                     <c:forEach items="${bannerType}" var="type">
                         <option value="${type.dicVal}" ${not empty banner && banner.bannerType==type.dicVal?"selected":''}>${type.dicCode}</option>
                     </c:forEach>
@@ -42,31 +43,31 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="col-sm-1 control-label">链接类型:</label>
+            <label class="control-label">链接类型:</label>
             <div class="controls">
                 <c:forEach items="${redirectType}" var="type">
                     <label class="radio-inline">
-                        <input type="radio"  value="${type.dicVal}" name="redirectType"  ${(not empty banner.redirectType && banner.redirectType==type.dicVal)?"checked":''}><span>${type.dicCode}</span>
+                        <input type="radio"  style="width: 30px" value="${type.dicVal}" name="redirectType"  ${(not empty banner.redirectType && banner.redirectType==type.dicVal)?"checked":''}><span>${type.dicCode}</span>
                     </label>
                 </c:forEach>
 
             </div>
         </div>
         <div class="control-group">
-            <label class="col-sm-1 control-label">是否需要登录:</label>
+            <label class="control-label">是否需要登录:</label>
             <div class="controls">
                     <label class="radio-inline">
-                        <input type="radio"  value="0" name="isNeedLogin"  ${(empty banner.isNeedLogin || banner.isNeedLogin=='0')?"checked":''}><span>不需要</span>
+                        <input type="radio"  value="0"  style="width: 30px"  name="isNeedLogin"  ${(empty banner.isNeedLogin || banner.isNeedLogin=='0')?"checked":''}><span>不需要</span>
                     </label>
                     <label class="radio-inline">
-                        <input type="radio"  value="1" name="isNeedLogin"  ${not empty banner && banner.isNeedLogin=='1'?"checked":''}><span>需要</span>
+                        <input type="radio"  value="1"  style="width: 30px" name="isNeedLogin"  ${not empty banner && banner.isNeedLogin=='1'?"checked":''}><span>需要</span>
                     </label>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">跳转链接：</label>
             <div class="controls">
-                <input type="text" class="form-control" type="text" name="redirectUrl" id="redirectUrl" maxlength="255" value="${banner.redirectUrl}" style="width: 600px;"></input>
+                <input type="text" class="form-control" type="text" name="redirectUrl" id="redirectUrl" maxlength="255" value="${banner.redirectUrl}" ></input>
             </div>
         </div>
         <div class="control-group">
@@ -91,13 +92,13 @@
         <div class="control-group">
             <label class="control-label">轮播描述：</label>
             <div class="controls">
-                <input type="text" class="form-control"  type="text" name="remark" id="remark" maxlength="100" value="${banner.remark}" style="width: 300px;"></input>
+                <input type="text" class="form-control"  type="text" name="remark" id="remark" maxlength="100" value="${banner.remark}" ></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">序号：</label>
             <div class="controls">
-                <input type="text" class="form-control" type="text" placeholder="不填默认为0" name="sort" id="sort" maxlength="6" value="${banner.sort}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' style="width: 300px;"></input>
+                <input type="text" class="form-control" type="text" placeholder="不填默认为0" name="sort" id="sort" maxlength="6" value="${banner.sort}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' ></input>
             </div>
         </div>
         <div class="form-actions">

@@ -13,4 +13,6 @@ public interface StartupPageDao {
     int updateById(StartupPage startupPage);
 
     int save(StartupPage startupPage);
+
+    int updateIsEnableById(StartupPage startupPage);
 }

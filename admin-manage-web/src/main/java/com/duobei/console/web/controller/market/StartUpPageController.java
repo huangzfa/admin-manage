@@ -4,7 +4,6 @@ import com.duobei.common.exception.TqException;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.app.service.AppService;
-import com.duobei.core.operation.product.service.ProductService;
 import com.duobei.core.operation.startupPage.domain.StartupPage;
 import com.duobei.core.operation.startupPage.service.StartupPageService;
 import com.duobei.dic.ZD;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.duobei.console.web.controller.base.BaseController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -39,7 +39,7 @@ public class StartUpPageController extends BaseController {
      *
      * @throws TqException
      */
-    @RequiresPermissions("marker:startupPage:view")
+    @RequiresPermissions("market:startupPage:view")
     @RequestMapping(value = "/form")
     public String startupPageForm( Model model,Integer appId) throws TqException {
         OperatorCredential credential = getCredential();
@@ -65,9 +65,54 @@ public class StartUpPageController extends BaseController {
 
         return "market/startupPage/startupPageForm";
     }
-    @RequiresPermissions("marker:startupPage:edit")
+    @RequiresPermissions("market:startupPage:edit")
     @RequestMapping(value = "/update")
+    @ResponseBody
     public String update (StartupPage startupPage){
+
+        //获取用户应用权限
+        try {
+             OperatorCredential credential = getCredential();
+            if (credential == null) {
+                throw new RuntimeException("登录过期，请重新登录");
+            }
+            //验证数据权限
+            if( startupPage.getAppId() !=null ){
+                validAuthData(null,startupPage.getAppId());
+            }else{
+                throw new TqException("数据操作权限失败");
+            }
+            //修改时间、修改人
+            startupPage.setModifyOperatorId(credential.getOpId());
+            startupPage.setModifyTime(new Date());
+            //查询是否已存在当前app配置
+        //    StartupPage data = startupPageService.getByAppId(startupPage.getAppId());
+            if (startupPage.getId() == null){
+                App app = appService.getAppById(startupPage.getAppId());
+                startupPage.setProductId(app.getProductId());
+                //新增
+                //添加人、添加时间、默认链接类型为url
+                startupPage.setAddOperatorId(credential.getOpId());
+                startupPage.setAddTime(startupPage.getModifyTime());
+                startupPage.setRedirectType(ZD.redirectType_url);
+                startupPageService.save(startupPage);
+            }else {
+               /* startupPage.setId(data.getId());*/
+                //修改
+                startupPageService.updateById(startupPage);
+            }
+            return simpleSuccessJsonResult ("success",1);
+        } catch (Exception e) {
+            log.warn("编辑启动页异常", e);
+            return failJsonResult("编辑启动页异常");
+
+        }
+    }
+
+    @RequiresPermissions("market:startupPage:edit")
+    @RequestMapping(value = "/updateStatus")
+    @ResponseBody
+    public String updateStatus (StartupPage startupPage){
 
         //获取用户应用权限
         try {
@@ -84,25 +129,13 @@ public class StartUpPageController extends BaseController {
             //修改时间、修改人
             startupPage.setModifyOperatorId(credential.getOpId());
             startupPage.setModifyTime(new Date());
-            if (startupPage.getId() == null){
-                App app = appService.getAppById(startupPage.getAppId());
-                startupPage.setProductId(app.getProductId());
-                //新增
-                //添加人、添加时间、默认链接类型为url
-                startupPage.setAddOperatorId(credential.getOpId());
-                startupPage.setAddTime(startupPage.getModifyTime());
-                startupPage.setRedirectType(ZD.redirectType_url);
-                startupPageService.save(startupPage);
-            }else {
-                //修改
-                startupPageService.updateById(startupPage);
-            }
+            startupPageService.updateIsEnableById(startupPage);
+            return simpleSuccessJsonResult ("success",1);
         } catch (Exception e) {
             log.warn("编辑启动页异常", e);
             return failJsonResult("编辑启动页异常");
 
         }
-        return null;
 
     }
 }

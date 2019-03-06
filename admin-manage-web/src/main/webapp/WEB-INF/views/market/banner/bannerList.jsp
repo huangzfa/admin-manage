@@ -10,26 +10,25 @@
 </style>
 <script type="text/javascript">
     var pager;
-    var bannerType = [];
     var pageSize=${cfg:getPageSize()};
     var pageList=[pageSize,30,50];
     var pageNum =1;
     $(function(){
         var typeList ='${bannerType}';
-        bannerType = eval("("+typeList+")");
+        var bannerType = eval("("+typeList+")");
         for( var i = 0;i<bannerType.length;i++){
             $("#bannerType").append("<option value='"+bannerType[i].dicVal+"'>"+bannerType[i].dicCode+"</option>");
 		}
         var appLists ='${appLists}';
-        list = eval("("+appLists+")");
+        var appList = eval("("+appLists+")");
         var appId = '${appId}';
-        for( var i = 0;i<list.length;i++){
-            $("#appId").append("<option value='"+list[i].id+"'>"+list[i].appName+"</option>");
+        for( var i = 0;i<appList.length;i++){
+            $("#appId").append("<option value='"+appList[i].id+"'>"+appList[i].appName+"</option>");
         }
         if( appId!=''){
             $("#appId").val(appId);
         }else{
-            $("#appId").val(list[0].id);
+            $("#appId").val(appList[0].id);
         }
 
         pager=$('#tt').datagrid('getPager');

@@ -725,52 +725,52 @@ public class StartupPageExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsNeedLoginEqualTo(Boolean value) {
+        public Criteria andIsNeedLoginEqualTo(Integer value) {
             addCriterion("startup_page.is_need_login =", value, "isNeedLogin");
             return (Criteria) this;
         }
 
-        public Criteria andIsNeedLoginNotEqualTo(Boolean value) {
+        public Criteria andIsNeedLoginNotEqualTo(Integer value) {
             addCriterion("startup_page.is_need_login <>", value, "isNeedLogin");
             return (Criteria) this;
         }
 
-        public Criteria andIsNeedLoginGreaterThan(Boolean value) {
+        public Criteria andIsNeedLoginGreaterThan(Integer value) {
             addCriterion("startup_page.is_need_login >", value, "isNeedLogin");
             return (Criteria) this;
         }
 
-        public Criteria andIsNeedLoginGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andIsNeedLoginGreaterThanOrEqualTo(Integer value) {
             addCriterion("startup_page.is_need_login >=", value, "isNeedLogin");
             return (Criteria) this;
         }
 
-        public Criteria andIsNeedLoginLessThan(Boolean value) {
+        public Criteria andIsNeedLoginLessThan(Integer value) {
             addCriterion("startup_page.is_need_login <", value, "isNeedLogin");
             return (Criteria) this;
         }
 
-        public Criteria andIsNeedLoginLessThanOrEqualTo(Boolean value) {
+        public Criteria andIsNeedLoginLessThanOrEqualTo(Integer value) {
             addCriterion("startup_page.is_need_login <=", value, "isNeedLogin");
             return (Criteria) this;
         }
 
-        public Criteria andIsNeedLoginIn(List<Boolean> values) {
+        public Criteria andIsNeedLoginIn(List<Integer> values) {
             addCriterion("startup_page.is_need_login in", values, "isNeedLogin");
             return (Criteria) this;
         }
 
-        public Criteria andIsNeedLoginNotIn(List<Boolean> values) {
+        public Criteria andIsNeedLoginNotIn(List<Integer> values) {
             addCriterion("startup_page.is_need_login not in", values, "isNeedLogin");
             return (Criteria) this;
         }
 
-        public Criteria andIsNeedLoginBetween(Boolean value1, Boolean value2) {
+        public Criteria andIsNeedLoginBetween(Integer value1, Integer value2) {
             addCriterion("startup_page.is_need_login between", value1, value2, "isNeedLogin");
             return (Criteria) this;
         }
 
-        public Criteria andIsNeedLoginNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andIsNeedLoginNotBetween(Integer value1, Integer value2) {
             addCriterion("startup_page.is_need_login not between", value1, value2, "isNeedLogin");
             return (Criteria) this;
         }
@@ -785,52 +785,52 @@ public class StartupPageExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableEqualTo(Boolean value) {
+        public Criteria andIsEnableEqualTo(Integer value) {
             addCriterion("startup_page.is_enable =", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableNotEqualTo(Boolean value) {
+        public Criteria andIsEnableNotEqualTo(Integer value) {
             addCriterion("startup_page.is_enable <>", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableGreaterThan(Boolean value) {
+        public Criteria andIsEnableGreaterThan(Integer value) {
             addCriterion("startup_page.is_enable >", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andIsEnableGreaterThanOrEqualTo(Integer value) {
             addCriterion("startup_page.is_enable >=", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableLessThan(Boolean value) {
+        public Criteria andIsEnableLessThan(Integer value) {
             addCriterion("startup_page.is_enable <", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableLessThanOrEqualTo(Boolean value) {
+        public Criteria andIsEnableLessThanOrEqualTo(Integer value) {
             addCriterion("startup_page.is_enable <=", value, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableIn(List<Boolean> values) {
+        public Criteria andIsEnableIn(List<Integer> values) {
             addCriterion("startup_page.is_enable in", values, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableNotIn(List<Boolean> values) {
+        public Criteria andIsEnableNotIn(List<Integer> values) {
             addCriterion("startup_page.is_enable not in", values, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableBetween(Boolean value1, Boolean value2) {
+        public Criteria andIsEnableBetween(Integer value1, Integer value2) {
             addCriterion("startup_page.is_enable between", value1, value2, "isEnable");
             return (Criteria) this;
         }
 
-        public Criteria andIsEnableNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andIsEnableNotBetween(Integer value1, Integer value2) {
             addCriterion("startup_page.is_enable not between", value1, value2, "isEnable");
             return (Criteria) this;
         }

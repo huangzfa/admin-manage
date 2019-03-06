@@ -1,5 +1,6 @@
 package com.duobei.core.operation.startupPage.service.impl;
 
+import com.duobei.common.exception.TqException;
 import com.duobei.core.operation.startupPage.dao.StartupPageDao;
 import com.duobei.core.operation.startupPage.dao.mapper.StartupPageMapper;
 import com.duobei.core.operation.startupPage.domain.StartupPage;
@@ -27,26 +28,26 @@ public class StartupPageServiceImpl implements StartupPageService {
     }
 
     @Override
-    public void updateById(StartupPage startupPage) {
+    public void updateById(StartupPage startupPage) throws TqException {
       int count = startUpPageDao.updateById(startupPage);
       if (count != 1){
-          throw new RuntimeException("修改启动页配置失败");
+          throw new TqException("修改启动页配置失败");
       }
     }
 
     @Override
-    public void save(StartupPage startupPage) {
+    public void save(StartupPage startupPage) throws TqException {
         int count = startUpPageDao.save(startupPage);
         if (count != 1){
-            throw new RuntimeException("新增启动页配置失败");
+            throw new TqException("新增启动页配置失败");
         }
     }
 
     @Override
-    public void updateIsEnableById(StartupPage startupPage) {
+    public void updateIsEnableById(StartupPage startupPage) throws TqException {
         int count = startUpPageDao.updateIsEnableById(startupPage);
         if (count != 1){
-            throw new RuntimeException("新增启动页配置失败");
+            throw new TqException("新增启动页配置失败");
         }
     }
 }

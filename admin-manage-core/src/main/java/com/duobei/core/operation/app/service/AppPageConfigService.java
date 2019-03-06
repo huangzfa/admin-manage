@@ -14,14 +14,14 @@ public interface AppPageConfigService {
      * @param appPageConfigCriteria
      * @return
      */
-    ListVo<AppPageConfig> queryAppPageConfigList(AppPageConfigCriteria appPageConfigCriteria);
+    ListVo<AppPageConfig> getListByQuery(AppPageConfigCriteria appPageConfigCriteria);
 
     /**
      * 根据id查询
      * @param id
      * @return
      */
-    AppPageConfig queryAppPageConfigById(Integer id);
+    AppPageConfig getById(Integer id);
 
     /**
      * 删除应用标签配置

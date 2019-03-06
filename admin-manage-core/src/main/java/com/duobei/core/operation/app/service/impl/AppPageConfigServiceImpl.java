@@ -33,7 +33,7 @@ public class AppPageConfigServiceImpl implements AppPageConfigService {
     AppPageConfigMapper appPageConfigMapper;
 
     @Override
-    public ListVo<AppPageConfig> queryAppPageConfigList(AppPageConfigCriteria appPageConfigCriteria) {
+    public ListVo<AppPageConfig> getListByQuery(AppPageConfigCriteria appPageConfigCriteria) {
 
 
         AppPageConfigExample example = new AppPageConfigExample();
@@ -44,13 +44,13 @@ public class AppPageConfigServiceImpl implements AppPageConfigService {
         Long total = appPageConfigMapper.countByExample(example);
         List<AppPageConfig> appPages = null;
         if (total > 0) {
-            appPages = appPageConfigDao.queryAppPageList(appPageConfigCriteria);
+            appPages = appPageConfigDao.getListByQuery(appPageConfigCriteria);
         }
         return new ListVo<AppPageConfig>(total.intValue() , appPages);
     }
 
     @Override
-    public AppPageConfig queryAppPageConfigById(Integer id) {
+    public AppPageConfig getById(Integer id) {
         return appPageConfigDao.getAppPageConfigById(id);
     }
 

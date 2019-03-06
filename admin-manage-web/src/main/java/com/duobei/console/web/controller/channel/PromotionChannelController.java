@@ -2,9 +2,11 @@ package com.duobei.console.web.controller.channel;
 
 import com.alibaba.fastjson.JSON;
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.sys.domain.Dict;
 import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.channel.domain.PromotionChannel;
 import com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +49,7 @@ public class PromotionChannelController extends BaseController {
     private final static String DESC = "推广渠道";
 
     @Resource
-    private PromotionChannelService channelService;
+    private PromotionChannelService promotionChannelService;
 
   /*  @Autowired
     private ChannelStyleService channelStyleService;*/
@@ -68,13 +71,10 @@ public class PromotionChannelController extends BaseController {
             promotionChannelCriteria.setPagesize(GlobalConfig.getPageSize());
         }
         try {
-         /*   ListVo<PromotionChannelVo> list = channelService
-                    .queryPromotionChannelList(credential, promotionChannelCriteria);
-            List<ChannelStyle> channelStyleList = channelStyleService.getAll();*/
+           ListVo<PromotionChannel> list = promotionChannelService.getListByQuery(promotionChannelCriteria);
 
             Map<String, Object> result = new HashMap<>();
-            /*result.put("list", list);
-            result.put("channelStyleList", channelStyleList);*/
+            result.put("list", list);
             return successJsonResult(result, "success");
         } catch (Exception e) {
             if (e instanceof TqException) {
@@ -86,18 +86,31 @@ public class PromotionChannelController extends BaseController {
         }
     }
 
-  /*  @RequiresPermissions(PERMISSIONPRE + "view")
+    @RequiresPermissions(PERMISSIONPRE + "view")
     @RequestMapping(value = "/form")
     public String form(@ModelAttribute("promotionChannel") PromotionChannel promotionChannel,
                        Model model, RedirectAttributes redirectAttributes) {
-        PromotionChannelVo promotionChannelVo = new PromotionChannelVo();
         try {
             if (promotionChannel.getId() != null) {
-                promotionChannel = channelService.queryPromotionChannelById(promotionChannel.getId());
+                promotionChannel = promotionChannelService.getById(promotionChannel.getId());
+            }else{
+                //新建默认 渠道类型：渠道  审核状态：审核完成 渠道类型：渠道
+                promotionChannel.setChannelType(ZD.channelType_h5);
+                promotionChannel.setApproveStatus(ZD.channelApproveType_finsh);
+                promotionChannel.setChannelState(ZD.channelStatus_yes);
             }
-            List<ChannelStyle> channelStyleList = channelStyleService.getAll();
-            BeanUtils.copyProperties(promotionChannel, promotionChannelVo);
-            promotionChannelVo.setChannelStyleList(channelStyleList);
+            //渠道类型
+            List<Dict> channelTypeList = DictUtil.getDictList(ZD.channelType);
+            //审核状态
+            List<Dict> approveStatusList = DictUtil.getDictList(ZD.channelApproveType);
+            //渠道状态
+            List<Dict> channelStatusList = DictUtil.getDictList(ZD.channelStatus);
+
+            model.addAttribute("channelTypeList",channelTypeList);
+            model.addAttribute("approveStatusList",approveStatusList);
+            model.addAttribute("channelStatusList",channelStatusList);
+            model.addAttribute("promotionChannel", promotionChannel);
+
         } catch (Exception e) {
             if (e instanceof TqException) {
                 addFaildMessage(redirectAttributes, e.getMessage());
@@ -107,21 +120,33 @@ public class PromotionChannelController extends BaseController {
             }
             return "redirect:" + this.authzPath + "/" + ADDRESSPRE + "list";
         }
-        model.addAttribute("promotionChannelVo", promotionChannelVo);
         return ADDRESSPRE + "promotionChannelForm";
     }
 
 
     @RequiresPermissions({PERMISSIONPRE + "edit"})
     @RequestMapping(value = "/save")
+    @ResponseBody
     public String save(PromotionChannel promotionChannel, Model model,
                        RedirectAttributes redirectAttributes) {
         OperatorCredential credential = getCredential();
         try {
+            if (credential == null) {
+                throw new RuntimeException("登录过期，请重新登录");
+            }
+            //参数验证
+            checkParam(promotionChannel);
+            //修改人、修改时间
+            promotionChannel.setModifyOperatorId(credential.getOpId());
+            promotionChannel.setModifyTime(new Date());
             if (promotionChannel.getId() == null) {
-                channelService.addPromotionChannel(credential, promotionChannel);
+                //新增
+                promotionChannel.setAddTime(promotionChannel.getModifyTime());
+                promotionChannel.setAddOperatorId(credential.getOpId());
+                promotionChannelService.addPromotionChannel(promotionChannel);
             } else {
-                channelService.updatePromotionChannel(credential, promotionChannel);
+                //修改
+                promotionChannelService.updatePromotionChannel(promotionChannel);
             }
         } catch (Exception e) {
             if (e instanceof TqException) {
@@ -136,23 +161,51 @@ public class PromotionChannelController extends BaseController {
         return "redirect:" + this.authzPath + "/" + ADDRESSPRE + "list";
     }
 
+    private void checkParam(PromotionChannel promotionChannel) throws TqException {
+        //投放渠道验证
+        if (StringUtil.isEmpty(promotionChannel.getChannelName()) || promotionChannel.getChannelName().length() > 32){
+            throw new TqException("投放渠道不能为空，且长度不能超过32位");
+        }
+        //渠道公司验证
+        if ( promotionChannel.getCompanyName().length() > 64){
+            throw new TqException("渠道公司长度不能超过64位");
+        }
+
+        if (StringUtil.isEmpty(promotionChannel.getChannelCode()) || promotionChannel.getChannelCode().length() > 32){
+            throw new TqException("编码不能为空，且长度不能超过32位");
+        }
+    }
+
     @RequiresPermissions({PERMISSIONPRE + "edit"})
     @RequestMapping(value = "/delete")
-    public String delete(Integer id, RedirectAttributes redirectAttributes) {
-        OperatorCredential credential = getCredential();
-        try {
-            channelService.deletePromotionChannel(credential, id);
-        } catch (Exception e) {
-            if (e instanceof TqException) {
-                addFaildMessage(redirectAttributes, e.getMessage());
-            } else {
-                log.warn("delete" + DESC + "异常", e);
-                addFaildMessage(redirectAttributes, "删除" + DESC + "异常，请查看错误日志");
+    @ResponseBody
+    public String delete(Integer id) {
+            try {
+                OperatorCredential credential = getCredential();
+                if (credential == null) {
+                    throw new RuntimeException("登录过期，请重新登录");
+                }
+                if( id == null){
+                    throw new RuntimeException("参数为空");
+                }
+                PromotionChannel promotionChannel = promotionChannelService.getById(id);
+                if( promotionChannel == null ){
+                    throw new RuntimeException("渠道不存在");
+                }
+                promotionChannel.setModifyTime(new Date());
+                promotionChannel.setModifyOperatorId(credential.getOpId());
+                promotionChannelService.delete(promotionChannel);
+                return simpleSuccessJsonResult("success");
+
+            } catch (Exception e) {
+                if (e instanceof RuntimeException) {
+                    return failJsonResult(e.getMessage());
+                }else{
+                    log.warn("delete渠道异常", e);
+                    return failJsonResult("delete渠道异常");
+                }
             }
-            return "redirect:" + this.authzPath + "/" + ADDRESSPRE + "list";
         }
-        addMessage(redirectAttributes, "删除" + DESC + "成功");
-        return "redirect:" + this.authzPath + "/" + ADDRESSPRE + "list";
-    }
-*/
+
+
 }

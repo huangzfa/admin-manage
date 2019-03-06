@@ -1,4 +1,4 @@
-package com.duobei.core.operation.product.dao;
+package com.duobei.core.operation.channel.dao;
 
 
 

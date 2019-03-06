@@ -1,4 +1,4 @@
-package com.duobei.core.operation.product.service;
+package com.duobei.core.operation.channel.service;
 
 /**
  * @author huangzhongfa

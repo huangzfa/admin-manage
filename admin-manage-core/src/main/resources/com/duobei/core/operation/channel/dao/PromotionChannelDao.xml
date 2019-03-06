@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.channel.dao.PromotionChannelDao">
+
+  <sql id="Base_Column_List">
+    promotion_channel.id as id, promotion_channel.channel_name as channel_name,
+    promotion_channel.channel_code as channel_code, promotion_channel.channel_state as channel_state,
+    promotion_channel.company_name as company_name, promotion_channel.contacts_name as contacts_name,
+    promotion_channel.contacts_email as contacts_email, promotion_channel.contacts_phone as contacts_phone,
+    promotion_channel.channel_type as channel_type, promotion_channel.app_os_type as app_os_type,
+    promotion_channel.remark as remark, promotion_channel.add_time as add_time,
+    promotion_channel.modify_time as modify_time, promotion_channel.add_operator_id as add_operator_id,
+    promotion_channel.modify_operator_id as modify_operator_id, promotion_channel.is_delete as is_delete,
+    promotion_channel.approve_status as approve_status
+  </sql>
+
+  <select id="countByQuery" parameterType="com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria" resultType="int">
+    select count(id)
+    from yy_promotion_channel
+    where is_delete = 0
+    <if test="channelType == null">
+      and channel_type = #{channelType}
+    </if>
+    <if test="nameAndCompany != null and nameAndCompany! = ''">
+      and (channel_name = #{nameAndCompany} or company_name = #{nameAndCompany})
+    </if>
+  </select>
+
+  <select id="getListByQuery" parameterType="com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria" resultType="com.duobei.core.operation.channel.domain.PromotionChannel">
+    select <include refid="Base_Column_List"/>
+    from yy_promotion_channel promotion_channel
+    where promotion_channel.is_delete = 0
+    <if test="channelType == null">
+      and promotion_channel.channel_type = #{channelType}
+    </if>
+    <if test="nameAndCompany != null and nameAndCompany! = ''">
+      and (promotion_channel.channel_name = #{nameAndCompany} or promotion_channel.company_name = #{nameAndCompany})
+    </if>
+    ORDER BY promotion_channel.add_time desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+  <select id="getById" parameterType="Integer" resultType="com.duobei.core.operation.channel.domain.PromotionChannel">
+    select <include refid="Base_Column_List"/>
+    from yy_promotion_channel promotion_channel
+    where promotion_channel.is_delete = 0 and promotion_channel.id = #{id}
+  </select>
+
+  <insert id="save" parameterType="com.duobei.core.operation.channel.domain.PromotionChannel">
+    insert into yy_promotion_channel(channel_name, channel_code, channel_state
+    , company_name, channel_type,approve_status, add_time, modify_time, add_operator_id, modify_operator_id)
+    values (#{channelName},#{channelCode},#{channelState}
+    ,#{companyName},#{channelType},#{approveStatus},#{addTime},#{modifyTime},#{addOperatorId},#{modifyOperatorId})
+  </insert>
+  
+  <update id="update" parameterType="com.duobei.core.operation.channel.domain.PromotionChannel">
+    update yy_promotion_channel
+    set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId}
+    <if test="channelName != null and channelName != ''">
+      channel_name = #{channelName}
+    </if>
+    <if test="channelCode != null and channelCode != ''">
+      channel_code = #{channelCode}
+    </if>
+    <if test="channelState != null ">
+      channel_state = #{channelState}
+    </if>
+    <if test="companyName != null and companyName != ''">
+      company_name = #{companyName}
+    </if>
+    <if test="channelType != null ">
+      channel_type = #{channelType}
+    </if>
+    <if test="approveStatus != null ">
+      approve_status = #{approveStatus}
+    </if>
+    where is_delete = 0 and id = #{id}
+  </update>
+
+  <update id="delete" parameterType="com.duobei.core.operation.channel.domain.PromotionChannel">
+    update yy_promotion_channel
+    set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId},is_delete = #{id}
+    where is_delete = 0 and id = #{id}
+  </update>
+</mapper>

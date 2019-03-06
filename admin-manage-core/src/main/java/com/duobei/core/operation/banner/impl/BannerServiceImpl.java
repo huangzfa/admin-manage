@@ -1,6 +1,7 @@
 package com.duobei.core.operation.banner.impl;
 
 
+import com.duobei.common.exception.TqException;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.banner.BannerService;
@@ -67,32 +68,32 @@ public class BannerServiceImpl implements BannerService {
 
     @Override
    // @Transactional(rollbackFor = RuntimeException.class)
-    public void save (Banner entity) throws RuntimeException {
+    public void save (Banner entity) throws  TqException {
         if( bannerDao.save(entity) !=1){
-            throw new RuntimeException("banner保存失败");
+            throw new TqException("轮播图保存失败");
         }
     }
 
     @Override
    // @Transactional(rollbackFor = RuntimeException.class)
-    public void update(Banner entity) throws RuntimeException{
+    public void update(Banner entity) throws  TqException {
         if( bannerDao.update(entity) !=1){
-            throw new RuntimeException("banner修改失败");
+            throw new TqException("轮播图修改失败");
         }
     }
 
     @Override
   //  @Transactional(rollbackFor = RuntimeException.class)
-    public void delete(Banner entity) throws RuntimeException{
+    public void delete(Banner entity) throws  TqException {
         if( bannerDao.delete(entity) !=1){
-            throw new RuntimeException("banner删除失败");
+            throw new TqException("轮播图删除失败");
         }
     }
 
     @Override
-    public void updateStatus(Banner entity) {
+    public void updateStatus(Banner entity) throws TqException {
         if( bannerDao.updateStatus(entity) !=1){
-            throw new RuntimeException("banner修改状态失败");
+            throw new TqException("轮播图修改状态失败");
         }
     }
 }

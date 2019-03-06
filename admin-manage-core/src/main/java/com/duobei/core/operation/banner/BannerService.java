@@ -1,5 +1,6 @@
 package com.duobei.core.operation.banner;
 
+import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.banner.domain.Banner;
 import com.duobei.core.operation.banner.domain.criteria.BannerCriteria;
@@ -19,11 +20,11 @@ public interface BannerService {
 
     Banner getById(Integer id);
 
-    void save(Banner entity) throws RuntimeException;
+    void save(Banner entity) throws RuntimeException, TqException;
 
-    void update(Banner entity) throws RuntimeException;
+    void update(Banner entity) throws RuntimeException, TqException;
 
-    void delete(Banner entity) throws RuntimeException;
+    void delete(Banner entity) throws RuntimeException, TqException;
 
-    void updateStatus(Banner banner1);
+    void updateStatus(Banner banner1) throws TqException;
 }

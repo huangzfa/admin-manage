@@ -96,7 +96,7 @@ public class AppPageConfigController extends  BaseController{
 			}
 
 			//获取数据列表
-			ListVo<AppPageConfig> list = appPageConfigService.queryAppPageConfigList(appPageConfigCriteria);
+			ListVo<AppPageConfig> list = appPageConfigService.getListByQuery(appPageConfigCriteria);
 			Map<String,Object> dataMap = new HashMap<>();
 			dataMap.put("list",list);
 			return successJsonResult(dataMap,"success");
@@ -129,7 +129,7 @@ public class AppPageConfigController extends  BaseController{
 			}
 			//如果存在id 则是修改操作，查询相关信息
 			if (appPageConfig.getId() != null) {
-                appPageConfig = appPageConfigService.queryAppPageConfigById(appPageConfig.getId());
+                appPageConfig = appPageConfigService.getById(appPageConfig.getId());
 			}
 		} catch (Exception e) {
 			if (e instanceof TqException) {
@@ -219,7 +219,7 @@ public class AppPageConfigController extends  BaseController{
 			}else{
 				throw new TqException("应用数据查询失败");
 			}
-			AppPageConfig oldConfig = appPageConfigService.queryAppPageConfigById(id);
+			AppPageConfig oldConfig = appPageConfigService.getById(id);
 			if (oldConfig == null){
 				throw new TqException("应用配置不存在");
 			}

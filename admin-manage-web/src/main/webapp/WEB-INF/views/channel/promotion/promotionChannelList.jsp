@@ -94,11 +94,31 @@
         var opStr='';
         <shiro:hasPermission name="cp:cm:edit">
         opStr+='<a class="si-option-a" href="${ctxA}/channel/promotion/form?id='+row.id+'">编辑</a>';
-        opStr+='<a class="si-option-a" href="${ctxA}/channel/promotion/delete?id='+row.id+'" onclick="return confirmx(\'确定要删除该配置吗？\', this.href)">删除</a>';
+        opStr+='<a class="si-option-a" href="" onclick="del("+row.id+")">删除</a>';
         </shiro:hasPermission>
         return opStr;
       }
-
+      function del(id){
+          top.$.jBox.confirm("确定要删除该渠道吗",'系统提示',function(v,h,f){
+              if(v=='ok'){
+                  jQuery.post("${ctxA}/channel/promotion/delete", {'id':id},
+                      function(data) {
+                          if (data.code ==1) {
+                              top.layer.alert("操作完成", {
+                                  icon: 6,
+                                  end: function(){
+                                      pageNum = 1;
+                                      etData(1,pageSize);
+                                  }
+                              });
+                          } else {
+                              top.layer.alert(data.msg, {icon: 5});
+                          }
+                          return;
+                      }, "json");
+              }
+          })
+      }
 	</script>
 </head>
 <body>
@@ -135,13 +155,13 @@
 		   data-options="idField:'promotionChannelId',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
 		<thead>
 		<tr>
-			<th data-options="field:'id',width:138,align:'center',halign:'center',fixed:true">渠道编号</th>
-			<th data-options="field:'channelName',width:138,align:'center',halign:'center',fixed:true">渠道名称</th>
+			<th data-options="field:'id',width:138,align:'center',halign:'center',fixed:true">编号</th>
+			<th data-options="field:'channelName',width:138,align:'center',halign:'center',fixed:true">投放渠道</th>
 			<th data-options="field:'channelCode',width:138,align:'center',halign:'center',fixed:true">渠道编码</th>
 			<th data-options="field:'channelType',width:138,align:'center',halign:'center',fixed:true,formatter:channelTypeformater">渠道类型</th>
 			<th data-options="field:'companyName',width:138,align:'center',halign:'center',fixed:true">渠道公司</th>
 			<th data-options="field:'companyName',width:138,align:'center',halign:'center',fixed:true">审核状态</th>
-			<th data-options="field:'addTime',width:138,align:'center',halign:'center',fixed:true">新增时间</th>
+			<th data-options="field:'addTime',width:138,align:'center',halign:'center',fixed:true">创建时间</th>
 			<th data-options="field:'approveStatus',width:138,align:'center',halign:'center',fixed:true,formatter:optionformater">操作</th>
 		</tr>
 		</thead>

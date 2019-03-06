@@ -67,7 +67,7 @@
         <div class="control-group">
             <label class="control-label">跳转链接：</label>
             <div class="controls">
-                <input type="text" class="form-control" type="text" name="redirectUrl" id="redirectUrl" maxlength="255" value="${banner.redirectUrl}" ></input>
+                <input type="text" class="form-control valid" descripe="请填写链接地址"  type="text" name="redirectUrl" id="redirectUrl" maxlength="255" value="${banner.redirectUrl}" ></input>
             </div>
         </div>
         <div class="control-group">
@@ -159,10 +159,6 @@
         if( typeof(redirectType) =='undefined' || redirectType=='' ){
             top.layer.alert("请选择链接类型", {icon: 5});
             return false
-        }
-        if( redirectType == 'url' && redirectUrl == ''){
-            top.layer.alert("请填写链接地址", {icon: 5});
-            return false;
         }
         $("#btnSubmit").attr("disabled",true);
         var form=$("#bannerForm");

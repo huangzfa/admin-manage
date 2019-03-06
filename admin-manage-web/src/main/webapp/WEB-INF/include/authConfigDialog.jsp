@@ -24,9 +24,9 @@
             <div class="modal-body duobei-product">
                 <table class="table table-bordered">
                     <thead>
+                        <th >选择</th>
                         <th >认证项名称</th>
-                        <th>是否可用</th>
-                        <th>操作</th>
+                        <th>开启状态</th>
                     </thead>
                     <tbody id="rows" >
 
@@ -80,9 +80,9 @@
                     disabled = "disabled";
                 }
                 $("#modalAuthConfig #rows").append("<tr>"
-                    +"<td width='30%'>"+auth.authName+"</td>"
-                    +"<td>"+(auth.isEnable==1?"是":"否")+"</td>"
                     +"<td><input type='checkbox' isEnable="+auth.isEnable+" "+auth.checked+" "+disabled+" authName='"+auth.authName+"' authId='"+auth.id+"'   ></td>"
+                    +"<td width='30%'>"+auth.authName+"</td>"
+                    +"<td>"+(auth.isEnable==1?"开启":"关闭")+"</td>"
                     +"</tr>")
             }
             return;

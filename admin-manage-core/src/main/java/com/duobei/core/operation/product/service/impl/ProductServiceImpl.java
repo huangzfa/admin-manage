@@ -1,5 +1,6 @@
 package com.duobei.core.operation.product.service.impl;
 
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.encrypt.MD5Util;
 import com.duobei.common.util.lang.DateUtil;
@@ -85,15 +86,25 @@ public class ProductServiceImpl implements ProductService {
         if( productDao.update(productVo) <1){
             throw new TqException("修改失败");
         }
-        //保存业务类型
-        productBusinessDao.updateByProductId(productVo.getId());
+        //保存业务类型,将所有state=1的，改为0
+        productBusinessDao.updateState(productVo.getId(), BizConstant.INT_ZERO);
         String[] bizCodes = productVo.getBizCodes().split(",");
         for(String code :bizCodes){
             ProductBusiness entity = new ProductBusiness();
             entity.setProductId(productVo.getId());
             entity.setBizCode(code);
-            entity.setAddOperatorId(productVo.getModifyOperatorId());
-            productBusinessDao.save(entity);
+            ProductBusiness entity1 = productBusinessDao.getByBizCode(entity);
+            //数据库中不存在
+            if( entity1 == null){
+                //新增操作
+                entity.setAddOperatorId(productVo.getModifyOperatorId());
+                productBusinessDao.save(entity);
+            }else{
+                //修改状态为有效
+                entity.setId(entity1.getId());
+                entity.setState(BizConstant.INT_ONE);
+                productBusinessDao.update(entity);
+            }
         }
     }
 
@@ -114,8 +125,17 @@ public class ProductServiceImpl implements ProductService {
             ProductBusiness entity = new ProductBusiness();
             entity.setProductId(productVo.getId());
             entity.setBizCode(code);
-            entity.setAddOperatorId(productVo.getModifyOperatorId());
-            productBusinessDao.save(entity);
+            ProductBusiness entity1 = productBusinessDao.getByBizCode(entity);
+            //数据库中不存在
+            if( entity1 == null){
+                //新增操作
+                entity.setAddOperatorId(productVo.getModifyOperatorId());
+                productBusinessDao.save(entity);
+            }else{
+                //修改状态为有效
+                entity.setState(BizConstant.INT_ONE);
+                productBusinessDao.update(entity);
+            }
         }
 
     }

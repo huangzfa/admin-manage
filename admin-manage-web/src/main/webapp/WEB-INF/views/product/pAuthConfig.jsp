@@ -148,7 +148,12 @@
                 }).success(function(result){
                     $("#btnSubmit").attr("disabled",false);
                     if (result.code ==1) {
-                        top.layer.alert("操作成功", {icon: 6});
+                        top.layer.alert("操作成功", {
+                            icon: 6,
+                            end: function(){
+                                window.location.reload();
+                            }
+                        });
                     } else {
                         top.layer.alert(result.msg, {icon: 5});
                     }
@@ -196,7 +201,7 @@
             callback: function (data) {
                 var controllerScope = $('div[ng-controller="formCtrl"]').scope();  // Get controller's scope
                 for( var  i = 0; i < data.list.length ; i++){
-                    if( getIndex(data.list[i].id,controllerScope) ==-1){
+                    if( getIndex(data.list[i].authId,controllerScope) ==-1){
                         //$apply()用于传播模型的变化。在外部改变了作用域，如果想显示改变后的值，必须调用$apply。
                         controllerScope.$apply(function(){
                             controllerScope.auths.push(data.list[i]);

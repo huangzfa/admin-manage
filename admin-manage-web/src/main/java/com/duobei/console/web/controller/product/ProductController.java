@@ -108,8 +108,7 @@ public class ProductController extends BaseController {
     }
 
     /**
-     * 产品表单添加页
-     *
+     * 商户产品表单添加页
      * @param model
      * @return
      */
@@ -125,6 +124,7 @@ public class ProductController extends BaseController {
             }
         }
         model.addAttribute("merchants",merchantService.getAll());
+        //查询业务类型
         List<BusinessVo> listBusin =  businessService.getAll();
         for(BusinessVo vo : listBusin){
             for( ProductBusiness business : list){
@@ -138,8 +138,7 @@ public class ProductController extends BaseController {
     }
 
     /**
-     * 产品表单添加页
-     *
+     * 产品详情添加页
      * @param model
      * @return
      */
@@ -157,8 +156,7 @@ public class ProductController extends BaseController {
     }
 
     /**
-     * 产品表单添加页
-     *
+     * 消费贷产品配置
      * @param model
      * @return
      */
@@ -183,8 +181,7 @@ public class ProductController extends BaseController {
     }
 
     /**
-     * 产品表单添加页
-     *
+     * 消费贷- 基础借款配置
      * @param model
      * @return
      */
@@ -195,7 +192,12 @@ public class ProductController extends BaseController {
             Product product = productService.getByCode(productCode);
             model.addAttribute("product", product);
             if( product !=null ){
-                model.addAttribute("consumeLoanConfig",JSON.toJSONString(consumeLoanConfigService.getByProductId(product.getId())));
+                ConsumeLoanConfig config = consumeLoanConfigService.getByProductId(product.getId());
+                if( config == null ){
+                    config = new ConsumeLoanConfig();
+                }
+                config.setProductId(product.getId());
+                model.addAttribute("consumeLoanConfig",JSON.toJSONString(config));
                 model.addAttribute("authConfigs",JSON.toJSONString(productAuthConfigService.getByProductId(product.getId())));
             }
         }
@@ -203,7 +205,7 @@ public class ProductController extends BaseController {
     }
 
     /**
-     *
+     *消费贷-消费贷相关配置
      * @param model
      * @param productCode
      * @return
@@ -215,15 +217,22 @@ public class ProductController extends BaseController {
             Product product = productService.getByCode(productCode);
             model.addAttribute("product", product);
             if( product !=null ){
-                model.addAttribute("consumeLoanConfig",JSON.toJSONString(consumeLoanConfigService.getByProductId(product.getId())));
-                model.addAttribute("authConfigs",JSON.toJSONString(productAuthConfigService.getByProductId(product.getId())));
+                ConsumeLoanConfig record = consumeLoanConfigService.getByProductId(product.getId());
+                ConsumeLoanConfig config = new ConsumeLoanConfig();
+                config.setProductId(product.getId());
+                if( record != null ){
+                    config.setQuotaSceneCode(record.getQuotaSceneCode());
+                    config.setBorrowSceneCode(record.getBorrowSceneCode());
+                    config.setBorrowSceneCodeFirst(record.getBorrowSceneCodeFirst());
+                }
+                model.addAttribute("consumeLoanConfig",JSON.toJSONString(config));
             }
         }
         return "product/pLoanConfig";
     }
 
     /**
-     *
+     *消费贷-期限利率配置
      * @param model
      * @param productCode
      * @return
@@ -251,7 +260,7 @@ public class ProductController extends BaseController {
     @RequiresPermissions("product:list:edit")
     @RequestMapping(value = "/config/auth/save")
     @ResponseBody
-    public String save(HttpServletRequest request) throws TqException {
+    public String authSave(HttpServletRequest request) throws TqException {
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {
@@ -282,6 +291,30 @@ public class ProductController extends BaseController {
             loan.setModifyTime(new Date());
             loan.setModifyOperatorId(credential.getOpId());
             consumeLoanConfigService.saveAuth(loan,auth);
+            return simpleSuccessJsonResult("success");
+        } catch (Exception e) {
+            if (e instanceof TqException) {
+                return failJsonResult(e.getMessage());
+            } else {
+                log.warn("save产品异常", e);
+                return failJsonResult("save产品异常");
+            }
+
+        }
+    }
+    @RequiresPermissions("product:list:edit")
+    @RequestMapping(value = "/config/loan/save")
+    @ResponseBody
+    public String loanSave(HttpServletRequest request) throws TqException {
+        try {
+            OperatorCredential credential = getCredential();
+            if (credential == null) {
+                throw new TqException("登录过期，请重新登录");
+            }
+            String loans = request.getParameter("loan");
+            if( StringUtil.isBlank(loans)){
+                throw new TqException("请填写借贷基本配置");
+            }
             return simpleSuccessJsonResult("success");
         } catch (Exception e) {
             if (e instanceof TqException) {

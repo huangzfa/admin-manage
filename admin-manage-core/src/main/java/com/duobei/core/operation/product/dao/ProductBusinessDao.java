@@ -23,8 +23,12 @@ public interface ProductBusinessDao {
      *
      * @param productId
      */
-    void updateByProductId(@Param("productId") Integer productId);
+    void updateState(@Param("productId") Integer productId,@Param("state") Integer state);
 
-    void save(ProductBusiness entity);
+    int save(ProductBusiness entity);
+
+    int update(ProductBusiness entity);
+
+    ProductBusiness getByBizCode(ProductBusiness entity);
 
 }

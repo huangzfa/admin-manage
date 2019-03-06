@@ -25,10 +25,6 @@
             $('.datagrid-pager .pagination-num').hide();
             //加载第一页数据
             getData();
-            $('#search').click(function(){
-                pageNum = 1;
-                getData();
-            });
 
         });
         function getData(){
@@ -41,7 +37,7 @@
             }
             hjnUtils.ajax({
                 type:'post',
-                url:'${ctxA}/product/getProductData',
+                url:'${ctxA}/goods/getGoodsData',
                 data:data,
                 dataType:'json',
                 success:function(data){
@@ -66,33 +62,36 @@
             });
         }
         function stateformater(value,row,index){
-            if(value=='1'){
-                return "启用";
-            }else if(value=='0'){
-                return "停用";
+            if(value==1){
+                return "上架";
+            }else if(value==0){
+                return "下架";
             }
             return '未知';
+        }
+        function priceformater(value,row,index){
+            return row.minAmountDouble + "-" + row.maxAmountDouble;
         }
         function optionformater(value,row,index){
             var opStr='';
             <shiro:hasPermission name="product:list:edit">
-            var productState = 0;
-            if( row.productState == 0) productState = 1;
-            opStr+='<a class="si-option-a" href="${ctxA}/product/pForm?productCode='+row.productCode+'">修改</a>';
-            //opStr+="<a class='si-option-a' href='javascript:editState(\""+row.productCode+"\",\""+productState+"\")'>"+(row.productState==1?"禁用":"启用")+"</a>";
-            opStr+='<a class="si-option-a" href="${ctxA}/product/pConfig?productCode='+row.productCode+'">配置产品</a>';
+            var state = 0;
+            if( row.state == 0) state = 1;
+            opStr+="<a class='si-option-a' href='javascript:editState(\""+row.goodsNo+"\",\""+state+"\")'>"+(state==1?"上架":"下架")+"</a>";
+            opStr+='<a class="si-option-a" href="${ctxA}/goods/form?goodsNo='+row.goodsNo+'">修改</a>';
+            opStr+='<a class="si-option-a" href="${ctxA}/product/pConfig?productCode='+row.productCode+'">删除</a>';
             </shiro:hasPermission>
             return opStr;
         }
 
-        function editState(productCode,productState){
-            var title = "确定启用该产品吗";
-            if(productState == 0){
-                title = "确定禁用该产品吗";
+        function editState(goodsNo,state){
+            var title = "确定下架该商品吗";
+            if(state == 1){
+                title = "确定上架该商品吗";
             }
             top.$.jBox.confirm(title,'系统提示',function(v,h,f){
                 if(v=='ok'){
-                    jQuery.post("${ctxA}/product/editState", {'productCode':productCode,'productState':productState},
+                    jQuery.post("${ctxA}/goods/editState", {'goodsNo':goodsNo,'state':state},
                         function(data) {
                             if (data.code ==1) {
                                 top.layer.alert("操作完成", {
@@ -114,34 +113,22 @@
 </head>
 <body>
 <ul class="nav nav-tabs" style="margin-bottom: 5px;">
-    <li class="active"><a href="javascript:void(0);">产品列表</a></li>
+    <li class="active"><a href="javascript:void(0);">商品列表</a></li>
+    <shiro:hasPermission name="goods:list:edit">
+        <li><a href="${ctxA}/goods/form">添加商品</a></li>
+    </shiro:hasPermission>
 </ul>
-<div class="breadcrumb form-search" style="margin-bottom:0;">
-    <ul class="ul-form">
-        <li>
-            <label>产品编号：</label>
-            <input id="productCode"  class="input-large" type="text" value="" maxlength="50"/>
-        </li>
-        <li>
-            <label>产品名称：</label>
-            <input id="productName"  class="input-large" type="text" value="" maxlength="50"/>
-        </li>
-        <li class="btns">
-            <input id="search" class="btn btn-primary" type="submit" value="查询"/>
-        </li>
-    </ul>
-</div>
-<div class="si-warp" style="top:95px;">
+<div class="si-warp">
     <table id="tt" class="easyui-datagrid"
            data-options="idField:'id',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
         <thead>
         <tr>
-            <th data-options="field:'productCode',width:180,align:'center',halign:'center',fixed:true">产品编码</th>
-            <th data-options="field:'productName',width:180,align:'center',halign:'center',fixed:true">产品名称</th>
-            <th data-options="field:'merchantName',width:180,align:'center',halign:'center',fixed:true">所属商户</th>
-            <th data-options="field:'',width:200,align:'center',halign:'center',fixed:true">域名</th>
-            <th data-options="field:'state',width:200,align:'center',halign:'center',fixed:true,formatter:stateformater">状态</th>
-            <th data-options="field:'modifyTime',width:160,align:'center',halign:'center',fixed:true">更新时间</th>
+            <th data-options="field:'goodsNo',width:180,align:'center',halign:'center',fixed:true">商品编码</th>
+            <th data-options="field:'goodsName',width:180,align:'center',halign:'center',fixed:true">商品名称</th>
+            <th data-options="field:'sort',width:180,align:'center',halign:'center',fixed:true">排序</th>
+            <th data-options="field:'minAmountDouble',width:200,align:'center',halign:'center',fixed:true,formatter:priceformater">商品价格区间</th>
+            <th data-options="field:'priceAmountDouble',width:200,align:'center',halign:'center',fixed:true">商品价格</th>
+            <th data-options="field:'state',width:160,align:'center',halign:'center',fixed:true,formatter:stateformater">展示状态</th>
             <th data-options="field:'option',width:180,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
         </tr>
         </thead>

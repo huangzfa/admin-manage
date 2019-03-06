@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.consumdebt.dao.ConsumdebtGoodsDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoods" extends="com.duobei.core.operation.consumdebt.dao.mapper.ConsumdebtGoodsMapper.BaseResultMap">
+    </resultMap>
+
+    <select id="getPageList" resultType="com.duobei.core.operation.consumdebt.domain.vo.ConsumdebtGoodsVo" parameterType="com.duobei.core.operation.consumdebt.domain.criteria.ConsumdebtGoodsCriteria">
+        select *,round(price_amount/100,2) as priceAmountDouble,round(sale_amount/100,2) as saleAmountDouble,
+        round(min_amount/100,2) as minAmountDouble,round(max_amount/100,2) as maxAmountDouble from yy_consumdebt_goods where is_delete = 0 order by id desc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <select id="countByCriteria" parameterType="com.duobei.core.operation.consumdebt.domain.criteria.ConsumdebtGoodsCriteria" resultType="java.lang.Integer">
+        select * from yy_consumdebt_goods where is_delete = 0 order by id desc
+    </select>
+
+    <select id="getByGoodsNo" parameterType="java.lang.String" resultType="com.duobei.core.operation.consumdebt.domain.vo.ConsumdebtGoodsVo">
+                select *,round(price_amount/100,2) as priceAmountDouble,round(sale_amount/100,2) as saleAmountDouble,
+        round(min_amount/100,2) as minAmountDouble,round(max_amount/100,2) as maxAmountDouble from yy_consumdebt_goods
+        where is_delete = 0 and goods_no = #{goodsNo,jdbcType=VARCHAR} order by id desc limit 1
+    </select>
+</mapper>

@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.duobei.core.operation.consume.dao.mapper.ConsumdebtGoodsPicMapper">
-  <resultMap id="BaseResultMap" type="com.duobei.core.operation.consume.domain.ConsumdebtGoodsPic">
-    <id column="cgp_id" jdbcType="INTEGER" property="id" />
-    <result column="cgp_goods_id" jdbcType="INTEGER" property="goodsId" />
-    <result column="cgp_pic_type" jdbcType="TINYINT" property="picType" />
-    <result column="cgp_pic_url" jdbcType="VARCHAR" property="picUrl" />
-    <result column="cgp_sort" jdbcType="INTEGER" property="sort" />
-    <result column="cgp_remark" jdbcType="VARCHAR" property="remark" />
-    <result column="cgp_add_time" jdbcType="TIMESTAMP" property="addTime" />
-    <result column="cgp_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="cgp_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
-    <result column="cgp_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
-    <result column="cgp_is_delete" jdbcType="INTEGER" property="isDelete" />
+<mapper namespace="com.duobei.core.operation.consumdebt.dao.mapper.ConsumdebtGoodsClassMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsClass">
+    <id column="cgc_id" jdbcType="INTEGER" property="id" />
+    <result column="cgc_class_code" jdbcType="VARCHAR" property="classCode" />
+    <result column="cgc_class_name" jdbcType="VARCHAR" property="className" />
+    <result column="cgc_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="cgc_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="cgc_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="cgc_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
+    <result column="cgc_is_delete" jdbcType="INTEGER" property="isDelete" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,18 +70,17 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    cgp.id as cgp_id, cgp.goods_id as cgp_goods_id, cgp.pic_type as cgp_pic_type, cgp.pic_url as cgp_pic_url, 
-    cgp.sort as cgp_sort, cgp.remark as cgp_remark, cgp.add_time as cgp_add_time, cgp.modify_time as cgp_modify_time, 
-    cgp.add_operator_id as cgp_add_operator_id, cgp.modify_operator_id as cgp_modify_operator_id, 
-    cgp.is_delete as cgp_is_delete
+    cgc.id as cgc_id, cgc.class_code as cgc_class_code, cgc.class_name as cgc_class_name, 
+    cgc.add_time as cgc_add_time, cgc.modify_time as cgc_modify_time, cgc.add_operator_id as cgc_add_operator_id, 
+    cgc.modify_operator_id as cgc_modify_operator_id, cgc.is_delete as cgc_is_delete
   </sql>
-  <select id="selectByExample" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsPicExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsClassExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from yy_consumdebt_goods_pic cgp
+    from yy_consumdebt_goods_class cgc
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -95,52 +91,41 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from yy_consumdebt_goods_pic cgp
-    where cgp.id = #{id,jdbcType=INTEGER}
+    from yy_consumdebt_goods_class cgc
+    where cgc.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from yy_consumdebt_goods_pic
+    delete from yy_consumdebt_goods_class
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsPicExample">
-    delete from yy_consumdebt_goods_pic cgp
+  <delete id="deleteByExample" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsClassExample">
+    delete from yy_consumdebt_goods_class cgc
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsPic">
+  <insert id="insert" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsClass">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into yy_consumdebt_goods_pic (goods_id, pic_type, pic_url, 
-      sort, remark, add_time, 
+    insert into yy_consumdebt_goods_class (class_code, class_name, add_time, 
       modify_time, add_operator_id, modify_operator_id, 
       is_delete)
-    values (#{goodsId,jdbcType=INTEGER}, #{picType,jdbcType=TINYINT}, #{picUrl,jdbcType=VARCHAR}, 
-      #{sort,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+    values (#{classCode,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
       #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, 
       #{isDelete,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsPic">
+  <insert id="insertSelective" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsClass">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into yy_consumdebt_goods_pic
+    insert into yy_consumdebt_goods_class
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="goodsId != null">
-        goods_id,
+      <if test="classCode != null">
+        class_code,
       </if>
-      <if test="picType != null">
-        pic_type,
-      </if>
-      <if test="picUrl != null">
-        pic_url,
-      </if>
-      <if test="sort != null">
-        sort,
-      </if>
-      <if test="remark != null">
-        remark,
+      <if test="className != null">
+        class_name,
       </if>
       <if test="addTime != null">
         add_time,
@@ -159,20 +144,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="goodsId != null">
-        #{goodsId,jdbcType=INTEGER},
+      <if test="classCode != null">
+        #{classCode,jdbcType=VARCHAR},
       </if>
-      <if test="picType != null">
-        #{picType,jdbcType=TINYINT},
-      </if>
-      <if test="picUrl != null">
-        #{picUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="sort != null">
-        #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
       </if>
       <if test="addTime != null">
         #{addTime,jdbcType=TIMESTAMP},
@@ -191,47 +167,38 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsPicExample" resultType="java.lang.Long">
-    select count(*) from yy_consumdebt_goods_pic cgp
+  <select id="countByExample" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsClassExample" resultType="java.lang.Long">
+    select count(*) from yy_consumdebt_goods_class cgc
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update yy_consumdebt_goods_pic cgp
+    update yy_consumdebt_goods_class cgc
     <set>
       <if test="record.id != null">
-        cgp.id = #{record.id,jdbcType=INTEGER},
+        cgc.id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.goodsId != null">
-        cgp.goods_id = #{record.goodsId,jdbcType=INTEGER},
+      <if test="record.classCode != null">
+        cgc.class_code = #{record.classCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.picType != null">
-        cgp.pic_type = #{record.picType,jdbcType=TINYINT},
-      </if>
-      <if test="record.picUrl != null">
-        cgp.pic_url = #{record.picUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sort != null">
-        cgp.sort = #{record.sort,jdbcType=INTEGER},
-      </if>
-      <if test="record.remark != null">
-        cgp.remark = #{record.remark,jdbcType=VARCHAR},
+      <if test="record.className != null">
+        cgc.class_name = #{record.className,jdbcType=VARCHAR},
       </if>
       <if test="record.addTime != null">
-        cgp.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+        cgc.add_time = #{record.addTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.modifyTime != null">
-        cgp.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+        cgc.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.addOperatorId != null">
-        cgp.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+        cgc.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
       </if>
       <if test="record.modifyOperatorId != null">
-        cgp.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+        cgc.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
       </if>
       <if test="record.isDelete != null">
-        cgp.is_delete = #{record.isDelete,jdbcType=INTEGER},
+        cgc.is_delete = #{record.isDelete,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -239,39 +206,27 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update yy_consumdebt_goods_pic cgp
-    set cgp.id = #{record.id,jdbcType=INTEGER},
-      cgp.goods_id = #{record.goodsId,jdbcType=INTEGER},
-      cgp.pic_type = #{record.picType,jdbcType=TINYINT},
-      cgp.pic_url = #{record.picUrl,jdbcType=VARCHAR},
-      cgp.sort = #{record.sort,jdbcType=INTEGER},
-      cgp.remark = #{record.remark,jdbcType=VARCHAR},
-      cgp.add_time = #{record.addTime,jdbcType=TIMESTAMP},
-      cgp.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
-      cgp.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
-      cgp.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
-      cgp.is_delete = #{record.isDelete,jdbcType=INTEGER}
+    update yy_consumdebt_goods_class cgc
+    set cgc.id = #{record.id,jdbcType=INTEGER},
+      cgc.class_code = #{record.classCode,jdbcType=VARCHAR},
+      cgc.class_name = #{record.className,jdbcType=VARCHAR},
+      cgc.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      cgc.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      cgc.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      cgc.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      cgc.is_delete = #{record.isDelete,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsPic">
-    update yy_consumdebt_goods_pic
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsClass">
+    update yy_consumdebt_goods_class
     <set>
-      <if test="goodsId != null">
-        goods_id = #{goodsId,jdbcType=INTEGER},
+      <if test="classCode != null">
+        class_code = #{classCode,jdbcType=VARCHAR},
       </if>
-      <if test="picType != null">
-        pic_type = #{picType,jdbcType=TINYINT},
-      </if>
-      <if test="picUrl != null">
-        pic_url = #{picUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="sort != null">
-        sort = #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
+      <if test="className != null">
+        class_name = #{className,jdbcType=VARCHAR},
       </if>
       <if test="addTime != null">
         add_time = #{addTime,jdbcType=TIMESTAMP},
@@ -291,13 +246,10 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsPic">
-    update yy_consumdebt_goods_pic
-    set goods_id = #{goodsId,jdbcType=INTEGER},
-      pic_type = #{picType,jdbcType=TINYINT},
-      pic_url = #{picUrl,jdbcType=VARCHAR},
-      sort = #{sort,jdbcType=INTEGER},
-      remark = #{remark,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsClass">
+    update yy_consumdebt_goods_class
+    set class_code = #{classCode,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       add_operator_id = #{addOperatorId,jdbcType=INTEGER},

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.consumdebt.dao.ConsumdebtGoodsPicDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsPic" extends="com.duobei.core.operation.consumdebt.dao.mapper.ConsumdebtGoodsPicMapper.BaseResultMap">
+    </resultMap>
+
+    <select id="getByGoodsId" resultType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsPic" parameterType="java.lang.Integer">
+         select * from yy_consumdebt_goods_pic where is_delete =0 and goods_id={goodsId} order id  asc
+    </select>
+
+    <delete id="deleteByGoodsId">
+        delete from yy_consumdebt_goods_pic where is_delete =0 and goods_id={goodsId}
+    </delete>
+</mapper>

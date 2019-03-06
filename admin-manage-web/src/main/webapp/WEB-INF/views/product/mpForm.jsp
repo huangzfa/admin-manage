@@ -25,6 +25,7 @@
     <br/>
     <form:form id="productForm" modelAttribute="product"   action="${ctxA}/product/save" method="post" class="form-horizontal">
         <input type="hidden" name="id" value="${not empty product.id?product.id:''}">
+        <input type="hidden" name="bizCodes" id="bizCodes">
         <div class="control-group">
             <label class="control-label">产品名称：</label>
             <div class="controls">
@@ -40,6 +41,18 @@
                         <option value="${merchant.id}" ${not empty product && product.merchantId==merchant.id?"selected":''}>${merchant.merchantName}</option>
                     </c:forEach>
                 </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">业务类型：</label>
+            <div class="controls">
+                <div class="form-group">
+                    <c:forEach items="${listBusin}" var="data">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" ${data.checked} value="${data.bizCode}" >${data.bizName}
+                        </label>
+                    </c:forEach>
+                </div>
             </div>
         </div>
         <div class="form-actions">
@@ -69,6 +82,13 @@
         if( !bool ){
             return false;
         }
+        var bizCode = new Array();
+        $("#productForm  input[type=checkbox]").each(function(){
+            if($(this).prop("checked")){
+                bizCode.push($(this).val());
+            }
+        })
+        $("#bizCodes").val(bizCode.join(","));
         $("#btnSubmit").attr("disabled",true);
         var form=$("#productForm");
         var action = form[0].action;

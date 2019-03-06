@@ -18,7 +18,7 @@ public interface AuthConfigService {
      * 查询所有有效认证项
      * @return
      */
-    List<AuthConfig> getAll();
+    List<AuthConfigVo> getAll();
 
     /**
      * type:1基础认证，2补充认证

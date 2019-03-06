@@ -3,9 +3,12 @@ package com.duobei.core.operation.product.service.impl;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.encrypt.MD5Util;
 import com.duobei.common.util.lang.DateUtil;
+import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
+import com.duobei.core.operation.product.dao.ProductBusinessDao;
 import com.duobei.core.operation.product.dao.ProductDao;
 import com.duobei.core.operation.product.domain.Product;
+import com.duobei.core.operation.product.domain.ProductBusiness;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
 import com.duobei.core.operation.product.domain.vo.ProductVo;
 import com.duobei.core.operation.product.service.ProductService;
@@ -26,6 +29,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductDao productDao;
+    @Autowired
+    private ProductBusinessDao productBusinessDao;
 
     /**
      * 分页查询
@@ -60,38 +65,59 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 禁用启用产品
-     * @param record
+     * @param productVo
      * @return
      */
     @Override
-    public void editState(Product record) throws TqException{
-        if( productDao.update(record) < 1){
+    public void editState(ProductVo  productVo) throws TqException{
+        if( productDao.update(productVo) < 1){
             throw new TqException("禁用失败");
         }
     }
 
     /**
      * 修改商户
-     * @param product
+     * @param productVo
      */
     @Override
     @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
-    public void update(Product product) throws TqException{
-        if( productDao.update(product) <1){
+    public void updateMp(ProductVo  productVo) throws TqException{
+        if( productDao.update(productVo) <1){
             throw new TqException("修改失败");
+        }
+        //保存业务类型
+        productBusinessDao.updateByProductId(productVo.getId());
+        String[] bizCodes = productVo.getBizCodes().split(",");
+        for(String code :bizCodes){
+            ProductBusiness entity = new ProductBusiness();
+            entity.setProductId(productVo.getId());
+            entity.setBizCode(code);
+            entity.setAddOperatorId(productVo.getModifyOperatorId());
+            productBusinessDao.save(entity);
         }
     }
 
     /**
      * 添加商户
-     * @param product
+     * @param productVo
      */
     @Override
-    public void save(Product product) throws TqException{
-        product.setProductCode(MD5Util.encrypt(DateUtil.getTimeStr(new Date())));
-        if( productDao.save(product) <1){
+    @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
+    public void saveMp(ProductVo  productVo) throws TqException{
+        productVo.setProductCode(MD5Util.encrypt(DateUtil.getTimeStr(new Date())));
+        if( productDao.save(productVo) <1){
             throw new TqException("添加失败");
         }
+        //保存业务类型
+        String[] bizCodes = productVo.getBizCodes().split(",");
+        for(String code :bizCodes){
+            ProductBusiness entity = new ProductBusiness();
+            entity.setProductId(productVo.getId());
+            entity.setBizCode(code);
+            entity.setAddOperatorId(productVo.getModifyOperatorId());
+            productBusinessDao.save(entity);
+        }
+
     }
 
     /**

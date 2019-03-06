@@ -11,4 +11,9 @@ import lombok.Data;
 @Data
 public class ProductVo extends Product{
     private String merchantName;
+
+    /**
+     * 业务类型
+     */
+    private String bizCodes;
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.consume.dao.ConsumeLoanRateDayConfigDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.consume.domain.ConsumeLoanRateDayConfig" extends="com.duobei.core.operation.consume.dao.mapper.ConsumeLoanRateDayConfigMapper.BaseResultMap">
+    </resultMap>
+
+    <!-- 根据消费贷配置ID查询 消费贷利率天数配置 -->
+    <select id="getByLoanConfigId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.consume.domain.ConsumeLoanRateDayConfig">
+         select * from yy_consume_loan_rate_day_config where consume_loan_config_id = #{loanConfigId,jdbcType=INTEGER}
+    </select>
+</mapper>

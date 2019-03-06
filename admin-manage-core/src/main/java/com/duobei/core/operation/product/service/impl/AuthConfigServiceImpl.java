@@ -49,7 +49,7 @@ public class AuthConfigServiceImpl implements AuthConfigService {
      * @return
      */
     @Override
-    public List<AuthConfig> getAll(){
+    public List<AuthConfigVo> getAll(){
         return authConfigDao.getAll();
     }
 

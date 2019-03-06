@@ -4,4 +4,65 @@
 
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.ProductBusiness" extends="com.duobei.core.operation.product.dao.mapper.ProductBusinessMapper.BaseResultMap">
     </resultMap>
+
+    <select id="getByProductId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.product.domain.ProductBusiness">
+        select * from yy_product_business where product_id=#{productId,jdbcType=INTEGER} and state=1;
+    </select>
+
+    <update id="updateByProductId">
+        update yy_product_business set state = 0 where product_id=#{productId,jdbcType=INTEGER}
+    </update>
+
+    <insert id="save" parameterType="com.duobei.core.operation.product.domain.ProductBusiness">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into yy_product_business
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="bizCode != null">
+                biz_code,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+            <if test="addOperatorId != null">
+                add_operator_id,
+            </if>
+            <if test="modifyOperatorId != null">
+                modify_operator_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">
+                #{productId,jdbcType=INTEGER},
+            </if>
+            <if test="bizCode != null">
+                #{bizCode,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=TINYINT},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addOperatorId != null">
+                #{addOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="modifyOperatorId != null">
+                #{modifyOperatorId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
 </mapper>

@@ -101,7 +101,7 @@ public class ConsumeLoanConfig implements Serializable {
     /**
      * 是否开启几选几，1开启，0不开启
      */
-    private Boolean authSeleteEnable;
+    private Integer authSeleteEnable;
 
     /**
      * 几选几规则：3选2为3s2

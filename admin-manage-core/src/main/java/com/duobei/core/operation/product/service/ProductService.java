@@ -40,19 +40,19 @@ public interface ProductService {
      * @param record
      * @return
      */
-    void editState(Product record) throws TqException;
+    void editState(ProductVo record) throws TqException;
 
     /**
      * 修改产品
-     * @param product
+     * @param productVo
      */
-    void update(Product product) throws TqException;
+    void updateMp(ProductVo  productVo) throws TqException;
 
     /**
      * 添加产品
-     * @param product
+     * @param productVo
      */
-    void save(Product product) throws TqException;
+    void saveMp(ProductVo  productVo) throws TqException;
 
     /**
      * 查询所有产品

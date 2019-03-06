@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2019/3/1
  */
 public interface AuthConfigDao {
-    List<AuthConfig> getAll();
+    List<AuthConfigVo> getAll();
 
     List<AuthConfigVo> getListByType(@Param("authType") String authType, @Param("name") String name);
 

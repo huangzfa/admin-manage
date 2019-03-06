@@ -7,7 +7,7 @@
     <result column="ac_auth_code" jdbcType="VARCHAR" property="authCode" />
     <result column="ac_auth_type" jdbcType="VARCHAR" property="authType" />
     <result column="ac_page_type" jdbcType="VARCHAR" property="pageType" />
-    <result column="ac_auth_state" jdbcType="VARCHAR" property="authState" />
+    <result column="ac_is_enable" jdbcType="INTEGER" property="isEnable" />
     <result column="ac_auth_sort" jdbcType="INTEGER" property="authSort" />
     <result column="ac_un_img" jdbcType="VARCHAR" property="unImg" />
     <result column="ac_ing_img" jdbcType="VARCHAR" property="ingImg" />
@@ -79,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List">
     ac.id as ac_id, ac.auth_name as ac_auth_name, ac.auth_code as ac_auth_code, ac.auth_type as ac_auth_type, 
-    ac.page_type as ac_page_type, ac.auth_state as ac_auth_state, ac.auth_sort as ac_auth_sort, 
+    ac.page_type as ac_page_type, ac.is_enable as ac_auth_state, ac.auth_sort as ac_auth_sort,
     ac.un_img as ac_un_img, ac.ing_img as ac_ing_img, ac.success_img as ac_success_img, 
     ac.fail_img as ac_fail_img, ac.add_time as ac_add_time, ac.modify_time as ac_modify_time, 
     ac.add_operator_id as ac_add_operator_id, ac.modify_operator_id as ac_modify_operator_id, 
@@ -97,13 +97,13 @@
   </delete>
   <insert id="insert" parameterType="com.duobei.core.operation.product.domain.AuthConfig">
     insert into yy_auth_config (id, auth_name, auth_code, 
-      auth_type, page_type, auth_state, 
+      auth_type, page_type, is_enable,
       auth_sort, un_img, ing_img, 
       success_img, fail_img, add_time, 
       modify_time, add_operator_id, modify_operator_id, 
       is_delete)
-    values (#{id,jdbcType=INTEGER}, #{authName,jdbcType=VARCHAR}, #{authCode,jdbcType=VARCHAR}, 
-      #{authType,jdbcType=VARCHAR}, #{pageType,jdbcType=VARCHAR}, #{authState,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{authName,jdbcType=VARCHAR}, #{authCode,jdbcType=VARCHAR},
+      #{authType,jdbcType=VARCHAR}, #{pageType,jdbcType=VARCHAR}, #{isEnable,jdbcType=VARCHAR},
       #{authSort,jdbcType=INTEGER}, #{unImg,jdbcType=VARCHAR}, #{ingImg,jdbcType=VARCHAR}, 
       #{successImg,jdbcType=VARCHAR}, #{failImg,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
       #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, 
@@ -127,8 +127,8 @@
       <if test="pageType != null">
         page_type,
       </if>
-      <if test="authState != null">
-        auth_state,
+      <if test="isEnable != null">
+        is_enable,
       </if>
       <if test="authSort != null">
         auth_sort,
@@ -177,8 +177,8 @@
       <if test="pageType != null">
         #{pageType,jdbcType=VARCHAR},
       </if>
-      <if test="authState != null">
-        #{authState,jdbcType=VARCHAR},
+      <if test="isEnable != null">
+        #{isEnable,jdbcType=VARCHAR},
       </if>
       <if test="authSort != null">
         #{authSort,jdbcType=INTEGER},

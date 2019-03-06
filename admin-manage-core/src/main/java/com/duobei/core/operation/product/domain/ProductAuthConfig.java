@@ -30,12 +30,12 @@ public class ProductAuthConfig implements Serializable {
     /**
      * 是否启用【0：禁用，1：启用】
      */
-    private Boolean isEnable;
+    private Integer isEnable;
 
     /**
      * 是否必填【0：不必填，1：必填】
      */
-    private Boolean isRequired;
+    private Integer isRequired;
 
     /**
      * 认证顺序：升序

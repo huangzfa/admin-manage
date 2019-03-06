@@ -55,14 +55,14 @@ public interface ProductDao {
      * @param record
      * @return
      */
-    int update(Product record);
+    int update(ProductVo record);
 
     /**
      *
      * @param record
      * @return
      */
-    int save(Product record);
+    int save(ProductVo record);
 
     /**
      *

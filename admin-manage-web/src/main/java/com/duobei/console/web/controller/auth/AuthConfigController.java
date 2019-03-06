@@ -6,16 +6,20 @@ import com.duobei.common.util.lang.DateUtil;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
+import com.duobei.console.web.controller.base.BaseController;
 
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.product.domain.AuthConfig;
 import com.duobei.core.operation.product.domain.criteria.AuthConfigCriteria;
+import com.duobei.core.operation.product.domain.vo.AuthConfigVo;
+import com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo;
 import com.duobei.core.operation.product.service.AuthConfigService;
+import com.duobei.core.operation.product.service.ProductAuthConfigService;
 import com.duobei.dic.ZD;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,18 +27,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**认证项配置控制类
  * @author huangzhongfa
  * @date 2018/12/3
  */
 @Controller
-@RequestMapping(value = "${authzPath}/product/authConfig")
-public class AuthConfigController extends com.duobei.console.web.controller.base.BaseController {
+@RequestMapping(value = "${authzPath}/authConfig")
+@Slf4j
+public class AuthConfigController extends BaseController {
 
-    private final static Logger log = LoggerFactory.getLogger(AuthConfigController.class);
     @Resource
     private AuthConfigService authConfigService;
+    @Autowired
+    private ProductAuthConfigService productAuthConfigService;
 
     /**
      * 认证项列表页
@@ -87,7 +94,7 @@ public class AuthConfigController extends com.duobei.console.web.controller.base
             model.addAttribute("authConfig", new AuthConfig());
         }
         model.addAttribute("authTypes", DictUtil.getDictList(ZD.authType));
-        model.addAttribute("pageTypes", DictUtil.getDictList(ZD.aPMenuType));
+
         return "product/authConfig/authForm";
     }
 
@@ -153,6 +160,39 @@ public class AuthConfigController extends com.duobei.console.web.controller.base
                 return failJsonResult("editState认证配置项失败");
             }
 
+        }
+    }
+
+    /**
+     * ajax查询认证配置项数据
+     * @param authName
+     * @return
+     */
+    @RequiresPermissions("product:list:edit")
+    @RequestMapping(value = "/getList")
+    @ResponseBody
+    public String getAuthConfig(String authName,Integer productId){
+        try {
+
+            List<AuthConfigVo> list = authConfigService.getAll();
+            if( productId != null ){
+                List<ProductAuthConfigVo> slist = productAuthConfigService.getByProductId(productId);
+                for( AuthConfigVo lvo:list){
+                    for (ProductAuthConfigVo svo:slist){
+                        if(lvo.getId().equals(svo.getAuthId())){
+                            lvo.setChecked("checked");
+                        }
+                    }
+                }
+            }
+            return successJsonResult("success", "list", list);
+        }catch (Exception e){
+            if (e instanceof TqException) {
+                return failJsonResult(e.getMessage());
+            }else{
+                log.warn("查询认证配置项",e);
+                return failJsonResult("查询认证配置项失败");
+            }
         }
     }
 }

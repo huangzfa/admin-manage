@@ -62,6 +62,7 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
             if(vo.getId() == null ){
                 vo.setAddOperatorId(record.getModifyOperatorId());
                 vo.setIsEnable(BizConstant.INT_ONE);
+                vo.setProductId(record.getProductId());
                 if( productAuthConfigDao.save(vo) <1){
                     throw  new TqException("认证项保存失败");
                 }

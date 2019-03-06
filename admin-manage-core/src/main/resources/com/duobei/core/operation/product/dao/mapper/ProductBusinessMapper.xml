@@ -5,7 +5,7 @@
     <id column="pac_id" jdbcType="INTEGER" property="id" />
     <result column="pac_product_id" jdbcType="INTEGER" property="productId" />
     <result column="pac_biz_code" jdbcType="VARCHAR" property="bizCode" />
-    <result column="pac_state" jdbcType="TINYINT" property="state" />
+    <result column="pac_state" jdbcType="INTEGER" property="state" />
     <result column="pac_add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="pac_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="pac_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />

@@ -30,7 +30,7 @@ ${show=='true'?'':'请关联消费贷业务'}
             <object style="border:0px" type="text/x-scriptlet" data="${ctxA}/product/config/auth?productCode=${productCode}" width="100%" height="100%"></object>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="loanConfig" style="height: 100%">
-            <object style="border:0px" type="text/x-scriptlet" data="${ctxA}/product/config/laon?productCode=${productCode}" width="100%" height="100%"></object>
+            <object style="border:0px" type="text/x-scriptlet" data="${ctxA}/product/config/loan?productCode=${productCode}" width="100%" height="100%"></object>
         </div>
         <div role="tabpanel" class="tab-pane fad" id="rateDayConfig" style="height: 100%">
             <object style="border:0px" type="text/x-scriptlet" data="${ctxA}/product/config/rateDay?productCode=${productCode}" width="100%" height="100%"></object>

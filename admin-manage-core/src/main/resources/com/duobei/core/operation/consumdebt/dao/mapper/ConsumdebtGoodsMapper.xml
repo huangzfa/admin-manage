@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.duobei.core.operation.consume.dao.mapper.ConsumdebtGoodsMapper">
-  <resultMap id="BaseResultMap" type="com.duobei.core.operation.consume.domain.ConsumdebtGoods">
+<mapper namespace="com.duobei.core.operation.consumdebt.dao.mapper.ConsumdebtGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoods">
     <id column="cg_id" jdbcType="INTEGER" property="id" />
     <result column="cg_class_id" jdbcType="INTEGER" property="classId" />
     <result column="cg_goods_no" jdbcType="VARCHAR" property="goodsNo" />
@@ -88,7 +88,7 @@
     cg.add_time as cg_add_time, cg.modify_time as cg_modify_time, cg.add_operator_id as cg_add_operator_id, 
     cg.modify_operator_id as cg_modify_operator_id, cg.is_delete as cg_is_delete
   </sql>
-  <select id="selectByExample" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -112,13 +112,13 @@
     delete from yy_consumdebt_goods
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsExample">
+  <delete id="deleteByExample" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsExample">
     delete from yy_consumdebt_goods cg
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoods">
+  <insert id="insert" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoods">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -137,7 +137,7 @@
       #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoods">
+  <insert id="insertSelective" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoods">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -255,7 +255,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoodsExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsExample" resultType="java.lang.Long">
     select count(*) from yy_consumdebt_goods cg
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -351,7 +351,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoods">
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoods">
     update yy_consumdebt_goods
     <set>
       <if test="classId != null">
@@ -411,7 +411,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.consume.domain.ConsumdebtGoods">
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoods">
     update yy_consumdebt_goods
     set class_id = #{classId,jdbcType=INTEGER},
       goods_no = #{goodsNo,jdbcType=VARCHAR},

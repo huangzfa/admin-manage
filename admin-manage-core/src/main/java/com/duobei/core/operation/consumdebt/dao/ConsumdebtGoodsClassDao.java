@@ -1,4 +1,4 @@
-package com.duobei.core.operation.consume.dao;
+package com.duobei.core.operation.consumdebt.dao;
 
 /**
  * @author huangzhongfa

@@ -23,7 +23,7 @@
 
 <div class="si-warp">
     <br/>
-    <form:form id="productForm" modelAttribute="product"   action="${ctxA}/product/save" method="post" class="form-horizontal">
+    <form:form id="productForm" modelAttribute="product"   action="${ctxA}/product/mpSave" method="post" class="form-horizontal">
         <input type="hidden" name="id" value="${not empty product.id?product.id:''}">
         <input type="hidden" name="bizCodes" id="bizCodes">
         <div class="control-group">

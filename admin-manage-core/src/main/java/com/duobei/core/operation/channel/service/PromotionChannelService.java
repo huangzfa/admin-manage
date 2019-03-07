@@ -3,6 +3,7 @@ package com.duobei.core.operation.channel.service;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.channel.domain.PromotionChannel;
+import com.duobei.core.operation.channel.domain.criteria.AppMarketChannelCriteria;
 import com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria;
 
 /**
@@ -19,11 +20,11 @@ public interface PromotionChannelService {
     PromotionChannel getById(Integer id);
 
     /**
-     * 根据查询条件获取渠道列表
+     * 根据查询条件获取推广渠道列表
      * @param promotionChannelCriteria
      * @return
      */
-    ListVo<PromotionChannel> getListByQuery(PromotionChannelCriteria promotionChannelCriteria);
+    ListVo<PromotionChannel> getPromotionListByQuery(PromotionChannelCriteria promotionChannelCriteria);
 
     /**
      * 新增渠道
@@ -42,4 +43,11 @@ public interface PromotionChannelService {
      * @param promotionChannel
      */
     void delete(PromotionChannel promotionChannel) throws TqException;
+
+    /**
+     * 获取应用市场列表
+     * @param appMarketChannelCriteria
+     * @return
+     */
+    ListVo<PromotionChannel> getAppMarketListByQuery(AppMarketChannelCriteria appMarketChannelCriteria);
 }

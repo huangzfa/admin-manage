@@ -1,3 +1,35 @@
+
+/**
+ * 判断是不是正整数
+ * @param val
+ * @returns {boolean}
+ */
+function isNumber(val){
+    val  = val + "";
+    var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+    var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+    if(regPos.test(val) || regNeg.test(val)){
+        if( val.indexOf("0") ==0 ){
+            return false;
+        }
+        return true;
+    }else{
+        return false;
+    }
+}
+/**
+ * 验证是不是012345678开头
+ * @param val
+ * @returns {boolean}
+ */
+function is01(val) {
+    val  = val + "";
+
+    if( val.indexOf("0") == 0 && val.indexOf("0.")<0 ){
+        return false;
+    }
+    return true;
+}
 (function(window){
 	function _package( _sPackage ){
 	    var nps = _sPackage.split('.'); 
@@ -48,6 +80,7 @@
 	        return false;
 	    }
 	}
+
 	//===============================================
 	window._utils={
 		package:_package,

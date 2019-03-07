@@ -5,10 +5,12 @@ import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
+import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.operation.consumdebt.domain.ConsumdebtGoods;
 import com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsPic;
 import com.duobei.core.operation.consumdebt.domain.criteria.ConsumdebtGoodsCriteria;
 import com.duobei.core.operation.consumdebt.domain.vo.ConsumdebtGoodsVo;
+import com.duobei.core.operation.consumdebt.service.ConsumdebtGoodsClassService;
 import com.duobei.core.operation.consumdebt.service.ConsumdebtGoodsPicService;
 import com.duobei.core.operation.consumdebt.service.ConsumdebtGoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +20,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**借贷商品管理
@@ -35,6 +40,8 @@ public class GoodsController extends BaseController {
     private ConsumdebtGoodsService consumdebtGoodsService;
     @Autowired
     private ConsumdebtGoodsPicService consumdebtGoodsPicService;
+    @Autowired
+    private ConsumdebtGoodsClassService classService;
 
     /**
      * 商户产品列表页
@@ -114,7 +121,30 @@ public class GoodsController extends BaseController {
             vo = new ConsumdebtGoodsVo();
         }
         model.addAttribute("goods",vo);
+        model.addAttribute("classs",classService.getAll());
         return "goods/form";
     }
 
+    @RequiresPermissions("goods:list:edit")
+    @RequestMapping(value = "/save")
+    @ResponseBody
+    public String save(HttpServletRequest request, ConsumdebtGoodsVo goodsVo, RedirectAttributes redirectAttributes) throws TqException{
+        try {
+            OperatorCredential credential = getCredential();
+            if (credential == null) {
+                throw new TqException("登录过期，请重新登录");
+            }
+            goodsVo.setModifyOperatorId(credential.getOpId());
+            goodsVo.setModifyTime(new Date());
+            consumdebtGoodsService.saveOrUpdate(goodsVo);
+            return simpleSuccessJsonResult("success");
+        }catch (Exception e){
+            if (e instanceof TqException) {
+                return failJsonResult(e.getMessage());
+            }else{
+                log.warn("save商品品异常", e);
+                return failJsonResult("save商品异常");
+            }
+        }
+    }
 }

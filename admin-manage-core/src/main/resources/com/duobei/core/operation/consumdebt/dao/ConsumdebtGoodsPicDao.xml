@@ -6,10 +6,18 @@
     </resultMap>
 
     <select id="getByGoodsId" resultType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsPic" parameterType="java.lang.Integer">
-         select * from yy_consumdebt_goods_pic where is_delete =0 and goods_id={goodsId} order id  asc
+         select * from yy_consumdebt_goods_pic where is_delete =0 and goods_id=#{goodsId} order by id  asc
     </select>
 
-    <delete id="deleteByGoodsId">
-        delete from yy_consumdebt_goods_pic where is_delete =0 and goods_id={goodsId}
-    </delete>
+    <update id="deleteByGoodsId">
+        update  yy_consumdebt_goods_pic set is_delete =id where goods_id=#{goodsId}
+    </update>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into yy_consumdebt_goods_pic (goods_id, pic_type,pic_url,sort,add_operator_id,modify_operator_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.goodsId,jdbcType=INTEGER}, #{item.picType,jdbcType=INTEGER},#{item.picUrl,jdbcType=VARCHAR},#{item.sort,jdbcType=INTEGER},#{item.addOperatorId,jdbcType=INTEGER},#{item.addOperatorId,jdbcType=INTEGER})
+        </foreach>
+    </insert>
 </mapper>

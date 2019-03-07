@@ -5,4 +5,7 @@
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsClass" extends="com.duobei.core.operation.consumdebt.dao.mapper.ConsumdebtGoodsClassMapper.BaseResultMap">
     </resultMap>
 
+    <select id="getAll" resultType="com.duobei.core.operation.consumdebt.domain.ConsumdebtGoodsClass">
+        select * from yy_consumdebt_goods_class where is_delete = 0;
+    </select>
 </mapper>

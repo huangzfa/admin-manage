@@ -19,4 +19,6 @@ public interface ConsumdebtGoodsPicDao {
     List<ConsumdebtGoodsPic> getByGoodsId(@Param("goodsId") Integer goodsId);
 
     void deleteByGoodsId(@Param("goodsId") Integer goodsId);
+
+    void batchInsert(@Param("list") List<ConsumdebtGoodsPic> list);
 }

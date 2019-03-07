@@ -5,8 +5,7 @@
 <html>
 <head>
     <title></title>
-    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui"/>
-    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,angular,common"/>
     <!--  -->
 </head>
 <body>
@@ -33,13 +32,13 @@
         <div class="control-group">
             <label class="control-label">央行基准年化利率：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写央行基准年化利率" ng-model="loan.baseBankRate" maxlength="8"  onkeyup='this.value=this.value.replace(/[^0-9,]/g,\"\")'></input>
+                <input type="text" class="form-control valid" descripe="请填写央行基准年化利率" ng-model="loan.baseBankRate" maxlength="8"  onkeyup='this.value=this.value.replace(/[^0-9,]/g,"")'></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">借款最高倍数：</label>
             <div class="controls">
-                <input type="text" class="form-control" descripe="请填写借款最高倍数" name="baseBankRate" id="baseBankRate" maxlength="8" onkeyup='this.value=this.value.replace(/[^0-9,]/g,\"\")'></input>
+                <input type="text" class="form-control" descripe="请填写借款最高倍数" name="baseBankRate" id="baseBankRate" maxlength="8" onkeyup='this.value=this.value.replace(/[^0-9,]/g,"")'></input>
             </div>
         </div>
         <div class="control-group">
@@ -162,37 +161,7 @@
         }
     });
 
-    /**
-     * 判断是不是正整数
-     * @param val
-     * @returns {boolean}
-     */
-    function isNumber(val){
-        val  = val + "";
-        var regPos = /^\d+(\.\d+)?$/; //非负浮点数
-        var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
-        if(regPos.test(val) || regNeg.test(val)){
-            if( val.indexOf("0") ==0 ){
-                return false;
-            }
-            return true;
-        }else{
-            return false;
-        }
-    }
-    /**
-     * 验证是不是012345678开头
-     * @param val
-     * @returns {boolean}
-     */
-    function is01(val) {
-        val  = val + "";
 
-        if( val.indexOf("0") == 0 && val.indexOf("0.")<0 ){
-            return false;
-        }
-        return true;
-    }
 
     //选认证项控件调用
     function selectAuthConfig(productId) {

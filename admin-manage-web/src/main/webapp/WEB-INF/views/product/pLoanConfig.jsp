@@ -79,9 +79,9 @@
         loan = eval("("+consumeLoanConfig+")");
     }
     //创建应用
-    var formApp = angular.module('formApp', []);
+    var loanFormApp = angular.module('loanFormApp', []);
     //创建controller
-    formApp.controller('formCtrl', function($scope, $http) {
+    loanFormApp.controller('loanFormCtrl', function($scope, $http) {
         $scope.loan = loan;
         $scope.btnState = false;
         $scope.deleteGoods = function(id) {

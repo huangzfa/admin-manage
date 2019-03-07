@@ -21,9 +21,17 @@ public interface ConsumdebtGoodsService {
      */
     ListVo<ConsumdebtGoodsVo> getPageList(ConsumdebtGoodsCriteria criteria);
 
-    void save(ConsumdebtGoodsVo entity) throws TqException;
+    /**
+     *
+     * @param entity
+     * @throws TqException
+     */
+    void saveOrUpdate(ConsumdebtGoodsVo entity) throws TqException;
 
-    void update(ConsumdebtGoodsVo entity) throws TqException;
-
+    /**
+     *
+     * @param goodsNo
+     * @return
+     */
     ConsumdebtGoodsVo getByGoodsNo(String goodsNo);
 }

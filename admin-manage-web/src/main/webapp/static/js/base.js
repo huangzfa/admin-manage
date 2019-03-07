@@ -40,9 +40,10 @@
 	var _jscss={};
 	_jscss['css']=['/css/common.css'];
 	_jscss['jquery']=['/js/jquery-1.8.3.min.js'];
+    _jscss['angular']=['/js/angular.min.js'];
+    _jscss['common']=['/js/common.js'];
 	_jscss['jquery1.11.3']=['/js/jquery-1.11.3.min.js'];
 	_jscss['json']=['/js/json2.min.js'];
-	_jscss['map']=['/js/Map.js'];
 	_jscss['pageList']=['/js/pageList.js'];
 	_jscss['dict']=['/js/dict.js'];
 	_jscss['xmlENDEC']=['/js/xmlENDEC.js'];

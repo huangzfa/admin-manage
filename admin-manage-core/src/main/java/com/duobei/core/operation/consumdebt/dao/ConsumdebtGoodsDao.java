@@ -1,6 +1,5 @@
 package com.duobei.core.operation.consumdebt.dao;
 
-import com.duobei.core.operation.consumdebt.domain.ConsumdebtGoods;
 import com.duobei.core.operation.consumdebt.domain.criteria.ConsumdebtGoodsCriteria;
 import com.duobei.core.operation.consumdebt.domain.vo.ConsumdebtGoodsVo;
 import org.apache.ibatis.annotations.Param;
@@ -34,4 +33,18 @@ public interface ConsumdebtGoodsDao {
      * @return
      */
     ConsumdebtGoodsVo getByGoodsNo(@Param("goodsNo") String goodsNo);
+
+    /**
+     *
+     * @param entity
+     * @return
+     */
+    int save(ConsumdebtGoodsVo entity);
+
+    /**
+     *
+     * @param update
+     * @return
+     */
+    int update (ConsumdebtGoodsVo update);
 }

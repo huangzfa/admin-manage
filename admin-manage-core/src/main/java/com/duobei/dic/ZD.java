@@ -9,14 +9,14 @@ public interface ZD {
     public String redirectType = "redirectType";
 	
 	/**
-	 *  app升级状态
+	 *  商品图片类型
 	 */
-    public String appUpgradeState = "appUpgradeState";
+    public String goodsPicType = "1";
 	
 	/**
-	 *  终端系统类型
+	 *  优惠券类型
 	 */
-    public String osType = "osType";
+    public String couponType = "couponType";
 	
 	/**
 	 *  通知业务类型
@@ -34,39 +34,14 @@ public interface ZD {
     public String aPMenuExamState = "aPMenuExamState";
 	
 	/**
-	 *  APP是否强制升级
-	 */
-    public String appUpgradeIsForce = "appUpgradeIsForce";
-	
-	/**
 	 *  认证类型
 	 */
     public String authType = "authType";
 	
 	/**
-	 *  渠道状态
-	 */
-    public String channelStatus = "channelStatus";
-	
-	/**
-	 *  推广渠道审核状态
-	 */
-    public String channelApproveType = "channelApproveType";
-	
-	/**
 	 *  渠道类型
 	 */
     public String channelType = "channelType";
-	
-	/**
-	 *  轮播图类型
-	 */
-    public String bannerType = "bannerType";
-	
-	/**
-	 *  登录类型
-	 */
-    public String loginType = "loginType";
 	
 	/**
 	 *  银行状态
@@ -84,24 +59,49 @@ public interface ZD {
     public String bankMintainState = "bankMaintainState";
 	
 	/**
+	 *  APP是否强制升级
+	 */
+    public String appUpgradeIsForce = "appUpgradeIsForce";
+	
+	/**
+	 *  渠道状态
+	 */
+    public String channelStatus = "channelStatus";
+	
+	/**
+	 *  app升级状态
+	 */
+    public String appUpgradeState = "appUpgradeState";
+	
+	/**
+	 *  推广渠道审核状态
+	 */
+    public String channelApproveType = "channelApproveType";
+	
+	/**
+	 *  轮播图类型
+	 */
+    public String bannerType = "bannerType";
+	
+	/**
 	 *  APP升级范围
 	 */
     public String upgradeRangeState = "upgradeRangeState";
 	
 	/**
-	 *  用户状态
+	 *  登录类型
 	 */
-    public String profileState = "profileState";
+    public String loginType = "loginType";
 	
 	/**
-	 *  菜单类型
+	 *  终端系统类型
 	 */
-    public String menuType = "menuType";
+    public String osType = "osType";
 	
 	/**
-	 *  性别
+	 *  菜单打开方式
 	 */
-    public String gender = "gender";
+    public String menuOpenType = "menuOpenType";
 	
 	/**
 	 *  数据状态
@@ -109,24 +109,29 @@ public interface ZD {
     public String dataState = "dataState";
 	
 	/**
+	 *  性别
+	 */
+    public String gender = "gender";
+	
+	/**
+	 *  菜单类型
+	 */
+    public String menuType = "menuType";
+	
+	/**
 	 *  状态
 	 */
     public String state = "state";
 	
 	/**
-	 *  优惠券类型
+	 *  用户状态
 	 */
-    public String couponType = "couponType";
+    public String profileState = "profileState";
 	
 	/**
 	 *  系统类型
 	 */
     public String systemType = "systemType";
-	
-	/**
-	 *  菜单打开方式
-	 */
-    public String menuOpenType = "menuOpenType";
 	
 	/**
 	 *  菜单类型-权限项- 
@@ -259,14 +264,9 @@ public interface ZD {
     public String authType_supply = "2";
 	
 	/**
-	 *  渠道类型-H5渠道- 
+	 *  渠道类型-渠道- 
 	 */
     public int channelType_h5 = 0;
-	
-	/**
-	 *  渠道类型-应用市场- 
-	 */
-    public int channelType_app = 1;
 	
 	/**
 	 *  渠道类型-短信- 
@@ -447,4 +447,14 @@ public interface ZD {
 	 *  禁用-禁用- 
 	 */
     public int channelStatus_no = 0;
+	
+	/**
+	 *  商品图片类型-轮播图- 
+	 */
+    public int goodsPicType_banner = 1;
+	
+	/**
+	 *  商品图片类型-详情图- 
+	 */
+    public int goodsPicType_detail = 2;
 }

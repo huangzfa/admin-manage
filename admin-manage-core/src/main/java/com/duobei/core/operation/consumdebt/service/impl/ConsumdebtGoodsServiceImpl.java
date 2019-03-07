@@ -1,14 +1,19 @@
 package com.duobei.core.operation.consumdebt.service.impl;
 
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.GuidUtil;
+import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.consumdebt.dao.ConsumdebtGoodsDao;
 import com.duobei.core.operation.consumdebt.domain.ConsumdebtGoods;
 import com.duobei.core.operation.consumdebt.domain.criteria.ConsumdebtGoodsCriteria;
 import com.duobei.core.operation.consumdebt.domain.vo.ConsumdebtGoodsVo;
+import com.duobei.core.operation.consumdebt.service.ConsumdebtGoodsPicService;
 import com.duobei.core.operation.consumdebt.service.ConsumdebtGoodsService;
+import com.duobei.dic.ZD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +26,8 @@ import java.util.List;
 public class ConsumdebtGoodsServiceImpl implements ConsumdebtGoodsService {
     @Autowired
     private ConsumdebtGoodsDao consumdebtGoodsDao;
+    @Autowired
+    private ConsumdebtGoodsPicService consumdebtGoodsPicService;
 
     /**
      * 分页查询
@@ -36,12 +43,45 @@ public class ConsumdebtGoodsServiceImpl implements ConsumdebtGoodsService {
         }
         return new ListVo<ConsumdebtGoodsVo>(total, list);
     }
-    @Override
-    public void save(ConsumdebtGoodsVo entity) throws TqException{
 
-    }
+    /**
+     *
+     * @param entity
+     * @throws TqException
+     */
     @Override
-    public void update(ConsumdebtGoodsVo entity) throws TqException{
+    @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
+    public void saveOrUpdate(ConsumdebtGoodsVo entity) throws TqException{
+        //
+        if( entity.getMinAmountDouble()> entity.getMaxAmountDouble()){
+            throw new TqException("上限金额不得大于下限金额");
+        }
+        //金额存到分
+        entity.setMinAmount(new Double(entity.getMinAmountDouble()*1000).longValue());
+        entity.setMaxAmount(new Double(entity.getMaxAmountDouble()*1000).longValue());
+        entity.setPriceAmount(new Double(entity.getPriceAmountDouble()*1000).longValue());
+        entity.setSaleAmount(entity.getPriceAmount());
+        if( entity.getId() == null ){
+            entity.setGoodsNo(GuidUtil.generateRiskQuotaApplyOrderNo());
+            entity.setAddOperatorId(entity.getModifyOperatorId());
+            if( consumdebtGoodsDao.save(entity) <1 ){
+                throw new TqException("添加失败");
+            }
+        }else{
+            if( consumdebtGoodsDao.update(entity) <1 ){
+                throw new TqException("修改失败");
+            }
+            //先删除原来的图片
+            consumdebtGoodsPicService.deleteByGoodsId(entity.getId());
+        }
+
+        if(!StringUtil.isBlank(entity.getBannerUrls())){
+            consumdebtGoodsPicService.addPic(entity,entity.getBannerUrls(), ZD.goodsPicType_banner);
+        }
+        if(!StringUtil.isBlank(entity.getDetailUrls())){
+            //保存新图片
+            consumdebtGoodsPicService.addPic(entity,entity.getDetailUrls(), ZD.goodsPicType_detail);
+        }
 
     }
 

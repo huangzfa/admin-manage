@@ -4,7 +4,7 @@
 <html>
 <head>
     <title></title>
-    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,select2"/>
+    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,common"/>
     <style>
         .addPic span{
             width: 100px;
@@ -119,11 +119,22 @@
     <br/>
     <form:form id="goodsForm" modelAttribute="goods"   action="${ctxA}/goods/save" method="post" class="form-horizontal">
         <input type="hidden" name="id" value="${not empty goods.id?goods.id:''}">
-        <input type="hidden" name="id" value="${not empty goods.goodsNo?goods.goodsNo:''}">
+        <input type="hidden" name="goodsNo" value="${not empty goods.goodsNo?goods.goodsNo:''}">
+        <div class="control-group">
+            <label class="control-label">商品分类：</label>
+            <div class="controls">
+                <select  name="classId" id="classId" class="selectpicker show-tick form-control valid" descripe="请选择商品分类" >
+                    <option value="">请选择</option>
+                    <c:forEach items="${classs}" var="item">
+                        <option value="${item.id}" ${item.id==goods.classId?"selected":''}>${item.className}</option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
         <div class="control-group">
             <label class="control-label">商品名称：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写商品名称" type="text" name="goodsName" id="goodsName" maxlength="64" value="${product.goodsName}" style="width: 300px;"></input>
+                <input type="text" class="form-control valid" descripe="请填写商品名称" type="text" name="goodsName" id="goodsName" maxlength="64" value="${goods.goodsName}" style="width: 300px;"></input>
             </div>
         </div>
         <div class="control-group">
@@ -167,7 +178,7 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">产品轮播图：</label>
+            <label class="control-label">商品轮播图：</label>
             <div class="controls">
                 <input type="hidden" id="bannerUrls" name="bannerUrls" value="${bannerUrls}">
                 <div class="img-box" id="imgboxid1">
@@ -180,9 +191,9 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">产品轮播图：</label>
+            <label class="control-label">商品详情图：</label>
             <div class="controls">
-                <input type="hidden" id="detailUrls" name="bannerUrls" value="${detailUrls}">
+                <input type="hidden" id="detailUrls" name="detailUrls" value="${detailUrls}">
                 <div class="img-box" id="imgboxid2">
                 </div>
                 <li class="addPic">
@@ -192,7 +203,38 @@
                 </li>
             </div>
         </div>
+
+        <div class="control-group">
+            <label class="control-label">商品区间价格：</label>
+            <div class="controls">
+                <label>下限含 </label>
+                <input type="text" class="form-control valid" descripe="请填写商品价格区间" type="text" name="minAmountDouble" id="minAmountDouble" maxlength="10" value="${goods.minAmountDouble}" onkeyup='this.value=this.value.replace(/[^0-9.]/g,"")'></input>
+                <label>上限不含 </label>
+                <input type="text" class="form-control valid" descripe="请填写商品价格区间" type="text" name="maxAmountDouble" id="maxAmountDouble" maxlength="10" value="${goods.maxAmountDouble}" onkeyup='this.value=this.value.replace(/[^0-9.]/g,"")'></input>
+
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">商品展示价值（元）：</label>
+            <div class="controls">
+                <input type="text" class="form-control valid" descripe="请填写商品展示价值" type="text" name="priceAmountDouble" id="priceAmountDouble" maxlength="10" value="${goods.priceAmountDouble}" onkeyup='this.value=this.value.replace(/[^0-9.]/g,"")'></input>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">备注：</label>
+            <div class="controls">
+                <input type="text" class="form-control"  type="text" name="remark" id="remark" maxlength="250" value="${goods.remark}" ></input>
+            </div>
+        </div>
+
     </form:form>
+    <div class="form-actions">
+        <shiro:hasPermission name="product:list:edit">
+            <input id="btnSubmit" class="btn btn-primary" onclick="save()"  value="保 存" style="width: 50px;"/>&nbsp;
+        </shiro:hasPermission>
+        <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/goods/list'"/>
+    </div>
 </div>
 </body>
 <script>
@@ -366,7 +408,7 @@
         $("#imgboxid"+sort+" li").remove()
         for (let i = 0; i < picData.length; i++) {
             var oimgbox = document.getElementById("imgboxid"+sort);
-            var imgstr = "<img  src=" + picData[i].url + "/><span class='delete' onclick='deletePic("+i+",\""+type+"\")'></span>";
+            var imgstr = "<img  src=" + picData[i].url + " ><span class='delete' onclick='deletePic("+i+",\""+type+"\")'></span>";
             var ndiv = document.createElement("li");
             ndiv.innerHTML = imgstr;
             ndiv.className = "img-div";
@@ -374,5 +416,50 @@
         }
     }
 
+</script>
+<script>
+    function save(){
+        var bool = true;
+        /*******  验证表单必填项目   ****************/
+        $(".valid").each(function() {
+            var descripe  = $(this).attr("descripe");
+            if( $(this).val()=="" && descripe!=""){
+                top.layer.alert(descripe, {icon: 5});
+                bool = false;
+                return false;
+            }
+        })
+        if( !bool ){
+            return false;
+        }
+        if( !isNumber($("#minAmountDouble").val()) || !isNumber($("#maxAmountDouble").val())
+            || !isNumber($("#priceAmountDouble").val())){
+            top.layer.alert("请填写正确金额", {icon: 5});
+            return false;
+        }
+        if( !is01($("#minAmountDouble").val()) || !is01($("#maxAmountDouble").val())
+            || !is01($("#priceAmountDouble").val())){
+            top.layer.alert("请填写正确金额", {icon: 5});
+            return false;
+        }
+
+        $("#btnSubmit").attr("disabled",true);
+        var form=$("#goodsForm");
+        var action = form[0].action;
+        var data = form.serialize();
+        jQuery.post(action,data, function(data) {
+            $("#btnSubmit").attr("disabled",false);
+            if (data.code ==1) {
+                top.layer.alert("操作成功", {
+                    icon: 6,
+                    end: function(){
+                        window.location.href="${ctxA}/goods/list";
+                    }
+                });
+            } else {
+                top.layer.alert(data.msg, {icon: 5});
+            }
+        }, "json");
+    }
 </script>
 </html>

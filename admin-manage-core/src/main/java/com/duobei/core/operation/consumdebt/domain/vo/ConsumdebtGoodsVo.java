@@ -33,4 +33,6 @@ public class ConsumdebtGoodsVo extends ConsumdebtGoods{
     private String detailUrls;
 
     private String bannerUrls;
+
+    private String checked;
 }

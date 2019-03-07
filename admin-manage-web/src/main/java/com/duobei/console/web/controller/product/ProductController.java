@@ -52,6 +52,8 @@ public class ProductController extends BaseController {
     private ProductBusinessService productBusinessService;
     @Autowired
     private BusinessService businessService;
+    @Autowired
+    private ProductConsumdebtGoodsService productConsumdebtGoodsService;
 
     /**
      * 商户产品列表页
@@ -116,20 +118,23 @@ public class ProductController extends BaseController {
     @RequestMapping(value = "/mpForm")
     public String mpForm(Model model, String productCode) {
         List<ProductBusiness> list = new ArrayList<>();
+        //根据产品code查询产品
         if (!StringUtil.isBlank(productCode)) {
             Product product = productService.getByCode(productCode);
             model.addAttribute("product", product);
+            //产品不为空，查询产品关联的业务
             if( product!=null ){
                 list = productBusinessService.getByProductId(product.getId());
             }
         }
         model.addAttribute("merchants",merchantService.getAll());
-        //查询业务类型
+        //查询所有业务类型，和产品关联的业务，已经关联的checked处理
         List<BusinessVo> listBusin =  businessService.getAll();
         for(BusinessVo vo : listBusin){
             for( ProductBusiness business : list){
                 if(vo.getBizCode().equals(business.getBizCode())){
                     vo.setChecked("checked");
+                    continue;
                 }
             }
         }
@@ -171,7 +176,7 @@ public class ProductController extends BaseController {
             List<ProductBusiness> list = productBusinessService.getByProductId(product.getId());
             for(ProductBusiness business : list){
                 if(business.getBizCode().equals(BusinessEnum.XFD.getCode())){
-                    show = "true";
+                    show = "true";//代表显示这一个模块
                     break;
                 }
             }
@@ -192,12 +197,14 @@ public class ProductController extends BaseController {
             Product product = productService.getByCode(productCode);
             model.addAttribute("product", product);
             if( product !=null ){
+                //查询消费贷基础配置
                 ConsumeLoanConfig config = consumeLoanConfigService.getByProductId(product.getId());
                 if( config == null ){
                     config = new ConsumeLoanConfig();
                 }
                 config.setProductId(product.getId());
                 model.addAttribute("consumeLoanConfig",JSON.toJSONString(config));
+                //查询消费贷基础配置，关联的认证项
                 model.addAttribute("authConfigs",JSON.toJSONString(productAuthConfigService.getByProductId(product.getId())));
             }
         }
@@ -217,15 +224,19 @@ public class ProductController extends BaseController {
             Product product = productService.getByCode(productCode);
             model.addAttribute("product", product);
             if( product !=null ){
+                //查询消费贷基础配置
                 ConsumeLoanConfig record = consumeLoanConfigService.getByProductId(product.getId());
                 ConsumeLoanConfig config = new ConsumeLoanConfig();
                 config.setProductId(product.getId());
+                //因为这一页只显示3项数据，所以没必要全部返回，返回record就好
                 if( record != null ){
                     config.setQuotaSceneCode(record.getQuotaSceneCode());
                     config.setBorrowSceneCode(record.getBorrowSceneCode());
                     config.setBorrowSceneCodeFirst(record.getBorrowSceneCodeFirst());
                 }
                 model.addAttribute("consumeLoanConfig",JSON.toJSONString(config));
+                //返回消费贷关联的是商品
+                model.addAttribute("productGoods",JSON.toJSONString(productConsumdebtGoodsService.getByProductId(product.getId())));
             }
         }
         return "product/pLoanConfig";

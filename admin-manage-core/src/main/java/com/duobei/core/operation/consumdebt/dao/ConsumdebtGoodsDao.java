@@ -47,4 +47,6 @@ public interface ConsumdebtGoodsDao {
      * @return
      */
     int update (ConsumdebtGoodsVo update);
+
+    List<ConsumdebtGoodsVo> getAll();
 }

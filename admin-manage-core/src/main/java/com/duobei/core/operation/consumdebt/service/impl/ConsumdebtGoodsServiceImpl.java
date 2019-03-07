@@ -10,6 +10,8 @@ import com.duobei.core.operation.consumdebt.domain.criteria.ConsumdebtGoodsCrite
 import com.duobei.core.operation.consumdebt.domain.vo.ConsumdebtGoodsVo;
 import com.duobei.core.operation.consumdebt.service.ConsumdebtGoodsPicService;
 import com.duobei.core.operation.consumdebt.service.ConsumdebtGoodsService;
+import com.duobei.core.operation.product.dao.ProductConsumdebtGoodsDao;
+import com.duobei.core.operation.product.domain.vo.ProductConsumdebtGoodsVo;
 import com.duobei.dic.ZD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class ConsumdebtGoodsServiceImpl implements ConsumdebtGoodsService {
     private ConsumdebtGoodsDao consumdebtGoodsDao;
     @Autowired
     private ConsumdebtGoodsPicService consumdebtGoodsPicService;
+    @Autowired
+    private ProductConsumdebtGoodsDao productConsumdebtGoodsDao;
 
     /**
      * 分页查询
@@ -62,7 +66,7 @@ public class ConsumdebtGoodsServiceImpl implements ConsumdebtGoodsService {
         entity.setPriceAmount(new Double(entity.getPriceAmountDouble()*1000).longValue());
         entity.setSaleAmount(entity.getPriceAmount());
         if( entity.getId() == null ){
-            entity.setGoodsNo(GuidUtil.generateRiskQuotaApplyOrderNo());
+            entity.setGoodsNo(GuidUtil.getGoosNo());
             entity.setAddOperatorId(entity.getModifyOperatorId());
             if( consumdebtGoodsDao.save(entity) <1 ){
                 throw new TqException("添加失败");
@@ -93,5 +97,25 @@ public class ConsumdebtGoodsServiceImpl implements ConsumdebtGoodsService {
     @Override
     public ConsumdebtGoodsVo getByGoodsNo(String goodsNo){
         return consumdebtGoodsDao.getByGoodsNo(goodsNo);
+    }
+
+    /**
+     *
+     * @param productId
+     * @return
+     */
+    @Override
+    public List<ConsumdebtGoodsVo> getList(Integer productId){
+        List<ConsumdebtGoodsVo> gList = consumdebtGoodsDao.getAll();
+        List<ProductConsumdebtGoodsVo> pgList = productConsumdebtGoodsDao.getByProductId(productId);
+        for( ConsumdebtGoodsVo vo : gList){
+            for (ProductConsumdebtGoodsVo gvo :pgList){
+                if( vo.getId().equals(gvo.getGoodsId())){
+                    vo.setChecked("checked");
+                    continue;
+                }
+            }
+        }
+        return gList;
     }
 }

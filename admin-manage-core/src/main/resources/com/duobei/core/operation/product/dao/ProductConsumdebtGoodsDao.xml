@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.product.dao.ProductConsumdebtGoodsDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.ProductConsumdebtGoods" extends="com.duobei.core.operation.product.dao.mapper.ProductConsumdebtGoodsMapper.BaseResultMap">
+    </resultMap>
+
+    <select id="getByProductId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.product.domain.vo.ProductConsumdebtGoodsVo">
+        select a.*,b.goods_name,b.state,b.sort,b.sort from yy_product_consumdebt_goods a left join yy_consumdebt_goods b on a.goods_id =b.id
+        where a.product_id=#{productId,jdbcType=INTEGER} and b.is_delete=0
+    </select>
+
+</mapper>

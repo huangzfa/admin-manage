@@ -18,7 +18,7 @@ public class GuidUtil {
      *
      * @return
      */
-    public static String generateRiskQuotaApplyOrderNo() {
+    public static String getGoosNo() {
 
         return GOODS_NO + IdWorker.ID_WORKER.nextId();
     }

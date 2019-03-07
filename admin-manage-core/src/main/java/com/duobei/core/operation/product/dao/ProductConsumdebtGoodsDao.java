@@ -1,5 +1,8 @@
 package com.duobei.core.operation.product.dao;
 
+import com.duobei.core.operation.product.domain.vo.ProductConsumdebtGoodsVo;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -9,4 +12,5 @@ import java.util.List;
  */
 public interface ProductConsumdebtGoodsDao {
 
+    List<ProductConsumdebtGoodsVo> getByProductId(@Param("productId") Integer productId);
 }

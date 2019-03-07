@@ -73,76 +73,82 @@
 </body>
 <script>
     <script>
-    var consumeLoanConfig = '${consumeLoanConfig}';
-
-    if( consumeLoanConfig !=''){
-        loan = eval("("+consumeLoanConfig+")");
-    }
-    //创建应用
-    var loanFormApp = angular.module('loanFormApp', []);
-    //创建controller
-    loanFormApp.controller('loanFormCtrl', function($scope, $http) {
-        $scope.loan = loan;
-        $scope.btnState = false;
-        $scope.deleteGoods = function(id) {
-
+        //借贷配置
+        var consumeLoanConfig = '${consumeLoanConfig}';
+        if( consumeLoanConfig !=''){
+            loan = eval("("+consumeLoanConfig+")");
         }
-        $scope.save = function() {
-            var bool = true;
-            /*******  验证表单必填项目   ****************/
-            $(".valid").each(function() {
-                var descripe  = $(this).attr("descripe");
-                if( ($(this).val()=="" || $(this).val()==null) && descripe!=""){
-                    top.layer.alert(descripe, {icon: 5});
-                    bool = false;
-                    return false;
-                }
-            })
-            if( bool){
-                $scope.btnState = true;
-                $http({
-                    method:'post',
-                    url:"loan/save",
-                    data:{'loan':JSON.stringify($scope.loan),'auths':JSON.stringify($scope.auths)},
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    transformRequest: function(obj) {
-                        var str = [];
-                        for (var p in obj) {
-                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                        }
-                        return str.join("&");
-                    }
-                }).success(function(result){
-                    $scope.btnState = false;
-                    if (result.code == 1) {
-                        top.layer.alert("操作成功", {
-                            icon: 6,
-                            end: function(){
-                                window.location.reload();
-                            }
-                        });
-                    } else {
-                        top.layer.alert(result.msg, {icon: 5});
+        //产品商品关联数据
+        var productGoods = '${productGoods}';
+        if( productGoods !=''){
+            goods = eval("("+productGoods+")");
+        }
+        //创建应用
+        var loanFormApp = angular.module('loanFormApp', []);
+        //创建controller
+        loanFormApp.controller('loanFormCtrl', function($scope, $http) {
+            $scope.loan = loan;
+            $scope.goods = goods;
+            $scope.btnState = false;
+            $scope.deleteGoods = function(id) {
+
+            };
+            $scope.save = function() {
+                var bool = true;
+                /*******  验证表单必填项目   ****************/
+                $(".valid").each(function() {
+                    var descripe  = $(this).attr("descripe");
+                    if( ($(this).val()=="" || $(this).val()==null) && descripe!=""){
+                        top.layer.alert(descripe, {icon: 5});
+                        bool = false;
+                        return false;
                     }
                 })
+                if( bool){
+                    $scope.btnState = true;
+                    $http({
+                        method:'post',
+                        url:"loan/save",
+                        data:{'loan':JSON.stringify($scope.loan),'auths':JSON.stringify($scope.auths)},
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        transformRequest: function(obj) {
+                            var str = [];
+                            for (var p in obj) {
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            }
+                            return str.join("&");
+                        }
+                    }).success(function(result){
+                        $scope.btnState = false;
+                        if (result.code == 1) {
+                            top.layer.alert("操作成功", {
+                                icon: 6,
+                                end: function(){
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            top.layer.alert(result.msg, {icon: 5});
+                        }
+                    })
+                }
             }
+        });
+
+        function validSceneId(sceneCodeId){
+            jQuery.post("${ctxA}/product/validSceneCode", {'code':$("#"+sceneCodeId).val()},function(result) {
+                if (result.code == 1) {
+                    top.layer.alert("校验成功", {
+                        icon: 6,
+                        end: function(){
+
+                        }
+                    });
+                } else {
+                    top.layer.alert(result.msg, {icon: 5});
+                }
+            },"json")
         }
-    });
-
-    function validSceneId(sceneCodeId){
-        jQuery.post("${ctxA}/product/validSceneCode", {'code':$("#"+sceneCodeId).val()},function(result) {
-            if (result.code == 1) {
-                top.layer.alert("校验成功", {
-                    icon: 6,
-                    end: function(){
-
-                    }
-                });
-            } else {
-                top.layer.alert(result.msg, {icon: 5});
-            }
-        },"json")
-    }
 </script>
 </html>
 

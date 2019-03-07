@@ -6,6 +6,8 @@ import com.duobei.core.operation.consumdebt.domain.ConsumdebtGoods;
 import com.duobei.core.operation.consumdebt.domain.criteria.ConsumdebtGoodsCriteria;
 import com.duobei.core.operation.consumdebt.domain.vo.ConsumdebtGoodsVo;
 
+import java.util.List;
+
 /**
  * @author huangzhongfa
  * @description
@@ -34,4 +36,11 @@ public interface ConsumdebtGoodsService {
      * @return
      */
     ConsumdebtGoodsVo getByGoodsNo(String goodsNo);
+
+    /**
+     * 
+     * @param productId
+     * @return
+     */
+    List<ConsumdebtGoodsVo> getList(Integer productId);
 }

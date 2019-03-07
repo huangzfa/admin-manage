@@ -1,22 +1,22 @@
-package com.duobei.console.web.controller.channel;
+package main.java.com.duobei.console.web.controller.channel;
 
 import com.alibaba.fastjson.JSON;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
+import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.manage.sys.domain.Dict;
 import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.channel.domain.PromotionChannel;
+import com.duobei.core.operation.channel.domain.criteria.AppMarketChannelCriteria;
 import com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria;
 import com.duobei.core.operation.channel.service.PromotionChannelService;
 import com.duobei.dic.ZD;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,7 +29,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.duobei.console.web.controller.base.BaseController;
 
 /**
  * @author litianxiong
@@ -38,15 +37,15 @@ import com.duobei.console.web.controller.base.BaseController;
  */
 
 @Controller
-@RequestMapping(value = "${authzPath}/channel/promotion")
-public class PromotionChannelController extends BaseController {
+@RequestMapping(value = "${authzPath}/channel/appMarket")
+public class AppMarketChannelController extends BaseController {
 
     private final static Logger log = LoggerFactory.getLogger(
-            PromotionChannelController.class);
+            AppMarketChannelController.class);
 
-    private final static String PERMISSIONPRE = "channel:promotion:";
-    private final static String ADDRESSPRE = "channel/promotion/";
-    private final static String DESC = "推广渠道";
+    private final static String PERMISSIONPRE = "channel:appMarket:";
+    private final static String ADDRESSPRE = "channel/appMarket/";
+    private final static String DESC = "应用市场渠道";
 
     @Resource
     private PromotionChannelService promotionChannelService;
@@ -57,22 +56,20 @@ public class PromotionChannelController extends BaseController {
 
     @RequiresPermissions(PERMISSIONPRE + "view")
     @RequestMapping(value = "/list")
-    public String list(Model model) {
-        model.addAttribute("channelType", JSON.toJSONString(DictUtil.getDictList(ZD.channelType)));
-        return ADDRESSPRE + "promotionChannelList";
+    public String list() {
+        return ADDRESSPRE + "appMarketChannelList";
     }
 
     @RequiresPermissions(PERMISSIONPRE + "view")
     @ResponseBody
-    @RequestMapping(value = "/promotionChannelList")
-    public String promotionChannelList(PromotionChannelCriteria promotionChannelCriteria) {
+    @RequestMapping(value = "/appMarketChannelList")
+    public String promotionChannelList(AppMarketChannelCriteria appMarketChannelCriteria) {
         OperatorCredential credential = getCredential();
-        if (promotionChannelCriteria.getPagesize() == 0) {
-            promotionChannelCriteria.setPagesize(GlobalConfig.getPageSize());
+        if (appMarketChannelCriteria.getPagesize() == 0) {
+            appMarketChannelCriteria.setPagesize(GlobalConfig.getPageSize());
         }
         try {
-           ListVo<PromotionChannel> list = promotionChannelService.getPromotionListByQuery(promotionChannelCriteria);
-
+           ListVo<PromotionChannel> list = promotionChannelService.getAppMarketListByQuery(appMarketChannelCriteria);
             Map<String, Object> result = new HashMap<>();
             result.put("list", list);
             return successJsonResult(result, "success");
@@ -88,25 +85,21 @@ public class PromotionChannelController extends BaseController {
 
     @RequiresPermissions(PERMISSIONPRE + "view")
     @RequestMapping(value = "/form")
-    public String form(@ModelAttribute("promotionChannel") PromotionChannel promotionChannel,
+    public String form(@ModelAttribute("appMarketChannel") PromotionChannel promotionChannel,
                        Model model, RedirectAttributes redirectAttributes) {
         try {
             if (promotionChannel.getId() != null) {
                 promotionChannel = promotionChannelService.getById(promotionChannel.getId());
             }else{
-                //新建默认 渠道类型：渠道  审核状态：审核完成 渠道类型：渠道
-                promotionChannel.setChannelType(ZD.channelType_h5);
+                //新建默认  审核状态：审核完成 渠道类型：渠道
                 promotionChannel.setApproveStatus(ZD.channelApproveType_finsh);
                 promotionChannel.setChannelState(ZD.channelStatus_yes);
             }
-            //渠道类型
-            List<Dict> channelTypeList = DictUtil.getDictList(ZD.channelType);
             //审核状态
             List<Dict> approveStatusList = DictUtil.getDictList(ZD.channelApproveType);
             //渠道状态
             List<Dict> channelStatusList = DictUtil.getDictList(ZD.channelStatus);
 
-            model.addAttribute("channelTypeList",channelTypeList);
             model.addAttribute("approveStatusList",approveStatusList);
             model.addAttribute("channelStatusList",channelStatusList);
             model.addAttribute("promotionChannel", promotionChannel);
@@ -120,7 +113,7 @@ public class PromotionChannelController extends BaseController {
             }
             return "redirect:" + this.authzPath + "/" + ADDRESSPRE + "list";
         }
-        return ADDRESSPRE + "promotionChannelForm";
+        return ADDRESSPRE + "appMarketChannelForm";
     }
 
 
@@ -139,6 +132,7 @@ public class PromotionChannelController extends BaseController {
             //修改人、修改时间
             promotionChannel.setModifyOperatorId(credential.getOpId());
             promotionChannel.setModifyTime(new Date());
+            promotionChannel.setChannelType(1);
             if (promotionChannel.getId() == null) {
                 //新增
                 promotionChannel.setAddTime(promotionChannel.getModifyTime());
@@ -201,8 +195,8 @@ public class PromotionChannelController extends BaseController {
                 if (e instanceof RuntimeException) {
                     return failJsonResult(e.getMessage());
                 }else{
-                    log.warn("delete渠道异常", e);
-                    return failJsonResult("delete渠道异常");
+                    log.warn("删除渠道异常", e);
+                    return failJsonResult("删除渠道异常");
                 }
             }
         }

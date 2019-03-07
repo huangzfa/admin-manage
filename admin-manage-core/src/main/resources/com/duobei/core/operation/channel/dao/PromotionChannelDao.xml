@@ -14,11 +14,11 @@
     promotion_channel.approve_status as approve_status
   </sql>
 
-  <select id="countByQuery" parameterType="com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria" resultType="int">
+  <select id="countPromotionByQuery" parameterType="com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria" resultType="int">
     select count(id)
     from yy_promotion_channel
-    where is_delete = 0
-    <if test="channelType == null">
+    where is_delete = 0 and channel_type != 1
+    <if test="channelType != null">
       and channel_type = #{channelType}
     </if>
     <if test="nameAndCompany != null and nameAndCompany! = ''">
@@ -26,11 +26,11 @@
     </if>
   </select>
 
-  <select id="getListByQuery" parameterType="com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria" resultType="com.duobei.core.operation.channel.domain.PromotionChannel">
+  <select id="getPromotionListByQuery" parameterType="com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria" resultType="com.duobei.core.operation.channel.domain.PromotionChannel">
     select <include refid="Base_Column_List"/>
     from yy_promotion_channel promotion_channel
-    where promotion_channel.is_delete = 0
-    <if test="channelType == null">
+    where promotion_channel.is_delete = 0 and promotion_channel.channel_type != 1
+    <if test="channelType != null">
       and promotion_channel.channel_type = #{channelType}
     </if>
     <if test="nameAndCompany != null and nameAndCompany! = ''">
@@ -84,4 +84,32 @@
     set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId},is_delete = #{id}
     where is_delete = 0 and id = #{id}
   </update>
+
+  <select id="countAppMarketByQuery" parameterType="com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria" resultType="int">
+    select count(id)
+    from yy_promotion_channel
+    where is_delete = 0 and channel_type = 1
+    <if test="channelName != null and channelName != ''">
+      and promotion_channel.channel_name = #{channelName}
+    </if>
+    <if test="channelCode != null and channelCode != ''">
+      and promotion_channel.channel_code = #{channelCode}
+    </if>
+  </select>
+
+  <select id="getAppMarketListByQuery" parameterType="com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria" resultType="com.duobei.core.operation.channel.domain.PromotionChannel">
+    select <include refid="Base_Column_List"/>
+    from yy_promotion_channel promotion_channel
+    where promotion_channel.is_delete = 0 and promotion_channel.channel_type = 1
+    <if test="channelName != null and channelName != ''">
+      and promotion_channel.channel_name = #{channelName}
+    </if>
+    <if test="channelCode != null and channelCode != ''">
+      and promotion_channel.channel_code = #{channelCode}
+    </if>
+    ORDER BY promotion_channel.add_time desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
 </mapper>

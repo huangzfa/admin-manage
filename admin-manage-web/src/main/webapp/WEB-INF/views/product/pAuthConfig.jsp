@@ -36,12 +36,6 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">借款最高倍数：</label>
-            <div class="controls">
-                <input type="text" class="form-control" descripe="请填写借款最高倍数" name="baseBankRate" id="baseBankRate" maxlength="8" onkeyup='this.value=this.value.replace(/[^0-9,]/g,"")'></input>
-            </div>
-        </div>
-        <div class="control-group">
             <label class="control-label">手续费率（日）：</label>
             <div class="controls">
                 <input type="text" class="form-control valid" descripe="请填写手续费率" ng-model="loan.poundageRate" maxlength="8"  onkeyup='this.value=this.value.replace(/[^0-9,]/g,\"\")'></input>

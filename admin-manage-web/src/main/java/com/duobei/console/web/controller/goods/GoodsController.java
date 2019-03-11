@@ -207,4 +207,31 @@ public class GoodsController extends BaseController {
             }
         }
     }
+
+    /**
+     * 查询所有商品，并根据产品id，知道哪些商品被关联了产品中
+     * @param request
+     * @param productId
+     * @return
+     * @throws TqException
+     */
+    @RequestMapping(value = "/getList")
+    @ResponseBody
+    public String save(HttpServletRequest request, Integer productId) throws TqException{
+        try {
+            OperatorCredential credential = getCredential();
+            if (credential == null) {
+                throw new TqException("登录过期，请重新登录");
+            }
+            List<ConsumdebtGoodsVo> list = consumdebtGoodsService.getList(productId);
+            return successJsonResult("success", "list", list);
+        }catch (Exception e){
+            if (e instanceof TqException) {
+                return failJsonResult(e.getMessage());
+            } else {
+                log.warn("save产品异常", e);
+                return failJsonResult("save产品异常");
+            }
+        }
+    }
 }

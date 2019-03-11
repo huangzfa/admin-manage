@@ -10,6 +10,7 @@
     <!--  -->
 </head>
 <body>
+<jsp:include page="/WEB-INF/include/goodsDialog.jsp"/>
 <div ng-app="loanFormApp" ng-controller="loanFormCtrl">
     <form  class="form-horizontal" id="loanForm" >
         <input type="hidden" value="loan.id">
@@ -35,7 +36,7 @@
                         <td>{{x.goodsName}}</td>
                         <td>{{x.sort}}</td>
                         <td>{{x.state==0?'下架':'上架'}}</td>
-                        <td><input id="deleteGoods" class="btn btn-warning" ng-click="deleteGoods({{x.id}})"  value="删 除" style="width: 50px;"/>&nbsp;</td>
+                        <td><input id="deleteGoods" class="btn btn-warning" ng-click="deleteGoods('{{x.id}}')"  value="删除" style="width: 50px;"/></td>
                     </tr>
                     </tbody>
                 </table>
@@ -72,7 +73,6 @@
 </div>
 </body>
 <script>
-    <script>
         //借贷配置
         var consumeLoanConfig = '${consumeLoanConfig}';
         if( consumeLoanConfig !=''){
@@ -91,7 +91,8 @@
             $scope.goods = goods;
             $scope.btnState = false;
             $scope.deleteGoods = function(id) {
-
+                //删除此条记录
+                $scope.goods.splice($.inArray(id, $scope.goods), 1);
             };
             $scope.save = function() {
                 var bool = true;
@@ -148,6 +149,38 @@
                     top.layer.alert(result.msg, {icon: 5});
                 }
             },"json")
+        }
+
+
+        //选商品控件调用
+        function selectGoods(productId) {
+            modalGoods.open({
+                productId: productId,
+                callback: function (data) {
+                    debugger;
+                    var controllerScope = $('div[ng-controller="loanFormCtrl"]').scope();  // Get controller's scope
+                    for( var  i = 0; i < data.list.length ; i++){
+                        if( getIndex(data.list[i].goodsId,controllerScope) ==-1){
+                            //$apply()用于传播模型的变化。在外部改变了作用域，如果想显示改变后的值，必须调用$apply。
+                            controllerScope.$apply(function(){
+                                controllerScope.goods.push(data.list[i]);
+                            })
+                        }
+                    }
+
+                    $("#modalGoodsDialog").modal("hide");
+                }
+            });
+        }
+
+        //判断是否已经存在了该配置项
+        function getIndex(goodsId,scope) {
+            for(var i=0;i<scope.goods.length;i++){
+                if(scope.goods[i].goodsId==goodsId){
+                    return i;
+                }
+            }
+            return -1;
         }
 </script>
 </html>

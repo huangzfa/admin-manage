@@ -38,7 +38,7 @@ public interface ConsumdebtGoodsService {
     ConsumdebtGoodsVo getByGoodsNo(String goodsNo);
 
     /**
-     * 
+     * 查询所有商品，并根据产品id，知道哪些商品被关联了产品中
      * @param productId
      * @return
      */

@@ -17,6 +17,7 @@ import com.duobei.core.operation.product.domain.vo.BusinessVo;
 import com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo;
 import com.duobei.core.operation.product.domain.vo.ProductVo;
 import com.duobei.core.operation.product.service.*;
+import com.duobei.utils.RiskUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,8 @@ public class ProductController extends BaseController {
     private BusinessService businessService;
     @Autowired
     private ProductConsumdebtGoodsService productConsumdebtGoodsService;
+    @Autowired
+    private RiskUtil riskUtil;
 
     /**
      * 商户产品列表页
@@ -364,5 +367,26 @@ public class ProductController extends BaseController {
                 return failJsonResult("save产品异常");
             }
         }
+    }
+
+    /**
+     * 校验场景id
+     * @param code
+     * @return
+     */
+    @RequiresPermissions("product:list:edit")
+    @RequestMapping(value = "/validSceneCode")
+    @ResponseBody
+    public String validSceneCode(String code) throws TqException {
+        if (StringUtil.isBlank(code)) {
+            throw new TqException("请填写场景id");
+        }
+        String result = riskUtil.SceneCodeHad(code);
+        if ( !result.equals("success")) {
+            return failJsonResult("校验失败，原因：" + result);
+        } else {
+            return simpleSuccessJsonResult(result);
+        }
+
     }
 }

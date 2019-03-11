@@ -16,6 +16,7 @@ import java.util.Map;
 /**风控调用
  * Created by huangzhongfa on 2018/12/21.
  */
+@Component
 public class RiskUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(RiskUtil.class);

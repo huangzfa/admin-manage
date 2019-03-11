@@ -25,7 +25,7 @@
 
 
     <select id="getAll" resultType="com.duobei.core.operation.consumdebt.domain.vo.ConsumdebtGoodsVo">
-          SELECT * FROM yy_consumdebt_goods where is_delete = 0 order by sort desc
+          SELECT * FROM yy_consumdebt_goods where is_delete = 0 and state = 1 order by sort desc
     </select>
 
 

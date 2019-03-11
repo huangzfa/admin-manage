@@ -74,7 +74,7 @@ public class StartUpPageController extends BaseController {
         try {
              OperatorCredential credential = getCredential();
             if (credential == null) {
-                throw new RuntimeException("登录过期，请重新登录");
+                throw new TqException("登录过期，请重新登录");
             }
             //验证数据权限
             if( startupPage.getAppId() !=null ){
@@ -104,8 +104,11 @@ public class StartUpPageController extends BaseController {
             return simpleSuccessJsonResult ("success",1);
         } catch (Exception e) {
             log.warn("编辑启动页异常", e);
-            return failJsonResult("编辑启动页异常");
-
+            if (e instanceof TqException){
+                return failJsonResult(e.getMessage());
+            }else {
+                return failJsonResult("编辑启动页异常");
+            }
         }
     }
 
@@ -118,7 +121,7 @@ public class StartUpPageController extends BaseController {
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {
-                throw new RuntimeException("登录过期，请重新登录");
+                throw new TqException("登录过期，请重新登录");
             }
             //验证数据权限
             if( startupPage.getAppId() !=null ){
@@ -133,7 +136,11 @@ public class StartUpPageController extends BaseController {
             return simpleSuccessJsonResult ("success",1);
         } catch (Exception e) {
             log.warn("编辑启动页异常", e);
-            return failJsonResult("编辑启动页异常");
+            if (e instanceof TqException){
+                return failJsonResult(e.getMessage());
+            }else {
+                return failJsonResult("编辑启动页异常");
+            }
 
         }
 

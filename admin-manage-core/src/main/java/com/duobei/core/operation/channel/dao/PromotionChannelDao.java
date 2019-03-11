@@ -2,7 +2,9 @@ package com.duobei.core.operation.channel.dao;
 
 import com.duobei.core.operation.channel.domain.PromotionChannel;
 import com.duobei.core.operation.channel.domain.criteria.AppMarketChannelCriteria;
+import com.duobei.core.operation.channel.domain.criteria.ProductAppChannelCriteria;
 import com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria;
+import com.duobei.core.operation.channel.domain.vo.ProductAppChannelListVo;
 
 import java.util.List;
 
@@ -29,4 +31,6 @@ public interface PromotionChannelDao {
     List<PromotionChannel> getAppMarketListByQuery(AppMarketChannelCriteria appMarketChannelCriteria);
 
     PromotionChannel getByCode(String channelCode);
+
+    List<ProductAppChannelListVo> getChannelByProductAppChannelQuery(ProductAppChannelCriteria productAppChannelCriteria);
 }

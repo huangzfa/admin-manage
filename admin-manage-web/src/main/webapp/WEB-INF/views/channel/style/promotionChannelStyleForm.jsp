@@ -4,9 +4,11 @@
 <html>
 <head>
     <title></title>
-    <sys:jscss jscss="jquery,webfont,bootstrap,si,css,easyui,select2,validation"/>
+    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,ocupload"/>
     <!--  -->
     <style type="text/css">
+        .upload_button{list-style:none}
+
     </style>
 
 </head>
@@ -15,13 +17,13 @@
 
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/channel/promotion/list?id=${object.id}">样式列表</a></li>
+    <li><a href="${ctxA}/channel/style/list?id=${object.id}">样式列表</a></li>
     <li class="active">
         <shiro:hasPermission name="channel:style:edit">
             <a href="javascript:void(0);">${not empty object.id?'修改':'添加'}样式</a>
         </shiro:hasPermission>
         <shiro:lacksPermission name="channel:style:edit">
-            <a href="javascript:void(0);">查看推广渠道</a>
+            <a href="javascript:void(0);">查看样式列表</a>
         </shiro:lacksPermission>
     </li>
 </ul>
@@ -32,33 +34,36 @@
         <div class="control-group">
             <label class="control-label">样式id：</label>
             <div class="controls">
-                <input type="text" disabled class="form-control" type="text" name="id" id="id" value="${channelStyle.id}"></input>
+                <input type="text" disabled class="form-control" type="text" value="${channelStyle.id}"/>
+                <input type="hidden" name="id" id="id" value="${not empty channelStyle.id?channelStyle.id:''}">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">样式名称：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请输入投放渠道" placeholder="最多输入12个字"  type="text" name="styleName" id="styleName" maxlength="12" value="${channelStyle.channelName}"></input>
+                <input type="text" class="form-control valid" descripe="请输入样式名称" placeholder="最多输入12个字"  type="text" name="styleName" id="styleName" maxlength="12" value="${channelStyle.styleName}"></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">注册页按钮模板：</label>
             <div class="controls">
-                <c:forEach items="${buttonTemplateList}" var="buttonTemplate">
+                <select  name="buttonTemplate" id="buttonTemplate" class="selectpicker show-tick form-control" style="width: 15%;">
+                <c:forEach items="${buttonTempTypeList}" var="buttonTemplate">
                     <option value="${buttonTemplate.dicVal}" ${not empty channelStyle && channelStyle.buttonTemplate==buttonTemplate.dicVal?"selected":''}>${buttonTemplate.dicCode}</option>
                 </c:forEach>
+                </select>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">注册页按钮文案：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请输入编码" placeholder="最多输入10个字" type="text" name="buttonText" id="buttonText" maxlength="32" value="${channelStyle.buttonText}"></input>
+                <input type="text" class="form-control valid" descripe="请输入文案" placeholder="最多输入10个字" type="text" name="buttonText" id="buttonText" maxlength="32" value="${channelStyle.buttonText}"></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">注册页按钮颜色：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请输入编码" placeholder="请输入色号" type="text" name="buttonBackground" id="buttonBackground" value="${channelStyle.buttonBackground}"></input>
+                <input type="text" class="form-control valid" descripe="请输入色号" placeholder="请输入色号" type="text" name="buttonBackground" id="buttonBackground" value="${channelStyle.buttonBackground}"></input>
             </div>
         </div>
         <div class="control-group">
@@ -67,7 +72,7 @@
                 <input type="hidden" value="${channelStyle.imageUrl}" name="imageUrl" id="imageUrl"  class="valid" descripe="请上传图片">
                 <div class="thumbImgBox">
                     <ul style="float: left">
-                        <li class="upload_button" id="uploadImgIcon1" filename="imgUrl" sort="1" style="width: 100px;height: 100px;">
+                        <li class="upload_button" id="uploadImgIcon1" filename="imageUrl" sort="1" style="width: 100px;height: 100px;">
                             <a target="_blank" ><img src="${not empty channelStyle.imageUrl?channelStyle.imageUrl:'/static/img/upload.png'}" class="img-thumbnail"  width="100px" height="100px"></a>
                         </li>
                     </ul>
@@ -94,7 +99,7 @@
         <div class="control-group" id="downloadPageUrlDiv" >
             <label class="control-label">自定义连接：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请输入编码" placeholder="请输入链接" type="text" name="downloadPageUrl" id="downloadPageUrl" value="${channelStyle.downloadPageUrl}"></input>
+                <input type="text" class="form-control" placeholder="请输入链接" type="text" name="downloadPageUrl" id="downloadPageUrl" value="${channelStyle.downloadPageUrl}"></input>
             </div>
         </div>
 
@@ -112,6 +117,7 @@
 <script type="text/javascript">
     $(function(){
         updateDownLoadPageConfig();
+
         $(".upload_button").each(function() {
             var self = $(this);
             var s = self.attr('sort');
@@ -157,24 +163,48 @@
         if( !bool ){
             return false;
         }
+        if($("#downloadPageType").val() == 2){
+            if ($("downloadPageUrl").val()==""){
+                top.layer.alert("请输入连接", {icon: 5});
+                return false;
+            }
+        }
+        if(!checkIsColor($("#buttonBackground").val())){
+            top.layer.alert("请输入正确色号", {icon: 5});
+            return false
+        }
         $("#btnSubmit").attr("disabled",true);
         var form=$("#inputForm");
         var action = form[0].action;
         var data = form.serialize();
         jQuery.post(action,data, function(data) {
-            debugger;
             $("#btnSubmit").attr("disabled",false);
             if (data.code ==1) {
                 top.layer.alert("操作成功", {
                     icon: 6,
                     end: function(){
-                        window.location.href="${ctxA}/channel/promotion/list";
+                        window.location.href="${ctxA}/channel/style/list";
                     }
                 });
             } else {
                 top.layer.alert(data.msg, {icon: 5});
             }
         }, "json");
+    }
+    function checkIsColor(bgVal) {
+        var type = "";
+        var re = new RegExp(type);
+        if (bgVal.match(re) == null) {
+            type = "^[rR][gG][Bb][\(]([\\s]*(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?)[\\s]*,){2}[\\s]*(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)[\\s]*[\)]{1}$";
+            re = new RegExp(type);
+            if (bgVal.match(re) == null) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
     }
 </script>
 </html>

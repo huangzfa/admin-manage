@@ -125,7 +125,7 @@ public class AppMarketChannelController extends BaseController {
         OperatorCredential credential = getCredential();
         try {
             if (credential == null) {
-                throw new RuntimeException("登录过期，请重新登录");
+                throw new TqException("登录过期，请重新登录");
             }
             //参数验证
             checkParam(promotionChannel);
@@ -145,14 +145,15 @@ public class AppMarketChannelController extends BaseController {
         } catch (Exception e) {
             if (e instanceof TqException) {
                 addFaildMessage(model, e.getMessage());
+                return failJsonResult(e.getMessage());
             } else {
                 log.warn("save" + DESC + "异常", e);
                 addFaildMessage(model, "请查看错误日志");
+                return failJsonResult("保存应用市场渠道异常");
             }
-            return form(promotionChannel, model,redirectAttributes);
         }
         addMessage(redirectAttributes, "保存" + DESC + "成功!");
-        return "redirect:" + this.authzPath + "/" + ADDRESSPRE + "list";
+        return simpleSuccessJsonResult("success");
     }
 
     private void checkParam(PromotionChannel promotionChannel) throws TqException {
@@ -179,14 +180,14 @@ public class AppMarketChannelController extends BaseController {
             try {
                 OperatorCredential credential = getCredential();
                 if (credential == null) {
-                    throw new RuntimeException("登录过期，请重新登录");
+                    throw new TqException("登录过期，请重新登录");
                 }
                 if( id == null){
-                    throw new RuntimeException("参数为空");
+                    throw new TqException("参数为空");
                 }
                 PromotionChannel promotionChannel = promotionChannelService.getById(id);
                 if( promotionChannel == null ){
-                    throw new RuntimeException("渠道不存在");
+                    throw new TqException("渠道不存在");
                 }
                 promotionChannel.setModifyTime(new Date());
                 promotionChannel.setModifyOperatorId(credential.getOpId());
@@ -194,7 +195,7 @@ public class AppMarketChannelController extends BaseController {
                 return simpleSuccessJsonResult("success");
 
             } catch (Exception e) {
-                if (e instanceof RuntimeException) {
+                if (e instanceof TqException) {
                     return failJsonResult(e.getMessage());
                 }else{
                     log.warn("删除渠道异常", e);

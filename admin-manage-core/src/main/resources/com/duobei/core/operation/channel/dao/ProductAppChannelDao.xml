@@ -2,4 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.duobei.core.operation.channel.dao.ProductAppChannelDao" >
 
+    <sql id="Base_Column_List">
+    product_app_channel.id as id, product_app_channel.product_id as product_id,
+    product_app_channel.app_id as app_id, product_app_channel.channel_id as channel_id,
+    product_app_channel.channel_style_id as channel_style_id, product_app_channel.is_enable as is_enable,
+    product_app_channel.add_time as add_time, product_app_channel.modify_time as modify_time,
+    product_app_channel.add_operator_id as add_operator_id, product_app_channel.modify_operator_id as modify_operator_id
+  </sql>
+
+    <select id="getCountMapByGroup" resultType="com.duobei.core.operation.channel.domain.vo.ChannelStyleCountVo">
+        select channel_style_id , count(id) as count_num from yy_product_app_channel  GROUP BY channel_style_id
+    </select>
+
+    <select id="getCountByStyleId" parameterType="Integer" resultType="Integer">
+     select count(id) from yy_product_app_channel where channel_style_id = #{styleId}
+    </select>
+    
+    <select id="getListByChannelIdAndAppId" resultType="com.duobei.core.operation.channel.domain.ProductAppChannel">
+      select <include refid="Base_Column_List"/>
+      from yy_product_app_channel product_app_channel
+      where  app_id = #{appId}
+      and channel_id
+      <foreach collection="data" separator="," item="channel" open="in(" close=")">
+          #{channel.id}
+      </foreach>
+    </select>
 </mapper>

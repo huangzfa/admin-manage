@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.channel.dao.PromotionChannelStyleDao">
+
+  <sql id="Base_Column_List">
+    promotion_channel_style.id as id, promotion_channel_style.style_name as style_name,
+    promotion_channel_style.button_text as button_text, promotion_channel_style.button_background as button_background,
+    promotion_channel_style.button_template as button_template,
+    promotion_channel_style.image_url as image_url, promotion_channel_style.model_type as model_type,
+    promotion_channel_style.download_page_type as download_page_type,
+    promotion_channel_style.download_page_url as download_page_url,
+    promotion_channel_style.add_time as add_time, promotion_channel_style.modify_time as modify_time,
+    promotion_channel_style.add_operator_id as add_operator_id,
+    promotion_channel_style.modify_operator_id as modify_operator_id,
+    promotion_channel_style.is_delete as is_delete
+  </sql>
+  
+  <select id="queryListVo" parameterType="com.duobei.core.operation.channel.domain.criteria.PromotionChannelStyleCriteria" resultType="com.duobei.core.operation.channel.domain.vo.PromotionChannelStyleVo">
+    select <include refid="Base_Column_List"/>
+    from yy_promotion_channel_style promotion_channel_style
+    where promotion_channel_style.is_delete = 0
+    <if test="styleName != null and styleName != ''">
+      and promotion_channel_style.style_name = #{styleName}
+    </if>
+    ORDER BY promotion_channel_style.add_time desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+  <select id="getById" parameterType="Integer" resultType="com.duobei.core.operation.channel.domain.PromotionChannelStyle">
+    select <include refid="Base_Column_List"/>
+    from yy_promotion_channel_style promotion_channel_style
+    where promotion_channel_style.is_delete = 0  and promotion_channel_style.id = #{id} limit 1
+  </select>
+
+  <update id="deleteById" parameterType="com.duobei.core.operation.channel.domain.PromotionChannelStyle">
+    update yy_promotion_channel_style
+    set is_delete = #{id} , modify_time = #{modifyTime}, modify_operator_id = #{modifyOperatorId}
+    where id = #{id} and is_delete = 0
+  </update>
+
+  <insert id="save" parameterType="com.duobei.core.operation.channel.domain.PromotionChannelStyle">
+    insert into yy_promotion_channel_style(style_name, button_text, button_background
+    , button_template, image_url, model_type, download_page_type
+    , download_page_url, add_time, modify_time, add_operator_id, modify_operator_id)
+    values(#{styleName},#{buttonText},#{buttonBackground}
+    ,#{buttonTemplate},#{imageUrl},#{modelType},#{downloadPageType}
+    ,#{downloadPageUrl},#{addTime},#{modifyTime},#{addOperatorId},#{modifyOperatorId})
+  </insert>
+  
+  <update id="update" parameterType="com.duobei.core.operation.channel.domain.PromotionChannelStyle">
+    update yy_promotion_channel_style
+    set  modify_time = #{modifyTime} ,modify_operator_id = #{modifyOperatorId}
+    <if test="styleName != null and styleName != ''">
+      ,style_name = #{styleName}
+    </if>
+    <if test="buttonText != null and buttonText != ''">
+      ,button_text = #{buttonText}
+    </if>
+    <if test="buttonBackground != null and buttonBackground != ''">
+      ,button_background = #{buttonBackground}
+    </if>
+    <if test="buttonTemplate != null ">
+      ,button_template = #{buttonTemplate}
+    </if>
+    <if test="imageUrl != null and imageUrl != ''">
+      ,image_url = #{imageUrl}
+    </if>
+    <if test="modelType != null">
+     ,model_type = #{modelType}
+    </if>
+    <if test="downloadPageType != null ">
+      ,download_page_type = #{downloadPageType}
+    </if>
+    <if test="downloadPageUrl != null and downloadPageUrl != ''">
+      ,download_page_url = #{downloadPageUrl}
+    </if>
+    where id = #{id} and is_delete = 0
+  </update>
+</mapper>

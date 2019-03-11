@@ -46,7 +46,7 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
      */
     @RequiresPermissions("market:banner:view")
     @RequestMapping(value = "/list")
-    public String index(Model model,Integer appId){
+    public String list(Model model,Integer appId){
         model.addAttribute("bannerType", JSON.toJSONString(DictUtil.getDictList(ZD.bannerType)));
         OperatorCredential credential = getCredential();
         model.addAttribute("appLists", JSON.toJSONString(credential.getAppList()));
@@ -133,7 +133,7 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {
-                throw new RuntimeException("登录过期，请重新登录");
+                throw new TqException("登录过期，请重新登录");
             }
             //验证数据权限
             if( entity.getAppId() !=null ){
@@ -168,12 +168,12 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             }
             return simpleSuccessJsonResult("success");
         } catch (Exception e) {
-       /*     if (e instanceof RuntimeException) {
+            if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());
-            }else{*/
+            }else{
                 log.warn("save轮播图异常", e);
                 return failJsonResult("save轮播图异常");
-          //  }
+            }
 
         }
 
@@ -194,15 +194,15 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {
-                throw new RuntimeException("登录过期，请重新登录");
+                throw new TqException("登录过期，请重新登录");
             }
             if( isEnable == null || id == null){
-                throw new RuntimeException("参数为空");
+                throw new TqException("参数为空");
             }
             //查询轮播是否存在
             Banner banner = bannerService.getById(id);
             if( banner == null ){
-                throw new RuntimeException("轮播图不存在");
+                throw new TqException("轮播图不存在");
             }
             Banner banner1 = new Banner();
             banner1.setId(banner.getId());
@@ -213,12 +213,12 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             return simpleSuccessJsonResult("success");
 
         } catch (Exception e) {
-            /*if (e instanceof RuntimeException) {
+            if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());
-            }else{*/
+            }else{
                 log.warn("editState轮播图异常", e);
                 return failJsonResult("editState轮播图异常");
-          /*  }*/
+             }
         }
     }
 
@@ -235,14 +235,14 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {
-                throw new RuntimeException("登录过期，请重新登录");
+                throw new TqException("登录过期，请重新登录");
             }
             if( id == null){
-                throw new RuntimeException("参数为空");
+                throw new TqException("参数为空");
             }
             Banner banner = bannerService.getById(id);
             if( banner == null ){
-                throw new RuntimeException("轮播图不存在");
+                throw new TqException("轮播图不存在");
             }
             Banner banner1 = new Banner();
             banner1.setId(banner.getId());
@@ -253,7 +253,7 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             return simpleSuccessJsonResult("success");
 
         } catch (Exception e) {
-            if (e instanceof RuntimeException) {
+            if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());
             }else{
                 log.warn("delete轮播图异常", e);

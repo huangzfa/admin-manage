@@ -23,12 +23,6 @@
       var pageNum = 1;
       var pager;
       $(function(){
-
-          var typeList ='${channelType}';
-          var channelType = eval("("+typeList+")");
-          for( var i = 0;i<channelType.length;i++){
-              $("#channelType").append("<option value='"+channelType[i].dicVal+"'>"+channelType[i].dicCode+"</option>");
-          }
           pager = $('#tt').datagrid('getPager');
         pager.pagination({
 			onSelectPage:function(number, size){
@@ -52,8 +46,8 @@
           $('#tt').datagrid('loading');
           hjnUtils.ajax({
               type:'post',
-              url:'${ctxA}/channel/promotion/promotionChannelList',
-              data:{'nameAndCompany':$('#nameAndCompany').val(),'channelType':$('#channelType').val(),'page':pageNum,'pagesize':pageSize},
+              url:'${ctxA}/channel/style/promotionChannelStyleList',
+              data:{'styleName':$('#styleName').val(),'page':pageNum,'pagesize':pageSize},
               dataType:'json',
               success:function(data){
                   $('#tt').datagrid('loaded');
@@ -82,15 +76,15 @@
       function optionformater(value,row,index){
         var opStr='';
         <shiro:hasPermission name="channel:promotion:edit">
-        opStr+='<a class="si-option-a" href="${ctxA}/channel/promotion/form?id='+row.id+'">编辑</a>';
+        opStr+='<a class="si-option-a" href="${ctxA}/channel/style/form?id='+row.id+'">编辑</a>';
         opStr+=' <a class="si-option-a"  onclick="del('+row.id+')">删除</a>';
         </shiro:hasPermission>
         return opStr;
       }
       function del(id){
-          top.$.jBox.confirm("确定要删除该渠道吗",'系统提示',function(v,h,f){
+          top.$.jBox.confirm("确定要删除该样式吗",'系统提示',function(v,h,f){
               if(v=='ok'){
-                  jQuery.post("${ctxA}/channel/promotion/delete", {'id':id},
+                  jQuery.post("${ctxA}/channel/style/delete", {'id':id},
                       function(data) {
                           if (data.code ==1) {
                               top.layer.alert("操作完成", {
@@ -112,9 +106,9 @@
 </head>
 <body>
 <ul class="nav nav-tabs" style="margin-bottom:3px;">
-	<li class="active"><a href="javascript:void(0);">推广渠道列表</a></li>
+	<li class="active"><a href="javascript:void(0);">样式列表</a></li>
 	<shiro:hasPermission name="channel:promotion:edit">
-		<li><a href="${ctxA}/channel/promotion/form">新增推广渠道</a></li>
+		<li><a href="${ctxA}/channel/style/form">新增样式</a></li>
 	</shiro:hasPermission>
 </ul>
 
@@ -139,7 +133,7 @@
 		<thead>
 		<tr>
 			<th data-options="field:'styleName',width:138,align:'center',halign:'center',fixed:true">样式名称</th>
-			<th data-options="field:'channelCode',width:138,align:'center',halign:'center',fixed:true">使用渠道</th>
+			<th data-options="field:'channelNum',width:138,align:'center',halign:'center',fixed:true">使用渠道</th>
 			<th data-options="field:'opertion',width:138,align:'center',halign:'center',fixed:true,formatter:optionformater">操作</th>
 		</tr>
 		</thead>

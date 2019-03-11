@@ -128,7 +128,7 @@ public class GoodsController extends BaseController {
     @RequiresPermissions("goods:list:edit")
     @RequestMapping(value = "/save")
     @ResponseBody
-    public String save(HttpServletRequest request, ConsumdebtGoodsVo goodsVo, RedirectAttributes redirectAttributes) throws TqException{
+    public String save(HttpServletRequest request, ConsumdebtGoodsVo goodsVo) throws TqException{
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {
@@ -137,6 +137,66 @@ public class GoodsController extends BaseController {
             goodsVo.setModifyOperatorId(credential.getOpId());
             goodsVo.setModifyTime(new Date());
             consumdebtGoodsService.saveOrUpdate(goodsVo);
+            return simpleSuccessJsonResult("success");
+        }catch (Exception e){
+            if (e instanceof TqException) {
+                return failJsonResult(e.getMessage());
+            }else{
+                log.warn("save商品品异常", e);
+                return failJsonResult("save商品异常");
+            }
+        }
+    }
+
+    @RequiresPermissions("goods:list:edit")
+    @RequestMapping(value = "/editState")
+    @ResponseBody
+    public String save(HttpServletRequest request, String goodsNo,Integer state) throws TqException{
+        try {
+            OperatorCredential credential = getCredential();
+            if (credential == null) {
+                throw new TqException("登录过期，请重新登录");
+            }
+            ConsumdebtGoodsVo goodsVo = consumdebtGoodsService.getByGoodsNo(goodsNo);
+            if( goodsVo == null ){
+                throw new TqException("商品不存在");
+            }
+            ConsumdebtGoodsVo entity = new ConsumdebtGoodsVo();
+            entity.setId(goodsVo.getId());
+            entity.setState(state);
+            entity.setModifyOperatorId(credential.getOpId());
+            entity.setModifyTime(new Date());
+            consumdebtGoodsService.editState(entity);
+            return simpleSuccessJsonResult("success");
+        }catch (Exception e){
+            if (e instanceof TqException) {
+                return failJsonResult(e.getMessage());
+            }else{
+                log.warn("save商品品异常", e);
+                return failJsonResult("save商品异常");
+            }
+        }
+    }
+
+    @RequiresPermissions("goods:list:edit")
+    @RequestMapping(value = "/delete")
+    @ResponseBody
+    public String save(HttpServletRequest request, String goodsNo) throws TqException{
+        try {
+            OperatorCredential credential = getCredential();
+            if (credential == null) {
+                throw new TqException("登录过期，请重新登录");
+            }
+            ConsumdebtGoodsVo goodsVo = consumdebtGoodsService.getByGoodsNo(goodsNo);
+            if( goodsVo == null ){
+                throw new TqException("商品不存在");
+            }
+            ConsumdebtGoodsVo entity = new ConsumdebtGoodsVo();
+            entity.setId(goodsVo.getId());
+            entity.setIsDelete(goodsVo.getId());
+            entity.setModifyOperatorId(credential.getOpId());
+            entity.setModifyTime(new Date());
+            consumdebtGoodsService.delete(entity);
             return simpleSuccessJsonResult("success");
         }catch (Exception e){
             if (e instanceof TqException) {

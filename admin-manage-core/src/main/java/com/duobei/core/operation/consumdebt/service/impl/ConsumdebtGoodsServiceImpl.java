@@ -118,4 +118,26 @@ public class ConsumdebtGoodsServiceImpl implements ConsumdebtGoodsService {
         }
         return gList;
     }
+
+    /**
+     *
+     * @param entity
+     */
+    @Override
+    public void delete(ConsumdebtGoodsVo entity) throws TqException{
+        if( consumdebtGoodsDao.update(entity) < 1){
+            throw new TqException("删除失败");
+        }
+    }
+
+    /**
+     *
+     * @param entity
+     */
+    @Override
+    public void editState(ConsumdebtGoodsVo entity) throws TqException{
+        if( consumdebtGoodsDao.update(entity) < 1){
+            throw new TqException("操作失败");
+        }
+    }
 }

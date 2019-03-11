@@ -79,7 +79,7 @@
             if( row.state == 0) state = 1;
             opStr+="<a class='si-option-a' href='javascript:editState(\""+row.goodsNo+"\",\""+state+"\")'>"+(state==1?"上架":"下架")+"</a>";
             opStr+='<a class="si-option-a" href="${ctxA}/goods/form?goodsNo='+row.goodsNo+'">修改</a>';
-            opStr+='<a class="si-option-a" href="${ctxA}/product/pConfig?productCode='+row.productCode+'">删除</a>';
+            opStr+="<a class='si-option-a' href='javascript:del(\""+row.goodsNo+"\")'>删除</a>";
             </shiro:hasPermission>
             return opStr;
         }
@@ -92,6 +92,28 @@
             top.$.jBox.confirm(title,'系统提示',function(v,h,f){
                 if(v=='ok'){
                     jQuery.post("${ctxA}/goods/editState", {'goodsNo':goodsNo,'state':state},
+                        function(data) {
+                            if (data.code ==1) {
+                                top.layer.alert("操作完成", {
+                                    icon: 6,
+                                    end: function(){
+                                        getData();
+                                    }
+                                });
+                            } else {
+                                top.layer.alert(data.msg, {icon: 5});
+                            }
+                            return;
+                        }, "json");
+                }
+            })
+        }
+
+        function del(goodsNo){
+            var title = "确定删除该商品吗";
+            top.$.jBox.confirm(title,'系统提示',function(v,h,f){
+                if(v=='ok'){
+                    jQuery.post("${ctxA}/goods/delete", {'goodsNo':goodsNo},
                         function(data) {
                             if (data.code ==1) {
                                 top.layer.alert("操作完成", {

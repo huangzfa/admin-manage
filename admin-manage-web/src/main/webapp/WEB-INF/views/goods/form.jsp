@@ -123,7 +123,7 @@
         <div class="control-group">
             <label class="control-label">商品分类：</label>
             <div class="controls">
-                <select  name="classId" id="classId" class="selectpicker show-tick form-control valid" descripe="请选择商品分类" >
+                <select  name="classId" id="classId" class="selectpicker show-tick form-control valid" descripe="请选择商品分类" style="width: 28%">
                     <option value="">请选择</option>
                     <c:forEach items="${classs}" var="item">
                         <option value="${item.id}" ${item.id==goods.classId?"selected":''}>${item.className}</option>

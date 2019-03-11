@@ -43,4 +43,16 @@ public interface ConsumdebtGoodsService {
      * @return
      */
     List<ConsumdebtGoodsVo> getList(Integer productId);
+
+    /**
+     *
+     * @param entity
+     */
+    void delete(ConsumdebtGoodsVo entity) throws TqException;
+
+    /**
+     *
+     * @param entity
+     */
+    void editState(ConsumdebtGoodsVo entity) throws TqException;
 }

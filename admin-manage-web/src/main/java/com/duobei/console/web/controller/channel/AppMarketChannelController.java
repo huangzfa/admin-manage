@@ -1,4 +1,4 @@
-package main.java.com.duobei.console.web.controller.channel;
+package com.duobei.console.web.controller.channel;
 
 import com.alibaba.fastjson.JSON;
 import com.duobei.common.exception.TqException;
@@ -160,13 +160,15 @@ public class AppMarketChannelController extends BaseController {
         if (StringUtil.isEmpty(promotionChannel.getChannelName()) || promotionChannel.getChannelName().length() > 32){
             throw new TqException("投放渠道不能为空，且长度不能超过32位");
         }
-        //渠道公司验证
-        if ( promotionChannel.getCompanyName().length() > 64){
-            throw new TqException("渠道公司长度不能超过64位");
-        }
 
         if (StringUtil.isEmpty(promotionChannel.getChannelCode()) || promotionChannel.getChannelCode().length() > 32){
             throw new TqException("编码不能为空，且长度不能超过32位");
+        }
+        PromotionChannel codeChannel = promotionChannelService.getByCode(promotionChannel.getChannelCode());
+        if (codeChannel != null){
+            if (promotionChannel.getId() == null || !promotionChannel.getId().equals(codeChannel.getId())){
+                throw new TqException("渠道编码已存在");
+            }
         }
     }
 

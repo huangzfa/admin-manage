@@ -50,4 +50,11 @@ public interface PromotionChannelService {
      * @return
      */
     ListVo<PromotionChannel> getAppMarketListByQuery(AppMarketChannelCriteria appMarketChannelCriteria);
+
+    /**
+     * 根据编码获取渠道
+     * @param channelCode
+     * @return
+     */
+    PromotionChannel getByCode(String channelCode);
 }

@@ -21,7 +21,7 @@
     <if test="channelType != null">
       and channel_type = #{channelType}
     </if>
-    <if test="nameAndCompany != null and nameAndCompany! = ''">
+    <if test="nameAndCompany != null and nameAndCompany != ''">
       and (channel_name = #{nameAndCompany} or company_name = #{nameAndCompany})
     </if>
   </select>
@@ -33,7 +33,7 @@
     <if test="channelType != null">
       and promotion_channel.channel_type = #{channelType}
     </if>
-    <if test="nameAndCompany != null and nameAndCompany! = ''">
+    <if test="nameAndCompany != null and nameAndCompany != ''">
       and (promotion_channel.channel_name = #{nameAndCompany} or promotion_channel.company_name = #{nameAndCompany})
     </if>
     ORDER BY promotion_channel.add_time desc
@@ -59,22 +59,22 @@
     update yy_promotion_channel
     set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId}
     <if test="channelName != null and channelName != ''">
-      channel_name = #{channelName}
+      ,channel_name = #{channelName}
     </if>
     <if test="channelCode != null and channelCode != ''">
-      channel_code = #{channelCode}
+      ,channel_code = #{channelCode}
     </if>
     <if test="channelState != null ">
-      channel_state = #{channelState}
+      ,channel_state = #{channelState}
     </if>
     <if test="companyName != null and companyName != ''">
-      company_name = #{companyName}
+      ,company_name = #{companyName}
     </if>
     <if test="channelType != null ">
-      channel_type = #{channelType}
+      ,channel_type = #{channelType}
     </if>
     <if test="approveStatus != null ">
-      approve_status = #{approveStatus}
+      ,approve_status = #{approveStatus}
     </if>
     where is_delete = 0 and id = #{id}
   </update>
@@ -112,4 +112,10 @@
       LIMIT #{offset}, #{pagesize}
     </if>
   </select>
+
+    <select id="getByCode" parameterType="String" resultType="com.duobei.core.operation.channel.domain.PromotionChannel">
+        select <include refid="Base_Column_List"/>
+        from yy_promotion_channel promotion_channel
+        where promotion_channel.is_delete = 0 and promotion_channel.channel_name = #{channelCode}
+    </select>
 </mapper>

@@ -17,10 +17,10 @@
 <ul class="nav nav-tabs">
     <li><a href="${ctxA}/channel/promotion/list?id=${object.id}">推广渠道列表</a></li>
     <li class="active">
-        <shiro:hasPermission name="cp:cm:edit">
+        <shiro:hasPermission name="channel:promotion:edit">
             <a href="javascript:void(0);">${not empty object.id?'修改':'添加'}推广渠道</a>
         </shiro:hasPermission>
-        <shiro:lacksPermission name="cp:cm:edit">
+        <shiro:lacksPermission name="channel:promotion:edit">
             <a href="javascript:void(0);">查看推广渠道</a>
         </shiro:lacksPermission>
     </li>
@@ -56,7 +56,6 @@
                         <option value="${channelType.dicVal}" ${not empty promotionChannel && promotionChannel.channelType==channelType.dicVal?"selected":''}>${channelType.dicCode}</option>
                     </c:forEach>
                 </select>
-                <span class="help-inline"><font color="red">*</font></span>
             </div>
         </div>
 
@@ -68,7 +67,6 @@
                         <option value="${channelStatus.dicVal}" ${not empty promotionChannel && promotionChannel.channelState==channelStatus.dicVal?"selected":''}>${channelStatus.dicCode}</option>
                     </c:forEach>
                 </select>
-                <span class="help-inline"><font color="red">*</font></span>
             </div>
         </div>
 
@@ -80,15 +78,12 @@
                         <option value="${approveStatus.dicVal}" ${not empty promotionChannel && promotionChannel.approveStatus==approveStatus.dicVal?"selected":''}>${approveStatus.dicCode}</option>
                     </c:forEach>
                 </select>
-
-                <form:input path="shortUrl" htmlEscape="false" maxlength="200" class="input-xlarge"/>
-                <span class="help-inline"><font color="red">*</font></span>
             </div>
         </div>
 
 
         <div class="form-actions">
-            <input id="btnCancel" class="btn" type="button" value="取 消" onclick="window.location.href='${ctxA}/cp/cm/list?id=${object.id}'"/>
+            <input id="btnCancel" class="btn" type="button" value="取 消" onclick="window.location.href='${ctxA}/channel/promotion/list?id=${object.id}'"/>
             <shiro:hasPermission name="channel:promotion:edit">
                 <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="提 交"/>&nbsp;
             </shiro:hasPermission>
@@ -121,6 +116,7 @@
         var action = form[0].action;
         var data = form.serialize();
         jQuery.post(action,data, function(data) {
+            debugger;
             $("#btnSubmit").attr("disabled",false);
             if (data.code ==1) {
                 top.layer.alert("操作成功", {

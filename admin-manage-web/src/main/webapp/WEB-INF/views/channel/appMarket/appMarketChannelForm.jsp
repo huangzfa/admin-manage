@@ -15,7 +15,7 @@
 
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/channel/promotion/list?id=${object.id}">推广渠道列表</a></li>
+    <li><a href="${ctxA}/channel/appMarket/list?id=${object.id}">应用市场推广渠道列表</a></li>
     <li class="active">
         <shiro:hasPermission name="channel:appMarket:edit">
             <a href="javascript:void(0);">${not empty object.id?'修改':'添加'}推广渠道</a>
@@ -28,38 +28,20 @@
 <div class="si-warp">
     <br/>
     <sys:message content="${message}"/>
-    <form:form id="inputForm" modelAttribute="promotionChannel" action="${ctxA}/channel/promotion/save" method="post" class="form-horizontal">
+    <form:form id="inputForm" modelAttribute="appMarketChannel" action="${ctxA}/channel/appMarket/save" method="post" class="form-horizontal">
         <input type="hidden" name="id" id="id" value="${not empty promotionChannel.id?promotionChannel.id:''}">
         <div class="control-group">
-            <label class="control-label">投放渠道：</label>
+            <label class="control-label">渠道名称：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请输入投放渠道" placeholder="渠道来源，必填（限定32字）" type="text" name="channelName" id="channelName" maxlength="32" value="${promotionChannel.channelName}"></input>
+                <input type="text" class="form-control valid" descripe="请输入投放渠道" placeholder="渠道来源，必填（限定32字）" type="text" name="channelName" id="channelName" maxlength="32" value="${promotionChannel.channelName}"/>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">渠道公司：</label>
+            <label class="control-label">渠道编码：</label>
             <div class="controls">
-                <input type="text" class="form-control" placeholder="渠道公司（限定64字）" type="text" name="companyName" id="companyName" maxlength="64" value="${promotionChannel.companyName}"></input>
+                <input type="text" class="form-control valid" descripe="请输入编码" placeholder="编码，必填（限定32字）" type="text" name="channelCode" id="channelCode" maxlength="32" value="${promotionChannel.channelCode}" />
             </div>
         </div>
-        <div class="control-group">
-            <label class="control-label">编码：</label>
-            <div class="controls">
-                <input type="text" class="form-control valid" descripe="请输入编码" placeholder="编码，必填（限定32字）" type="text" name="channelCode" id="channelCode" maxlength="32" value="${promotionChannel.channelCode}"></input>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">渠道类型：</label>
-            <div class="controls">
-                <select  name="channelType" id="channelType" class="selectpicker show-tick form-control valid" style="width: 15%;">
-                    <c:forEach items="${channelTypeList}" var="channelType">
-                        <option value="${channelType.dicVal}" ${not empty promotionChannel && promotionChannel.channelType==channelType.dicVal?"selected":''}>${channelType.dicCode}</option>
-                    </c:forEach>
-                </select>
-                <span class="help-inline"><font color="red">*</font></span>
-            </div>
-        </div>
-
         <div class="control-group">
             <label class="control-label">状态：</label>
             <div class="controls">
@@ -68,7 +50,6 @@
                         <option value="${channelStatus.dicVal}" ${not empty promotionChannel && promotionChannel.channelState==channelStatus.dicVal?"selected":''}>${channelStatus.dicCode}</option>
                     </c:forEach>
                 </select>
-                <span class="help-inline"><font color="red">*</font></span>
             </div>
         </div>
 
@@ -80,16 +61,13 @@
                         <option value="${approveStatus.dicVal}" ${not empty promotionChannel && promotionChannel.approveStatus==approveStatus.dicVal?"selected":''}>${approveStatus.dicCode}</option>
                     </c:forEach>
                 </select>
-
-                <form:input path="shortUrl" htmlEscape="false" maxlength="200" class="input-xlarge"/>
-                <span class="help-inline"><font color="red">*</font></span>
             </div>
         </div>
 
 
         <div class="form-actions">
-            <input id="btnCancel" class="btn" type="button" value="取 消" onclick="window.location.href='${ctxA}/cp/cm/list?id=${object.id}'"/>
-            <shiro:hasPermission name="channel:promotion:edit">
+            <input id="btnCancel" class="btn" type="button" value="取 消" onclick="window.location.href='${ctxA}/channel/appMarket/list?id=${object.id}'"/>
+            <shiro:hasPermission name="channel:appMarket:edit">
                 <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="提 交"/>&nbsp;
             </shiro:hasPermission>
         </div>
@@ -126,7 +104,7 @@
                 top.layer.alert("操作成功", {
                     icon: 6,
                     end: function(){
-                        window.location.href="${ctxA}/channel/promotion/list";
+                        window.location.href="${ctxA}/channel/appMarket/list";
                     }
                 });
             } else {

@@ -79,27 +79,6 @@
           });
       }
 
-      function channelTypeformater(value,row,index){
-        if(value=='0'){
-          return "渠道";
-        }else if(value=='1'){
-          return "应用市场";
-        }else if(value=='2'){
-          return "短信";
-        }else if(value=='3'){
-          return "其他";
-        }
-        return '未知';
-      }
-      function approveStatusformater(value,row,index){
-          if(value=='0'){
-              return "渠道审核中";
-          }else if(value=='1'){
-              return "审核完成";
-          }
-          return '未知';
-      }
-
       function optionformater(value,row,index){
         var opStr='';
         <shiro:hasPermission name="channel:promotion:edit">
@@ -142,15 +121,9 @@
 <div class="breadcrumb form-search" style="margin-bottom:0;">
 	<ul class="ul-form">
 		<li>
-			<label>渠道名称/渠道公司：</label>
-			<input id="nameAndCompany" class="input-large" type="text"  value=""
+			<label>样式名称：</label>
+			<input id="styleName" class="input-large" type="text"  value=""
 				   maxlength="20"/>
-		</li>
-		<li>
-			<label>渠道类型：</label>
-			<select id="channelType" name="channelType" class="selectpicker show-tick form-control">
-				<option value="">全部</option>
-			</select>
 		</li>
 		<li class="btns">
 			<input id="search" class="btn btn-primary" type="submit" value="查询"/>
@@ -165,13 +138,8 @@
 		   data-options="idField:'promotionChannelId',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
 		<thead>
 		<tr>
-			<th data-options="field:'id',width:138,align:'center',halign:'center',fixed:true">编号</th>
-			<th data-options="field:'channelName',width:138,align:'center',halign:'center',fixed:true">投放渠道</th>
-			<th data-options="field:'channelCode',width:138,align:'center',halign:'center',fixed:true">渠道编码</th>
-			<th data-options="field:'channelType',width:138,align:'center',halign:'center',fixed:true,formatter:channelTypeformater">渠道类型</th>
-			<th data-options="field:'companyName',width:138,align:'center',halign:'center',fixed:true">渠道公司</th>
-			<th data-options="field:'approveStatus',width:138,align:'center',halign:'center',fixed:true,formatter:approveStatusformater">审核状态</th>
-			<th data-options="field:'addTime',width:138,align:'center',halign:'center',fixed:true">创建时间</th>
+			<th data-options="field:'styleName',width:138,align:'center',halign:'center',fixed:true">样式名称</th>
+			<th data-options="field:'channelCode',width:138,align:'center',halign:'center',fixed:true">使用渠道</th>
 			<th data-options="field:'opertion',width:138,align:'center',halign:'center',fixed:true,formatter:optionformater">操作</th>
 		</tr>
 		</thead>

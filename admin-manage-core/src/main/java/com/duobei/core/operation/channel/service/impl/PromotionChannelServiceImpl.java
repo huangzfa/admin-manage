@@ -46,7 +46,7 @@ public class PromotionChannelServiceImpl implements PromotionChannelService {
 
         if (total > 0){
             //查询
-            List<PromotionChannel> data = promotionChannelDao.getPromotionListByQuery();
+            List<PromotionChannel> data = promotionChannelDao.getPromotionListByQuery(promotionChannelCriteria);
             return new ListVo<PromotionChannel>(total,data);
         }else{
             return new ListVo<PromotionChannel>(total,null);
@@ -90,5 +90,10 @@ public class PromotionChannelServiceImpl implements PromotionChannelService {
         }else{
             return new ListVo<PromotionChannel>(total,null);
         }
+    }
+
+    @Override
+    public PromotionChannel getByCode(String channelCode) {
+        return promotionChannelDao.getByCode(channelCode);
     }
 }

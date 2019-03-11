@@ -16,7 +16,7 @@ public interface PromotionChannelDao {
 
     int countPromotionByQuery(PromotionChannelCriteria promotionChannelCriteria);
 
-    List<PromotionChannel> getPromotionListByQuery();
+    List<PromotionChannel> getPromotionListByQuery(PromotionChannelCriteria appMarketChannelCriteria);
 
     int save(PromotionChannel promotionChannel);
 
@@ -27,4 +27,6 @@ public interface PromotionChannelDao {
     int countAppMarketByQuery(AppMarketChannelCriteria appMarketChannelCriteria);
 
     List<PromotionChannel> getAppMarketListByQuery(AppMarketChannelCriteria appMarketChannelCriteria);
+
+    PromotionChannel getByCode(String channelCode);
 }

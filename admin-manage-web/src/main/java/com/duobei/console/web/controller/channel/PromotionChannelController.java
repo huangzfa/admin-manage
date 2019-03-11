@@ -70,6 +70,7 @@ public class PromotionChannelController extends BaseController {
         if (promotionChannelCriteria.getPagesize() == 0) {
             promotionChannelCriteria.setPagesize(GlobalConfig.getPageSize());
         }
+
         try {
            ListVo<PromotionChannel> list = promotionChannelService.getPromotionListByQuery(promotionChannelCriteria);
 
@@ -158,7 +159,7 @@ public class PromotionChannelController extends BaseController {
             return form(promotionChannel, model,redirectAttributes);
         }
         addMessage(redirectAttributes, "保存" + DESC + "成功!");
-        return "redirect:" + this.authzPath + "/" + ADDRESSPRE + "list";
+        return simpleSuccessJsonResult("success");
     }
 
     private void checkParam(PromotionChannel promotionChannel) throws TqException {
@@ -173,6 +174,12 @@ public class PromotionChannelController extends BaseController {
 
         if (StringUtil.isEmpty(promotionChannel.getChannelCode()) || promotionChannel.getChannelCode().length() > 32){
             throw new TqException("编码不能为空，且长度不能超过32位");
+        }
+        PromotionChannel codeChannel = promotionChannelService.getByCode(promotionChannel.getChannelCode());
+        if (codeChannel != null){
+            if (promotionChannel.getId() == null || !promotionChannel.getId().equals(codeChannel.getId())){
+                throw new TqException("渠道编码已存在");
+            }
         }
     }
 

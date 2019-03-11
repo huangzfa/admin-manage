@@ -23,7 +23,7 @@
       and banner.banner_type = #{bannerType}
     </if>
     <if test="isEnable != null">
-      and banner.is_enable = #{bannerTitle}
+      and banner.is_enable = #{isEnable}
     </if>
     ORDER BY banner.sort asc
     <if test="pagesize != 0">

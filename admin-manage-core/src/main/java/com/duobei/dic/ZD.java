@@ -439,12 +439,12 @@ public interface ZD {
     public int channelApproveType_ing = 0;
 	
 	/**
-	 *  禁用-启用- 
+	 *  渠道状态-启用- 
 	 */
     public int channelStatus_yes  = 1;
 	
 	/**
-	 *  禁用-禁用- 
+	 *  渠道状态-禁用- 
 	 */
     public int channelStatus_no = 0;
 	

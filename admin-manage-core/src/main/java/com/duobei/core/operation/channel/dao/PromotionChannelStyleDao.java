@@ -22,4 +22,6 @@ public interface PromotionChannelStyleDao {
     int save(PromotionChannelStyle promotionChannelStyle);
 
     int update(PromotionChannelStyle promotionChannelStyle);
+
+    List<PromotionChannelStyle> getAllList();
 }

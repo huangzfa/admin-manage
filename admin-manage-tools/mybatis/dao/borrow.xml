@@ -20,19 +20,24 @@
 
 		<!-- 2：数据库连接信息 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-						connectionURL="jdbc:mysql://47.96.0.60:3306/duobei?useUnicode=true&amp;characterEncoding=utf-8"
+						connectionURL="jdbc:mysql://47.96.0.60:3306/pgy_platform_transaction?useUnicode=true&amp;characterEncoding=utf-8"
 						userId="root"
 						password="Mi&amp;rong369" />
 
-		<javaModelGenerator targetProject="duobei-console-core/src/main/java" targetPackage="com.duobei.core.borrow.domain" />
-		<sqlMapGenerator targetProject="duobei-console-core/src/main/resources" targetPackage="com.duobei.core.borrow.dao.mapper" />
-		<javaClientGenerator targetProject="duobei-console-core/src/main/java" targetPackage="com.duobei.core.borrow.dao.mapper" type="XMLMAPPER" />
+		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.transaction.borrow.domain" />
+		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.transaction.borrow.dao.mapper" />
+		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.transaction.borrow.dao.mapper" type="XMLMAPPER" />
 
 		<!-- 借款 -->
-		<table tableName="pgy_stage_borrow" domainObjectName="StageBorrow" alias="sb">
+		<table tableName="tt_borrow_cash" domainObjectName="BorrowCash" alias="borrow_cash">
 			<property name="useActualColumnNames" value="false" />
-			<generatedKey column="sb_id" sqlStatement="MySql" identity="true" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>
+<!--		<table tableName="tt_consumdebt_order" domainObjectName="ConsumdebtOrder" alias="consumdebt_order">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>-->
+
 		<!--<table tableName="pgy_stage_borrow_bill" domainObjectName="StageBorrowBill" alias="sbb">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="sbb_id" sqlStatement="MySql" identity="true" />

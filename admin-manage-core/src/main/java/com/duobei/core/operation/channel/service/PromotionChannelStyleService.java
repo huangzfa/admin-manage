@@ -5,6 +5,7 @@ import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.channel.domain.PromotionChannelStyle;
 import com.duobei.core.operation.channel.domain.criteria.PromotionChannelStyleCriteria;
 import com.duobei.core.operation.channel.domain.vo.PromotionChannelStyleVo;
+import java.util.List;
 
 /**
  * @author litianxiong
@@ -39,4 +40,10 @@ public interface PromotionChannelStyleService {
     void addStyle(PromotionChannelStyle promotionChannelStyle) throws TqException;
 
     void updateStyle(PromotionChannelStyle promotionChannelStyle) throws TqException;
+
+    /**
+     * 获取所有在用样式
+     * @return
+     */
+    List<PromotionChannelStyle> getAllList();
 }

@@ -104,7 +104,7 @@ public class AppPageConfigController extends  BaseController{
 			if (e instanceof TqException) {
 				return failJsonResult(e.getMessage());
 			} else {
-				log.warn("查询"+DESC+"列表异常", e);
+				log.error("查询"+DESC+"列表异常", e);
 				return failJsonResult("查询"+DESC+"列表异常，请查看错误日志");
 			}
 		}
@@ -135,7 +135,7 @@ public class AppPageConfigController extends  BaseController{
 			if (e instanceof TqException) {
 				addFaildMessage(redirectAttributes, e.getMessage());
 			} else {
-				log.warn("查询"+DESC+"异常", e);
+				log.error("查询"+DESC+"异常", e);
 				addFaildMessage(redirectAttributes, "查询"+DESC+"异常，请查看错误日志");
 			}
 			return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list?appId="+appPageConfig.getAppId();
@@ -191,7 +191,7 @@ public class AppPageConfigController extends  BaseController{
 			if (e instanceof TqException) {
 				addFaildMessage(model, e.getMessage());
 			} else {
-				log.warn("save"+DESC+"异常", e);
+				log.error("save"+DESC+"异常", e);
 				addFaildMessage(model, "请查看错误日志");
 			}
 			return form(appPageConfig, model,redirectAttributes);
@@ -235,7 +235,7 @@ public class AppPageConfigController extends  BaseController{
 			if (e instanceof TqException) {
 				addFaildMessage(redirectAttributes, e.getMessage());
 			} else {
-				log.warn("update isEnable"+DESC+"异常", e);
+				log.error("update isEnable"+DESC+"异常", e);
 				addFaildMessage(redirectAttributes, "启用/禁用"+DESC+"异常，请查看错误日志");
 			}
 			return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list?appId="+appId;
@@ -264,7 +264,7 @@ public class AppPageConfigController extends  BaseController{
 			if (e instanceof TqException) {
 				addFaildMessage(redirectAttributes, e.getMessage());
 			} else {
-				log.warn("delete"+DESC+"异常", e);
+				log.error("delete"+DESC+"异常", e);
 				addFaildMessage(redirectAttributes, "删除"+DESC+"异常，请查看错误日志");
 			}
 			return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list";

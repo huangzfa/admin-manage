@@ -4,14 +4,59 @@ package com.duobei.dic;
 public interface ZD {
 	
 	/**
+	 *  链接类型
+	 */
+    public String redirectType = "redirectType";
+	
+	/**
 	 *  商品图片类型
 	 */
     public String goodsPicType = "1";
 	
 	/**
-	 *  链接类型
+	 *  菜单类型
 	 */
-    public String redirectType = "redirectType";
+    public String menuType = "menuType";
+	
+	/**
+	 *  菜单打开方式
+	 */
+    public String menuOpenType = "menuOpenType";
+	
+	/**
+	 *  系统类型
+	 */
+    public String systemType = "systemType";
+	
+	/**
+	 *  状态
+	 */
+    public String state = "state";
+	
+	/**
+	 *  性别
+	 */
+    public String gender = "gender";
+	
+	/**
+	 *  数据状态
+	 */
+    public String dataState = "dataState";
+	
+	/**
+	 *  用户状态
+	 */
+    public String profileState = "profileState";
+	
+	/**
+	 *  终端系统类型
+	 */
+    public String osType = "osType";
+	
+	/**
+	 *  通知业务类型
+	 */
+    public String notifyBizType = "notifyBizType";
 	
 	/**
 	 *  菜单类型
@@ -29,24 +74,24 @@ public interface ZD {
     public String authType = "authType";
 	
 	/**
-	 *  APP是否强制升级
-	 */
-    public String appUpgradeIsForce = "appUpgradeIsForce";
-	
-	/**
 	 *  渠道类型
 	 */
     public String channelType = "channelType";
 	
 	/**
-	 *  渠道模块
+	 *  银行状态
 	 */
-    public String channelModelType = "channelModelType";
+    public String bankState = "bankState";
 	
 	/**
-	 *  下载页类型
+	 *  银行维护状态
 	 */
-    public String downloadPageType = "downloadPageType";
+    public String bankMintainState = "bankMaintainState";
+	
+	/**
+	 *  app升级状态
+	 */
+    public String appUpgradeState = "appUpgradeState";
 	
 	/**
 	 *  APP升级范围
@@ -54,9 +99,9 @@ public interface ZD {
     public String upgradeRangeState = "upgradeRangeState";
 	
 	/**
-	 *  银行状态
+	 *  APP是否强制升级
 	 */
-    public String bankState = "bankState";
+    public String appUpgradeIsForce = "appUpgradeIsForce";
 	
 	/**
 	 *  渠道样式模板
@@ -74,19 +119,9 @@ public interface ZD {
     public String loginType = "loginType";
 	
 	/**
-	 *  app升级状态
-	 */
-    public String appUpgradeState = "appUpgradeState";
-	
-	/**
 	 *  轮播图类型
 	 */
     public String bannerType = "bannerType";
-	
-	/**
-	 *  银行维护状态
-	 */
-    public String bankMintainState = "bankMaintainState";
 	
 	/**
 	 *  推广渠道审核状态
@@ -99,59 +134,29 @@ public interface ZD {
     public String channelStatus = "channelStatus";
 	
 	/**
-	 *  终端系统类型
+	 *  下载页类型
 	 */
-    public String osType = "osType";
+    public String downloadPageType = "downloadPageType";
 	
 	/**
-	 *  数据状态
+	 *  渠道模块
 	 */
-    public String dataState = "dataState";
+    public String channelModelType = "channelModelType";
 	
 	/**
-	 *  性别
+	 *  启用/禁用
 	 */
-    public String gender = "gender";
-	
-	/**
-	 *  状态
-	 */
-    public String state = "state";
-	
-	/**
-	 *  通知业务类型
-	 */
-    public String notifyBizType = "notifyBizType";
-	
-	/**
-	 *  系统类型
-	 */
-    public String systemType = "systemType";
-	
-	/**
-	 *  用户状态
-	 */
-    public String profileState = "profileState";
-	
-	/**
-	 *  菜单打开方式
-	 */
-    public String menuOpenType = "menuOpenType";
-	
-	/**
-	 *  菜单类型
-	 */
-    public String menuType = "menuType";
-	
-	/**
-	 *  菜单类型-权限项- 
-	 */
-    public String menuType_mo = "mo";
+    public String isEnable = "isEnable";
 	
 	/**
 	 *  菜单类型-菜单- 
 	 */
     public String menuType_m = "m";
+	
+	/**
+	 *  菜单类型-权限项- 
+	 */
+    public String menuType_mo = "mo";
 	
 	/**
 	 *  菜单打开方式-默认- 
@@ -487,4 +492,14 @@ public interface ZD {
 	 *  渠道模块-贷超渠道- 
 	 */
     public int channelModelType_dc = 2;
+	
+	/**
+	 *  启用/禁用-启用- 
+	 */
+    public int isEnable_yes = 1;
+	
+	/**
+	 *  启用/禁用-禁用- 
+	 */
+    public int isEnable_no = 0;
 }

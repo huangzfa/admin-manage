@@ -98,4 +98,9 @@ public class PromotionChannelStyleServiceImpl implements PromotionChannelStyleSe
             throw new TqException("修改样式失败");
         }
     }
+
+    @Override
+    public List<PromotionChannelStyle> getAllList() {
+        return promotionChannelStyleDao.getAllList();
+    }
 }

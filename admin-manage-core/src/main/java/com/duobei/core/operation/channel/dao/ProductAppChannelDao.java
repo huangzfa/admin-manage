@@ -25,4 +25,10 @@ public interface ProductAppChannelDao{
 
     @MapKey("channelId")
     Map<Integer,ProductAppChannel> getListByChannelIdAndAppId(@Param("data") List<ProductAppChannelListVo> data,@Param("appId") Integer appId);
+
+    ProductAppChannel getByChannelAndAppId(@Param("channelId") Integer channelId, @Param("appId") Integer appId);
+
+    int save(ProductAppChannel productAppChannel);
+
+    int update(ProductAppChannel productAppChannel);
 }

@@ -1,14 +1,25 @@
 package com.duobei.console.web.controller.channel;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.sys.domain.Dict;
+import com.duobei.core.manage.sys.utils.DictUtil;
+import com.duobei.core.operation.app.domain.App;
+import com.duobei.core.operation.app.service.AppService;
 import com.duobei.core.operation.channel.domain.ProductAppChannel;
+import com.duobei.core.operation.channel.domain.PromotionChannelStyle;
 import com.duobei.core.operation.channel.domain.criteria.ProductAppChannelCriteria;
 import com.duobei.core.operation.channel.domain.vo.ProductAppChannelListVo;
 import com.duobei.core.operation.channel.service.ProductAppChannelService;
+import com.duobei.core.operation.channel.service.PromotionChannelStyleService;
+
+import java.util.*;
+
+import com.duobei.dic.ZD;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +42,12 @@ public class ProductAppChannelController extends BaseController {
 
     @Resource
     ProductAppChannelService productAppChannelService;
+
+    @Resource
+    PromotionChannelStyleService promotionChannelStyleService;
+
+    @Resource
+    AppService appService;
 
     private final static Logger log = LoggerFactory.getLogger(
             ProductAppChannelController.class);
@@ -89,5 +106,67 @@ public class ProductAppChannelController extends BaseController {
         }
     }
 
+    @RequiresPermissions(PERMISSIONPRE+"view")
+    @ResponseBody
+    @RequestMapping(value = "/form")
+    public String getInfo(Integer channelId, Integer appId) {
+        //查询样式列表
+        List<PromotionChannelStyle> styleList = promotionChannelStyleService.getAllList();
+        //查询是否存在配置
+        ProductAppChannel config = productAppChannelService.getByChannelAndAppId(channelId,appId);
+        if (config == null){
+            config = new ProductAppChannel();
+            //给默认值，启用
+            config.setIsEnable(ZD.isEnable_yes);
+        }
+        // 启用/禁用
+        List<Dict> isEnableList = DictUtil.getDictList(ZD.isEnable);
+        Map<String,Object> dataMap = new HashMap();
+        dataMap.put("styleList",styleList);
+        dataMap.put("config",config);
+        dataMap.put("isEnableList",isEnableList);
 
+        return successJsonResult(dataMap);
+    }
+
+    @RequiresPermissions(PERMISSIONPRE+"edit")
+    @ResponseBody
+    @RequestMapping(value = "/save")
+    public String save(ProductAppChannel productAppChannel) {
+        OperatorCredential credential = getCredential();
+        try {
+            checkParam(productAppChannel);
+            //修改时间、修改人
+            productAppChannel.setModifyOperatorId(credential.getOpId());
+            productAppChannel.setModifyTime(new Date());
+            if (productAppChannel.getId() == null){
+                //新增
+                //查询产品id
+                App app = appService.getAppById(productAppChannel.getAppId());
+                productAppChannel.setProductId(app.getProductId());
+                productAppChannel.setAddTime(productAppChannel.getModifyTime());
+                productAppChannel.setAddOperatorId(credential.getOpId());
+                productAppChannelService.save(productAppChannel);
+            }else{
+                //修改
+                productAppChannelService.update(productAppChannel);
+            }
+
+        }catch (Exception e){
+            if (e instanceof TqException){
+                return failJsonResult(e.getMessage());
+            }else{
+                log.error(e.getMessage());
+                return failJsonResult("系统异常");
+            }
+        }
+
+        return simpleSuccessJsonResult();
+    }
+
+    private void checkParam(ProductAppChannel productAppChannel) throws TqException {
+        if (productAppChannel.getChannelStyleId() == null){
+            throw new TqException("请选择样式");
+        }
+    }
 }

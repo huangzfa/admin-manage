@@ -81,7 +81,7 @@ public class PromotionChannelController extends BaseController {
             if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());
             } else {
-                log.warn("查询" + DESC + "列表异常", e);
+                log.error("查询" + DESC + "列表异常", e);
                 return failJsonResult("查询" + DESC + "列表异常，请查看错误日志");
             }
         }
@@ -116,8 +116,7 @@ public class PromotionChannelController extends BaseController {
             if (e instanceof TqException) {
                 addFaildMessage(redirectAttributes, e.getMessage());
             } else {
-                log.warn("查询" + DESC + "异常", e);
-                addFaildMessage(redirectAttributes, "查询" + DESC + "异常，请查看错误日志");
+                log.error("查询" + DESC + "异常", e);
             }
             return "redirect:" + this.authzPath + "/" + ADDRESSPRE + "list";
         }
@@ -128,8 +127,7 @@ public class PromotionChannelController extends BaseController {
     @RequiresPermissions({PERMISSIONPRE + "edit"})
     @RequestMapping(value = "/save")
     @ResponseBody
-    public String save(PromotionChannel promotionChannel, Model model,
-                       RedirectAttributes redirectAttributes) {
+    public String save(PromotionChannel promotionChannel) {
         OperatorCredential credential = getCredential();
         try {
             if (credential == null) {
@@ -151,16 +149,13 @@ public class PromotionChannelController extends BaseController {
             }
         } catch (Exception e) {
             if (e instanceof TqException) {
-                addFaildMessage(model, e.getMessage());
                 return failJsonResult(e.getMessage());
             } else {
-                log.warn("save" + DESC + "异常", e);
-                addFaildMessage(model, "请查看错误日志");
+                log.error("save" + DESC + "异常", e);
                 return failJsonResult("系统异常");
             }
 
         }
-        addMessage(redirectAttributes, "保存" + DESC + "成功!");
         return simpleSuccessJsonResult("success");
     }
 
@@ -210,7 +205,7 @@ public class PromotionChannelController extends BaseController {
                 if (e instanceof TqException) {
                     return failJsonResult(e.getMessage());
                 }else{
-                    log.warn("delete渠道异常", e);
+                    log.error("delete渠道异常", e);
                     return failJsonResult("delete渠道异常");
                 }
             }

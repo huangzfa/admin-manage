@@ -116,13 +116,13 @@
     <select id="getByCode" parameterType="String" resultType="com.duobei.core.operation.channel.domain.PromotionChannel">
         select <include refid="Base_Column_List"/>
         from yy_promotion_channel promotion_channel
-        where promotion_channel.is_delete = 0 and promotion_channel.channel_name = #{channelCode}
+        where promotion_channel.is_delete = 0 and promotion_channel.channel_code = #{channelCode}
     </select>
 
   <select id="getChannelByProductAppChannelQuery"  parameterType="com.duobei.core.operation.channel.domain.criteria.ProductAppChannelCriteria" resultType="com.duobei.core.operation.channel.domain.vo.ProductAppChannelListVo">
     select <include refid="Base_Column_List"/>
     from yy_promotion_channel promotion_channel
-    where is_delete = 0
+    where is_delete = 0 and channel_type = 0
     <if test="channelName != null and channelName != ''">
       and promotion_channel.channel_name = #{channelName}
     </if>

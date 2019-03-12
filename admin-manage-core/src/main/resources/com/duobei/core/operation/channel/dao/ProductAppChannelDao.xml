@@ -27,4 +27,31 @@
           #{channel.id}
       </foreach>
     </select>
+
+    <select id="getByChannelAndAppId" resultType="com.duobei.core.operation.channel.domain.ProductAppChannel">
+        select <include refid="Base_Column_List"/>
+        from yy_product_app_channel product_app_channel
+        where  app_id = #{appId}
+        and channel_id = #{channelId}
+        limit 1
+    </select>
+
+    <insert id="save" parameterType="com.duobei.core.operation.channel.domain.ProductAppChannel">
+        insert into yy_product_app_channel(product_id, app_id, channel_id, channel_style_id
+        , is_enable, add_time, modify_time, add_operator_id, modify_operator_id)
+        values(#{productId},#{appId},#{channelId},#{channelStyleId}
+        ,#{isEnable},#{addTime},#{modifyTime},#{addOperatorId},#{modifyOperatorId})
+    </insert>
+
+    <update id="update" parameterType="com.duobei.core.operation.channel.domain.ProductAppChannel">
+      update yy_product_app_channel
+      set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId}
+      <if test="channelStyleId != null">
+          ,channel_style_id = #{channelStyleId}
+      </if>
+        <if test="isEnable != null">
+            ,is_enable = #{isEnable}
+        </if>
+        where id = #{id}
+    </update>
 </mapper>

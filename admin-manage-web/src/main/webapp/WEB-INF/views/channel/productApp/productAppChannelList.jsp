@@ -53,6 +53,13 @@
                 getData();
             });
 
+            $('#myModal').on('shown.bs.modal', function () {
+/*
+                var repaymentTbody = $("#repaymentTbody")
+                repaymentTbody.html("");*/
+
+            })
+
         });
         function getData(){
             $('#tt').datagrid('loading');
@@ -87,9 +94,64 @@
         function optionformater(value,row,index){
             var opStr='';
             <shiro:hasPermission name="channel:productApp:edit">
-            opStr+='<a class="si-option-a" href="${ctxA}/channel/productApp/form?id='+row.id+'">编辑</a>';
+            opStr+='<a class="si-option-a" href="#"  data-toggle="modal" data-target="#myModal" onclick="setChannelId('+row.id+')">编辑</a>';
             </shiro:hasPermission>
             return opStr;
+        }
+        function setChannelId(channelId){
+            $("#channelStyleId").html("")
+            $("#isEnable").html("")
+            $("#channelId").val(channelId);
+            jQuery.post('${ctxA}/channel/productApp/form',{'channelId':$("#channelId").val(),"appId":$("#appId").val()},
+                function(data) {
+                    if (data.code ==1) {
+                        var flag = true
+                        if(data.config.id != null){
+                            flag = false;
+                            $("#productAppId").val(data.config.id);
+                        }
+                        if (flag){
+                            $("#productAppId").val("");
+                            $("#channelStyleId").append("<option value=''>请选择</option>");
+
+                        }
+                        for (var i = 0;i < data.styleList.length; i++){
+                            $("#channelStyleId").append("<option value='"+data.styleList[i].id+"'>"+data.styleList[i].styleName+"</option>");
+                        }
+                        if (!flag){
+                            $("#channelStyleId").val(data.config.channelStyleId);
+                        }
+                        for (var i = 0;i < data.isEnableList.length; i++){
+                            $("#isEnable").append("<option value='"+data.isEnableList[i].dicVal+"'>"+data.isEnableList[i].dicCode+"</option>");
+                        }
+                        $("#isEnable").val(data.config.isEnable)
+                    } else {
+                        top.layer.alert("系统异常", {icon: 5});
+                    }
+
+                }, "json");
+		}
+
+        function save(){
+            var channelStyleId = $("#channelStyleId").val()
+            if (channelStyleId == ""){
+                top.layer.alert("请选择样式", {icon: 5});
+                return false;
+			}
+            jQuery.post('${ctxA}/channel/productApp/save', {'channelId':$("#channelId").val(),"appId":$("#appId").val(),"id":$("#productAppId").val(),"isEnable":$("#isEnable").val(),"channelStyleId":channelStyleId},
+                function(data) {
+                    if (data.code ==1) {
+                        top.layer.alert("操作成功", {
+                            icon: 6,
+                            end: function(){
+                                window.location.href="${ctxA}/channel/productApp/list?appId="+$("#appId").val();
+                            }
+                        });
+                    } else {
+                        top.layer.alert("系统异常", {icon: 5});
+                    }
+
+                }, "json");
         }
         function channelStateformatter(value,row,index){
             if(row.productAppChannel== null){
@@ -100,6 +162,13 @@
                 return "禁用"
 			}
          	return "未知";
+        }
+		function  dateformatter(value,row,index){
+            if(row.productAppChannel== null){
+                return "";
+            }else{
+                return row.productAppChannel.addTime
+            }
         }
 
         function channelUrlformatter(value,row,index){
@@ -147,11 +216,41 @@
 			<th data-options="field:'channelCode',width:138,align:'center',halign:'center',fixed:true">渠道编码</th>
 			<th data-options="field:'channelUrl',width:138,align:'center',halign:'center',fixed:true,formatter:channelUrlformatter">注册链接</th>
 			<th data-options="field:'channelState',width:138,align:'center',halign:'center',fixed:true,formatter:channelStateformatter">状态</th>
-			<th data-options="field:'addTime',width:138,align:'center',halign:'center',fixed:true">创建时间</th>
+			<th data-options="field:'addTime',width:138,align:'center',halign:'center',fixed:true,formatter:dateformatter">创建时间</th>
 			<th data-options="field:'opertion',width:138,align:'center',halign:'center',fixed:true,formatter:optionformater">操作</th>
 		</tr>
 		</thead>
 	</table>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" >
+			<div class="modal-body">
+				<input type="hidden" id="channelId" value="">
+				<input type="hidden" id="productAppId" value="">
+				<div class="control-group" style="border-bottom: none">
+					<label class="control-label" style="width: 30%;text-align: center">选择样式：</label>
+					<div class="controls" style="display: inline-block">
+						<select  name="channelStyleId" id="channelStyleId" class="selectpicker show-tick form-control" >
+							<option value="">请选择</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group" style="border-bottom: none">
+					<label class="control-label" style="width: 30%;text-align: center;">状态：</label>
+					<div class="controls" style="display: inline-block">
+						<select  name="isEnable" id="isEnable" class="selectpicker show-tick form-control" >
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="save()" >提交更改</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
 </div>
 </body>
 </html>

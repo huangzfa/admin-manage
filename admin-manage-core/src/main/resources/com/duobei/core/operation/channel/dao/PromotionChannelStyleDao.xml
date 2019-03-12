@@ -78,4 +78,10 @@
     </if>
     where id = #{id} and is_delete = 0
   </update>
+
+  <select id="getAllList" resultType="com.duobei.core.operation.channel.domain.PromotionChannelStyle">
+    select <include refid="Base_Column_List" />
+    from yy_promotion_channel_style promotion_channel_style
+    where promotion_channel_style.is_delete = 0
+  </select>
 </mapper>

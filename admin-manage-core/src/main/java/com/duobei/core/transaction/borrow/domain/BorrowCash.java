@@ -1,0 +1,983 @@
+package com.duobei.core.transaction.borrow.domain;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+public class BorrowCash implements Serializable {
+    /**
+     * 自增主键
+     */
+    private Long id;
+
+    /**
+     * 所属产品id
+     */
+    private Integer productId;
+
+    /**
+     * 用户id
+     */
+    private Long userId;
+
+    /**
+     * 唯一标志，借款状态为终态时值为id，中间状态为0
+     */
+    private Long ukFlag;
+
+    /**
+     * 借款编号
+     */
+    private String borrowNo;
+
+    /**
+     * 业务编码
+     */
+    private String bizCode;
+
+    /**
+     * 借款天数【7，14】
+     */
+    private Byte borrowDays;
+
+    /**
+     * 借款状态【0:申请/未审核，1:已结清，2:打款中，3:打款失败，4:关闭，5:已经打款/待还款】，字典
+     */
+    private Byte borrowState;
+
+    /**
+     * 审核状态【0:申请/未审核，1:风控同意，2:机审中，3:人审中，4:风控拒绝】，字典
+     */
+    private Byte riskState;
+
+    /**
+     * 是否人审【0：否，1：是】
+     */
+    private Boolean riskReviewFlag;
+
+    /**
+     * 人审结果状态：【0：初始，1：同意借钱，2：放弃借钱】，字典
+     */
+    private Byte riskReviewState;
+
+    /**
+     * 风控审批的订单编号
+     */
+    private String rishOrderNo;
+
+    /**
+     * 风控审批场景编号
+     */
+    private String riskSceneCode;
+
+    /**
+     * 请求风控时间
+     */
+    private Date gmtRiskReq;
+
+    /**
+     * 请求风控同步响应时间
+     */
+    private Date gmtRiskResp;
+
+    /**
+     * 完成风控人审时间
+     */
+    private Date gmtRiskReviewFinish;
+
+    /**
+     * 完成风控时间
+     */
+    private Date gmtRiskFinish;
+
+    /**
+     * 请求资金代付订单号【业务生成】
+     */
+    private String upsOrderNo;
+
+    /**
+     * 资金三方代付订单号【资金系统回传】
+     */
+    private String upsThirdOrderNo;
+
+    /**
+     * 请求打款时间
+     */
+    private Date gmtUpsReq;
+
+    /**
+     * 完成打款时间【资金系统回传】
+     */
+    private Date gmtUpsFinish;
+
+    /**
+     * 到账账号类型：【1：银行卡，2：支付宝】
+     */
+    private Byte accountType;
+
+    /**
+     * 到账账号名（银行卡名称、支付宝名称）
+     */
+    private String accountName;
+
+    /**
+     * 到账账号（银行卡号、支付宝账号）脱敏
+     */
+    private String accountNo;
+
+    /**
+     * 到账账号密文无解，用于匹配
+     */
+    private String accountNoMd5;
+
+    /**
+     * 申请金额
+     */
+    private Long amount;
+
+    /**
+     * 到账金额【包含活动金额】，申请金额-手续费+活动金额
+     */
+    private Long arrivalAmount;
+
+    /**
+     * 活动金额【优惠券金额，赠送金额】
+     */
+    private Long activityAmount;
+
+    /**
+     * 累计已还款金额
+     */
+    private Long repayAmount;
+
+    /**
+     * 手续费，申请金额x手续费日率x借款天数
+     */
+    private Long poundage;
+
+    /**
+     * 手续费日率，取自用户账户表中风控返回的日利率
+     */
+    private BigDecimal poundageRate;
+
+    /**
+     * 消费金额，手续费 - 合规利息【合规利息=消费贷配置的服务费率（手续费率）计算而来】
+     */
+    private Long consumeAmount;
+
+    /**
+     * 还款结清时间
+     */
+    private Date gmtRepay;
+
+    /**
+     * 预计还款时间，到期时间yyyy-MM-dd 23:59:59
+     */
+    private Date gmtPlanRepayment;
+
+    /**
+     * 关闭时间
+     */
+    private Date gmtClose;
+
+    /**
+     * 关闭原因
+     */
+    private String closeReason;
+
+    /**
+     * 逾期信息_历史逾期状态【0：未逾期，1：已逾期】
+     */
+    private Byte overdueState;
+
+    /**
+     * 逾期信息_当前逾期状态【0：未逾期，1：已逾期】
+     */
+    private Byte currentOverdueState;
+
+    /**
+     * 逾期信息_总逾期天数，累加
+     */
+    private Integer sumOverdueDay;
+
+    /**
+     * 逾期信息_当前逾期天数
+     */
+    private Integer overdueDay;
+
+    /**
+     * 逾期信息_当前逾期费，根据逾期费上限而定
+     */
+    private Long overdueAmount;
+
+    /**
+     * 逾期信息_当前实际逾期费
+     */
+    private Long realOverdueAmount;
+
+    /**
+     * 逾期信息_逾期费率（日）
+     */
+    private BigDecimal overdueRate;
+
+    /**
+     * 逾期信息_累计减免逾期费
+     */
+    private Long derateOverdue;
+
+    /**
+     * 逾期信息_累计已还逾期费
+     */
+    private Long sumOverdueAmount;
+
+    /**
+     * 续期信息_累计续期手续费
+     */
+    private Long sumRenewalPoundage;
+
+    /**
+     * 续期信息_累计续期次数
+     */
+    private Integer renewalNum;
+
+    /**
+     * 央行基准利率对应利息
+     */
+    private Long bankRateAmount;
+
+    /**
+     * 央行基准利率
+     */
+    private BigDecimal baseBankRate;
+
+    /**
+     * 累计已还利息
+     */
+    private Long sumBankRateAmount;
+
+    /**
+     * 累计使用账户余额
+     */
+    private Long sumRebate;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+    /**
+     * 借款用途【1：消费，2：旅游，3：教育学习，4：装修，5：医疗健康，6：购物，7：其他】，字典
+     */
+    private Byte borrowUse;
+
+    /**
+     * 使用劵id，0表示未使用劵
+     */
+    private Long couponId;
+
+    /**
+     * 使用劵金额
+     */
+    private Long couponAmount;
+
+    /**
+     * 借款时用户已使用授信额度
+     */
+    private Long usedAuQuota;
+
+    /**
+     * 借款时用户授信额度
+     */
+    private Long auQuota;
+
+    /**
+     * app系统类型【0，未知，1：ios，2：安卓】
+     */
+    private String appType;
+
+    /**
+     * 纬度
+     */
+    private BigDecimal latitude;
+
+    /**
+     * 经度
+     */
+    private BigDecimal longitude;
+
+    /**
+     * 省
+     */
+    private String province;
+
+    /**
+     * 市
+     */
+    private String city;
+
+    /**
+     * 县
+     */
+    private String county;
+
+    /**
+     * 详细地址
+     */
+    private String address;
+
+    /**
+     * 数据版本，乐观锁
+     */
+    private Integer dataVersion;
+
+    /**
+     * 
+     */
+    private Date addTime;
+
+    /**
+     * 
+     */
+    private Date modifyTime;
+
+    /**
+     * 
+     */
+    private Long isDelete;
+
+    /**
+     * This field was generated by MyBatis Generator.
+     * This field corresponds to the database table tt_borrow_cash
+     *
+     * @mbg.generated Tue Mar 12 17:15:45 CST 2019
+     */
+    private static final long serialVersionUID = -3028156820491268367L;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getUkFlag() {
+        return ukFlag;
+    }
+
+    public void setUkFlag(Long ukFlag) {
+        this.ukFlag = ukFlag;
+    }
+
+    public String getBorrowNo() {
+        return borrowNo;
+    }
+
+    public void setBorrowNo(String borrowNo) {
+        this.borrowNo = borrowNo;
+    }
+
+    public String getBizCode() {
+        return bizCode;
+    }
+
+    public void setBizCode(String bizCode) {
+        this.bizCode = bizCode;
+    }
+
+    public Byte getBorrowDays() {
+        return borrowDays;
+    }
+
+    public void setBorrowDays(Byte borrowDays) {
+        this.borrowDays = borrowDays;
+    }
+
+    public Byte getBorrowState() {
+        return borrowState;
+    }
+
+    public void setBorrowState(Byte borrowState) {
+        this.borrowState = borrowState;
+    }
+
+    public Byte getRiskState() {
+        return riskState;
+    }
+
+    public void setRiskState(Byte riskState) {
+        this.riskState = riskState;
+    }
+
+    public Boolean getRiskReviewFlag() {
+        return riskReviewFlag;
+    }
+
+    public void setRiskReviewFlag(Boolean riskReviewFlag) {
+        this.riskReviewFlag = riskReviewFlag;
+    }
+
+    public Byte getRiskReviewState() {
+        return riskReviewState;
+    }
+
+    public void setRiskReviewState(Byte riskReviewState) {
+        this.riskReviewState = riskReviewState;
+    }
+
+    public String getRishOrderNo() {
+        return rishOrderNo;
+    }
+
+    public void setRishOrderNo(String rishOrderNo) {
+        this.rishOrderNo = rishOrderNo;
+    }
+
+    public String getRiskSceneCode() {
+        return riskSceneCode;
+    }
+
+    public void setRiskSceneCode(String riskSceneCode) {
+        this.riskSceneCode = riskSceneCode;
+    }
+
+    public Date getGmtRiskReq() {
+        return gmtRiskReq;
+    }
+
+    public void setGmtRiskReq(Date gmtRiskReq) {
+        this.gmtRiskReq = gmtRiskReq;
+    }
+
+    public Date getGmtRiskResp() {
+        return gmtRiskResp;
+    }
+
+    public void setGmtRiskResp(Date gmtRiskResp) {
+        this.gmtRiskResp = gmtRiskResp;
+    }
+
+    public Date getGmtRiskReviewFinish() {
+        return gmtRiskReviewFinish;
+    }
+
+    public void setGmtRiskReviewFinish(Date gmtRiskReviewFinish) {
+        this.gmtRiskReviewFinish = gmtRiskReviewFinish;
+    }
+
+    public Date getGmtRiskFinish() {
+        return gmtRiskFinish;
+    }
+
+    public void setGmtRiskFinish(Date gmtRiskFinish) {
+        this.gmtRiskFinish = gmtRiskFinish;
+    }
+
+    public String getUpsOrderNo() {
+        return upsOrderNo;
+    }
+
+    public void setUpsOrderNo(String upsOrderNo) {
+        this.upsOrderNo = upsOrderNo;
+    }
+
+    public String getUpsThirdOrderNo() {
+        return upsThirdOrderNo;
+    }
+
+    public void setUpsThirdOrderNo(String upsThirdOrderNo) {
+        this.upsThirdOrderNo = upsThirdOrderNo;
+    }
+
+    public Date getGmtUpsReq() {
+        return gmtUpsReq;
+    }
+
+    public void setGmtUpsReq(Date gmtUpsReq) {
+        this.gmtUpsReq = gmtUpsReq;
+    }
+
+    public Date getGmtUpsFinish() {
+        return gmtUpsFinish;
+    }
+
+    public void setGmtUpsFinish(Date gmtUpsFinish) {
+        this.gmtUpsFinish = gmtUpsFinish;
+    }
+
+    public Byte getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(Byte accountType) {
+        this.accountType = accountType;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    public String getAccountNoMd5() {
+        return accountNoMd5;
+    }
+
+    public void setAccountNoMd5(String accountNoMd5) {
+        this.accountNoMd5 = accountNoMd5;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
+        this.amount = amount;
+    }
+
+    public Long getArrivalAmount() {
+        return arrivalAmount;
+    }
+
+    public void setArrivalAmount(Long arrivalAmount) {
+        this.arrivalAmount = arrivalAmount;
+    }
+
+    public Long getActivityAmount() {
+        return activityAmount;
+    }
+
+    public void setActivityAmount(Long activityAmount) {
+        this.activityAmount = activityAmount;
+    }
+
+    public Long getRepayAmount() {
+        return repayAmount;
+    }
+
+    public void setRepayAmount(Long repayAmount) {
+        this.repayAmount = repayAmount;
+    }
+
+    public Long getPoundage() {
+        return poundage;
+    }
+
+    public void setPoundage(Long poundage) {
+        this.poundage = poundage;
+    }
+
+    public BigDecimal getPoundageRate() {
+        return poundageRate;
+    }
+
+    public void setPoundageRate(BigDecimal poundageRate) {
+        this.poundageRate = poundageRate;
+    }
+
+    public Long getConsumeAmount() {
+        return consumeAmount;
+    }
+
+    public void setConsumeAmount(Long consumeAmount) {
+        this.consumeAmount = consumeAmount;
+    }
+
+    public Date getGmtRepay() {
+        return gmtRepay;
+    }
+
+    public void setGmtRepay(Date gmtRepay) {
+        this.gmtRepay = gmtRepay;
+    }
+
+    public Date getGmtPlanRepayment() {
+        return gmtPlanRepayment;
+    }
+
+    public void setGmtPlanRepayment(Date gmtPlanRepayment) {
+        this.gmtPlanRepayment = gmtPlanRepayment;
+    }
+
+    public Date getGmtClose() {
+        return gmtClose;
+    }
+
+    public void setGmtClose(Date gmtClose) {
+        this.gmtClose = gmtClose;
+    }
+
+    public String getCloseReason() {
+        return closeReason;
+    }
+
+    public void setCloseReason(String closeReason) {
+        this.closeReason = closeReason;
+    }
+
+    public Byte getOverdueState() {
+        return overdueState;
+    }
+
+    public void setOverdueState(Byte overdueState) {
+        this.overdueState = overdueState;
+    }
+
+    public Byte getCurrentOverdueState() {
+        return currentOverdueState;
+    }
+
+    public void setCurrentOverdueState(Byte currentOverdueState) {
+        this.currentOverdueState = currentOverdueState;
+    }
+
+    public Integer getSumOverdueDay() {
+        return sumOverdueDay;
+    }
+
+    public void setSumOverdueDay(Integer sumOverdueDay) {
+        this.sumOverdueDay = sumOverdueDay;
+    }
+
+    public Integer getOverdueDay() {
+        return overdueDay;
+    }
+
+    public void setOverdueDay(Integer overdueDay) {
+        this.overdueDay = overdueDay;
+    }
+
+    public Long getOverdueAmount() {
+        return overdueAmount;
+    }
+
+    public void setOverdueAmount(Long overdueAmount) {
+        this.overdueAmount = overdueAmount;
+    }
+
+    public Long getRealOverdueAmount() {
+        return realOverdueAmount;
+    }
+
+    public void setRealOverdueAmount(Long realOverdueAmount) {
+        this.realOverdueAmount = realOverdueAmount;
+    }
+
+    public BigDecimal getOverdueRate() {
+        return overdueRate;
+    }
+
+    public void setOverdueRate(BigDecimal overdueRate) {
+        this.overdueRate = overdueRate;
+    }
+
+    public Long getDerateOverdue() {
+        return derateOverdue;
+    }
+
+    public void setDerateOverdue(Long derateOverdue) {
+        this.derateOverdue = derateOverdue;
+    }
+
+    public Long getSumOverdueAmount() {
+        return sumOverdueAmount;
+    }
+
+    public void setSumOverdueAmount(Long sumOverdueAmount) {
+        this.sumOverdueAmount = sumOverdueAmount;
+    }
+
+    public Long getSumRenewalPoundage() {
+        return sumRenewalPoundage;
+    }
+
+    public void setSumRenewalPoundage(Long sumRenewalPoundage) {
+        this.sumRenewalPoundage = sumRenewalPoundage;
+    }
+
+    public Integer getRenewalNum() {
+        return renewalNum;
+    }
+
+    public void setRenewalNum(Integer renewalNum) {
+        this.renewalNum = renewalNum;
+    }
+
+    public Long getBankRateAmount() {
+        return bankRateAmount;
+    }
+
+    public void setBankRateAmount(Long bankRateAmount) {
+        this.bankRateAmount = bankRateAmount;
+    }
+
+    public BigDecimal getBaseBankRate() {
+        return baseBankRate;
+    }
+
+    public void setBaseBankRate(BigDecimal baseBankRate) {
+        this.baseBankRate = baseBankRate;
+    }
+
+    public Long getSumBankRateAmount() {
+        return sumBankRateAmount;
+    }
+
+    public void setSumBankRateAmount(Long sumBankRateAmount) {
+        this.sumBankRateAmount = sumBankRateAmount;
+    }
+
+    public Long getSumRebate() {
+        return sumRebate;
+    }
+
+    public void setSumRebate(Long sumRebate) {
+        this.sumRebate = sumRebate;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Byte getBorrowUse() {
+        return borrowUse;
+    }
+
+    public void setBorrowUse(Byte borrowUse) {
+        this.borrowUse = borrowUse;
+    }
+
+    public Long getCouponId() {
+        return couponId;
+    }
+
+    public void setCouponId(Long couponId) {
+        this.couponId = couponId;
+    }
+
+    public Long getCouponAmount() {
+        return couponAmount;
+    }
+
+    public void setCouponAmount(Long couponAmount) {
+        this.couponAmount = couponAmount;
+    }
+
+    public Long getUsedAuQuota() {
+        return usedAuQuota;
+    }
+
+    public void setUsedAuQuota(Long usedAuQuota) {
+        this.usedAuQuota = usedAuQuota;
+    }
+
+    public Long getAuQuota() {
+        return auQuota;
+    }
+
+    public void setAuQuota(Long auQuota) {
+        this.auQuota = auQuota;
+    }
+
+    public String getAppType() {
+        return appType;
+    }
+
+    public void setAppType(String appType) {
+        this.appType = appType;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Integer getDataVersion() {
+        return dataVersion;
+    }
+
+    public void setDataVersion(Integer dataVersion) {
+        this.dataVersion = dataVersion;
+    }
+
+    public Date getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
+    public Long getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Long isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    /**
+     * This method was generated by MyBatis Generator.
+     * This method corresponds to the database table tt_borrow_cash
+     *
+     * @mbg.generated Tue Mar 12 17:15:45 CST 2019
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", productId=").append(productId);
+        sb.append(", userId=").append(userId);
+        sb.append(", ukFlag=").append(ukFlag);
+        sb.append(", borrowNo=").append(borrowNo);
+        sb.append(", bizCode=").append(bizCode);
+        sb.append(", borrowDays=").append(borrowDays);
+        sb.append(", borrowState=").append(borrowState);
+        sb.append(", riskState=").append(riskState);
+        sb.append(", riskReviewFlag=").append(riskReviewFlag);
+        sb.append(", riskReviewState=").append(riskReviewState);
+        sb.append(", rishOrderNo=").append(rishOrderNo);
+        sb.append(", riskSceneCode=").append(riskSceneCode);
+        sb.append(", gmtRiskReq=").append(gmtRiskReq);
+        sb.append(", gmtRiskResp=").append(gmtRiskResp);
+        sb.append(", gmtRiskReviewFinish=").append(gmtRiskReviewFinish);
+        sb.append(", gmtRiskFinish=").append(gmtRiskFinish);
+        sb.append(", upsOrderNo=").append(upsOrderNo);
+        sb.append(", upsThirdOrderNo=").append(upsThirdOrderNo);
+        sb.append(", gmtUpsReq=").append(gmtUpsReq);
+        sb.append(", gmtUpsFinish=").append(gmtUpsFinish);
+        sb.append(", accountType=").append(accountType);
+        sb.append(", accountName=").append(accountName);
+        sb.append(", accountNo=").append(accountNo);
+        sb.append(", accountNoMd5=").append(accountNoMd5);
+        sb.append(", amount=").append(amount);
+        sb.append(", arrivalAmount=").append(arrivalAmount);
+        sb.append(", activityAmount=").append(activityAmount);
+        sb.append(", repayAmount=").append(repayAmount);
+        sb.append(", poundage=").append(poundage);
+        sb.append(", poundageRate=").append(poundageRate);
+        sb.append(", consumeAmount=").append(consumeAmount);
+        sb.append(", gmtRepay=").append(gmtRepay);
+        sb.append(", gmtPlanRepayment=").append(gmtPlanRepayment);
+        sb.append(", gmtClose=").append(gmtClose);
+        sb.append(", closeReason=").append(closeReason);
+        sb.append(", overdueState=").append(overdueState);
+        sb.append(", currentOverdueState=").append(currentOverdueState);
+        sb.append(", sumOverdueDay=").append(sumOverdueDay);
+        sb.append(", overdueDay=").append(overdueDay);
+        sb.append(", overdueAmount=").append(overdueAmount);
+        sb.append(", realOverdueAmount=").append(realOverdueAmount);
+        sb.append(", overdueRate=").append(overdueRate);
+        sb.append(", derateOverdue=").append(derateOverdue);
+        sb.append(", sumOverdueAmount=").append(sumOverdueAmount);
+        sb.append(", sumRenewalPoundage=").append(sumRenewalPoundage);
+        sb.append(", renewalNum=").append(renewalNum);
+        sb.append(", bankRateAmount=").append(bankRateAmount);
+        sb.append(", baseBankRate=").append(baseBankRate);
+        sb.append(", sumBankRateAmount=").append(sumBankRateAmount);
+        sb.append(", sumRebate=").append(sumRebate);
+        sb.append(", remark=").append(remark);
+        sb.append(", borrowUse=").append(borrowUse);
+        sb.append(", couponId=").append(couponId);
+        sb.append(", couponAmount=").append(couponAmount);
+        sb.append(", usedAuQuota=").append(usedAuQuota);
+        sb.append(", auQuota=").append(auQuota);
+        sb.append(", appType=").append(appType);
+        sb.append(", latitude=").append(latitude);
+        sb.append(", longitude=").append(longitude);
+        sb.append(", province=").append(province);
+        sb.append(", city=").append(city);
+        sb.append(", county=").append(county);
+        sb.append(", address=").append(address);
+        sb.append(", dataVersion=").append(dataVersion);
+        sb.append(", addTime=").append(addTime);
+        sb.append(", modifyTime=").append(modifyTime);
+        sb.append(", isDelete=").append(isDelete);
+        sb.append("]");
+        return sb.toString();
+    }
+}

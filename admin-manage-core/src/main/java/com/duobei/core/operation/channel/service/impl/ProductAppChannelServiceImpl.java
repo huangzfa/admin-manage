@@ -1,5 +1,6 @@
 package com.duobei.core.operation.channel.service.impl;
 
+import com.duobei.common.exception.TqException;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.channel.dao.ProductAppChannelDao;
@@ -13,6 +14,7 @@ import com.duobei.core.operation.channel.service.ProductAppChannelService;
 import java.util.List;
 import java.util.Map;
 
+import com.duobei.dic.ZD;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -40,6 +42,7 @@ public class ProductAppChannelServiceImpl implements ProductAppChannelService{
         PromotionChannelExample.Criteria criteria = example.createCriteria();
         //统计
         criteria.andIsDeleteEqualTo(0);
+        criteria.andChannelTypeEqualTo(ZD.channelType_h5);
         if (StringUtil.isNotEmpty(productAppChannelCriteria.getChannelCode())){
             criteria.andChannelCodeEqualTo(productAppChannelCriteria.getChannelCode());
         }
@@ -61,5 +64,26 @@ public class ProductAppChannelServiceImpl implements ProductAppChannelService{
             }
         }
         return new ListVo(total.intValue(),data);
+    }
+
+    @Override
+    public ProductAppChannel getByChannelAndAppId(Integer channelId, Integer appId) {
+        return productAppChannelDao.getByChannelAndAppId(channelId,appId);
+    }
+
+    @Override
+    public void save(ProductAppChannel productAppChannel) throws TqException {
+        int count = productAppChannelDao.save(productAppChannel);
+        if (count != 1){
+            throw new TqException("新增H5注册页链接失败");
+        }
+    }
+
+    @Override
+    public void update(ProductAppChannel productAppChannel) throws TqException {
+        int count = productAppChannelDao.update(productAppChannel);
+        if (count != 1){
+            throw new TqException("修改H5注册页链接失败");
+        }
     }
 }

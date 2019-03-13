@@ -61,6 +61,7 @@
 		</property>
 
 	</bean>
+
 	<bean id="userDataSource" parent="parentSource">
 		<property name="uniqueResourceName" value="three" />
 		<property name="xaProperties">
@@ -109,18 +110,16 @@
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<!-- 这里写需要扫描的各个模块下mybatis mapper.xml的包路径 -->
-		<!-- 该属性实际上就是起到一个过滤的作用，如果设置了该属性，那么MyBatis的接口只有包含该注解，才会被扫描进去。-->
 		<property name="basePackage" value="com.duobei.core.manage.**.dao,com.duobei.core.manage.**.dao.mapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
+
 	<!--=========================================== 数据库 operation============================-->
 	<bean id="sqlSessionFactory1" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="operateDataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<!-- 这里写需要扫描的各个模块下mybatis mapper.xml的包路径 -->
 		<!-- 该属性实际上就是起到一个过滤的作用，如果设置了该属性，那么MyBatis的接口只有包含该注解，才会被扫描进去。-->
 <!--
 		<property name="annotationClass" value="com.duobei.common.annotation.DataSourceSwitch"/>
@@ -128,31 +127,24 @@
 		<property name="basePackage" value="com.duobei.core.operation.**.dao,com.duobei.core.operation.**.dao.mapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory1" />
 	</bean>
+
+	<!--=========================================== 数据库 user============================-->
 	<bean id="sqlSessionFactory2" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="userDataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 	</bean>
-	<!--=========================================== 数据库 user============================-->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<!-- 这里写需要扫描的各个模块下mybatis mapper.xml的包路径 -->
-		<!-- 该属性实际上就是起到一个过滤的作用，如果设置了该属性，那么MyBatis的接口只有包含该注解，才会被扫描进去。-->
-		<!--
-                <property name="annotationClass" value="com.duobei.common.annotation.DataSourceSwitch"/>
-        -->
+
 		<property name="basePackage" value="com.duobei.core.user.**.dao,com.duobei.core.user.**.dao.mapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory2" />
 	</bean>
+
 	<!--=========================================== 数据库 transaction============================-->
 	<bean id="sqlSessionFactory3" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="transactionDataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<!-- 这里写需要扫描的各个模块下mybatis mapper.xml的包路径 -->
-		<!-- 该属性实际上就是起到一个过滤的作用，如果设置了该属性，那么MyBatis的接口只有包含该注解，才会被扫描进去。-->
-		<!--
-                <property name="annotationClass" value="com.duobei.common.annotation.DataSourceSwitch"/>
-        -->
 		<property name="basePackage" value="com.duobei.core.transaction.**.dao,com.duobei.core.transaction.**.dao.mapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory3" />
 	</bean>
@@ -183,7 +175,8 @@
 			<tx:method name="find*"  propagation="REQUIRED"  read-only="true" />
 			<tx:method name="has*"  propagation="REQUIRED"  read-only="true" />
 			<tx:method name="locate*"  propagation="REQUIRED"  read-only="true" />
-			<tx:method name="register*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
 		</tx:attributes>
 	</tx:advice>
 

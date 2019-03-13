@@ -46,6 +46,7 @@
     function getData(){
         var data = {
             'borrowNo':$('#borrowNo').val(),
+            'repayNo':$('#repayNo').val(),
 			'mobile':$("#mobile").val(),
 			'productId':$("#productId").val(),
 			'page':pageNum,
@@ -80,7 +81,7 @@
             }
         });
     }
-    function borrowStateformater(value,row,index){
+    function repayStateformater(value,row,index){
         if(value=='0'){
             return "申请";
         }else if(value=='1'){
@@ -116,7 +117,7 @@
 
         var opStr='';
         <shiro:hasPermission name="order:borrow:view">
-			opStr+='<a class="si-option-a" href="${ctxA}/order/borrow/form?id='+row.id+'&productId='+ row.productId+'">查看详情</a>';
+			opStr+='<a class="si-option-a" href="${ctxA}/order/repayment/form?id='+row.id+'&productId='+ row.productId+'">查看详情</a>';
         </shiro:hasPermission>
         return opStr;
     }
@@ -134,6 +135,11 @@
 		<li>
 			<label>服务订单号：</label>
 			<input id="borrowNo" lass="input-large" type="text" value=""  />
+		</li>
+
+		<li>
+			<label>还款流水号：</label>
+			<input id="repayNo" lass="input-large" type="text" value=""  />
 		</li>
 
 		<li>
@@ -160,16 +166,17 @@
 		<tr>
 			<th style="width: 10%" data-options="field:'borrowNo',width:120,align:'center',halign:'center',fixed:true">服务订单号</th>
 			<th style="width: 10%" data-options="field:'productName',width:160,align:'center',halign:'center',fixed:true">产品（平台）名称</th>
-			<th style="width: 5%" data-options="field:'userId',width:160,align:'center',halign:'center',fixed:true">user_id</th>
 			<th style="width: 5%" data-options="field:'realName',width:160,align:'center',halign:'center',fixed:true">姓名</th>
 			<th style="width: 10%" data-options="field:'userName',width:160,align:'center',halign:'center',fixed:true">注册手机号</th>
-			<th style="width: 7%" data-options="field:'amount',width:45,align:'center',halign:'center',fixed:true">借款金额</th>
-			<th style="width: 5%" data-options="field:'borrowDays',width:160,align:'center',halign:'center',fixed:true">天数</th>
-			<th style="width: 7%" data-options="field:'poundage',width:45,align:'center',halign:'center',fixed:true">交易服务费</th>
-			<th style="width: 7%" data-options="field:'arrivalAmount',width:160,align:'center',halign:'center',fixed:true">到账金额</th>
-			<th style="width: 7%" data-options="field:'borrowState',width:45,align:'center',halign:'center',fixed:true,formatter:borrowStateformater">借款状态</th>
-			<th style="width: 7%" data-options="field:'riskState',width:160,align:'center',halign:'center',fixed:true,formatter:riskStateformater">风控状态</th>
-			<th style="width: 10%" data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">申请时间</th>
+			<th style="width: 10%" data-options="field:'repayNo',width:160,align:'center',halign:'center',fixed:true">还款流水号</th>
+			<th style="width: 7%" data-options="field:'repayAmount',width:45,align:'center',halign:'center',fixed:true">当时到期实际应还</th>
+			<th style="width: 5%" data-options="field:'couponAmount',width:160,align:'center',halign:'center',fixed:true">优惠券抵扣</th>
+			<th style="width: 7%" data-options="field:'rebateAmount',width:45,align:'center',halign:'center',fixed:true">余额抵扣</th>
+			<th style="width: 7%" data-options="field:'repayActualAmount',width:160,align:'center',halign:'center',fixed:true">实际支付</th>
+			<th style="width: 7%" data-options="field:'accountNo',width:160,align:'center',halign:'center',fixed:true">还款账号</th>
+			<th style="width: 10%" data-options="field:'gmtUpsFinish',width:160,align:'center',halign:'center',fixed:true">还款时间</th>
+			<th style="width: 7%" data-options="field:'repayState',width:45,align:'center',halign:'center',fixed:true,formatter:repayStateformater">状态</th>
+
 			<th style="width: 10%"  data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
 		</tr>
 		</thead>

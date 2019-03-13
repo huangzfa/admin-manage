@@ -174,6 +174,16 @@ public interface ZD {
     public String payState = "payState";
 	
 	/**
+	 *  还款状态
+	 */
+    public String repayState = "repayState";
+	
+	/**
+	 *  还款类型
+	 */
+    public String repayType = "repayType";
+	
+	/**
 	 *  菜单类型-菜单- 
 	 */
     public String menuType_m = "m";
@@ -642,4 +652,39 @@ public interface ZD {
 	 *  支付状态-支付成功- 
 	 */
     public int payState_success = 1;
+	
+	/**
+	 *  还款状态-新建- 
+	 */
+    public int repayState_new = 0;
+	
+	/**
+	 *  还款状态-还款成功- 
+	 */
+    public int repayState_success = 1;
+	
+	/**
+	 *  还款状态-处理中- 
+	 */
+    public int repayState_handling = 2;
+	
+	/**
+	 *  还款状态-还款失败- 
+	 */
+    public int repayState_fail = -1;
+	
+	/**
+	 *  还款类型-主动还款- 
+	 */
+    public int repayType_active = 0;
+	
+	/**
+	 *  还款类型-线下还款- 
+	 */
+    public int repayType_offline = 1;
+	
+	/**
+	 *  还款类型-自动扣款- 
+	 */
+    public int repayType_auto = 2;
 }

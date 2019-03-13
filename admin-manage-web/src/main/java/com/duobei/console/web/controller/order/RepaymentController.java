@@ -50,7 +50,7 @@ public class RepaymentController extends BaseController {
         OperatorCredential credential = getCredential();
         model.addAttribute("productLists", JSON.toJSONString(credential.getProductList()));
         model.addAttribute("productId",productId);
-        return ADDRESSPRE+"borrowCashList";
+        return ADDRESSPRE+"repaymentList";
     }
 
     @RequiresPermissions(PERMISSIONPRE+"view")

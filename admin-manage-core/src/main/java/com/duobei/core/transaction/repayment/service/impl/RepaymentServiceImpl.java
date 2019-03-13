@@ -1,6 +1,8 @@
 package com.duobei.core.transaction.repayment.service.impl;
 
 import com.duobei.common.vo.ListVo;
+import com.duobei.core.transaction.repayment.dao.BorrowCashRepaymentDao;
+import com.duobei.core.transaction.repayment.dao.mapper.BorrowCashRepaymentMapper;
 import com.duobei.core.transaction.repayment.domain.BorrowCashRepayment;
 import com.duobei.core.transaction.repayment.domain.criteria.RepaymentCriteria;
 import com.duobei.core.transaction.repayment.service.RepaymentService;
@@ -16,7 +18,10 @@ import javax.annotation.Resource;
 @Service("repaymentService")
 public class RepaymentServiceImpl implements RepaymentService {
     @Resource
+    BorrowCashRepaymentDao repaymentDao;
 
+    @Resource
+    BorrowCashRepaymentMapper repaymentMapper;
 
     @Override
     public ListVo<BorrowCashRepayment> getListByQuery(RepaymentCriteria repaymentCriteria) {

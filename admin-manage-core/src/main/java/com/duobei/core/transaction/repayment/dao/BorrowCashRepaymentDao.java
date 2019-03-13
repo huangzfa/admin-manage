@@ -5,5 +5,5 @@ package com.duobei.core.transaction.repayment.dao;
  * @description
  * @date 2019/3/13
  */
-public class BorrowCashRepaymentDao {
+public interface BorrowCashRepaymentDao {
 }

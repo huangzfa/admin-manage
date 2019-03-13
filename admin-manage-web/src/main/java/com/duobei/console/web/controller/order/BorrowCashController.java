@@ -1,6 +1,7 @@
 package com.duobei.console.web.controller.order;
 
 import com.alibaba.fastjson.JSON;
+import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
@@ -8,7 +9,14 @@ import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.service.ProductService;
 import com.duobei.core.transaction.borrow.domain.BorrowCash;
 import com.duobei.core.transaction.borrow.domain.criteria.BorrowCashCriteria;
+import com.duobei.core.transaction.borrow.domain.vo.BorrowCashListVo;
+import com.duobei.core.transaction.borrow.domain.vo.BorrowCashVo;
 import com.duobei.core.transaction.borrow.service.BorrowCashService;
+import com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder;
+import com.duobei.core.transaction.consumdebt.service.ConsumdebtOrderService;
+import com.duobei.core.user.user.domain.vo.UserAndIdCardVo;
+import com.duobei.core.user.user.domain.vo.UserInfoVo;
+import com.duobei.core.user.user.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.bouncycastle.math.raw.Mod;
 import org.slf4j.Logger;
@@ -18,6 +26,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.duobei.console.web.controller.base.BaseController;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -40,8 +49,9 @@ public class BorrowCashController extends BaseController {
     @Resource
     BorrowCashService borrowCashService;
     @Resource
-    ProductService productService;
-
+    UserService userService;
+    @Resource
+    ConsumdebtOrderService consumdebtOrderService;
 
     @RequiresPermissions(PERMISSIONPRE+"view")
     @RequestMapping(value = "/list")
@@ -51,6 +61,7 @@ public class BorrowCashController extends BaseController {
         model.addAttribute("productId",productId);
         return ADDRESSPRE+"borrowCashList";
     }
+
     @RequiresPermissions(PERMISSIONPRE+"view")
     @ResponseBody
     @RequestMapping(value = "/borrowCashList")
@@ -61,13 +72,9 @@ public class BorrowCashController extends BaseController {
         try {
             Map<String,Object> dataMap = new HashMap<>();
 
-            //查询产品信息
-            Product product = productService.getById(borrowCashCriteria.getProductId());
-
             //查询列表
-            ListVo<BorrowCash> list = borrowCashService.getListByQuery(borrowCashCriteria);
+            ListVo<BorrowCashListVo> list = borrowCashService.getListByQuery(borrowCashCriteria);
 
-            dataMap.put("product",product);
             dataMap.put("list",list);
 
             return successJsonResult(dataMap,"success");
@@ -77,5 +84,28 @@ public class BorrowCashController extends BaseController {
         }
     }
 
+    @RequiresPermissions(PERMISSIONPRE+"view")
+    @RequestMapping(value = "/form")
+    public String getInfo(BorrowCash borrowCash,Model model) throws TqException {
+
+        try {
+            //查询借款信息
+            borrowCash = borrowCashService.getById(borrowCash.getId());
+            if (borrowCash != null) {
+                //查询借款人信息
+                UserInfoVo userAndIdCardVo = userService.getUserInfoById(borrowCash.getUserId());
+                //查询订单信息
+                ConsumdebtOrder consumdebtOrder = consumdebtOrderService.getByUserIdAndBorrowId(userAndIdCardVo.getId(),borrowCash.getId());
+                model.addAttribute("userInfo",userAndIdCardVo);
+                model.addAttribute("consumdebtOrder",consumdebtOrder);
+                model.addAttribute("borrowCash",borrowCash);
+            }
+        } catch (Exception e) {
+            log.error("查询借款信息异常", e);
+            throw new TqException("系统异常");
+         /*   return "redirect:" + this.authzPath  + ADDRESSPRE+"list";*/
+        }
+        return ADDRESSPRE+"borrowCashForm";
+    }
 
 }

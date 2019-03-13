@@ -1,4 +1,4 @@
-package com.duobei.core.transaction.borrow.domain;
+package com.duobei.core.transaction.consumdebt.domain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -516,52 +516,52 @@ public class ConsumdebtOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andStateEqualTo(Byte value) {
+        public Criteria andStateEqualTo(Integer value) {
             addCriterion("consumdebt_order.state =", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateNotEqualTo(Byte value) {
+        public Criteria andStateNotEqualTo(Integer value) {
             addCriterion("consumdebt_order.state <>", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateGreaterThan(Byte value) {
+        public Criteria andStateGreaterThan(Integer value) {
             addCriterion("consumdebt_order.state >", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateGreaterThanOrEqualTo(Byte value) {
+        public Criteria andStateGreaterThanOrEqualTo(Integer value) {
             addCriterion("consumdebt_order.state >=", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateLessThan(Byte value) {
+        public Criteria andStateLessThan(Integer value) {
             addCriterion("consumdebt_order.state <", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateLessThanOrEqualTo(Byte value) {
+        public Criteria andStateLessThanOrEqualTo(Integer value) {
             addCriterion("consumdebt_order.state <=", value, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateIn(List<Byte> values) {
+        public Criteria andStateIn(List<Integer> values) {
             addCriterion("consumdebt_order.state in", values, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateNotIn(List<Byte> values) {
+        public Criteria andStateNotIn(List<Integer> values) {
             addCriterion("consumdebt_order.state not in", values, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateBetween(Byte value1, Byte value2) {
+        public Criteria andStateBetween(Integer value1, Integer value2) {
             addCriterion("consumdebt_order.state between", value1, value2, "state");
             return (Criteria) this;
         }
 
-        public Criteria andStateNotBetween(Byte value1, Byte value2) {
+        public Criteria andStateNotBetween(Integer value1, Integer value2) {
             addCriterion("consumdebt_order.state not between", value1, value2, "state");
             return (Criteria) this;
         }
@@ -576,52 +576,52 @@ public class ConsumdebtOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andPayStateEqualTo(Byte value) {
+        public Criteria andPayStateEqualTo(Integer value) {
             addCriterion("consumdebt_order.pay_state =", value, "payState");
             return (Criteria) this;
         }
 
-        public Criteria andPayStateNotEqualTo(Byte value) {
+        public Criteria andPayStateNotEqualTo(Integer value) {
             addCriterion("consumdebt_order.pay_state <>", value, "payState");
             return (Criteria) this;
         }
 
-        public Criteria andPayStateGreaterThan(Byte value) {
+        public Criteria andPayStateGreaterThan(Integer value) {
             addCriterion("consumdebt_order.pay_state >", value, "payState");
             return (Criteria) this;
         }
 
-        public Criteria andPayStateGreaterThanOrEqualTo(Byte value) {
+        public Criteria andPayStateGreaterThanOrEqualTo(Integer value) {
             addCriterion("consumdebt_order.pay_state >=", value, "payState");
             return (Criteria) this;
         }
 
-        public Criteria andPayStateLessThan(Byte value) {
+        public Criteria andPayStateLessThan(Integer value) {
             addCriterion("consumdebt_order.pay_state <", value, "payState");
             return (Criteria) this;
         }
 
-        public Criteria andPayStateLessThanOrEqualTo(Byte value) {
+        public Criteria andPayStateLessThanOrEqualTo(Integer value) {
             addCriterion("consumdebt_order.pay_state <=", value, "payState");
             return (Criteria) this;
         }
 
-        public Criteria andPayStateIn(List<Byte> values) {
+        public Criteria andPayStateIn(List<Integer> values) {
             addCriterion("consumdebt_order.pay_state in", values, "payState");
             return (Criteria) this;
         }
 
-        public Criteria andPayStateNotIn(List<Byte> values) {
+        public Criteria andPayStateNotIn(List<Integer> values) {
             addCriterion("consumdebt_order.pay_state not in", values, "payState");
             return (Criteria) this;
         }
 
-        public Criteria andPayStateBetween(Byte value1, Byte value2) {
+        public Criteria andPayStateBetween(Integer value1, Integer value2) {
             addCriterion("consumdebt_order.pay_state between", value1, value2, "payState");
             return (Criteria) this;
         }
 
-        public Criteria andPayStateNotBetween(Byte value1, Byte value2) {
+        public Criteria andPayStateNotBetween(Integer value1, Integer value2) {
             addCriterion("consumdebt_order.pay_state not between", value1, value2, "payState");
             return (Criteria) this;
         }

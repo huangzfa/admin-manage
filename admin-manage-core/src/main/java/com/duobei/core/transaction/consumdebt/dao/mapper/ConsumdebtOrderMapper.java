@@ -1,9 +1,10 @@
-package com.duobei.core.transaction.borrow.dao.mapper;
+package com.duobei.core.transaction.consumdebt.dao.mapper;
 
-import com.duobei.core.transaction.borrow.domain.ConsumdebtOrder;
-import com.duobei.core.transaction.borrow.domain.ConsumdebtOrderExample;
-import java.util.List;
+import com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder;
+import com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrderExample;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ConsumdebtOrderMapper {
     /**

@@ -1,4 +1,4 @@
-package com.duobei.core.transaction.borrow.domain;
+package com.duobei.core.transaction.consumdebt.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -33,12 +33,12 @@ public class ConsumdebtOrder implements Serializable {
     /**
      * 订单状态【 0新建，2已填地址/待发货，4关闭，3已发货，1已收货/订单结束】
      */
-    private Byte state;
+    private Integer state;
 
     /**
      * 支付状态【 0待支付,2支付中，-1支付失败，1支付成功】
      */
-    private Byte payState;
+    private Integer payState;
 
     /**
      * 商品id
@@ -193,19 +193,19 @@ public class ConsumdebtOrder implements Serializable {
         this.orderNo = orderNo;
     }
 
-    public Byte getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(Byte state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 
-    public Byte getPayState() {
+    public Integer getPayState() {
         return payState;
     }
 
-    public void setPayState(Byte payState) {
+    public void setPayState(Integer payState) {
         this.payState = payState;
     }
 

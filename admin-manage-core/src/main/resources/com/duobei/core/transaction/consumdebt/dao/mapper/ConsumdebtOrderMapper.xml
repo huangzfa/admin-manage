@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.duobei.core.transaction.borrow.dao.mapper.ConsumdebtOrderMapper">
-  <resultMap id="BaseResultMap" type="com.duobei.core.transaction.borrow.domain.ConsumdebtOrder">
+<mapper namespace="com.duobei.core.transaction.consumdebt.dao.mapper.ConsumdebtOrderMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
     <id column="consumdebt_order_id" jdbcType="BIGINT" property="id" />
     <result column="consumdebt_order_product_id" jdbcType="INTEGER" property="productId" />
     <result column="consumdebt_order_user_id" jdbcType="BIGINT" property="userId" />
@@ -105,7 +105,7 @@
     consumdebt_order.modify_time as consumdebt_order_modify_time, consumdebt_order.add_operator_id as consumdebt_order_add_operator_id, 
     consumdebt_order.modify_operator_id as consumdebt_order_modify_operator_id, consumdebt_order.is_delete as consumdebt_order_is_delete
   </sql>
-  <select id="selectByExample" parameterType="com.duobei.core.transaction.borrow.domain.ConsumdebtOrderExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrderExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -129,13 +129,13 @@
     delete from tt_consumdebt_order
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.duobei.core.transaction.borrow.domain.ConsumdebtOrderExample">
+  <delete id="deleteByExample" parameterType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrderExample">
     delete from tt_consumdebt_order consumdebt_order
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.duobei.core.transaction.borrow.domain.ConsumdebtOrder">
+  <insert id="insert" parameterType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -160,7 +160,7 @@
       #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.duobei.core.transaction.borrow.domain.ConsumdebtOrder">
+  <insert id="insertSelective" parameterType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -332,7 +332,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.duobei.core.transaction.borrow.domain.ConsumdebtOrderExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrderExample" resultType="java.lang.Long">
     select count(*) from tt_consumdebt_order consumdebt_order
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -464,7 +464,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.transaction.borrow.domain.ConsumdebtOrder">
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
     update tt_consumdebt_order
     <set>
       <if test="productId != null">
@@ -551,7 +551,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.duobei.core.transaction.borrow.domain.ConsumdebtOrder">
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
     update tt_consumdebt_order
     set product_id = #{productId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=BIGINT},

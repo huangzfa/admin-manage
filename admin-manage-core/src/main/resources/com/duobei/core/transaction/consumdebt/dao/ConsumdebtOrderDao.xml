@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.transaction.consumdebt.dao.ConsumdebtOrderDao">
+
+  <sql id="Base_Column_List">
+    consumdebt_order.id as id, consumdebt_order.product_id as product_id,
+    consumdebt_order.user_id as user_id, consumdebt_order.borrow_cash_id as borrow_cash_id,
+    consumdebt_order.order_no as order_no, consumdebt_order.state as state,
+    consumdebt_order.pay_state as pay_state, consumdebt_order.goods_id as goods_id,
+    consumdebt_order.goods_name as goods_name, consumdebt_order.goods_icon as goods_icon,
+    consumdebt_order.price_amount as price_amount, consumdebt_order.sale_amount as sale_amount,
+    consumdebt_order.gmt_finished as gmt_finished, consumdebt_order.gmt_affirm_end as gmt_affirm_end,
+    consumdebt_order.consignee as consignee, consumdebt_order.address as address,
+    consumdebt_order.consignee_mobile as consignee_mobile, consumdebt_order.logistics_company as logistics_company,
+    consumdebt_order.logistics_no as logistics_no, consumdebt_order.gmt_deliver as gmt_deliver,
+    consumdebt_order.gmt_closed as gmt_closed, consumdebt_order.closed_reason as closed_reason,
+    consumdebt_order.remark as remark, consumdebt_order.add_time as add_time,
+    consumdebt_order.modify_time as modify_time, consumdebt_order.add_operator_id as add_operator_id,
+    consumdebt_order.modify_operator_id as modify_operator_id, consumdebt_order.is_delete as is_delete
+  </sql>
+
+  <select id="getByUserIdAndBorrowId" resultType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
+  select <include refid="Base_Column_List"/>
+    from tt_consumdebt_order consumdebt_order
+    where consumdebt_order.is_delete = 0 and consumdebt_order.user_id = #{userId}  and consumdebt_order.borrow_cash_id = #{borrowId}
+
+  </select>
+
+</mapper>

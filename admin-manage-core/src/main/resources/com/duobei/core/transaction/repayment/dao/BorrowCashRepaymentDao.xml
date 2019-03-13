@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.transaction.repayment.dao.BorrowCashRepaymentDao">
+
+  <sql id="Base_Column_List">
+    repayment.id as id, repayment.product_id as product_id, repayment.user_id as user_id,
+    repayment.borrow_cash_id as borrow_cash_id, repayment.repay_no as repay_no,
+    repayment.repay_type as repay_type, repayment.repay_state as repay_state,
+    repayment.repay_amount as repay_amount, repayment.repay_actual_amount as repay_actual_amount,
+    repayment.repay_overdue_amount as repay_overdue_amount, repayment.repay_rate_amount as repay_rate_amount,
+    repayment.unpaid_amount as unpaid_amount, repayment.rebate_amount as rebate_amount,
+    repayment.ups_order_no as ups_order_no, repayment.ups_third_order_no as ups_third_order_no,
+    repayment.gmt_ups_req as gmt_ups_req, repayment.gmt_ups_finish as gmt_ups_finish,
+    repayment.account_type as account_type, repayment.account_name as account_name,
+    repayment.account_no as account_no, repayment.account_no_md5 as account_no_md5,
+    repayment.coupon_id as coupon_id, repayment.coupon_amount as coupon_amount,
+    repayment.fail_reason as fail_reason, repayment.remark as remark,
+    repayment.data_version as data_version, repayment.add_time as add_time,
+    repayment.modify_time as modify_time, repayment.is_delete as is_delete
+  </sql>
+
+</mapper>

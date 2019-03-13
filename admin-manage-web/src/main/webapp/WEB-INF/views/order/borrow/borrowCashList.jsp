@@ -56,7 +56,7 @@
 		}
         hjnUtils.ajax({
             type:'post',
-            url:'${ctxA}/order/product/borrowCashList',
+            url:'${ctxA}/order/borrow/borrowCashList',
             data:data,
             dataType:'json',
             success:function(data){
@@ -80,15 +80,34 @@
             }
         });
     }
-    function stateformater(value,row,index){
-        if(value=='1'){
+    function borrowStateformater(value,row,index){
+        if(value=='0'){
+            return "申请";
+        }else if(value=='1'){
+            return "已结清";
+        }else if(value=='2') {
+            return "打款中";
+        }else if(value=='3') {
+            return "打款失败";
+        }else if(value=='4') {
+            return "关闭";
+        }else if(value=='5') {
+            return "待还款";
+        }
+        return '未知';
+    }
 
-            return "启用";
-
-        }else if(value=='0'){
-
-            return "禁用";
-
+    function riskStateformater(value,row,index){
+        if(value=='0'){
+            return "申请";
+        }else if(value=='1'){
+            return "风控同意";
+        }else if(value=='2') {
+            return "机审中";
+        }else if(value=='3') {
+            return "人审中";
+        }else if(value=='4') {
+            return "风控拒绝";
         }
         return '未知';
     }
@@ -102,43 +121,6 @@
         return opStr;
     }
 
-    function redirectformater(value,row,index) {
-        if(value=='no'){
-
-            return "无连接";
-
-        }else if(value=='url'){
-
-            return "h5链接";
-
-        }
-        return '未知';
-    }
-
-    function editState(id,isEnable){
-        var msg = "确定禁用该轮播图吗";
-        if( isEnable == 1){
-            msg = "确定启用该轮播图吗";
-		}
-        top.$.jBox.confirm(msg,'系统提示',function(v,h,f){
-            if(v=='ok'){
-                jQuery.post("${ctxA}/market/banner/editState", {'id':id,'isEnable':isEnable},
-                    function(data) {
-                        if (data.code ==1) {
-                            top.layer.alert("操作完成", {
-                                icon: 6,
-                                end: function(){
-                                    getData();
-                                }
-                            });
-                        } else {
-                            top.layer.alert(data.msg, {icon: 5});
-                        }
-                        return;
-                    }, "json");
-            }
-        })
-    }
    
 </script>
 </head>
@@ -176,17 +158,19 @@
 		   data-options="idField:'id',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
 		<thead>
 		<tr>
-		<%--	<th data-options="field:'id',width:80,align:'center',halign:'center',fixed:true">id</th>
-			<th data-options="field:'imgUrl',width:120,align:'center',halign:'center',fixed:true,formatter:iconurlformater">图片</th>
-			<th data-options="field:'bannerTitle',width:160,align:'center',halign:'center',fixed:true">轮播名称</th>
-			<th data-options="field:'bannerType',width:160,align:'center',halign:'center',fixed:true,formatter:typeformater">所属位置</th>
-			<th data-options="field:'redirectType',width:160,align:'center',halign:'center',fixed:true,formatter:redirectformater">类型</th>
-			<th data-options="field:'redirectUrl',width:160,align:'center',halign:'center',fixed:true">链接</th>
-			<th data-options="field:'remark',width:160,align:'center',halign:'center',fixed:true">备注说明</th>
-			<th data-options="field:'isEnable',width:45,align:'center',halign:'center',fixed:true,formatter:stateformater">状态</th>
-			<th data-options="field:'sort',width:160,align:'center',halign:'center',fixed:true">排序</th>
-			<th data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">添加时间</th>
-			<th data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>--%>
+			<th style="width: 10%" data-options="field:'borrowNo',width:120,align:'center',halign:'center',fixed:true">服务订单号</th>
+			<th style="width: 10%" data-options="field:'productName',width:160,align:'center',halign:'center',fixed:true">产品（平台）名称</th>
+			<th style="width: 5%" data-options="field:'userId',width:160,align:'center',halign:'center',fixed:true">user_id</th>
+			<th style="width: 5%" data-options="field:'realName',width:160,align:'center',halign:'center',fixed:true">姓名</th>
+			<th style="width: 10%" data-options="field:'userName',width:160,align:'center',halign:'center',fixed:true">注册手机号</th>
+			<th style="width: 7%" data-options="field:'amount',width:45,align:'center',halign:'center',fixed:true">借款金额</th>
+			<th style="width: 5%" data-options="field:'borrowDays',width:160,align:'center',halign:'center',fixed:true">天数</th>
+			<th style="width: 7%" data-options="field:'poundage',width:45,align:'center',halign:'center',fixed:true">交易服务费</th>
+			<th style="width: 7%" data-options="field:'arrivalAmount',width:160,align:'center',halign:'center',fixed:true">到账金额</th>
+			<th style="width: 7%" data-options="field:'borrowState',width:45,align:'center',halign:'center',fixed:true,formatter:borrowStateformater">借款状态</th>
+			<th style="width: 7%" data-options="field:'riskState',width:160,align:'center',halign:'center',fixed:true,formatter:riskStateformater">风控状态</th>
+			<th style="width: 10%" data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">申请时间</th>
+			<th style="width: 10%"  data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
 		</tr>
 		</thead>
 	</table>

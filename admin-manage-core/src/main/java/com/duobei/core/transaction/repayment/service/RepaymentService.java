@@ -1,8 +1,11 @@
 package com.duobei.core.transaction.repayment.service;
 
+import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.transaction.repayment.domain.BorrowCashRepayment;
 import com.duobei.core.transaction.repayment.domain.criteria.RepaymentCriteria;
+import com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentListVo;
+import com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentVo;
 
 /**
  * @author litianxiong
@@ -10,7 +13,7 @@ import com.duobei.core.transaction.repayment.domain.criteria.RepaymentCriteria;
  * @date 2019/3/13
  */
 public interface RepaymentService {
-    ListVo<BorrowCashRepayment> getListByQuery(RepaymentCriteria repaymentCriteria);
+    ListVo<BorrowCashRepaymentListVo> getListByQuery(RepaymentCriteria repaymentCriteria);
 
-    BorrowCashRepayment getById(Long id);
+    BorrowCashRepaymentVo getById(Long id) ;
 }

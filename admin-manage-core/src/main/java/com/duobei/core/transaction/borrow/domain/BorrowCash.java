@@ -63,7 +63,7 @@ public class BorrowCash implements Serializable {
     /**
      * 风控审批的订单编号
      */
-    private String rishOrderNo;
+    private String riskOrderNo;
 
     /**
      * 风控审批场景编号
@@ -441,12 +441,12 @@ public class BorrowCash implements Serializable {
         this.riskReviewState = riskReviewState;
     }
 
-    public String getRishOrderNo() {
-        return rishOrderNo;
+    public String getRiskOrderNo() {
+        return riskOrderNo;
     }
 
-    public void setRishOrderNo(String rishOrderNo) {
-        this.rishOrderNo = rishOrderNo;
+    public void setRiskOrderNo(String riskOrderNo) {
+        this.riskOrderNo = riskOrderNo;
     }
 
     public String getRiskSceneCode() {
@@ -920,7 +920,7 @@ public class BorrowCash implements Serializable {
         sb.append(", riskState=").append(riskState);
         sb.append(", riskReviewFlag=").append(riskReviewFlag);
         sb.append(", riskReviewState=").append(riskReviewState);
-        sb.append(", rishOrderNo=").append(rishOrderNo);
+        sb.append(", riskOrderNo=").append(riskOrderNo);
         sb.append(", riskSceneCode=").append(riskSceneCode);
         sb.append(", gmtRiskReq=").append(gmtRiskReq);
         sb.append(", gmtRiskResp=").append(gmtRiskResp);

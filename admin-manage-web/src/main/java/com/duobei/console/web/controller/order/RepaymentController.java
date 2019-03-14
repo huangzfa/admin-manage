@@ -9,6 +9,8 @@ import com.duobei.core.transaction.borrow.domain.BorrowCash;
 import com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder;
 import com.duobei.core.transaction.repayment.domain.BorrowCashRepayment;
 import com.duobei.core.transaction.repayment.domain.criteria.RepaymentCriteria;
+import com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentListVo;
+import com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentVo;
 import com.duobei.core.transaction.repayment.service.RepaymentService;
 import com.duobei.core.user.user.domain.vo.UserInfoVo;
 import com.duobei.core.user.user.service.UserService;
@@ -55,8 +57,19 @@ public class RepaymentController extends BaseController {
 
     @RequiresPermissions(PERMISSIONPRE+"view")
     @ResponseBody
-    @RequestMapping(value = "/borrowCashList")
-    public String getList(RepaymentCriteria repaymentCriteria) {
+    @RequestMapping(value = "/repaymentList")
+    public String getList(RepaymentCriteria repaymentCriteria) throws TqException {
+        OperatorCredential credential = getCredential();
+        if( credential == null){
+            throw new TqException("登录过期，请重新登录");
+        }
+        //验证数据权限
+        if( repaymentCriteria.getProductId() !=null ){
+            validAuthData(repaymentCriteria.getProductId());
+        }else{
+            throw  new TqException("产品数据查询失败");
+
+        }
         if (repaymentCriteria.getPagesize() == 0) {
             repaymentCriteria.setPagesize(GlobalConfig.getPageSize());
         }
@@ -64,7 +77,7 @@ public class RepaymentController extends BaseController {
             Map<String,Object> dataMap = new HashMap<>();
 
             //查询列表
-            ListVo<BorrowCashRepayment> list = repaymentService.getListByQuery(repaymentCriteria);
+            ListVo<BorrowCashRepaymentListVo> list = repaymentService.getListByQuery(repaymentCriteria);
 
             dataMap.put("list",list);
 
@@ -77,17 +90,17 @@ public class RepaymentController extends BaseController {
 
     @RequiresPermissions(PERMISSIONPRE+"view")
     @RequestMapping(value = "/form")
-    public String getInfo(BorrowCashRepayment borrowCashRepayment, Model model) throws TqException {
+    public String getInfo(BorrowCashRepaymentVo borrowCashRepaymentVo, Model model) throws TqException {
 
         try {
             //查询还款信息
-            borrowCashRepayment = repaymentService.getById(borrowCashRepayment.getId());
-            if (borrowCashRepayment != null) {
+            borrowCashRepaymentVo = repaymentService.getById(borrowCashRepaymentVo.getId());
+            if (borrowCashRepaymentVo != null) {
                 //查询还款人信息
-                UserInfoVo userAndIdCardVo = userService.getUserInfoById(borrowCashRepayment.getUserId());
+                UserInfoVo userAndIdCardVo = userService.getUserInfoById(borrowCashRepaymentVo.getUserId());
 
                 model.addAttribute("userInfo",userAndIdCardVo);
-                model.addAttribute("repayment",borrowCashRepayment);
+                model.addAttribute("repayment",borrowCashRepaymentVo);
             }
         } catch (Exception e) {
             log.error("查询还款信息异常", e);

@@ -19,4 +19,31 @@
     repayment.modify_time as modify_time, repayment.is_delete as is_delete
   </sql>
 
+  <select id="getListVoByQuery" resultType="com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentListVo" parameterType="com.duobei.core.transaction.repayment.domain.criteria.RepaymentCriteria">
+    select <include refid="Base_Column_List"/>
+    from tt_borrow_cash_repayment repayment
+    where repayment.is_delete = 0 and repayment.product_id = #{productId}
+    <if test="repayNo != null and repayNo !=''">
+      and repayment.repay_no = #{repayNo}
+    </if>
+    <if test="userId != null">
+      and repayment.user_id = #{userId}
+    </if>
+    <if test="borrowIds != null">
+      and repayment.borrow_cash_id
+      <foreach collection="borrowIds" open=" in(" close=")" separator="," item="borrowId">
+        #{borrowId}
+      </foreach>
+    </if>
+    order by repayment.add_time
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+  <select id="getById" parameterType="Long" resultType="com.duobei.core.transaction.repayment.domain.BorrowCashRepayment">
+    select <include refid="Base_Column_List"/>
+    from tt_borrow_cash_repayment repayment
+    where repayment.is_delete = 0 and repayment.id = #{id}
+  </select>
 </mapper>

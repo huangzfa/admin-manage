@@ -184,6 +184,11 @@ public interface ZD {
     public String repayType = "repayType";
 	
 	/**
+	 *  续借状态
+	 */
+    public String renewalState = "renewalState";
+	
+	/**
 	 *  菜单类型-菜单- 
 	 */
     public String menuType_m = "m";
@@ -687,4 +692,24 @@ public interface ZD {
 	 *  还款类型-自动扣款- 
 	 */
     public int repayType_auto = 2;
+	
+	/**
+	 *  续借状态-新建- 
+	 */
+    public int renewalState_new = 0;
+	
+	/**
+	 *  续借状态-续期成功- 
+	 */
+    public int renewalState_success = 1;
+	
+	/**
+	 *  续借状态-处理中- 
+	 */
+    public int renewalState_handling = 2;
+	
+	/**
+	 *  续借状态-续期失败- 
+	 */
+    public int renewalState_fail = -1;
 }

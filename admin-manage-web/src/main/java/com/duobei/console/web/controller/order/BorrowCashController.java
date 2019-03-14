@@ -65,7 +65,18 @@ public class BorrowCashController extends BaseController {
     @RequiresPermissions(PERMISSIONPRE+"view")
     @ResponseBody
     @RequestMapping(value = "/borrowCashList")
-    public String getList(BorrowCashCriteria borrowCashCriteria) {
+    public String getList(BorrowCashCriteria borrowCashCriteria) throws TqException {
+        OperatorCredential credential = getCredential();
+        if( credential == null){
+            throw new TqException("登录过期，请重新登录");
+        }
+        //验证数据权限
+        if( borrowCashCriteria.getProductId() !=null ){
+            validAuthData(borrowCashCriteria.getProductId());
+        }else{
+            throw  new TqException("产品数据查询失败");
+
+        }
         if (borrowCashCriteria.getPagesize() == 0) {
             borrowCashCriteria.setPagesize(GlobalConfig.getPageSize());
         }

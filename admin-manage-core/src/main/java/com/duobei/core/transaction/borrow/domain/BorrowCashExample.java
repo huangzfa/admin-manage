@@ -876,73 +876,73 @@ public class BorrowCashExample {
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoIsNull() {
-            addCriterion("borrow_cash.rish_order_no is null");
+        public Criteria andRiskOrderNoIsNull() {
+            addCriterion("borrow_cash.risk_order_no is null");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoIsNotNull() {
-            addCriterion("borrow_cash.rish_order_no is not null");
+        public Criteria andRiskOrderNoIsNotNull() {
+            addCriterion("borrow_cash.risk_order_no is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoEqualTo(String value) {
-            addCriterion("borrow_cash.rish_order_no =", value, "rishOrderNo");
+        public Criteria andRiskOrderNoEqualTo(String value) {
+            addCriterion("borrow_cash.risk_order_no =", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoNotEqualTo(String value) {
-            addCriterion("borrow_cash.rish_order_no <>", value, "rishOrderNo");
+        public Criteria andRiskOrderNoNotEqualTo(String value) {
+            addCriterion("borrow_cash.risk_order_no <>", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoGreaterThan(String value) {
-            addCriterion("borrow_cash.rish_order_no >", value, "rishOrderNo");
+        public Criteria andRiskOrderNoGreaterThan(String value) {
+            addCriterion("borrow_cash.risk_order_no >", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoGreaterThanOrEqualTo(String value) {
-            addCriterion("borrow_cash.rish_order_no >=", value, "rishOrderNo");
+        public Criteria andRiskOrderNoGreaterThanOrEqualTo(String value) {
+            addCriterion("borrow_cash.risk_order_no >=", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoLessThan(String value) {
-            addCriterion("borrow_cash.rish_order_no <", value, "rishOrderNo");
+        public Criteria andRiskOrderNoLessThan(String value) {
+            addCriterion("borrow_cash.risk_order_no <", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoLessThanOrEqualTo(String value) {
-            addCriterion("borrow_cash.rish_order_no <=", value, "rishOrderNo");
+        public Criteria andRiskOrderNoLessThanOrEqualTo(String value) {
+            addCriterion("borrow_cash.risk_order_no <=", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoLike(String value) {
-            addCriterion("borrow_cash.rish_order_no like", value, "rishOrderNo");
+        public Criteria andRiskOrderNoLike(String value) {
+            addCriterion("borrow_cash.risk_order_no like", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoNotLike(String value) {
-            addCriterion("borrow_cash.rish_order_no not like", value, "rishOrderNo");
+        public Criteria andRiskOrderNoNotLike(String value) {
+            addCriterion("borrow_cash.risk_order_no not like", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoIn(List<String> values) {
-            addCriterion("borrow_cash.rish_order_no in", values, "rishOrderNo");
+        public Criteria andRiskOrderNoIn(List<String> values) {
+            addCriterion("borrow_cash.risk_order_no in", values, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoNotIn(List<String> values) {
-            addCriterion("borrow_cash.rish_order_no not in", values, "rishOrderNo");
+        public Criteria andRiskOrderNoNotIn(List<String> values) {
+            addCriterion("borrow_cash.risk_order_no not in", values, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoBetween(String value1, String value2) {
-            addCriterion("borrow_cash.rish_order_no between", value1, value2, "rishOrderNo");
+        public Criteria andRiskOrderNoBetween(String value1, String value2) {
+            addCriterion("borrow_cash.risk_order_no between", value1, value2, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoNotBetween(String value1, String value2) {
-            addCriterion("borrow_cash.rish_order_no not between", value1, value2, "rishOrderNo");
+        public Criteria andRiskOrderNoNotBetween(String value1, String value2) {
+            addCriterion("borrow_cash.risk_order_no not between", value1, value2, "riskOrderNo");
             return (Criteria) this;
         }
 

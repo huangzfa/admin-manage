@@ -46,7 +46,6 @@
     function getData(){
         var data = {
             'borrowNo':$('#borrowNo').val(),
-            'repayNo':$('#repayNo').val(),
 			'userName':$("#userName").val(),
 			'productId':$("#productId").val(),
 			'page':pageNum,
@@ -57,7 +56,7 @@
 		}
         hjnUtils.ajax({
             type:'post',
-            url:'${ctxA}/order/repayment/repaymentList',
+            url:'${ctxA}/order/renewal/renewalList',
             data:data,
             dataType:'json',
             success:function(data){
@@ -81,19 +80,15 @@
             }
         });
     }
-    function repayStateformater(value,row,index){
+    function renewwalStateformater(value,row,index){
         if(value=='0'){
             return "申请";
         }else if(value=='1'){
-            return "已结清";
+            return "续期成功";
         }else if(value=='2') {
-            return "打款中";
-        }else if(value=='3') {
-            return "打款失败";
-        }else if(value=='4') {
-            return "关闭";
-        }else if(value=='5') {
-            return "待还款";
+            return "处理中";
+        }else if(value=='-1') {
+            return "续借失败";
         }
         return '未知';
     }
@@ -102,7 +97,7 @@
 
         var opStr='';
         <shiro:hasPermission name="order:renewal:view">
-			opStr+='<a class="si-option-a" href="${ctxA}/order/repayment/form?id='+row.id+'&productId='+ row.productId+'">查看详情</a>';
+			opStr+='<a class="si-option-a" href="${ctxA}/order/renewal/form?id='+row.id+'&productId='+ row.productId+'">查看详情</a>';
         </shiro:hasPermission>
         return opStr;
     }
@@ -112,7 +107,7 @@
 </head>
 <body>
 <ul class="nav nav-tabs" style="margin-bottom: 5px;">
-	<li class="active"><a href="javascript:void(0);">还款订单</a></li>
+	<li class="active"><a href="javascript:void(0);">续期订单</a></li>
 </ul>
 <div class="breadcrumb form-search" style="margin-bottom:0;">
 	<ul class="ul-form _clearfix">
@@ -122,10 +117,6 @@
 			<input id="borrowNo" lass="input-large" type="text" value=""  />
 		</li>
 
-		<li>
-			<label>还款流水号：</label>
-			<input id="repayNo" lass="input-large" type="text" value=""  />
-		</li>
 
 		<li>
 			<label>注册手机号：</label>
@@ -149,18 +140,17 @@
 		   data-options="idField:'id',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
 		<thead>
 		<tr>
+			<th style="width: 10%" data-options="field:'userId',width:120,align:'center',halign:'center',fixed:true">user_id</th>
 			<th style="width: 10%" data-options="field:'borrowNo',width:120,align:'center',halign:'center',fixed:true">服务订单号</th>
-			<th style="width: 10%" data-options="field:'productName',width:160,align:'center',halign:'center',fixed:true">产品（平台）名称</th>
+			<th style="width: 7%" data-options="field:'productName',width:160,align:'center',halign:'center',fixed:true">产品（平台）名称</th>
 			<th style="width: 5%" data-options="field:'realName',width:160,align:'center',halign:'center',fixed:true">姓名</th>
 			<th style="width: 10%" data-options="field:'userName',width:160,align:'center',halign:'center',fixed:true">注册手机号</th>
-			<th style="width: 10%" data-options="field:'repayNo',width:160,align:'center',halign:'center',fixed:true">还款流水号</th>
-			<th style="width: 7%" data-options="field:'repayAmount',width:45,align:'center',halign:'center',fixed:true">当时到期实际应还</th>
-			<th style="width: 5%" data-options="field:'couponAmount',width:160,align:'center',halign:'center',fixed:true">优惠券抵扣</th>
-			<th style="width: 7%" data-options="field:'rebateAmount',width:45,align:'center',halign:'center',fixed:true">余额抵扣</th>
-			<th style="width: 7%" data-options="field:'repayActualAmount',width:160,align:'center',halign:'center',fixed:true">实际支付</th>
-			<th style="width: 7%" data-options="field:'accountNo',width:160,align:'center',halign:'center',fixed:true">还款账号</th>
-			<th style="width: 10%" data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">还款时间</th>
-			<th style="width: 7%" data-options="field:'repayState',width:45,align:'center',halign:'center',fixed:true,formatter:repayStateformater">状态</th>
+			<th style="width: 10%" data-options="field:'renewalNo',width:160,align:'center',halign:'center',fixed:true">续借流水号</th>
+			<th style="width: 7%" data-options="field:'capitalAmount',width:45,align:'center',halign:'center',fixed:true">归还本金</th>
+			<th style="width: 7%" data-options="field:'actualAmount',width:160,align:'center',halign:'center',fixed:true">实际支付</th>
+			<th style="width: 7%" data-options="field:'accountNo',width:160,align:'center',halign:'center',fixed:true">续期账号</th>
+			<th style="width: 10%" data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">续期时间</th>
+			<th style="width: 7%" data-options="field:'state',width:45,align:'center',halign:'center',fixed:true,formatter:renewwalStateformater">状态</th>
 			<th style="width: 10%"  data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
 		</tr>
 		</thead>

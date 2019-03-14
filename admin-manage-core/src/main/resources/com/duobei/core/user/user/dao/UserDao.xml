@@ -28,10 +28,31 @@
     </foreach>
   </select>
 
+  <select id="getUserAndIdCardMapByRepaymentUserIds" resultType="com.duobei.core.user.user.domain.vo.UserAndIdCardVo">
+    select <include refid="Base_Column_List"/> ,user_idcard.real_name,user_idcard.real_name_md5,user_idcard.real_name_encrypt
+    from pgy_user `user`
+    left join pgy_user_idcard user_idcard on `user`.id = user_idcard.user_id
+    where  `user`.is_delete = 0 and `user`.id
+    <foreach collection="repaymentData" open=" in(" close=")" separator="," item="repayment">
+      #{repayment.userId}
+    </foreach>
+  </select>
+
+
   <select id="getUserInfoVoById" resultType="com.duobei.core.user.user.domain.vo.UserInfoVo" parameterType="Long">
     select <include refid="Base_Column_List"/> ,user_idcard.real_name,user_idcard.real_name_md5,user_idcard.real_name_encrypt
     from pgy_user `user`
     left join pgy_user_idcard user_idcard on `user`.id = user_idcard.user_id
     where  `user`.is_delete = 0 and `user`.id = #{userId}
+  </select>
+
+  <select id="getUserAndIdCardMapByRenelwalUserIds" resultType="com.duobei.core.user.user.domain.vo.UserAndIdCardVo">
+    select <include refid="Base_Column_List"/> ,user_idcard.real_name,user_idcard.real_name_md5,user_idcard.real_name_encrypt
+    from pgy_user `user`
+    left join pgy_user_idcard user_idcard on `user`.id = user_idcard.user_id
+    where  `user`.is_delete = 0 and `user`.id
+    <foreach collection="renewalData" open=" in(" close=")" separator="," item="renewal">
+      #{renewal.userId}
+    </foreach>
   </select>
 </mapper>

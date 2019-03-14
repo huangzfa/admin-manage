@@ -149,7 +149,7 @@
 
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/order/repayment/list?productId=${userInfo.product.id}">还款订单列表</a></li>
+    <li><a href="${ctxA}/order/renewal/list?productId=${userInfo.product.id}">续借列表</a></li>
 </ul>
 <div class="si-warp">
     <br/>
@@ -158,7 +158,7 @@
         <form:hidden path="id" />--%>
      <div class="control-group">
          <div class="user_info" style="margin:0 auto">
-          <h4>还款人信息</h4>
+          <h4>续期人信息</h4>
                 <table class="dataintable" style="width: 50%">
                     <thead class="info_form_name">
                         <th>user_id</th>
@@ -182,32 +182,32 @@
                 <%--<form:input path="menuName" htmlEscape="false" maxlength="50" class="input-xlarge"/>--%>
             </div>
             <div class="borrow_info" style="margin:0 auto">
-            <h4>还款信息</h4>
+            <h4>续期信息</h4>
                 <table class="dataintable">
                     <thead class="info_form_name">
                     <th>服务订单号</th>
-                    <th>还款流水号</th>
-                    <th>还款状态</th>
-                    <th>还款时间</th>
-                    <th>还款总额</th>
-                    <th>优惠券抵扣</th>
-                    <th>余额抵扣</th>
+                    <th>续期流水号</th>
+                    <th>续期状态</th>
+                    <th>续期时间</th>
+                    <th>还上期本金</th>
+                    <th>本期手续费</th>
+                    <th>逾期费</th>
                     <th>实际支付</th>
-                    <th>还款账号</th>
-                    <th>还款失败原因</th>
+                    <th>续期账号</th>
+                    <th>续期失败原因</th>
                     </thead>
                     <tbody>
                     <tr>
-                        <td>${repayment.borrowCash.borrowNo}</td>
-                        <td>${repayment.repayNo}</td>
-                        <td>${cfg:getDictLabel('repayState',repayment.repayState)}</td>
-                        <td><fmt:formatDate value="${repayment.addTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                        <td>${repayment.repayAmount}</td>
-                        <td>${repayment.couponAmount}</td>
-                        <td>${repayment.rebateAmount}</td>
-                        <td>${repayment.repayActualAmount}</td>
-                        <td>${repayment.accountName}${repayment.accountNo}</td>
-                        <td>${repayment.failReason}</td>
+                        <td>${renewal.borrowCash.borrowNo}</td>
+                        <td>${renewal.renewalNo}</td>
+                        <td>${cfg:getDictLabel('renewalState',renewal.state)}</td>
+                        <td><fmt:formatDate value="${renewal.addTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                        <td>${renewal.capitalAmount}</td>
+                        <td>${renewal.renewalPoundage}</td>
+                        <td>${renewal.renewalOverdueAmount}</td>
+                        <td>${renewal.actualAmount}</td>
+                        <td>${renewal.accountName}${renewal.accountNo}</td>
+                        <td>${renewal.failReason}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -217,7 +217,7 @@
 
         <div class="form-actions" style="text-align: center">
 
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/order/repayment/list?productId=${userInfo.product.id}'"/>
+            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/order/renewal/list?productId=${userInfo.product.id}'"/>
         </div>
  <%--   </form:form>--%>
 

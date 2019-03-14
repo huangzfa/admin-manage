@@ -2,13 +2,15 @@ package com.duobei.core.transaction.repayment.domain.criteria;
 
 import com.duobei.common.util.Pagination;
 
+import java.util.List;
+
 /**
  * @author litianxiong
  * @description
  * @date 2019/3/13
  */
 public class RepaymentCriteria extends Pagination {
-    private String borroNo;
+    private String borrowNo;
 
     private String repayNo;
 
@@ -16,14 +18,24 @@ public class RepaymentCriteria extends Pagination {
 
     private Long userId;
 
+    private List<Long> borrowIds;
+
     private Integer productId;
 
-    public String getBorroNo() {
-        return borroNo;
+    public List<Long> getBorrowIds() {
+        return borrowIds;
     }
 
-    public void setBorroNo(String borroNo) {
-        this.borroNo = borroNo;
+    public void setBorrowIds(List<Long> borrowIds) {
+        this.borrowIds = borrowIds;
+    }
+
+    public String getBorrowNo() {
+        return borrowNo;
+    }
+
+    public void setBorrowNo(String borrowNo) {
+        this.borrowNo = borrowNo;
     }
 
     public String getRepayNo() {

@@ -13,7 +13,7 @@
     <result column="borrow_cash_risk_state" jdbcType="TINYINT" property="riskState" />
     <result column="borrow_cash_risk_review_flag" jdbcType="BIT" property="riskReviewFlag" />
     <result column="borrow_cash_risk_review_state" jdbcType="TINYINT" property="riskReviewState" />
-    <result column="borrow_cash_rish_order_no" jdbcType="VARCHAR" property="rishOrderNo" />
+    <result column="borrow_cash_risk_order_no" jdbcType="VARCHAR" property="riskOrderNo" />
     <result column="borrow_cash_risk_scene_code" jdbcType="VARCHAR" property="riskSceneCode" />
     <result column="borrow_cash_gmt_risk_req" jdbcType="TIMESTAMP" property="gmtRiskReq" />
     <result column="borrow_cash_gmt_risk_resp" jdbcType="TIMESTAMP" property="gmtRiskResp" />
@@ -135,7 +135,7 @@
     borrow_cash.borrow_no as borrow_cash_borrow_no, borrow_cash.biz_code as borrow_cash_biz_code, 
     borrow_cash.borrow_days as borrow_cash_borrow_days, borrow_cash.borrow_state as borrow_cash_borrow_state, 
     borrow_cash.risk_state as borrow_cash_risk_state, borrow_cash.risk_review_flag as borrow_cash_risk_review_flag, 
-    borrow_cash.risk_review_state as borrow_cash_risk_review_state, borrow_cash.rish_order_no as borrow_cash_rish_order_no, 
+    borrow_cash.risk_review_state as borrow_cash_risk_review_state, borrow_cash.risk_order_no as borrow_cash_risk_order_no,
     borrow_cash.risk_scene_code as borrow_cash_risk_scene_code, borrow_cash.gmt_risk_req as borrow_cash_gmt_risk_req, 
     borrow_cash.gmt_risk_resp as borrow_cash_gmt_risk_resp, borrow_cash.gmt_risk_review_finish as borrow_cash_gmt_risk_review_finish, 
     borrow_cash.gmt_risk_finish as borrow_cash_gmt_risk_finish, borrow_cash.ups_order_no as borrow_cash_ups_order_no, 
@@ -202,7 +202,7 @@
     insert into tt_borrow_cash (product_id, user_id, uk_flag, 
       borrow_no, biz_code, borrow_days, 
       borrow_state, risk_state, risk_review_flag, 
-      risk_review_state, rish_order_no, risk_scene_code, 
+      risk_review_state, risk_order_no, risk_scene_code,
       gmt_risk_req, gmt_risk_resp, gmt_risk_review_finish, 
       gmt_risk_finish, ups_order_no, ups_third_order_no, 
       gmt_ups_req, gmt_ups_finish, account_type, 
@@ -225,7 +225,7 @@
     values (#{productId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{ukFlag,jdbcType=BIGINT}, 
       #{borrowNo,jdbcType=VARCHAR}, #{bizCode,jdbcType=VARCHAR}, #{borrowDays,jdbcType=TINYINT}, 
       #{borrowState,jdbcType=TINYINT}, #{riskState,jdbcType=TINYINT}, #{riskReviewFlag,jdbcType=BIT}, 
-      #{riskReviewState,jdbcType=TINYINT}, #{rishOrderNo,jdbcType=VARCHAR}, #{riskSceneCode,jdbcType=VARCHAR}, 
+      #{riskReviewState,jdbcType=TINYINT}, #{riskOrderNo,jdbcType=VARCHAR}, #{riskSceneCode,jdbcType=VARCHAR},
       #{gmtRiskReq,jdbcType=TIMESTAMP}, #{gmtRiskResp,jdbcType=TIMESTAMP}, #{gmtRiskReviewFinish,jdbcType=TIMESTAMP}, 
       #{gmtRiskFinish,jdbcType=TIMESTAMP}, #{upsOrderNo,jdbcType=VARCHAR}, #{upsThirdOrderNo,jdbcType=VARCHAR}, 
       #{gmtUpsReq,jdbcType=TIMESTAMP}, #{gmtUpsFinish,jdbcType=TIMESTAMP}, #{accountType,jdbcType=TINYINT}, 
@@ -282,8 +282,8 @@
       <if test="riskReviewState != null">
         risk_review_state,
       </if>
-      <if test="rishOrderNo != null">
-        rish_order_no,
+      <if test="riskOrderNo != null">
+        risk_order_no,
       </if>
       <if test="riskSceneCode != null">
         risk_scene_code,
@@ -485,8 +485,8 @@
       <if test="riskReviewState != null">
         #{riskReviewState,jdbcType=TINYINT},
       </if>
-      <if test="rishOrderNo != null">
-        #{rishOrderNo,jdbcType=VARCHAR},
+      <if test="riskOrderNo != null">
+        #{riskOrderNo,jdbcType=VARCHAR},
       </if>
       <if test="riskSceneCode != null">
         #{riskSceneCode,jdbcType=VARCHAR},
@@ -700,8 +700,8 @@
       <if test="record.riskReviewState != null">
         borrow_cash.risk_review_state = #{record.riskReviewState,jdbcType=TINYINT},
       </if>
-      <if test="record.rishOrderNo != null">
-        borrow_cash.rish_order_no = #{record.rishOrderNo,jdbcType=VARCHAR},
+      <if test="record.riskOrderNo != null">
+        borrow_cash.risk_order_no = #{record.riskOrderNo,jdbcType=VARCHAR},
       </if>
       <if test="record.riskSceneCode != null">
         borrow_cash.risk_scene_code = #{record.riskSceneCode,jdbcType=VARCHAR},
@@ -889,7 +889,7 @@
       borrow_cash.risk_state = #{record.riskState,jdbcType=TINYINT},
       borrow_cash.risk_review_flag = #{record.riskReviewFlag,jdbcType=BIT},
       borrow_cash.risk_review_state = #{record.riskReviewState,jdbcType=TINYINT},
-      borrow_cash.rish_order_no = #{record.rishOrderNo,jdbcType=VARCHAR},
+      borrow_cash.risk_order_no = #{record.riskOrderNo,jdbcType=VARCHAR},
       borrow_cash.risk_scene_code = #{record.riskSceneCode,jdbcType=VARCHAR},
       borrow_cash.gmt_risk_req = #{record.gmtRiskReq,jdbcType=TIMESTAMP},
       borrow_cash.gmt_risk_resp = #{record.gmtRiskResp,jdbcType=TIMESTAMP},
@@ -983,8 +983,8 @@
       <if test="riskReviewState != null">
         risk_review_state = #{riskReviewState,jdbcType=TINYINT},
       </if>
-      <if test="rishOrderNo != null">
-        rish_order_no = #{rishOrderNo,jdbcType=VARCHAR},
+      <if test="riskOrderNo != null">
+        risk_order_no = #{riskOrderNo,jdbcType=VARCHAR},
       </if>
       <if test="riskSceneCode != null">
         risk_scene_code = #{riskSceneCode,jdbcType=VARCHAR},
@@ -1169,7 +1169,7 @@
       risk_state = #{riskState,jdbcType=TINYINT},
       risk_review_flag = #{riskReviewFlag,jdbcType=BIT},
       risk_review_state = #{riskReviewState,jdbcType=TINYINT},
-      rish_order_no = #{rishOrderNo,jdbcType=VARCHAR},
+      risk_order_no = #{riskOrderNo,jdbcType=VARCHAR},
       risk_scene_code = #{riskSceneCode,jdbcType=VARCHAR},
       gmt_risk_req = #{gmtRiskReq,jdbcType=TIMESTAMP},
       gmt_risk_resp = #{gmtRiskResp,jdbcType=TIMESTAMP},

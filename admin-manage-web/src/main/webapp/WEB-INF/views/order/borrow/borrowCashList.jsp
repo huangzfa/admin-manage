@@ -46,7 +46,7 @@
     function getData(){
         var data = {
             'borrowNo':$('#borrowNo').val(),
-			'mobile':$("#mobile").val(),
+			'userName':$("#userName").val(),
 			'productId':$("#productId").val(),
 			'page':pageNum,
 			'pagesize':pageSize,
@@ -138,7 +138,7 @@
 
 		<li>
 			<label>注册手机号：</label>
-			<input id="mobile" class="input-large" type="text" value="" />
+			<input id="userName" class="input-large" type="text" value="" />
 		</li>
 
 		<li>
@@ -162,7 +162,8 @@
 			<th style="width: 10%" data-options="field:'productName',width:160,align:'center',halign:'center',fixed:true">产品（平台）名称</th>
 			<th style="width: 5%" data-options="field:'userId',width:160,align:'center',halign:'center',fixed:true">user_id</th>
 			<th style="width: 5%" data-options="field:'realName',width:160,align:'center',halign:'center',fixed:true">姓名</th>
-			<th style="width: 10%" data-options="field:'userName',width:160,align:'center',halign:'center',fixed:true">注册手机号</th>
+			<th style="
+			width: 10%" data-options="field:'userName',width:160,align:'center',halign:'center',fixed:true">注册手机号</th>
 			<th style="width: 7%" data-options="field:'amount',width:45,align:'center',halign:'center',fixed:true">借款金额</th>
 			<th style="width: 5%" data-options="field:'borrowDays',width:160,align:'center',halign:'center',fixed:true">天数</th>
 			<th style="width: 7%" data-options="field:'poundage',width:45,align:'center',halign:'center',fixed:true">交易服务费</th>

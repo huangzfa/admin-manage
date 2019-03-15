@@ -10,12 +10,24 @@ import lombok.Data;
  */
 public class BorrowCashCriteria extends Pagination {
 
+    /**
+     * 服务化订单号
+     */
     private String borrowNo;
 
-    private String mobile;
+    /**
+     * 注册手机号
+     */
+    private String userName;
 
+    /**
+     * 产品id
+     */
     private Integer productId;
 
+    /**
+     * 用户id
+     */
     private Long userId;
 
     public String getBorrowNo() {
@@ -26,12 +38,12 @@ public class BorrowCashCriteria extends Pagination {
         this.borrowNo = borrowNo;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Integer getProductId() {

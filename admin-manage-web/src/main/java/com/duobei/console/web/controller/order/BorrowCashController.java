@@ -104,10 +104,10 @@ public class BorrowCashController extends BaseController {
             borrowCash = borrowCashService.getById(borrowCash.getId());
             if (borrowCash != null) {
                 //查询借款人信息
-                UserInfoVo userAndIdCardVo = userService.getUserInfoById(borrowCash.getUserId());
+                UserInfoVo userInfoVo = userService.getUserInfoById(borrowCash.getUserId());
                 //查询订单信息
-                ConsumdebtOrder consumdebtOrder = consumdebtOrderService.getByUserIdAndBorrowId(userAndIdCardVo.getId(),borrowCash.getId());
-                model.addAttribute("userInfo",userAndIdCardVo);
+                ConsumdebtOrder consumdebtOrder = consumdebtOrderService.getByUserIdAndBorrowId(userInfoVo.getId(),borrowCash.getId());
+                model.addAttribute("userInfo",userInfoVo);
                 model.addAttribute("consumdebtOrder",consumdebtOrder);
                 model.addAttribute("borrowCash",borrowCash);
             }

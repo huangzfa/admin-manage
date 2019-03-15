@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.transaction.overdue.dao.mapper.OverdueDerateRequestMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.transaction.overdue.domain.OverdueDerateRequest">
+    <id column="overdue_derate_request_id" jdbcType="BIGINT" property="id" />
+    <result column="overdue_derate_request_product_id" jdbcType="INTEGER" property="productId" />
+    <result column="overdue_derate_request_user_id" jdbcType="BIGINT" property="userId" />
+    <result column="overdue_derate_request_pool_id" jdbcType="BIGINT" property="poolId" />
+    <result column="overdue_derate_request_borrow_no" jdbcType="VARCHAR" property="borrowNo" />
+    <result column="overdue_derate_request_collect_system_id" jdbcType="VARCHAR" property="collectSystemId" />
+    <result column="overdue_derate_request_creator" jdbcType="BIGINT" property="creator" />
+    <result column="overdue_derate_request_creator_name" jdbcType="VARCHAR" property="creatorName" />
+    <result column="overdue_derate_request_creator_collection_center_id" jdbcType="BIGINT" property="creatorCollectionCenterId" />
+    <result column="overdue_derate_request_creator_collection_center" jdbcType="VARCHAR" property="creatorCollectionCenter" />
+    <result column="overdue_derate_request_approver" jdbcType="BIGINT" property="approver" />
+    <result column="overdue_derate_request_approver_name" jdbcType="VARCHAR" property="approverName" />
+    <result column="overdue_derate_request_approve_time" jdbcType="TIMESTAMP" property="approveTime" />
+    <result column="overdue_derate_request_approve_status" jdbcType="TINYINT" property="approveStatus" />
+    <result column="overdue_derate_request_is_avoid_approve" jdbcType="BIT" property="isAvoidApprove" />
+    <result column="overdue_derate_request_derate_amount" jdbcType="BIGINT" property="derateAmount" />
+    <result column="overdue_derate_request_real_derate_amount" jdbcType="BIGINT" property="realDerateAmount" />
+    <result column="overdue_derate_request_overdue_amount" jdbcType="BIGINT" property="overdueAmount" />
+    <result column="overdue_derate_request_real_overdue_amount" jdbcType="BIGINT" property="realOverdueAmount" />
+    <result column="overdue_derate_request_sum_overdue_amount" jdbcType="BIGINT" property="sumOverdueAmount" />
+    <result column="overdue_derate_request_derate_rate" jdbcType="DECIMAL" property="derateRate" />
+    <result column="overdue_derate_request_unpaid_amount" jdbcType="BIGINT" property="unpaidAmount" />
+    <result column="overdue_derate_request_fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="overdue_derate_request_add_time_ms" jdbcType="BIGINT" property="addTimeMs" />
+    <result column="overdue_derate_request_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="overdue_derate_request_is_delete" jdbcType="BIGINT" property="isDelete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    overdue_derate_request.id as overdue_derate_request_id, overdue_derate_request.product_id as overdue_derate_request_product_id, 
+    overdue_derate_request.user_id as overdue_derate_request_user_id, overdue_derate_request.pool_id as overdue_derate_request_pool_id, 
+    overdue_derate_request.borrow_no as overdue_derate_request_borrow_no, overdue_derate_request.collect_system_id as overdue_derate_request_collect_system_id, 
+    overdue_derate_request.creator as overdue_derate_request_creator, overdue_derate_request.creator_name as overdue_derate_request_creator_name, 
+    overdue_derate_request.creator_collection_center_id as overdue_derate_request_creator_collection_center_id, 
+    overdue_derate_request.creator_collection_center as overdue_derate_request_creator_collection_center, 
+    overdue_derate_request.approver as overdue_derate_request_approver, overdue_derate_request.approver_name as overdue_derate_request_approver_name, 
+    overdue_derate_request.approve_time as overdue_derate_request_approve_time, overdue_derate_request.approve_status as overdue_derate_request_approve_status, 
+    overdue_derate_request.is_avoid_approve as overdue_derate_request_is_avoid_approve, 
+    overdue_derate_request.derate_amount as overdue_derate_request_derate_amount, overdue_derate_request.real_derate_amount as overdue_derate_request_real_derate_amount, 
+    overdue_derate_request.overdue_amount as overdue_derate_request_overdue_amount, overdue_derate_request.real_overdue_amount as overdue_derate_request_real_overdue_amount, 
+    overdue_derate_request.sum_overdue_amount as overdue_derate_request_sum_overdue_amount, 
+    overdue_derate_request.derate_rate as overdue_derate_request_derate_rate, overdue_derate_request.unpaid_amount as overdue_derate_request_unpaid_amount, 
+    overdue_derate_request.fail_reason as overdue_derate_request_fail_reason, overdue_derate_request.add_time_ms as overdue_derate_request_add_time_ms, 
+    overdue_derate_request.add_time as overdue_derate_request_add_time, overdue_derate_request.is_delete as overdue_derate_request_is_delete
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.transaction.overdue.domain.OverdueDerateRequestExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tt_overdue_derate_request overdue_derate_request
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tt_overdue_derate_request overdue_derate_request
+    where overdue_derate_request.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tt_overdue_derate_request
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.transaction.overdue.domain.OverdueDerateRequestExample">
+    delete from tt_overdue_derate_request overdue_derate_request
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.transaction.overdue.domain.OverdueDerateRequest">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tt_overdue_derate_request (product_id, user_id, pool_id, 
+      borrow_no, collect_system_id, creator, 
+      creator_name, creator_collection_center_id, 
+      creator_collection_center, approver, approver_name, 
+      approve_time, approve_status, is_avoid_approve, 
+      derate_amount, real_derate_amount, overdue_amount, 
+      real_overdue_amount, sum_overdue_amount, derate_rate, 
+      unpaid_amount, fail_reason, add_time_ms, 
+      add_time, is_delete)
+    values (#{productId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{poolId,jdbcType=BIGINT}, 
+      #{borrowNo,jdbcType=VARCHAR}, #{collectSystemId,jdbcType=VARCHAR}, #{creator,jdbcType=BIGINT}, 
+      #{creatorName,jdbcType=VARCHAR}, #{creatorCollectionCenterId,jdbcType=BIGINT}, 
+      #{creatorCollectionCenter,jdbcType=VARCHAR}, #{approver,jdbcType=BIGINT}, #{approverName,jdbcType=VARCHAR}, 
+      #{approveTime,jdbcType=TIMESTAMP}, #{approveStatus,jdbcType=TINYINT}, #{isAvoidApprove,jdbcType=BIT}, 
+      #{derateAmount,jdbcType=BIGINT}, #{realDerateAmount,jdbcType=BIGINT}, #{overdueAmount,jdbcType=BIGINT}, 
+      #{realOverdueAmount,jdbcType=BIGINT}, #{sumOverdueAmount,jdbcType=BIGINT}, #{derateRate,jdbcType=DECIMAL}, 
+      #{unpaidAmount,jdbcType=BIGINT}, #{failReason,jdbcType=VARCHAR}, #{addTimeMs,jdbcType=BIGINT}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.transaction.overdue.domain.OverdueDerateRequest">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tt_overdue_derate_request
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="poolId != null">
+        pool_id,
+      </if>
+      <if test="borrowNo != null">
+        borrow_no,
+      </if>
+      <if test="collectSystemId != null">
+        collect_system_id,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="creatorName != null">
+        creator_name,
+      </if>
+      <if test="creatorCollectionCenterId != null">
+        creator_collection_center_id,
+      </if>
+      <if test="creatorCollectionCenter != null">
+        creator_collection_center,
+      </if>
+      <if test="approver != null">
+        approver,
+      </if>
+      <if test="approverName != null">
+        approver_name,
+      </if>
+      <if test="approveTime != null">
+        approve_time,
+      </if>
+      <if test="approveStatus != null">
+        approve_status,
+      </if>
+      <if test="isAvoidApprove != null">
+        is_avoid_approve,
+      </if>
+      <if test="derateAmount != null">
+        derate_amount,
+      </if>
+      <if test="realDerateAmount != null">
+        real_derate_amount,
+      </if>
+      <if test="overdueAmount != null">
+        overdue_amount,
+      </if>
+      <if test="realOverdueAmount != null">
+        real_overdue_amount,
+      </if>
+      <if test="sumOverdueAmount != null">
+        sum_overdue_amount,
+      </if>
+      <if test="derateRate != null">
+        derate_rate,
+      </if>
+      <if test="unpaidAmount != null">
+        unpaid_amount,
+      </if>
+      <if test="failReason != null">
+        fail_reason,
+      </if>
+      <if test="addTimeMs != null">
+        add_time_ms,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="poolId != null">
+        #{poolId,jdbcType=BIGINT},
+      </if>
+      <if test="borrowNo != null">
+        #{borrowNo,jdbcType=VARCHAR},
+      </if>
+      <if test="collectSystemId != null">
+        #{collectSystemId,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="creatorName != null">
+        #{creatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorCollectionCenterId != null">
+        #{creatorCollectionCenterId,jdbcType=BIGINT},
+      </if>
+      <if test="creatorCollectionCenter != null">
+        #{creatorCollectionCenter,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null">
+        #{approver,jdbcType=BIGINT},
+      </if>
+      <if test="approverName != null">
+        #{approverName,jdbcType=VARCHAR},
+      </if>
+      <if test="approveTime != null">
+        #{approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveStatus != null">
+        #{approveStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isAvoidApprove != null">
+        #{isAvoidApprove,jdbcType=BIT},
+      </if>
+      <if test="derateAmount != null">
+        #{derateAmount,jdbcType=BIGINT},
+      </if>
+      <if test="realDerateAmount != null">
+        #{realDerateAmount,jdbcType=BIGINT},
+      </if>
+      <if test="overdueAmount != null">
+        #{overdueAmount,jdbcType=BIGINT},
+      </if>
+      <if test="realOverdueAmount != null">
+        #{realOverdueAmount,jdbcType=BIGINT},
+      </if>
+      <if test="sumOverdueAmount != null">
+        #{sumOverdueAmount,jdbcType=BIGINT},
+      </if>
+      <if test="derateRate != null">
+        #{derateRate,jdbcType=DECIMAL},
+      </if>
+      <if test="unpaidAmount != null">
+        #{unpaidAmount,jdbcType=BIGINT},
+      </if>
+      <if test="failReason != null">
+        #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="addTimeMs != null">
+        #{addTimeMs,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.transaction.overdue.domain.OverdueDerateRequestExample" resultType="java.lang.Long">
+    select count(*) from tt_overdue_derate_request overdue_derate_request
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tt_overdue_derate_request overdue_derate_request
+    <set>
+      <if test="record.id != null">
+        overdue_derate_request.id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.productId != null">
+        overdue_derate_request.product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        overdue_derate_request.user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.poolId != null">
+        overdue_derate_request.pool_id = #{record.poolId,jdbcType=BIGINT},
+      </if>
+      <if test="record.borrowNo != null">
+        overdue_derate_request.borrow_no = #{record.borrowNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.collectSystemId != null">
+        overdue_derate_request.collect_system_id = #{record.collectSystemId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null">
+        overdue_derate_request.creator = #{record.creator,jdbcType=BIGINT},
+      </if>
+      <if test="record.creatorName != null">
+        overdue_derate_request.creator_name = #{record.creatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creatorCollectionCenterId != null">
+        overdue_derate_request.creator_collection_center_id = #{record.creatorCollectionCenterId,jdbcType=BIGINT},
+      </if>
+      <if test="record.creatorCollectionCenter != null">
+        overdue_derate_request.creator_collection_center = #{record.creatorCollectionCenter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approver != null">
+        overdue_derate_request.approver = #{record.approver,jdbcType=BIGINT},
+      </if>
+      <if test="record.approverName != null">
+        overdue_derate_request.approver_name = #{record.approverName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveTime != null">
+        overdue_derate_request.approve_time = #{record.approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.approveStatus != null">
+        overdue_derate_request.approve_status = #{record.approveStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.isAvoidApprove != null">
+        overdue_derate_request.is_avoid_approve = #{record.isAvoidApprove,jdbcType=BIT},
+      </if>
+      <if test="record.derateAmount != null">
+        overdue_derate_request.derate_amount = #{record.derateAmount,jdbcType=BIGINT},
+      </if>
+      <if test="record.realDerateAmount != null">
+        overdue_derate_request.real_derate_amount = #{record.realDerateAmount,jdbcType=BIGINT},
+      </if>
+      <if test="record.overdueAmount != null">
+        overdue_derate_request.overdue_amount = #{record.overdueAmount,jdbcType=BIGINT},
+      </if>
+      <if test="record.realOverdueAmount != null">
+        overdue_derate_request.real_overdue_amount = #{record.realOverdueAmount,jdbcType=BIGINT},
+      </if>
+      <if test="record.sumOverdueAmount != null">
+        overdue_derate_request.sum_overdue_amount = #{record.sumOverdueAmount,jdbcType=BIGINT},
+      </if>
+      <if test="record.derateRate != null">
+        overdue_derate_request.derate_rate = #{record.derateRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.unpaidAmount != null">
+        overdue_derate_request.unpaid_amount = #{record.unpaidAmount,jdbcType=BIGINT},
+      </if>
+      <if test="record.failReason != null">
+        overdue_derate_request.fail_reason = #{record.failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTimeMs != null">
+        overdue_derate_request.add_time_ms = #{record.addTimeMs,jdbcType=BIGINT},
+      </if>
+      <if test="record.addTime != null">
+        overdue_derate_request.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDelete != null">
+        overdue_derate_request.is_delete = #{record.isDelete,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tt_overdue_derate_request overdue_derate_request
+    set overdue_derate_request.id = #{record.id,jdbcType=BIGINT},
+      overdue_derate_request.product_id = #{record.productId,jdbcType=INTEGER},
+      overdue_derate_request.user_id = #{record.userId,jdbcType=BIGINT},
+      overdue_derate_request.pool_id = #{record.poolId,jdbcType=BIGINT},
+      overdue_derate_request.borrow_no = #{record.borrowNo,jdbcType=VARCHAR},
+      overdue_derate_request.collect_system_id = #{record.collectSystemId,jdbcType=VARCHAR},
+      overdue_derate_request.creator = #{record.creator,jdbcType=BIGINT},
+      overdue_derate_request.creator_name = #{record.creatorName,jdbcType=VARCHAR},
+      overdue_derate_request.creator_collection_center_id = #{record.creatorCollectionCenterId,jdbcType=BIGINT},
+      overdue_derate_request.creator_collection_center = #{record.creatorCollectionCenter,jdbcType=VARCHAR},
+      overdue_derate_request.approver = #{record.approver,jdbcType=BIGINT},
+      overdue_derate_request.approver_name = #{record.approverName,jdbcType=VARCHAR},
+      overdue_derate_request.approve_time = #{record.approveTime,jdbcType=TIMESTAMP},
+      overdue_derate_request.approve_status = #{record.approveStatus,jdbcType=TINYINT},
+      overdue_derate_request.is_avoid_approve = #{record.isAvoidApprove,jdbcType=BIT},
+      overdue_derate_request.derate_amount = #{record.derateAmount,jdbcType=BIGINT},
+      overdue_derate_request.real_derate_amount = #{record.realDerateAmount,jdbcType=BIGINT},
+      overdue_derate_request.overdue_amount = #{record.overdueAmount,jdbcType=BIGINT},
+      overdue_derate_request.real_overdue_amount = #{record.realOverdueAmount,jdbcType=BIGINT},
+      overdue_derate_request.sum_overdue_amount = #{record.sumOverdueAmount,jdbcType=BIGINT},
+      overdue_derate_request.derate_rate = #{record.derateRate,jdbcType=DECIMAL},
+      overdue_derate_request.unpaid_amount = #{record.unpaidAmount,jdbcType=BIGINT},
+      overdue_derate_request.fail_reason = #{record.failReason,jdbcType=VARCHAR},
+      overdue_derate_request.add_time_ms = #{record.addTimeMs,jdbcType=BIGINT},
+      overdue_derate_request.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      overdue_derate_request.is_delete = #{record.isDelete,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.transaction.overdue.domain.OverdueDerateRequest">
+    update tt_overdue_derate_request
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="poolId != null">
+        pool_id = #{poolId,jdbcType=BIGINT},
+      </if>
+      <if test="borrowNo != null">
+        borrow_no = #{borrowNo,jdbcType=VARCHAR},
+      </if>
+      <if test="collectSystemId != null">
+        collect_system_id = #{collectSystemId,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="creatorName != null">
+        creator_name = #{creatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorCollectionCenterId != null">
+        creator_collection_center_id = #{creatorCollectionCenterId,jdbcType=BIGINT},
+      </if>
+      <if test="creatorCollectionCenter != null">
+        creator_collection_center = #{creatorCollectionCenter,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null">
+        approver = #{approver,jdbcType=BIGINT},
+      </if>
+      <if test="approverName != null">
+        approver_name = #{approverName,jdbcType=VARCHAR},
+      </if>
+      <if test="approveTime != null">
+        approve_time = #{approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveStatus != null">
+        approve_status = #{approveStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isAvoidApprove != null">
+        is_avoid_approve = #{isAvoidApprove,jdbcType=BIT},
+      </if>
+      <if test="derateAmount != null">
+        derate_amount = #{derateAmount,jdbcType=BIGINT},
+      </if>
+      <if test="realDerateAmount != null">
+        real_derate_amount = #{realDerateAmount,jdbcType=BIGINT},
+      </if>
+      <if test="overdueAmount != null">
+        overdue_amount = #{overdueAmount,jdbcType=BIGINT},
+      </if>
+      <if test="realOverdueAmount != null">
+        real_overdue_amount = #{realOverdueAmount,jdbcType=BIGINT},
+      </if>
+      <if test="sumOverdueAmount != null">
+        sum_overdue_amount = #{sumOverdueAmount,jdbcType=BIGINT},
+      </if>
+      <if test="derateRate != null">
+        derate_rate = #{derateRate,jdbcType=DECIMAL},
+      </if>
+      <if test="unpaidAmount != null">
+        unpaid_amount = #{unpaidAmount,jdbcType=BIGINT},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="addTimeMs != null">
+        add_time_ms = #{addTimeMs,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.transaction.overdue.domain.OverdueDerateRequest">
+    update tt_overdue_derate_request
+    set product_id = #{productId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      pool_id = #{poolId,jdbcType=BIGINT},
+      borrow_no = #{borrowNo,jdbcType=VARCHAR},
+      collect_system_id = #{collectSystemId,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=BIGINT},
+      creator_name = #{creatorName,jdbcType=VARCHAR},
+      creator_collection_center_id = #{creatorCollectionCenterId,jdbcType=BIGINT},
+      creator_collection_center = #{creatorCollectionCenter,jdbcType=VARCHAR},
+      approver = #{approver,jdbcType=BIGINT},
+      approver_name = #{approverName,jdbcType=VARCHAR},
+      approve_time = #{approveTime,jdbcType=TIMESTAMP},
+      approve_status = #{approveStatus,jdbcType=TINYINT},
+      is_avoid_approve = #{isAvoidApprove,jdbcType=BIT},
+      derate_amount = #{derateAmount,jdbcType=BIGINT},
+      real_derate_amount = #{realDerateAmount,jdbcType=BIGINT},
+      overdue_amount = #{overdueAmount,jdbcType=BIGINT},
+      real_overdue_amount = #{realOverdueAmount,jdbcType=BIGINT},
+      sum_overdue_amount = #{sumOverdueAmount,jdbcType=BIGINT},
+      derate_rate = #{derateRate,jdbcType=DECIMAL},
+      unpaid_amount = #{unpaidAmount,jdbcType=BIGINT},
+      fail_reason = #{failReason,jdbcType=VARCHAR},
+      add_time_ms = #{addTimeMs,jdbcType=BIGINT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

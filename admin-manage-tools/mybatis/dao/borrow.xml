@@ -24,9 +24,9 @@
 						userId="root"
 						password="Mi&amp;rong369" />
 
-		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.transaction.renewal.domain" />
-		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.transaction.renewal.dao.mapper" />
-		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.transaction.renewal.dao.mapper" type="XMLMAPPER" />
+		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.transaction.overdue.domain" />
+		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.transaction.overdue.dao.mapper" />
+		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.transaction.overdue.dao.mapper" type="XMLMAPPER" />
 
 		<!-- 借款 -->
 	<!--	<table tableName="tt_borrow_cash" domainObjectName="BorrowCash" alias="borrow_cash">
@@ -34,11 +34,21 @@
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>-->
 		<!-- 续借 -->
-		<table tableName="tt_borrow_cash_renewal" domainObjectName="BorrowCashRenewal" alias="renewal">
+	<!--	<table tableName="tt_borrow_cash_renewal" domainObjectName="BorrowCashRenewal" alias="renewal">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>-->
+		<!-- 逾期 -->
+		<table tableName="tt_overdue_derate_request" domainObjectName="OverdueDerateRequest" alias="overdue_derate_request">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>
-<!--		<table tableName="tt_consumdebt_order" domainObjectName="ConsumdebtOrder" alias="consumdebt_order">
+
+		<table tableName="tt_overdue_derate_record" domainObjectName="OverdueDerateRecord" alias="overdue_derate_record">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		<!--		<table tableName="tt_consumdebt_order" domainObjectName="ConsumdebtOrder" alias="consumdebt_order">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>-->

@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public interface UserDao {
 
-    UserAndIdCardVo getUserByMobileAndProductId(@Param("mobile") String mobile, @Param("productId") Integer productId);
+    UserAndIdCardVo getUserByMobileAndProductId(@Param("userName") String userName, @Param("productId") Integer productId);
 
     @MapKey("id")
     Map<Long,UserAndIdCardVo> getUserAndIdCardMapByBorrowUserIds(@Param("borrowData") List<BorrowCashListVo> data);

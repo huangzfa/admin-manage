@@ -13,9 +13,10 @@
     var pageSize=${cfg:getPageSize()};
     var pageList=[pageSize,30,50];
     var pageNum =1;
+    var bannerType = [];
     $(function(){
         var typeList ='${bannerType}';
-        var bannerType = eval("("+typeList+")");
+        bannerType = eval("("+typeList+")");
         for( var i = 0;i<bannerType.length;i++){
             $("#bannerType").append("<option value='"+bannerType[i].dicVal+"'>"+bannerType[i].dicCode+"</option>");
 		}
@@ -242,17 +243,17 @@
 		   data-options="idField:'id',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
 		<thead>
 		<tr>
-			<th data-options="field:'id',width:80,align:'center',halign:'center',fixed:true">id</th>
-			<th data-options="field:'imgUrl',width:120,align:'center',halign:'center',fixed:true,formatter:iconurlformater">图片</th>
-			<th data-options="field:'bannerTitle',width:160,align:'center',halign:'center',fixed:true">轮播名称</th>
-			<th data-options="field:'bannerType',width:160,align:'center',halign:'center',fixed:true,formatter:typeformater">所属位置</th>
-			<th data-options="field:'redirectType',width:160,align:'center',halign:'center',fixed:true,formatter:redirectformater">类型</th>
-			<th data-options="field:'redirectUrl',width:160,align:'center',halign:'center',fixed:true">链接</th>
-			<th data-options="field:'remark',width:160,align:'center',halign:'center',fixed:true">备注说明</th>
-			<th data-options="field:'isEnable',width:45,align:'center',halign:'center',fixed:true,formatter:stateformater">状态</th>
-			<th data-options="field:'sort',width:160,align:'center',halign:'center',fixed:true">排序</th>
-			<th data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">添加时间</th>
-			<th data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
+			<th style="width:5%;" data-options="field:'id',width:80,align:'center',halign:'center',fixed:true">id</th>
+			<th style="width:15%;" data-options="field:'imgUrl',width:120,align:'center',halign:'center',fixed:true,formatter:iconurlformater">图片</th>
+			<th style="width:10%;" data-options="field:'bannerTitle',width:160,align:'center',halign:'center',fixed:true">轮播名称</th>
+			<th style="width:10%;" data-options="field:'bannerType',width:160,align:'center',halign:'center',fixed:true,formatter:typeformater">所属位置</th>
+			<th style="width:5%;" data-options="field:'redirectType',width:160,align:'center',halign:'center',fixed:true,formatter:redirectformater">类型</th>
+			<th style="width:15%;" data-options="field:'redirectUrl',width:160,align:'center',halign:'center',fixed:true">链接</th>
+			<th style="width:10%;" data-options="field:'remark',width:160,align:'center',halign:'center',fixed:true">备注说明</th>
+			<th style="width:5%;" data-options="field:'isEnable',width:45,align:'center',halign:'center',fixed:true,formatter:stateformater">状态</th>
+			<th style="width:5%;" data-options="field:'sort',width:160,align:'center',halign:'center',fixed:true">排序</th>
+			<th style="width:10%;" data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">添加时间</th>
+			<th style="width:10%;" data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
 		</tr>
 		</thead>
 	</table>

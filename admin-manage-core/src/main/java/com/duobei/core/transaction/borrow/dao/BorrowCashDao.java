@@ -53,4 +53,12 @@ public interface BorrowCashDao {
     @MapKey("id")
     Map<Long,BorrowCash> getBorrowCashMapByRenewalBorrowIds(@Param("renewalData") List<BorrowCashRenewalListVo> data);
 
+    /**
+     * 查询待还款且逾期状态订单
+     * @param borrowCashCriteria
+     * @return
+     */
+    List<BorrowCashListVo> getOverdueListVoByQuery(BorrowCashCriteria borrowCashCriteria);
+
+    int overdueAmountDerate(BorrowCash borrowCash);
 }

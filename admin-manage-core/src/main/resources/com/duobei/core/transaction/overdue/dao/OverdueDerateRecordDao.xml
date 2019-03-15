@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.transaction.overdue.dao.OverdueDerateRecordDao">
+
+  <sql id="Base_Column_List">
+    overdue_derate_record.id as id, overdue_derate_record.product_id as product_id,
+    overdue_derate_record.user_id as user_id, overdue_derate_record.borrow_cash_id as borrow_cash_id,
+    overdue_derate_record.derate_amount as derate_amount, overdue_derate_record.overdue_amount as overdue_amount,
+    overdue_derate_record.real_overdue_amount as real_overdue_amount,
+    overdue_derate_record.sum_overdue_amount as sum_overdue_amount,
+    overdue_derate_record.unpaid_amount as unpaid_amount, overdue_derate_record.add_time as add_time,
+    overdue_derate_record.add_operator_id as add_operator_id, overdue_derate_record.add_operator_name as add_operator_name
+  </sql>
+
+  <insert id="save" parameterType="com.duobei.core.transaction.overdue.domain.OverdueDerateRecord">
+    insert into tt_overdue_derate_record(product_id, user_id, borrow_cash_id
+    , derate_amount, overdue_amount, real_overdue_amount, sum_overdue_amount
+    , unpaid_amount, add_time, add_operator_id, add_operator_name)
+    values(#{productId},#{userId},#{borrowCashId}
+    ,#{derateAmount},#{overdueAmount},#{realOverdueAmount},#{sumOverdueAmount}
+    ,#{unpaidAmount},#{addTime},#{addOperatorId},#{addOperatorName})
+</insert>
+</mapper>

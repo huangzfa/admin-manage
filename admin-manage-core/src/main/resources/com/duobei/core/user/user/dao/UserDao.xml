@@ -14,7 +14,7 @@
     select <include refid="Base_Column_List"/> ,user_idcard.real_name,user_idcard.real_name_md5,user_idcard.real_name_encrypt
     from pgy_user `user`
     left join pgy_user_idcard user_idcard on `user`.id = user_idcard.user_id
-    where `user`.is_delete = 0 and `user`.user_name_md5 = #{mobile} and `user`.product_id = #{productId} limit 1
+    where `user`.is_delete = 0 and `user`.user_name_md5 = #{userName} and `user`.product_id = #{productId} limit 1
 
   </select>
 

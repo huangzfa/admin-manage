@@ -80,7 +80,7 @@
             }
         });
     }
-    function renewwalStateformater(value,row,index){
+    function renewwalStateformatter(value,row,index){
         if(value=='0'){
             return "申请";
         }else if(value=='1'){
@@ -92,8 +92,14 @@
         }
         return '未知';
     }
-
-    function optionformater(value,row,index){
+    function amountformatter(value,row,index){
+        if (value == null || value == ''){
+            return 0.00;
+        }else{
+            return (value/100).toFixed(2);
+        }
+    }
+    function optionformatter(value,row,index){
 
         var opStr='';
         <shiro:hasPermission name="order:renewal:view">
@@ -146,12 +152,12 @@
 			<th style="width: 5%" data-options="field:'realName',width:160,align:'center',halign:'center',fixed:true">姓名</th>
 			<th style="width: 10%" data-options="field:'userName',width:160,align:'center',halign:'center',fixed:true">注册手机号</th>
 			<th style="width: 10%" data-options="field:'renewalNo',width:160,align:'center',halign:'center',fixed:true">续借流水号</th>
-			<th style="width: 7%" data-options="field:'capitalAmount',width:45,align:'center',halign:'center',fixed:true">归还本金</th>
-			<th style="width: 7%" data-options="field:'actualAmount',width:160,align:'center',halign:'center',fixed:true">实际支付</th>
+			<th style="width: 7%" data-options="field:'capitalAmount',width:45,align:'center',halign:'center',fixed:true,formatter:amountformatter">归还本金</th>
+			<th style="width: 7%" data-options="field:'actualAmount',width:160,align:'center',halign:'center',fixed:true,formatter:amountformatter">实际支付</th>
 			<th style="width: 7%" data-options="field:'accountNo',width:160,align:'center',halign:'center',fixed:true">续期账号</th>
 			<th style="width: 10%" data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">续期时间</th>
-			<th style="width: 7%" data-options="field:'state',width:45,align:'center',halign:'center',fixed:true,formatter:renewwalStateformater">状态</th>
-			<th style="width: 10%"  data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
+			<th style="width: 7%" data-options="field:'state',width:45,align:'center',halign:'center',fixed:true,formatter:renewwalStateformatter">状态</th>
+			<th style="width: 10%"  data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformatter">操作</th>
 		</tr>
 		</thead>
 	</table>

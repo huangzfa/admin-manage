@@ -76,19 +76,19 @@ public class AppPageConfigController extends  BaseController{
 	@RequiresPermissions(PERMISSIONPRE+"view")
 	@ResponseBody
 	@RequestMapping(value = "/appPageConfigList")
-	public String appPageConfigList(AppPageConfigCriteria appPageConfigCriteria) throws TqException{
+	public String appPageConfigList(AppPageConfigCriteria appPageConfigCriteria){
 
 		OperatorCredential credential = getCredential();
 		try {
 			//登录判断
 			if( credential == null){
-                throw new TqException("登录过期，请重新登录");
+				return failJsonResult("登录过期，请重新登录");
 			}
 			//验证数据权限
 			if( appPageConfigCriteria.getAppId() !=null){
 				validAuthData(null,appPageConfigCriteria.getAppId());
 			}else{
-				throw  new TqException("应用数据查询失败");
+				return failJsonResult("应用数据查询失败");
 			}
 			//页数赋值
 			if (appPageConfigCriteria.getPagesize() == 0) {

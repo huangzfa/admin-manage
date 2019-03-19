@@ -58,17 +58,20 @@ public class RepaymentController extends BaseController {
     @RequiresPermissions(PERMISSIONPRE+"view")
     @ResponseBody
     @RequestMapping(value = "/repaymentList")
-    public String getList(RepaymentCriteria repaymentCriteria) throws TqException {
+    public String getList(RepaymentCriteria repaymentCriteria) {
         OperatorCredential credential = getCredential();
         if( credential == null){
-            throw new TqException("登录过期，请重新登录");
+            return failJsonResult("登录过期，请重新登录");
         }
         //验证数据权限
         if( repaymentCriteria.getProductId() !=null ){
-            validAuthData(repaymentCriteria.getProductId());
+            try {
+                validAuthData(repaymentCriteria.getProductId());
+            }catch (Exception e){
+                return failJsonResult(e.getMessage());
+            }
         }else{
-            throw  new TqException("产品数据查询失败");
-
+            return failJsonResult("产品数据查询失败");
         }
         if (repaymentCriteria.getPagesize() == 0) {
             repaymentCriteria.setPagesize(GlobalConfig.getPageSize());
@@ -83,7 +86,7 @@ public class RepaymentController extends BaseController {
 
             return successJsonResult(dataMap,"success");
         } catch (Exception e) {
-            log.warn("查询还款列表异常", e);
+            log.error("查询还款列表异常", e);
             return failJsonResult("系统异常");
         }
     }

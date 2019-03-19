@@ -82,11 +82,18 @@
     }
 
 
-    function optionformater(value,row,index){
+    function amountformatter(value,row,index){
+        if (value == null || value == ''){
+            return 0.00;
+        }else{
+            return (value/100).toFixed(2);
+        }
+    }
+    function optionformatter(value,row,index){
 
         var opStr='';
         <shiro:hasPermission name="order:overdue:edit">
-        opStr+='<a class="si-option-a" href="#"  data-toggle="modal" data-target="#myModal" onclick="getDerateOverInfo('+row.id+')">编辑</a>';
+        opStr+='<a class="si-option-a" href="#"  data-toggle="modal" data-target="#myModal" onclick="getDerateOverInfo('+row.id+')">减免逾期费</a>';
         </shiro:hasPermission>
         return opStr;
     }
@@ -101,7 +108,7 @@
                 if (data.code ==1) {
                     $("#registerProductName").html($("#productId option:selected").text());
                     $("#registerMobile").html(data.userInfo.userName);
-                    var waitRepayOverdueAmount = data.borrow.overdueAmount - data.borrow.sumOverdueAmount - data.borrow.derateOverdue;
+                    var waitRepayOverdueAmount =  amountformatter(data.borrow.overdueAmount - data.borrow.sumOverdueAmount - data.borrow.derateOverdue,null,null);
 					$("#waitRepayOverdueAmount").html(waitRepayOverdueAmount);
                 } else {
                     top.layer.alert("系统异常", {icon: 5});
@@ -136,8 +143,8 @@
     }
 
 
-    function overdueAmountformater(value,row,index){
-       return row.overdueAmount - row.sumOverdueAmount - row.derateOverdue
+    function overdueAmountformatter(value,row,index){
+        return amountformatter(row.overdueAmount - row.sumOverdueAmount - row.derateOverdue,null,null)
     }
 
 </script>
@@ -180,12 +187,12 @@
 			<th style="width: 10%" data-options="field:'productName',width:160,align:'center',halign:'center',fixed:true">产品（平台）名称</th>
 			<th style="width: 7%" data-options="field:'realName',width:160,align:'center',halign:'center',fixed:true">姓名</th>
 			<th style="width: 10%" data-options="field:'userName',width:160,align:'center',halign:'center',fixed:true">注册手机号</th>
-			<th style="width: 7%" data-options="field:'amount',width:45,align:'center',halign:'center',fixed:true">借款金额</th>
+			<th style="width: 7%" data-options="field:'amount',width:45,align:'center',halign:'center',fixed:true,formatter:amountformatter">借款金额</th>
 			<th style="width: 15%" data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">申请时间</th>
-			<th style="width: 7%" data-options="field:'sumOverdueAmount',width:45,align:'center',halign:'center',fixed:true">已还逾期费</th>
-			<th style="width: 7%" data-options="field:'waitRepayOverdueAmount',width:160,align:'center',halign:'center',fixed:true,formatter:overdueAmountformater">未还逾期费</th>
-			<th style="width: 7%" data-options="field:'derateOverdue',width:45,align:'center',halign:'center',fixed:true">已减免金额</th>
-			<th style="width: 15%"  data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
+			<th style="width: 7%" data-options="field:'sumOverdueAmount',width:45,align:'center',halign:'center',fixed:true,formatter:amountformatter">已还逾期费</th>
+			<th style="width: 7%" data-options="field:'waitRepayOverdueAmount',width:160,align:'center',halign:'center',fixed:true,formatter:overdueAmountformatter">未还逾期费</th>
+			<th style="width: 7%" data-options="field:'derateOverdue',width:45,align:'center',halign:'center',fixed:true,formatter:amountformatter">已减免金额</th>
+			<th style="width: 15%"  data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformatter">操作</th>
 		</tr>
 		</thead>
 	</table>

@@ -202,10 +202,10 @@
                         <td>${renewal.renewalNo}</td>
                         <td>${cfg:getDictLabel('renewalState',renewal.state)}</td>
                         <td><fmt:formatDate value="${renewal.addTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                        <td>${renewal.capitalAmount}</td>
-                        <td>${renewal.renewalPoundage}</td>
-                        <td>${renewal.renewalOverdueAmount}</td>
-                        <td>${renewal.actualAmount}</td>
+                        <td>${cfg:amountLongToBigDecimal(renewal.capitalAmount)}</td>
+                        <td>${cfg:amountLongToBigDecimal(renewal.renewalPoundage)}</td>
+                        <td>${cfg:amountLongToBigDecimal(renewal.renewalOverdueAmount)}</td>
+                        <td>${cfg:amountLongToBigDecimal(renewal.actualAmount)}</td>
                         <td>${renewal.accountName}${renewal.accountNo}</td>
                         <td>${renewal.failReason}</td>
                     </tr>

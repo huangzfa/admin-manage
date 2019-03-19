@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.bank.dao.BankDao">
+
+  <sql id="Base_Column_List">
+    bank.id as id, bank.bank_code as bank_code, bank.bank_name as bank_name,
+    bank.bank_icon as bank_icon, bank.bank_icon_grey as bank_icon_grey, bank.bank_icon_back as bank_icon_back,
+    bank.is_enable as is_enable, bank.sk_remark as sk_remark, bank.kk_remark as kk_remark,
+    bank.add_time as add_time, bank.modify_time as modify_time, bank.add_operator_id as add_operator_id,
+    bank.modify_operator_id as modify_operator_id, bank.is_delete as is_delete
+  </sql>
+  
+  <select id="getListByQuery" parameterType="com.duobei.core.operation.bank.domain.criteria.BankCriteria" resultType="com.duobei.core.operation.bank.domain.Bank">
+    select <include refid="Base_Column_List"/>
+    from cf_bank bank
+    where bank.is_delete = 0
+    <if test="bankName != null and bankName !=''">
+      and bank.bank_name = #{bankName}
+    </if>
+    order by bank.add_time asc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+  
+  <select id="getById" parameterType="Integer" resultType="com.duobei.core.operation.bank.domain.Bank">
+    select  <include refid="Base_Column_List"/>
+    from cf_bank bank
+    where bank.is_delete = 0 and bank.id = #{id}
+  </select>
+
+  <update id="updateStatus" parameterType="com.duobei.core.operation.bank.domain.Bank">
+      update cf_bank
+      set modify_operator_id = #{modifyOperatorId}, modify_time = #{modifyTime},is_enable = #{isEnable}
+      where id = #{id} and is_delete = 0
+  </update>
+
+  <update id="update" parameterType="com.duobei.core.operation.bank.domain.Bank">
+    update cf_bank
+    set modify_operator_id = #{modifyOperatorId}, modify_time = #{modifyTime} ,sk_remark = #{skRemark},kk_remark = #{kkRemark}
+    <if test="bankName != null and bankName !=''">
+      , bank_name = #{bankName}
+    </if>
+    <if test="bankIcon != null and bankIcon != ''">
+      ,bank_icon = #{bankIcon}
+    </if>
+    <if test="bankIconGrey != null and bankIconGrey != ''">
+      ,bank_icon_grey = #{bankIconGrey}
+    </if>
+    <if test="bankIconBack != null and bankIconBack != ''">
+      ,bank_icon_back = #{bankIconBack}
+    </if>
+
+    where id = #{id} and is_delete = 0
+  </update>
+</mapper>

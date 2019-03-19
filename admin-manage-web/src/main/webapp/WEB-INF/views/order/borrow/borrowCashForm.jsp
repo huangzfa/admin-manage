@@ -201,17 +201,17 @@
                     <tbody>
                     <tr>
                         <td>${borrowCash.borrowNo}</td>
-                        <td>${borrowCash.amount}</td>
+                        <td>${cfg:amountLongToBigDecimal(borrowCash.amount)}</td>
                         <td>${borrowCash.borrowDays}</td>
-                        <td>${borrowCash.poundage}</td>
-                        <td>${borrowCash.couponAmount}</td>
-                        <td>${borrowCash.arrivalAmount}</td>
+                        <td>${cfg:amountLongToBigDecimal(borrowCash.poundage)}</td>
+                        <td>${cfg:amountLongToBigDecimal(borrowCash.couponAmount)}</td>
+                        <td>${cfg:amountLongToBigDecimal(borrowCash.arrivalAmount)}</td>
                         <td>${cfg:getDictLabel('borrowState',borrowCash.borrowState)}</td>
                         <td>${borrowCash.closeReason}</td>
                         <td><fmt:formatDate value="${borrowCash.addTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td>${borrowCash.province}${borrowCash.city}${borrowCash.county}${borrowCash.address}</td>
                         <td>${borrowCash.overdueDay}</td>
-                        <td>${borrowCash.overdueAmount}</td>
+                        <td>${cfg:amountLongToBigDecimal(borrowCash.overdueAmount)}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -241,8 +241,8 @@
                      <td>${cfg:getDictLabel('consumdebtOrderState',consumdebtOrder.state)}</td>
                      <td>${cfg:getDictLabel('payState',consumdebtOrder.payState)}</td>
                      <td>${consumdebtOrder.goodsName}</td>
-                     <td>${consumdebtOrder.priceAmount}</td>
-                     <td>${consumdebtOrder.saleAmount}</td>
+                     <td>${cfg:amountLongToBigDecimal(consumdebtOrder.priceAmount)}</td>
+                     <td>${cfg:amountLongToBigDecimal(consumdebtOrder.saleAmount)}</td>
                      <td>${consumdebtOrder.consignee}</td>
                      <td>${consumdebtOrder.consigneeMobile}</td>
                      <td>${consumdebtOrder.address}</td>

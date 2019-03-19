@@ -202,10 +202,10 @@
                         <td>${repayment.repayNo}</td>
                         <td>${cfg:getDictLabel('repayState',repayment.repayState)}</td>
                         <td><fmt:formatDate value="${repayment.addTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                        <td>${repayment.repayAmount}</td>
-                        <td>${repayment.couponAmount}</td>
-                        <td>${repayment.rebateAmount}</td>
-                        <td>${repayment.repayActualAmount}</td>
+                        <td>${cfg:amountLongToBigDecimal(repayment.repayAmount)}</td>
+                        <td>${cfg:amountLongToBigDecimal(repayment.couponAmount)}</td>
+                        <td>${cfg:amountLongToBigDecimal(repayment.rebateAmount)}</td>
+                        <td>${cfg:amountLongToBigDecimal(repayment.repayActualAmount)}</td>
                         <td>${repayment.accountName}${repayment.accountNo}</td>
                         <td>${repayment.failReason}</td>
                     </tr>

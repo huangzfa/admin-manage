@@ -80,7 +80,7 @@
             }
         });
     }
-    function borrowStateformater(value,row,index){
+    function borrowStateformatter(value,row,index){
         if(value=='0'){
             return "申请";
         }else if(value=='1'){
@@ -97,7 +97,7 @@
         return '未知';
     }
 
-    function riskStateformater(value,row,index){
+    function riskStateformatter(value,row,index){
         if(value=='0'){
             return "申请";
         }else if(value=='1'){
@@ -112,7 +112,15 @@
         return '未知';
     }
 
-    function optionformater(value,row,index){
+
+    function amountformatter(value,row,index){
+		if (value == null || value == ''){
+		    return 0.00;
+		}else{
+            return (value/100).toFixed(2);
+		}
+    }
+    function optionformatter(value,row,index){
 
         var opStr='';
         <shiro:hasPermission name="order:borrow:view">
@@ -164,14 +172,14 @@
 			<th style="width: 5%" data-options="field:'realName',width:160,align:'center',halign:'center',fixed:true">姓名</th>
 			<th style="
 			width: 10%" data-options="field:'userName',width:160,align:'center',halign:'center',fixed:true">注册手机号</th>
-			<th style="width: 7%" data-options="field:'amount',width:45,align:'center',halign:'center',fixed:true">借款金额</th>
+			<th style="width: 7%" data-options="field:'amount',width:45,align:'center',halign:'center',fixed:true,formatter:amountformatter">借款金额</th>
 			<th style="width: 5%" data-options="field:'borrowDays',width:160,align:'center',halign:'center',fixed:true">天数</th>
-			<th style="width: 7%" data-options="field:'poundage',width:45,align:'center',halign:'center',fixed:true">交易服务费</th>
-			<th style="width: 7%" data-options="field:'arrivalAmount',width:160,align:'center',halign:'center',fixed:true">到账金额</th>
-			<th style="width: 7%" data-options="field:'borrowState',width:45,align:'center',halign:'center',fixed:true,formatter:borrowStateformater">借款状态</th>
-			<th style="width: 7%" data-options="field:'riskState',width:160,align:'center',halign:'center',fixed:true,formatter:riskStateformater">风控状态</th>
+			<th style="width: 7%" data-options="field:'poundage',width:45,align:'center',halign:'center',fixed:true,formatter:amountformatter">交易服务费</th>
+			<th style="width: 7%" data-options="field:'arrivalAmount',width:160,align:'center',halign:'center',fixed:true,formatter:amountformatter">到账金额</th>
+			<th style="width: 7%" data-options="field:'borrowState',width:45,align:'center',halign:'center',fixed:true,formatter:borrowStateformatter">借款状态</th>
+			<th style="width: 7%" data-options="field:'riskState',width:160,align:'center',halign:'center',fixed:true,formatter:riskStateformatter">风控状态</th>
 			<th style="width: 10%" data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">申请时间</th>
-			<th style="width: 10%"  data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
+			<th style="width: 10%"  data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformatter">操作</th>
 		</tr>
 		</thead>
 	</table>

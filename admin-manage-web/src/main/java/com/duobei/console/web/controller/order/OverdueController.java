@@ -66,16 +66,20 @@ public class OverdueController extends BaseController {
     @RequiresPermissions(PERMISSIONPRE+"view")
     @ResponseBody
     @RequestMapping(value = "/overdueList")
-    public String getList(BorrowCashCriteria borrowCashCriteria) throws TqException {
+    public String getList(BorrowCashCriteria borrowCashCriteria) {
         OperatorCredential credential = getCredential();
         if( credential == null){
-            throw new TqException("登录过期，请重新登录");
+            return failJsonResult("登录过期，请重新登录");
         }
         //验证数据权限
         if( borrowCashCriteria.getProductId() !=null ){
-            validAuthData(borrowCashCriteria.getProductId());
+            try {
+                validAuthData(borrowCashCriteria.getProductId());
+            }catch (Exception e){
+                return failJsonResult(e.getMessage());
+            }
         }else{
-            throw  new TqException("产品数据查询失败");
+            return failJsonResult("产品数据查询失败");
 
         }
         if (borrowCashCriteria.getPagesize() == 0) {
@@ -91,7 +95,7 @@ public class OverdueController extends BaseController {
 
             return successJsonResult(dataMap,"success");
         } catch (Exception e) {
-            log.warn("查询逾期借款列表异常", e);
+            log.error("查询逾期借款列表异常", e);
             return failJsonResult("系统异常");
         }
     }

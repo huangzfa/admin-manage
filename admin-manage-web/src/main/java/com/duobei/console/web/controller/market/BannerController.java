@@ -66,14 +66,17 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
         //验证用户权限
         try {
             if( credential == null){
-                throw new TqException("登录过期，请重新登录");
+                return failJsonResult("登录过期，请重新登录");
             }
             //验证数据权限
             if( criteria.getAppId() !=null ){
-                validAuthData(null,criteria.getAppId());
+                try {
+                    validAuthData(null,criteria.getAppId());
+                }catch (Exception e){
+                    return failJsonResult(e.getMessage());
+                }
             }else{
-                throw  new TqException("应用数据查询失败");
-
+                return failJsonResult("应用数据查询失败");
             }
             if (criteria.getPagesize()==0) {
                 criteria.setPagesize(GlobalConfig.getPageSize());
@@ -84,7 +87,7 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());
             }else{
-                log.warn("查询播图列表异常",e);
+                log.error("查询播图列表异常",e);
                 return failJsonResult("查询失败");
             }
         }
@@ -171,7 +174,7 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());
             }else{
-                log.warn("save轮播图异常", e);
+                log.error("save轮播图异常", e);
                 return failJsonResult("save轮播图异常");
             }
 
@@ -183,7 +186,7 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
     /**
      * 修改轮播图状态
      * @param id
-     * @param bannerState
+     * @param isEnable
      * @return
      * @throws TqException
      */
@@ -199,7 +202,7 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             if( isEnable == null || id == null){
                 throw new TqException("参数为空");
             }
-            //查询轮播是否存在
+            //查询轮播图是否存在
             Banner banner = bannerService.getById(id);
             if( banner == null ){
                 throw new TqException("轮播图不存在");
@@ -216,7 +219,7 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());
             }else{
-                log.warn("editState轮播图异常", e);
+                log.error("editState轮播图异常", e);
                 return failJsonResult("editState轮播图异常");
              }
         }
@@ -256,7 +259,7 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());
             }else{
-                log.warn("delete轮播图异常", e);
+                log.error("delete轮播图异常", e);
                 return failJsonResult("delete轮播图异常");
             }
         }

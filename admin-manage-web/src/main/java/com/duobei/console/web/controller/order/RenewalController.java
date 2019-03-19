@@ -55,17 +55,20 @@ public class RenewalController extends BaseController{
     @RequiresPermissions(PERMISSIONPRE+"view")
     @ResponseBody
     @RequestMapping(value = "/renewalList")
-    public String getList(BorrowCashRenewalCriteria renewalCriteria) throws TqException {
+    public String getList(BorrowCashRenewalCriteria renewalCriteria)  {
         OperatorCredential credential = getCredential();
         if( credential == null){
-            throw new TqException("登录过期，请重新登录");
+            return failJsonResult("登录过期，请重新登录");
         }
         //验证数据权限
         if( renewalCriteria.getProductId() !=null ){
-            validAuthData(renewalCriteria.getProductId());
+            try {
+                validAuthData(renewalCriteria.getProductId());
+            }catch (Exception e){
+                return failJsonResult(e.getMessage());
+            }
         }else{
-            throw  new TqException("产品数据查询失败");
-
+            return failJsonResult("产品数据查询失败");
         }
         if (renewalCriteria.getPagesize() == 0) {
             renewalCriteria.setPagesize(GlobalConfig.getPageSize());
@@ -79,7 +82,7 @@ public class RenewalController extends BaseController{
             dataMap.put("list",list);
             return successJsonResult(dataMap,"success");
         } catch (Exception e) {
-            log.warn("查询续借列表异常", e);
+            log.error("查询续借列表异常", e);
             return failJsonResult("系统异常");
         }
     }

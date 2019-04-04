@@ -225,9 +225,4 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
         return consumeLoanConfigDao.getById(id);
     }
 
-    @Override
-    public ConsumeLoanConfig getById(Integer id) {
-        return consumeLoanConfigMapper.selectByPrimaryKey(id);
-    }
-
 }

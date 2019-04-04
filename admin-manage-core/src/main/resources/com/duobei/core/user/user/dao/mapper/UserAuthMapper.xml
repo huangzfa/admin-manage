@@ -1,0 +1,699 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.user.user.dao.mapper.UserAuthMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.user.user.domain.UserAuth">
+    <id column="user_auth_id" jdbcType="BIGINT" property="id" />
+    <result column="user_auth_product_id" jdbcType="INTEGER" property="productId" />
+    <result column="user_auth_global_user_id" jdbcType="VARCHAR" property="globalUserId" />
+    <result column="user_auth_user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_auth_realname_idcard_state" jdbcType="TINYINT" property="realnameIdcardState" />
+    <result column="user_auth_gmt_realname_idcard" jdbcType="TIMESTAMP" property="gmtRealnameIdcard" />
+    <result column="user_auth_realname_face_state" jdbcType="TINYINT" property="realnameFaceState" />
+    <result column="user_auth_realname_face_similar" jdbcType="DECIMAL" property="realnameFaceSimilar" />
+    <result column="user_auth_gmt_realname_face" jdbcType="TIMESTAMP" property="gmtRealnameFace" />
+    <result column="user_auth_bankcard_state" jdbcType="TINYINT" property="bankcardState" />
+    <result column="user_auth_gmt_bankcard" jdbcType="TIMESTAMP" property="gmtBankcard" />
+    <result column="user_auth_zhima_state" jdbcType="TINYINT" property="zhimaState" />
+    <result column="user_auth_gmt_zhima" jdbcType="TIMESTAMP" property="gmtZhima" />
+    <result column="user_auth_zhima_score" jdbcType="INTEGER" property="zhimaScore" />
+    <result column="user_auth_mobile_state" jdbcType="TINYINT" property="mobileState" />
+    <result column="user_auth_gmt_mobile" jdbcType="TIMESTAMP" property="gmtMobile" />
+    <result column="user_auth_contacts_state" jdbcType="TINYINT" property="contactsState" />
+    <result column="user_auth_gmt_contacts" jdbcType="TIMESTAMP" property="gmtContacts" />
+    <result column="user_auth_taobao_state" jdbcType="TINYINT" property="taobaoState" />
+    <result column="user_auth_gmt_taobao" jdbcType="TIMESTAMP" property="gmtTaobao" />
+    <result column="user_auth_jingdong_state" jdbcType="TINYINT" property="jingdongState" />
+    <result column="user_auth_gmt_jingdong" jdbcType="TIMESTAMP" property="gmtJingdong" />
+    <result column="user_auth_fund_state" jdbcType="TINYINT" property="fundState" />
+    <result column="user_auth_gmt_fund" jdbcType="TIMESTAMP" property="gmtFund" />
+    <result column="user_auth_social_state" jdbcType="TINYINT" property="socialState" />
+    <result column="user_auth_gmt_social" jdbcType="TIMESTAMP" property="gmtSocial" />
+    <result column="user_auth_credit_state" jdbcType="TINYINT" property="creditState" />
+    <result column="user_auth_gmt_credit" jdbcType="TIMESTAMP" property="gmtCredit" />
+    <result column="user_auth_alipay_state" jdbcType="TINYINT" property="alipayState" />
+    <result column="user_auth_gmt_alipay" jdbcType="TIMESTAMP" property="gmtAlipay" />
+    <result column="user_auth_mall_status" jdbcType="TINYINT" property="mallStatus" />
+    <result column="user_auth_gmt_mall" jdbcType="TIMESTAMP" property="gmtMall" />
+    <result column="user_auth_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="user_auth_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="user_auth_is_delete" jdbcType="INTEGER" property="isDelete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    user_auth.id as user_auth_id, user_auth.product_id as user_auth_product_id, user_auth.global_user_id as user_auth_global_user_id, 
+    user_auth.user_id as user_auth_user_id, user_auth.realname_idcard_state as user_auth_realname_idcard_state, 
+    user_auth.gmt_realname_idcard as user_auth_gmt_realname_idcard, user_auth.realname_face_state as user_auth_realname_face_state, 
+    user_auth.realname_face_similar as user_auth_realname_face_similar, user_auth.gmt_realname_face as user_auth_gmt_realname_face, 
+    user_auth.bankcard_state as user_auth_bankcard_state, user_auth.gmt_bankcard as user_auth_gmt_bankcard, 
+    user_auth.zhima_state as user_auth_zhima_state, user_auth.gmt_zhima as user_auth_gmt_zhima, 
+    user_auth.zhima_score as user_auth_zhima_score, user_auth.mobile_state as user_auth_mobile_state, 
+    user_auth.gmt_mobile as user_auth_gmt_mobile, user_auth.contacts_state as user_auth_contacts_state, 
+    user_auth.gmt_contacts as user_auth_gmt_contacts, user_auth.taobao_state as user_auth_taobao_state, 
+    user_auth.gmt_taobao as user_auth_gmt_taobao, user_auth.jingdong_state as user_auth_jingdong_state, 
+    user_auth.gmt_jingdong as user_auth_gmt_jingdong, user_auth.fund_state as user_auth_fund_state, 
+    user_auth.gmt_fund as user_auth_gmt_fund, user_auth.social_state as user_auth_social_state, 
+    user_auth.gmt_social as user_auth_gmt_social, user_auth.credit_state as user_auth_credit_state, 
+    user_auth.gmt_credit as user_auth_gmt_credit, user_auth.alipay_state as user_auth_alipay_state, 
+    user_auth.gmt_alipay as user_auth_gmt_alipay, user_auth.mall_status as user_auth_mall_status, 
+    user_auth.gmt_mall as user_auth_gmt_mall, user_auth.add_time as user_auth_add_time, 
+    user_auth.modify_time as user_auth_modify_time, user_auth.is_delete as user_auth_is_delete
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.user.user.domain.UserAuthExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pgy_user_auth user_auth
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pgy_user_auth user_auth
+    where user_auth.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from pgy_user_auth
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.user.user.domain.UserAuthExample">
+    delete from pgy_user_auth user_auth
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.user.user.domain.UserAuth">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pgy_user_auth (product_id, global_user_id, user_id, 
+      realname_idcard_state, gmt_realname_idcard, 
+      realname_face_state, realname_face_similar, 
+      gmt_realname_face, bankcard_state, gmt_bankcard, 
+      zhima_state, gmt_zhima, zhima_score, 
+      mobile_state, gmt_mobile, contacts_state, 
+      gmt_contacts, taobao_state, gmt_taobao, 
+      jingdong_state, gmt_jingdong, fund_state, 
+      gmt_fund, social_state, gmt_social, 
+      credit_state, gmt_credit, alipay_state, 
+      gmt_alipay, mall_status, gmt_mall, 
+      add_time, modify_time, is_delete
+      )
+    values (#{productId,jdbcType=INTEGER}, #{globalUserId,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
+      #{realnameIdcardState,jdbcType=TINYINT}, #{gmtRealnameIdcard,jdbcType=TIMESTAMP}, 
+      #{realnameFaceState,jdbcType=TINYINT}, #{realnameFaceSimilar,jdbcType=DECIMAL}, 
+      #{gmtRealnameFace,jdbcType=TIMESTAMP}, #{bankcardState,jdbcType=TINYINT}, #{gmtBankcard,jdbcType=TIMESTAMP}, 
+      #{zhimaState,jdbcType=TINYINT}, #{gmtZhima,jdbcType=TIMESTAMP}, #{zhimaScore,jdbcType=INTEGER}, 
+      #{mobileState,jdbcType=TINYINT}, #{gmtMobile,jdbcType=TIMESTAMP}, #{contactsState,jdbcType=TINYINT}, 
+      #{gmtContacts,jdbcType=TIMESTAMP}, #{taobaoState,jdbcType=TINYINT}, #{gmtTaobao,jdbcType=TIMESTAMP}, 
+      #{jingdongState,jdbcType=TINYINT}, #{gmtJingdong,jdbcType=TIMESTAMP}, #{fundState,jdbcType=TINYINT}, 
+      #{gmtFund,jdbcType=TIMESTAMP}, #{socialState,jdbcType=TINYINT}, #{gmtSocial,jdbcType=TIMESTAMP}, 
+      #{creditState,jdbcType=TINYINT}, #{gmtCredit,jdbcType=TIMESTAMP}, #{alipayState,jdbcType=TINYINT}, 
+      #{gmtAlipay,jdbcType=TIMESTAMP}, #{mallStatus,jdbcType=TINYINT}, #{gmtMall,jdbcType=TIMESTAMP}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.user.user.domain.UserAuth">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pgy_user_auth
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="globalUserId != null">
+        global_user_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="realnameIdcardState != null">
+        realname_idcard_state,
+      </if>
+      <if test="gmtRealnameIdcard != null">
+        gmt_realname_idcard,
+      </if>
+      <if test="realnameFaceState != null">
+        realname_face_state,
+      </if>
+      <if test="realnameFaceSimilar != null">
+        realname_face_similar,
+      </if>
+      <if test="gmtRealnameFace != null">
+        gmt_realname_face,
+      </if>
+      <if test="bankcardState != null">
+        bankcard_state,
+      </if>
+      <if test="gmtBankcard != null">
+        gmt_bankcard,
+      </if>
+      <if test="zhimaState != null">
+        zhima_state,
+      </if>
+      <if test="gmtZhima != null">
+        gmt_zhima,
+      </if>
+      <if test="zhimaScore != null">
+        zhima_score,
+      </if>
+      <if test="mobileState != null">
+        mobile_state,
+      </if>
+      <if test="gmtMobile != null">
+        gmt_mobile,
+      </if>
+      <if test="contactsState != null">
+        contacts_state,
+      </if>
+      <if test="gmtContacts != null">
+        gmt_contacts,
+      </if>
+      <if test="taobaoState != null">
+        taobao_state,
+      </if>
+      <if test="gmtTaobao != null">
+        gmt_taobao,
+      </if>
+      <if test="jingdongState != null">
+        jingdong_state,
+      </if>
+      <if test="gmtJingdong != null">
+        gmt_jingdong,
+      </if>
+      <if test="fundState != null">
+        fund_state,
+      </if>
+      <if test="gmtFund != null">
+        gmt_fund,
+      </if>
+      <if test="socialState != null">
+        social_state,
+      </if>
+      <if test="gmtSocial != null">
+        gmt_social,
+      </if>
+      <if test="creditState != null">
+        credit_state,
+      </if>
+      <if test="gmtCredit != null">
+        gmt_credit,
+      </if>
+      <if test="alipayState != null">
+        alipay_state,
+      </if>
+      <if test="gmtAlipay != null">
+        gmt_alipay,
+      </if>
+      <if test="mallStatus != null">
+        mall_status,
+      </if>
+      <if test="gmtMall != null">
+        gmt_mall,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="globalUserId != null">
+        #{globalUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="realnameIdcardState != null">
+        #{realnameIdcardState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtRealnameIdcard != null">
+        #{gmtRealnameIdcard,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realnameFaceState != null">
+        #{realnameFaceState,jdbcType=TINYINT},
+      </if>
+      <if test="realnameFaceSimilar != null">
+        #{realnameFaceSimilar,jdbcType=DECIMAL},
+      </if>
+      <if test="gmtRealnameFace != null">
+        #{gmtRealnameFace,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bankcardState != null">
+        #{bankcardState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtBankcard != null">
+        #{gmtBankcard,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhimaState != null">
+        #{zhimaState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtZhima != null">
+        #{gmtZhima,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhimaScore != null">
+        #{zhimaScore,jdbcType=INTEGER},
+      </if>
+      <if test="mobileState != null">
+        #{mobileState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtMobile != null">
+        #{gmtMobile,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contactsState != null">
+        #{contactsState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtContacts != null">
+        #{gmtContacts,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taobaoState != null">
+        #{taobaoState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtTaobao != null">
+        #{gmtTaobao,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jingdongState != null">
+        #{jingdongState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtJingdong != null">
+        #{gmtJingdong,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fundState != null">
+        #{fundState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtFund != null">
+        #{gmtFund,jdbcType=TIMESTAMP},
+      </if>
+      <if test="socialState != null">
+        #{socialState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtSocial != null">
+        #{gmtSocial,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creditState != null">
+        #{creditState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtCredit != null">
+        #{gmtCredit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alipayState != null">
+        #{alipayState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtAlipay != null">
+        #{gmtAlipay,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mallStatus != null">
+        #{mallStatus,jdbcType=TINYINT},
+      </if>
+      <if test="gmtMall != null">
+        #{gmtMall,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.user.user.domain.UserAuthExample" resultType="java.lang.Long">
+    select count(*) from pgy_user_auth user_auth
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pgy_user_auth user_auth
+    <set>
+      <if test="record.id != null">
+        user_auth.id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.productId != null">
+        user_auth.product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.globalUserId != null">
+        user_auth.global_user_id = #{record.globalUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_auth.user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.realnameIdcardState != null">
+        user_auth.realname_idcard_state = #{record.realnameIdcardState,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtRealnameIdcard != null">
+        user_auth.gmt_realname_idcard = #{record.gmtRealnameIdcard,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.realnameFaceState != null">
+        user_auth.realname_face_state = #{record.realnameFaceState,jdbcType=TINYINT},
+      </if>
+      <if test="record.realnameFaceSimilar != null">
+        user_auth.realname_face_similar = #{record.realnameFaceSimilar,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gmtRealnameFace != null">
+        user_auth.gmt_realname_face = #{record.gmtRealnameFace,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bankcardState != null">
+        user_auth.bankcard_state = #{record.bankcardState,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtBankcard != null">
+        user_auth.gmt_bankcard = #{record.gmtBankcard,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.zhimaState != null">
+        user_auth.zhima_state = #{record.zhimaState,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtZhima != null">
+        user_auth.gmt_zhima = #{record.gmtZhima,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.zhimaScore != null">
+        user_auth.zhima_score = #{record.zhimaScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.mobileState != null">
+        user_auth.mobile_state = #{record.mobileState,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtMobile != null">
+        user_auth.gmt_mobile = #{record.gmtMobile,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.contactsState != null">
+        user_auth.contacts_state = #{record.contactsState,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtContacts != null">
+        user_auth.gmt_contacts = #{record.gmtContacts,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taobaoState != null">
+        user_auth.taobao_state = #{record.taobaoState,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtTaobao != null">
+        user_auth.gmt_taobao = #{record.gmtTaobao,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.jingdongState != null">
+        user_auth.jingdong_state = #{record.jingdongState,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtJingdong != null">
+        user_auth.gmt_jingdong = #{record.gmtJingdong,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fundState != null">
+        user_auth.fund_state = #{record.fundState,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtFund != null">
+        user_auth.gmt_fund = #{record.gmtFund,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.socialState != null">
+        user_auth.social_state = #{record.socialState,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtSocial != null">
+        user_auth.gmt_social = #{record.gmtSocial,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creditState != null">
+        user_auth.credit_state = #{record.creditState,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtCredit != null">
+        user_auth.gmt_credit = #{record.gmtCredit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.alipayState != null">
+        user_auth.alipay_state = #{record.alipayState,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtAlipay != null">
+        user_auth.gmt_alipay = #{record.gmtAlipay,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mallStatus != null">
+        user_auth.mall_status = #{record.mallStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.gmtMall != null">
+        user_auth.gmt_mall = #{record.gmtMall,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addTime != null">
+        user_auth.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        user_auth.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDelete != null">
+        user_auth.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pgy_user_auth user_auth
+    set user_auth.id = #{record.id,jdbcType=BIGINT},
+      user_auth.product_id = #{record.productId,jdbcType=INTEGER},
+      user_auth.global_user_id = #{record.globalUserId,jdbcType=VARCHAR},
+      user_auth.user_id = #{record.userId,jdbcType=BIGINT},
+      user_auth.realname_idcard_state = #{record.realnameIdcardState,jdbcType=TINYINT},
+      user_auth.gmt_realname_idcard = #{record.gmtRealnameIdcard,jdbcType=TIMESTAMP},
+      user_auth.realname_face_state = #{record.realnameFaceState,jdbcType=TINYINT},
+      user_auth.realname_face_similar = #{record.realnameFaceSimilar,jdbcType=DECIMAL},
+      user_auth.gmt_realname_face = #{record.gmtRealnameFace,jdbcType=TIMESTAMP},
+      user_auth.bankcard_state = #{record.bankcardState,jdbcType=TINYINT},
+      user_auth.gmt_bankcard = #{record.gmtBankcard,jdbcType=TIMESTAMP},
+      user_auth.zhima_state = #{record.zhimaState,jdbcType=TINYINT},
+      user_auth.gmt_zhima = #{record.gmtZhima,jdbcType=TIMESTAMP},
+      user_auth.zhima_score = #{record.zhimaScore,jdbcType=INTEGER},
+      user_auth.mobile_state = #{record.mobileState,jdbcType=TINYINT},
+      user_auth.gmt_mobile = #{record.gmtMobile,jdbcType=TIMESTAMP},
+      user_auth.contacts_state = #{record.contactsState,jdbcType=TINYINT},
+      user_auth.gmt_contacts = #{record.gmtContacts,jdbcType=TIMESTAMP},
+      user_auth.taobao_state = #{record.taobaoState,jdbcType=TINYINT},
+      user_auth.gmt_taobao = #{record.gmtTaobao,jdbcType=TIMESTAMP},
+      user_auth.jingdong_state = #{record.jingdongState,jdbcType=TINYINT},
+      user_auth.gmt_jingdong = #{record.gmtJingdong,jdbcType=TIMESTAMP},
+      user_auth.fund_state = #{record.fundState,jdbcType=TINYINT},
+      user_auth.gmt_fund = #{record.gmtFund,jdbcType=TIMESTAMP},
+      user_auth.social_state = #{record.socialState,jdbcType=TINYINT},
+      user_auth.gmt_social = #{record.gmtSocial,jdbcType=TIMESTAMP},
+      user_auth.credit_state = #{record.creditState,jdbcType=TINYINT},
+      user_auth.gmt_credit = #{record.gmtCredit,jdbcType=TIMESTAMP},
+      user_auth.alipay_state = #{record.alipayState,jdbcType=TINYINT},
+      user_auth.gmt_alipay = #{record.gmtAlipay,jdbcType=TIMESTAMP},
+      user_auth.mall_status = #{record.mallStatus,jdbcType=TINYINT},
+      user_auth.gmt_mall = #{record.gmtMall,jdbcType=TIMESTAMP},
+      user_auth.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      user_auth.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      user_auth.is_delete = #{record.isDelete,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.user.user.domain.UserAuth">
+    update pgy_user_auth
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="globalUserId != null">
+        global_user_id = #{globalUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="realnameIdcardState != null">
+        realname_idcard_state = #{realnameIdcardState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtRealnameIdcard != null">
+        gmt_realname_idcard = #{gmtRealnameIdcard,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realnameFaceState != null">
+        realname_face_state = #{realnameFaceState,jdbcType=TINYINT},
+      </if>
+      <if test="realnameFaceSimilar != null">
+        realname_face_similar = #{realnameFaceSimilar,jdbcType=DECIMAL},
+      </if>
+      <if test="gmtRealnameFace != null">
+        gmt_realname_face = #{gmtRealnameFace,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bankcardState != null">
+        bankcard_state = #{bankcardState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtBankcard != null">
+        gmt_bankcard = #{gmtBankcard,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhimaState != null">
+        zhima_state = #{zhimaState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtZhima != null">
+        gmt_zhima = #{gmtZhima,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhimaScore != null">
+        zhima_score = #{zhimaScore,jdbcType=INTEGER},
+      </if>
+      <if test="mobileState != null">
+        mobile_state = #{mobileState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtMobile != null">
+        gmt_mobile = #{gmtMobile,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contactsState != null">
+        contacts_state = #{contactsState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtContacts != null">
+        gmt_contacts = #{gmtContacts,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taobaoState != null">
+        taobao_state = #{taobaoState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtTaobao != null">
+        gmt_taobao = #{gmtTaobao,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jingdongState != null">
+        jingdong_state = #{jingdongState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtJingdong != null">
+        gmt_jingdong = #{gmtJingdong,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fundState != null">
+        fund_state = #{fundState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtFund != null">
+        gmt_fund = #{gmtFund,jdbcType=TIMESTAMP},
+      </if>
+      <if test="socialState != null">
+        social_state = #{socialState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtSocial != null">
+        gmt_social = #{gmtSocial,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creditState != null">
+        credit_state = #{creditState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtCredit != null">
+        gmt_credit = #{gmtCredit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alipayState != null">
+        alipay_state = #{alipayState,jdbcType=TINYINT},
+      </if>
+      <if test="gmtAlipay != null">
+        gmt_alipay = #{gmtAlipay,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mallStatus != null">
+        mall_status = #{mallStatus,jdbcType=TINYINT},
+      </if>
+      <if test="gmtMall != null">
+        gmt_mall = #{gmtMall,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.user.user.domain.UserAuth">
+    update pgy_user_auth
+    set product_id = #{productId,jdbcType=INTEGER},
+      global_user_id = #{globalUserId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      realname_idcard_state = #{realnameIdcardState,jdbcType=TINYINT},
+      gmt_realname_idcard = #{gmtRealnameIdcard,jdbcType=TIMESTAMP},
+      realname_face_state = #{realnameFaceState,jdbcType=TINYINT},
+      realname_face_similar = #{realnameFaceSimilar,jdbcType=DECIMAL},
+      gmt_realname_face = #{gmtRealnameFace,jdbcType=TIMESTAMP},
+      bankcard_state = #{bankcardState,jdbcType=TINYINT},
+      gmt_bankcard = #{gmtBankcard,jdbcType=TIMESTAMP},
+      zhima_state = #{zhimaState,jdbcType=TINYINT},
+      gmt_zhima = #{gmtZhima,jdbcType=TIMESTAMP},
+      zhima_score = #{zhimaScore,jdbcType=INTEGER},
+      mobile_state = #{mobileState,jdbcType=TINYINT},
+      gmt_mobile = #{gmtMobile,jdbcType=TIMESTAMP},
+      contacts_state = #{contactsState,jdbcType=TINYINT},
+      gmt_contacts = #{gmtContacts,jdbcType=TIMESTAMP},
+      taobao_state = #{taobaoState,jdbcType=TINYINT},
+      gmt_taobao = #{gmtTaobao,jdbcType=TIMESTAMP},
+      jingdong_state = #{jingdongState,jdbcType=TINYINT},
+      gmt_jingdong = #{gmtJingdong,jdbcType=TIMESTAMP},
+      fund_state = #{fundState,jdbcType=TINYINT},
+      gmt_fund = #{gmtFund,jdbcType=TIMESTAMP},
+      social_state = #{socialState,jdbcType=TINYINT},
+      gmt_social = #{gmtSocial,jdbcType=TIMESTAMP},
+      credit_state = #{creditState,jdbcType=TINYINT},
+      gmt_credit = #{gmtCredit,jdbcType=TIMESTAMP},
+      alipay_state = #{alipayState,jdbcType=TINYINT},
+      gmt_alipay = #{gmtAlipay,jdbcType=TIMESTAMP},
+      mall_status = #{mallStatus,jdbcType=TINYINT},
+      gmt_mall = #{gmtMall,jdbcType=TIMESTAMP},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

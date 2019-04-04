@@ -3,7 +3,6 @@ package com.duobei.core.operation.consume.service;
 import com.duobei.common.exception.TqException;
 import com.duobei.core.operation.consume.domain.ConsumeLoanConfig;
 import com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo;
-import com.duobei.core.operation.product.domain.vo.ProductConsumdebtGoodsVo;
 
 import java.util.List;
 
@@ -28,6 +27,12 @@ public interface ConsumeLoanConfigService {
      * @throws TqException
      */
     void saveAuth(ConsumeLoanConfig record,List<ProductAuthConfigVo> auth) throws TqException;
+
+    void updateBorrowShowById(ConsumeLoanConfig consumeLoanConfig) throws TqException;
+
+    void saveBorrowShow(ConsumeLoanConfig consumeLoanConfig) throws TqException;
+
+    ConsumeLoanConfig getById(Integer id);
 
     /**
      * 消费贷相关配置保存

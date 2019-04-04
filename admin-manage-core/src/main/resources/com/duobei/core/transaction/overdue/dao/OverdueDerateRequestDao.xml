@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.transaction.overdue.dao.OverdueDerateRequestDao">
+
+  <sql id="Base_Column_List">
+    overdue_derate_request.id as id, overdue_derate_request.product_id as product_id,
+    overdue_derate_request.user_id as user_id, overdue_derate_request.pool_id as pool_id,
+    overdue_derate_request.borrow_no as borrow_no, overdue_derate_request.collect_system_id as collect_system_id,
+    overdue_derate_request.creator as creator, overdue_derate_request.creator_name as creator_name,
+    overdue_derate_request.creator_collection_center_id as creator_collection_center_id,
+    overdue_derate_request.creator_collection_center as creator_collection_center,
+    overdue_derate_request.approver as approver, overdue_derate_request.approver_name as approver_name,
+    overdue_derate_request.approve_time as approve_time, overdue_derate_request.approve_status as approve_status,
+    overdue_derate_request.is_avoid_approve as is_avoid_approve,
+    overdue_derate_request.derate_amount as derate_amount, overdue_derate_request.real_derate_amount as real_derate_amount,
+    overdue_derate_request.overdue_amount as overdue_amount, overdue_derate_request.real_overdue_amount as real_overdue_amount,
+    overdue_derate_request.sum_overdue_amount as sum_overdue_amount,
+    overdue_derate_request.derate_rate as derate_rate, overdue_derate_request.unpaid_amount as unpaid_amount,
+    overdue_derate_request.fail_reason as fail_reason, overdue_derate_request.add_time_ms as add_time_ms,
+    overdue_derate_request.add_time as add_time, overdue_derate_request.is_delete as is_delete
+  </sql>
+
+  <select id="getWaitApproveByUserIdAndBorrowNo" resultType="com.duobei.core.transaction.overdue.domain.OverdueDerateRequest">
+      select <include refid="Base_Column_List"/>
+    from tt_overdue_derate_request overdue_derate_request
+    where overdue_derate_request.is_delete = 0 and overdue_derate_request.approve_status = 0
+    and overdue_derate_request.user_id = #{userId} and overdue_derate_request.borrow_no = #{borrowNo}
+    limit 1
+  </select>
+</mapper>

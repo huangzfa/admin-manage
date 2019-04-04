@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.bank.dao.mapper.BankMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.operation.bank.domain.Bank">
+    <id column="bank_id" jdbcType="INTEGER" property="id" />
+    <result column="bank_bank_code" jdbcType="VARCHAR" property="bankCode" />
+    <result column="bank_bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="bank_bank_icon" jdbcType="VARCHAR" property="bankIcon" />
+    <result column="bank_bank_icon_grey" jdbcType="VARCHAR" property="bankIconGrey" />
+    <result column="bank_bank_icon_back" jdbcType="VARCHAR" property="bankIconBack" />
+    <result column="bank_is_enable" jdbcType="BIT" property="isEnable" />
+    <result column="bank_sk_remark" jdbcType="VARCHAR" property="skRemark" />
+    <result column="bank_kk_remark" jdbcType="VARCHAR" property="kkRemark" />
+    <result column="bank_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="bank_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="bank_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="bank_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
+    <result column="bank_is_delete" jdbcType="INTEGER" property="isDelete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    bank.id as bank_id, bank.bank_code as bank_bank_code, bank.bank_name as bank_bank_name, 
+    bank.bank_icon as bank_bank_icon, bank.bank_icon_grey as bank_bank_icon_grey, bank.bank_icon_back as bank_bank_icon_back, 
+    bank.is_enable as bank_is_enable, bank.sk_remark as bank_sk_remark, bank.kk_remark as bank_kk_remark, 
+    bank.add_time as bank_add_time, bank.modify_time as bank_modify_time, bank.add_operator_id as bank_add_operator_id, 
+    bank.modify_operator_id as bank_modify_operator_id, bank.is_delete as bank_is_delete
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.operation.bank.domain.BankExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cf_bank bank
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cf_bank bank
+    where bank.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cf_bank
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.operation.bank.domain.BankExample">
+    delete from cf_bank bank
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.operation.bank.domain.Bank">
+    insert into cf_bank (id, bank_code, bank_name, 
+      bank_icon, bank_icon_grey, bank_icon_back, 
+      is_enable, sk_remark, kk_remark, 
+      add_time, modify_time, add_operator_id, 
+      modify_operator_id, is_delete)
+    values (#{id,jdbcType=INTEGER}, #{bankCode,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
+      #{bankIcon,jdbcType=VARCHAR}, #{bankIconGrey,jdbcType=VARCHAR}, #{bankIconBack,jdbcType=VARCHAR}, 
+      #{isEnable,jdbcType=BIT}, #{skRemark,jdbcType=VARCHAR}, #{kkRemark,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, 
+      #{modifyOperatorId,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.operation.bank.domain.Bank">
+    insert into cf_bank
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bankCode != null">
+        bank_code,
+      </if>
+      <if test="bankName != null">
+        bank_name,
+      </if>
+      <if test="bankIcon != null">
+        bank_icon,
+      </if>
+      <if test="bankIconGrey != null">
+        bank_icon_grey,
+      </if>
+      <if test="bankIconBack != null">
+        bank_icon_back,
+      </if>
+      <if test="isEnable != null">
+        is_enable,
+      </if>
+      <if test="skRemark != null">
+        sk_remark,
+      </if>
+      <if test="kkRemark != null">
+        kk_remark,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id,
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bankCode != null">
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankIcon != null">
+        #{bankIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="bankIconGrey != null">
+        #{bankIconGrey,jdbcType=VARCHAR},
+      </if>
+      <if test="bankIconBack != null">
+        #{bankIconBack,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnable != null">
+        #{isEnable,jdbcType=BIT},
+      </if>
+      <if test="skRemark != null">
+        #{skRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="kkRemark != null">
+        #{kkRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.operation.bank.domain.BankExample" resultType="java.lang.Long">
+    select count(*) from cf_bank bank
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cf_bank bank
+    <set>
+      <if test="record.id != null">
+        bank.id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.bankCode != null">
+        bank.bank_code = #{record.bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankName != null">
+        bank.bank_name = #{record.bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankIcon != null">
+        bank.bank_icon = #{record.bankIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankIconGrey != null">
+        bank.bank_icon_grey = #{record.bankIconGrey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankIconBack != null">
+        bank.bank_icon_back = #{record.bankIconBack,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isEnable != null">
+        bank.is_enable = #{record.isEnable,jdbcType=BIT},
+      </if>
+      <if test="record.skRemark != null">
+        bank.sk_remark = #{record.skRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.kkRemark != null">
+        bank.kk_remark = #{record.kkRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null">
+        bank.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        bank.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addOperatorId != null">
+        bank.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifyOperatorId != null">
+        bank.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDelete != null">
+        bank.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cf_bank bank
+    set bank.id = #{record.id,jdbcType=INTEGER},
+      bank.bank_code = #{record.bankCode,jdbcType=VARCHAR},
+      bank.bank_name = #{record.bankName,jdbcType=VARCHAR},
+      bank.bank_icon = #{record.bankIcon,jdbcType=VARCHAR},
+      bank.bank_icon_grey = #{record.bankIconGrey,jdbcType=VARCHAR},
+      bank.bank_icon_back = #{record.bankIconBack,jdbcType=VARCHAR},
+      bank.is_enable = #{record.isEnable,jdbcType=BIT},
+      bank.sk_remark = #{record.skRemark,jdbcType=VARCHAR},
+      bank.kk_remark = #{record.kkRemark,jdbcType=VARCHAR},
+      bank.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      bank.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      bank.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      bank.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      bank.is_delete = #{record.isDelete,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.bank.domain.Bank">
+    update cf_bank
+    <set>
+      <if test="bankCode != null">
+        bank_code = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankIcon != null">
+        bank_icon = #{bankIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="bankIconGrey != null">
+        bank_icon_grey = #{bankIconGrey,jdbcType=VARCHAR},
+      </if>
+      <if test="bankIconBack != null">
+        bank_icon_back = #{bankIconBack,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnable != null">
+        is_enable = #{isEnable,jdbcType=BIT},
+      </if>
+      <if test="skRemark != null">
+        sk_remark = #{skRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="kkRemark != null">
+        kk_remark = #{kkRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.bank.domain.Bank">
+    update cf_bank
+    set bank_code = #{bankCode,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      bank_icon = #{bankIcon,jdbcType=VARCHAR},
+      bank_icon_grey = #{bankIconGrey,jdbcType=VARCHAR},
+      bank_icon_back = #{bankIconBack,jdbcType=VARCHAR},
+      is_enable = #{isEnable,jdbcType=BIT},
+      sk_remark = #{skRemark,jdbcType=VARCHAR},
+      kk_remark = #{kkRemark,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

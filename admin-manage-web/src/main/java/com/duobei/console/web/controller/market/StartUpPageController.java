@@ -41,7 +41,7 @@ public class StartUpPageController extends BaseController {
      */
     @RequiresPermissions("market:startupPage:view")
     @RequestMapping(value = "/form")
-    public String startupPageForm( Model model,Integer appId) throws TqException {
+    public String startupPageForm( Model model,Integer appId)  {
         OperatorCredential credential = getCredential();
         //获取用户应用权限
         List<App> appList = credential.getAppList();
@@ -103,7 +103,7 @@ public class StartUpPageController extends BaseController {
             }
             return simpleSuccessJsonResult ("success",1);
         } catch (Exception e) {
-            log.warn("编辑启动页异常", e);
+            log.error("编辑启动页异常", e);
             if (e instanceof TqException){
                 return failJsonResult(e.getMessage());
             }else {
@@ -135,7 +135,7 @@ public class StartUpPageController extends BaseController {
             startupPageService.updateIsEnableById(startupPage);
             return simpleSuccessJsonResult ("success",1);
         } catch (Exception e) {
-            log.warn("编辑启动页异常", e);
+            log.error("编辑启动页异常", e);
             if (e instanceof TqException){
                 return failJsonResult(e.getMessage());
             }else {

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.functionSwitch.dao.FunctionSwitchDao">
+
+  <sql id="Base_Column_List">
+    function_switch.id as id, function_switch.function_name as function_name,
+    function_switch.function_code as function_code, function_switch.app_os_type as app_os_type,
+    function_switch.add_time as add_time, function_switch.modify_time as modify_time,
+    function_switch.add_operator_id as add_operator_id, function_switch.modify_operator_id as modify_operator_id
+  </sql>
+  
+  <select id="getListByQuery" parameterType="com.duobei.core.operation.functionSwitch.domain.criteria.FunctionSwitchCriteria" resultType="com.duobei.core.operation.functionSwitch.domain.FunctionSwitch">
+    select <include refid="Base_Column_List"/>
+    from yy_function_switch function_switch
+    where function_switch.function_code = #{functionCode}
+  </select>
+
+  <select id="getListVoByQuery" parameterType="com.duobei.core.operation.functionSwitch.domain.criteria.FunctionSwitchCriteria" resultType="com.duobei.core.operation.functionSwitch.domain.vo.FunctionSwitchAppVo">
+    select <include refid="Base_Column_List"/>
+    from yy_function_switch function_switch
+    where function_switch.function_code = #{functionCode}
+  </select>
+
+</mapper>

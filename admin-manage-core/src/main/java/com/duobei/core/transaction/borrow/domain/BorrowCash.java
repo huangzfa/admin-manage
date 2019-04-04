@@ -38,32 +38,32 @@ public class BorrowCash implements Serializable {
     /**
      * 借款天数【7，14】
      */
-    private Byte borrowDays;
+    private Integer borrowDays;
 
     /**
      * 借款状态【0:申请/未审核，1:已结清，2:打款中，3:打款失败，4:关闭，5:已经打款/待还款】，字典
      */
-    private Byte borrowState;
+    private Integer borrowState;
 
     /**
      * 审核状态【0:申请/未审核，1:风控同意，2:机审中，3:人审中，4:风控拒绝】，字典
      */
-    private Byte riskState;
+    private Integer riskState;
 
     /**
      * 是否人审【0：否，1：是】
      */
-    private Boolean riskReviewFlag;
+    private Integer riskReviewFlag;
 
     /**
      * 人审结果状态：【0：初始，1：同意借钱，2：放弃借钱】，字典
      */
-    private Byte riskReviewState;
+    private Integer riskReviewState;
 
     /**
      * 风控审批的订单编号
      */
-    private String rishOrderNo;
+    private String riskOrderNo;
 
     /**
      * 风控审批场景编号
@@ -113,7 +113,7 @@ public class BorrowCash implements Serializable {
     /**
      * 到账账号类型：【1：银行卡，2：支付宝】
      */
-    private Byte accountType;
+    private Integer accountType;
 
     /**
      * 到账账号名（银行卡名称、支付宝名称）
@@ -188,12 +188,12 @@ public class BorrowCash implements Serializable {
     /**
      * 逾期信息_历史逾期状态【0：未逾期，1：已逾期】
      */
-    private Byte overdueState;
+    private Integer overdueState;
 
     /**
      * 逾期信息_当前逾期状态【0：未逾期，1：已逾期】
      */
-    private Byte currentOverdueState;
+    private Integer currentOverdueState;
 
     /**
      * 逾期信息_总逾期天数，累加
@@ -268,7 +268,7 @@ public class BorrowCash implements Serializable {
     /**
      * 借款用途【1：消费，2：旅游，3：教育学习，4：装修，5：医疗健康，6：购物，7：其他】，字典
      */
-    private Byte borrowUse;
+    private Integer borrowUse;
 
     /**
      * 使用劵id，0表示未使用劵
@@ -401,52 +401,52 @@ public class BorrowCash implements Serializable {
         this.bizCode = bizCode;
     }
 
-    public Byte getBorrowDays() {
+    public Integer getBorrowDays() {
         return borrowDays;
     }
 
-    public void setBorrowDays(Byte borrowDays) {
+    public void setBorrowDays(Integer borrowDays) {
         this.borrowDays = borrowDays;
     }
 
-    public Byte getBorrowState() {
+    public Integer getBorrowState() {
         return borrowState;
     }
 
-    public void setBorrowState(Byte borrowState) {
+    public void setBorrowState(Integer borrowState) {
         this.borrowState = borrowState;
     }
 
-    public Byte getRiskState() {
+    public Integer getRiskState() {
         return riskState;
     }
 
-    public void setRiskState(Byte riskState) {
+    public void setRiskState(Integer riskState) {
         this.riskState = riskState;
     }
 
-    public Boolean getRiskReviewFlag() {
+    public Integer getRiskReviewFlag() {
         return riskReviewFlag;
     }
 
-    public void setRiskReviewFlag(Boolean riskReviewFlag) {
+    public void setRiskReviewFlag(Integer riskReviewFlag) {
         this.riskReviewFlag = riskReviewFlag;
     }
 
-    public Byte getRiskReviewState() {
+    public Integer getRiskReviewState() {
         return riskReviewState;
     }
 
-    public void setRiskReviewState(Byte riskReviewState) {
+    public void setRiskReviewState(Integer riskReviewState) {
         this.riskReviewState = riskReviewState;
     }
 
-    public String getRishOrderNo() {
-        return rishOrderNo;
+    public String getRiskOrderNo() {
+        return riskOrderNo;
     }
 
-    public void setRishOrderNo(String rishOrderNo) {
-        this.rishOrderNo = rishOrderNo;
+    public void setRiskOrderNo(String riskOrderNo) {
+        this.riskOrderNo = riskOrderNo;
     }
 
     public String getRiskSceneCode() {
@@ -521,11 +521,11 @@ public class BorrowCash implements Serializable {
         this.gmtUpsFinish = gmtUpsFinish;
     }
 
-    public Byte getAccountType() {
+    public Integer getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(Byte accountType) {
+    public void setAccountType(Integer accountType) {
         this.accountType = accountType;
     }
 
@@ -641,19 +641,19 @@ public class BorrowCash implements Serializable {
         this.closeReason = closeReason;
     }
 
-    public Byte getOverdueState() {
+    public Integer getOverdueState() {
         return overdueState;
     }
 
-    public void setOverdueState(Byte overdueState) {
+    public void setOverdueState(Integer overdueState) {
         this.overdueState = overdueState;
     }
 
-    public Byte getCurrentOverdueState() {
+    public Integer getCurrentOverdueState() {
         return currentOverdueState;
     }
 
-    public void setCurrentOverdueState(Byte currentOverdueState) {
+    public void setCurrentOverdueState(Integer currentOverdueState) {
         this.currentOverdueState = currentOverdueState;
     }
 
@@ -769,11 +769,11 @@ public class BorrowCash implements Serializable {
         this.remark = remark;
     }
 
-    public Byte getBorrowUse() {
+    public Integer getBorrowUse() {
         return borrowUse;
     }
 
-    public void setBorrowUse(Byte borrowUse) {
+    public void setBorrowUse(Integer borrowUse) {
         this.borrowUse = borrowUse;
     }
 
@@ -920,7 +920,7 @@ public class BorrowCash implements Serializable {
         sb.append(", riskState=").append(riskState);
         sb.append(", riskReviewFlag=").append(riskReviewFlag);
         sb.append(", riskReviewState=").append(riskReviewState);
-        sb.append(", rishOrderNo=").append(rishOrderNo);
+        sb.append(", riskOrderNo=").append(riskOrderNo);
         sb.append(", riskSceneCode=").append(riskSceneCode);
         sb.append(", gmtRiskReq=").append(gmtRiskReq);
         sb.append(", gmtRiskResp=").append(gmtRiskResp);

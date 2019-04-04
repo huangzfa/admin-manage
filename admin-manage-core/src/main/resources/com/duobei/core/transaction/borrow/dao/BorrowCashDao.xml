@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.transaction.borrow.dao.BorrowCashDao">
+
+  <sql id="Base_Column_List">
+    borrow_cash.id as id, borrow_cash.product_id as product_id,
+    borrow_cash.user_id as user_id, borrow_cash.uk_flag as uk_flag,
+    borrow_cash.borrow_no as borrow_no, borrow_cash.biz_code as biz_code,
+    borrow_cash.borrow_days as borrow_days, borrow_cash.borrow_state as borrow_state,
+    borrow_cash.risk_state as risk_state, borrow_cash.risk_review_flag as risk_review_flag,
+    borrow_cash.risk_review_state as risk_review_state, borrow_cash.risk_order_no as risk_order_no,
+    borrow_cash.risk_scene_code as risk_scene_code, borrow_cash.gmt_risk_req as gmt_risk_req,
+    borrow_cash.gmt_risk_resp as gmt_risk_resp, borrow_cash.gmt_risk_review_finish as gmt_risk_review_finish,
+    borrow_cash.gmt_risk_finish as gmt_risk_finish, borrow_cash.ups_order_no as ups_order_no,
+    borrow_cash.ups_third_order_no as ups_third_order_no, borrow_cash.gmt_ups_req as gmt_ups_req,
+    borrow_cash.gmt_ups_finish as gmt_ups_finish, borrow_cash.account_type as account_type,
+    borrow_cash.account_name as account_name, borrow_cash.account_no as account_no,
+    borrow_cash.account_no_md5 as account_no_md5, borrow_cash.amount as amount,
+    borrow_cash.arrival_amount as arrival_amount, borrow_cash.activity_amount as activity_amount,
+    borrow_cash.repay_amount as repay_amount, borrow_cash.poundage as poundage,
+    borrow_cash.poundage_rate as poundage_rate, borrow_cash.consume_amount as consume_amount,
+    borrow_cash.gmt_repay as gmt_repay, borrow_cash.gmt_plan_repayment as gmt_plan_repayment,
+    borrow_cash.gmt_close as gmt_close, borrow_cash.close_reason as close_reason,
+    borrow_cash.overdue_state as overdue_state, borrow_cash.current_overdue_state as current_overdue_state,
+    borrow_cash.sum_overdue_day as sum_overdue_day, borrow_cash.overdue_day as overdue_day,
+    borrow_cash.overdue_amount as overdue_amount, borrow_cash.real_overdue_amount as real_overdue_amount,
+    borrow_cash.overdue_rate as overdue_rate, borrow_cash.derate_overdue as derate_overdue,
+    borrow_cash.sum_overdue_amount as sum_overdue_amount, borrow_cash.sum_renewal_poundage as sum_renewal_poundage,
+    borrow_cash.renewal_num as renewal_num, borrow_cash.bank_rate_amount as bank_rate_amount,
+    borrow_cash.base_bank_rate as base_bank_rate, borrow_cash.sum_bank_rate_amount as sum_bank_rate_amount,
+    borrow_cash.sum_rebate as sum_rebate, borrow_cash.remark as remark,
+    borrow_cash.borrow_use as borrow_use, borrow_cash.coupon_id as coupon_id,
+    borrow_cash.coupon_amount as coupon_amount, borrow_cash.used_au_quota as used_au_quota,
+    borrow_cash.au_quota as au_quota, borrow_cash.app_type as app_type,
+    borrow_cash.latitude as latitude, borrow_cash.longitude as longitude,
+    borrow_cash.province as province, borrow_cash.city as city,
+    borrow_cash.county as county, borrow_cash.address as address,
+    borrow_cash.data_version as data_version, borrow_cash.add_time as add_time,
+    borrow_cash.modify_time as modify_time, borrow_cash.is_delete as is_delete
+  </sql>
+
+    <select id="getListVoByQuery" resultType="com.duobei.core.transaction.borrow.domain.vo.BorrowCashListVo" parameterType="com.duobei.core.transaction.borrow.domain.criteria.BorrowCashCriteria">
+    select <include refid="Base_Column_List"/>
+    from tt_borrow_cash borrow_cash
+    where borrow_cash.is_delete = 0 and borrow_cash.product_id = #{productId}
+    <if test="borrowNo != null and borrowNo !='' ">
+      and borrow_cash.borrow_no = #{borrowNo}
+    </if>
+    <if test="userId != null">
+      and borrow_cash.user_id = #{userId}
+    </if>
+    order by borrow_cash.add_time desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+  <select id="getById" parameterType="Long" resultType="com.duobei.core.transaction.borrow.domain.BorrowCash">
+    select <include refid="Base_Column_List"/>
+    from tt_borrow_cash borrow_cash
+    where borrow_cash.is_delete = 0 and borrow_cash.id = #{borrowId}
+  </select>
+
+  <select id="getIdByBorrowNo" parameterType="String" resultType="Long">
+    select id
+    from tt_borrow_cash
+    where is_delete = 0 and borrow_no = #{borrowNo}
+  </select>
+
+  <select id="getBorrowCashMapByRepaymentBorrowIds" resultType="com.duobei.core.transaction.borrow.domain.BorrowCash">
+    select <include refid="Base_Column_List"/>
+    from tt_borrow_cash borrow_cash
+    where borrow_cash.is_delete = 0 and borrow_cash.id
+    <foreach collection="repaymentData" open=" in(" close=")" separator="," item="repayment">
+      #{repayment.borrowCashId}
+    </foreach>
+  </select>
+  <select id="getIdByBorrowNoAndUserId" resultType="Long">
+    select id
+    from tt_borrow_cash
+    where is_delete = 0 and borrow_no = #{borrowNo} and user_id = #{userId}
+  </select>
+  <select id="getBorrowCashMapByRenewalBorrowIds" resultType="com.duobei.core.transaction.borrow.domain.BorrowCash">
+  select <include refid="Base_Column_List"/>
+  from tt_borrow_cash borrow_cash
+  where borrow_cash.is_delete = 0 and borrow_cash.id
+  <foreach collection="renewalData" open=" in(" close=")" separator="," item="renewal">
+    #{renewal.borrowCashId}
+  </foreach>
+  </select>
+
+
+  <select id="getOverdueListVoByQuery" resultType="com.duobei.core.transaction.borrow.domain.vo.BorrowCashListVo" parameterType="com.duobei.core.transaction.borrow.domain.criteria.BorrowCashCriteria">
+    select <include refid="Base_Column_List"/>
+    from tt_borrow_cash borrow_cash
+    where borrow_cash.is_delete = 0 and borrow_cash.current_overdue_state = 1 and borrow_cash.borrow_state = 5 and borrow_cash.product_id = #{productId}
+    <if test="borrowNo != null and borrowNo !='' ">
+      and borrow_cash.borrow_no = #{borrowNo}
+    </if>
+    <if test="userId != null">
+      and borrow_cash.user_id = #{userId}
+    </if>
+    order by borrow_cash.add_time desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+
+  <update id="overdueAmountDerate" parameterType="com.duobei.core.transaction.borrow.domain.BorrowCash">
+    update tt_borrow_cash
+    set modify_time = #{modifyTime},data_version = data_version + 1,derate_overdue = #{derateOverdue}
+    where id = #{id} and is_delete = 0 and data_version = #{dataVersion}
+  </update>
+</mapper>

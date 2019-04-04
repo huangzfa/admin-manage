@@ -130,4 +130,22 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
             }
         }
     }
+
+    @Override
+    public void updateBorrowShowById(ConsumeLoanConfig consumeLoanConfig) throws TqException {
+        int count = consumeLoanConfigDao.updateBorrowShowById(consumeLoanConfig);
+        if (count != -1){
+            throw new TqException("借钱默认页修改失败");
+        }
+    }
+
+    @Override
+    public void saveBorrowShow(ConsumeLoanConfig consumeLoanConfig) throws TqException {
+        int count = consumeLoanConfigDao.saveBorrowShow(consumeLoanConfig);
+        if (count != -1){
+            throw new TqException("借钱默认页保存失败");
+        }
+    }
+
+
 }

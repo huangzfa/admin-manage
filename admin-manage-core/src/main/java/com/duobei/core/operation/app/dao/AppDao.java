@@ -25,4 +25,11 @@ public interface AppDao {
      * @return
      */
     List<App> getAll();
+
+    /**
+     * 根据Id查询APP信息
+     * @param id
+     * @return
+     */
+    App getById(Integer id);
 }

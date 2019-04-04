@@ -16,4 +16,8 @@
     <select id="getAll" resultType="com.duobei.core.operation.app.domain.App">
         select * from yy_app where is_delete = 0;
     </select>
+
+    <select id="getById" parameterType="Integer" resultType="com.duobei.core.operation.app.domain.App">
+               select * from yy_app where is_delete = 0 and id = #{id};
+    </select>
 </mapper>

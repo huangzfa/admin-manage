@@ -60,10 +60,26 @@
 <function>
   <description>获取字典标签</description>
   <name>getPmmlList</name>
-  <function-class>com.duobei.core.pmml.utils.PmmlUtil</function-class>
+  <function-class>com.duobei.core.manage.sys.utils.PmmlUtil</function-class>
   <function-signature>java.util.List getPmmlList()</function-signature>
   <example>${cfg:getPmmlList()}</example>
 </function>
+
+  <function>
+    <description>金钱格式转换Long -->BigDecimal</description>
+    <name>amountLongToBigDecimal</name>
+    <function-class>com.duobei.utils.AmountUtil</function-class>
+    <function-signature>java.math.BigDecimal getBigDecimal(java.lang.Long)</function-signature>
+    <example>${cfg:getBigDecimalAmount(amount)}</example>
+  </function>
+
+  <function>
+    <description>金钱格式转换BigDecimal-->Long</description>
+    <name>amountBigDecimalToLong</name>
+    <function-class>com.duobei.utils.AmountUtil</function-class>
+    <function-signature>java.lang.Long getLongAmount(java.math.BigDecimal )</function-signature>
+    <example>${cfg:getLongAmount(amount)}</example>
+  </function>
 <!-- 
 <function>
   <description>获取省份列表</description>

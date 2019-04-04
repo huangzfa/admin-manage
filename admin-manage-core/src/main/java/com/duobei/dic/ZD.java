@@ -51,7 +51,7 @@ public interface ZD {
 	/**
 	 *  终端系统类型
 	 */
-    public String osType = "osType";
+		public String osType = "osType";
 	
 	/**
 	 *  通知业务类型
@@ -147,6 +147,46 @@ public interface ZD {
 	 *  启用/禁用
 	 */
     public String isEnable = "isEnable";
+	
+	/**
+	 *  借款状态
+	 */
+    public String borrowState = "borrowState";
+	
+	/**
+	 *  审核状态
+	 */
+    public String riskState = "riskState";
+	
+	/**
+	 *  人审结果状态
+	 */
+    public String riskReviewState = "riskReviewState";
+	
+	/**
+	 *  借贷商品订单状态
+	 */
+    public String consumdebtOrderState = "consumdebtOrderState";
+	
+	/**
+	 *  支付状态
+	 */
+    public String payState = "payState";
+	
+	/**
+	 *  还款状态
+	 */
+    public String repayState = "repayState";
+	
+	/**
+	 *  还款类型
+	 */
+    public String repayType = "repayType";
+	
+	/**
+	 *  续借状态
+	 */
+    public String renewalState = "renewalState";
 	
 	/**
 	 *  菜单类型-菜单- 
@@ -502,4 +542,174 @@ public interface ZD {
 	 *  启用/禁用-禁用- 
 	 */
     public int isEnable_no = 0;
+	
+	/**
+	 *  借款状态-申请- 
+	 */
+    public int borrowState_new = 0;
+	
+	/**
+	 *  借款状态-已结清- 
+	 */
+    public int borrowState_finish = 1;
+	
+	/**
+	 *  借款状态-打款中- 
+	 */
+    public int borrowState_ing = 2;
+	
+	/**
+	 *  借款状态-打款失败- 
+	 */
+    public int borrowState_fail = 3;
+	
+	/**
+	 *  借款状态-关闭- 
+	 */
+    public int borrowState_close = 4;
+	
+	/**
+	 *  借款状态-待还款- 
+	 */
+    public int borrowState_waitRepay = 5;
+	
+	/**
+	 *  审核状态-申请- 
+	 */
+    public int riskState_new = 0;
+	
+	/**
+	 *  审核状态-风控同意- 
+	 */
+    public int riskState_riskPass = 1;
+	
+	/**
+	 *  审核状态-机审中- 
+	 */
+    public int riskState_machineAudit = 2;
+	
+	/**
+	 *  审核状态-人审中- 
+	 */
+    public int riskState_peopleAudit = 3;
+	
+	/**
+	 *  审核状态-风控拒绝- 
+	 */
+    public int riskState_riskRefuse = 4;
+	
+	/**
+	 *  人审结果状态-初始- 
+	 */
+    public int riskReviewState_init = 0;
+	
+	/**
+	 *  人审结果状态-同意借钱- 
+	 */
+    public int riskReviewState_agreeBorrow = 1;
+	
+	/**
+	 *  人审结果状态-放弃借钱- 
+	 */
+    public int riskReviewState_giveUp = 2;
+	
+	/**
+	 *  借贷商品订单状态-新建- 
+	 */
+    public int consumdebtOrderState_new = 0;
+	
+	/**
+	 *  借贷商品订单状态-待发货- 
+	 */
+    public int consumdebtOrderState_waitDelivery = 2;
+	
+	/**
+	 *  借贷商品订单状态-关闭- 
+	 */
+    public int consumdebtOrderState_close = 4;
+	
+	/**
+	 *  借贷商品订单状态-已发货- 
+	 */
+    public int consumdebtOrderState_deliveryFinish = 3;
+	
+	/**
+	 *  借贷商品订单状态-已收货- 
+	 */
+    public int consumdebtOrderState_finish = 1;
+	
+	/**
+	 *  支付状态-待支付- 
+	 */
+    public int payState_waitPay = 0;
+	
+	/**
+	 *  支付状态-支付中- 
+	 */
+    public int payState_ing = 2;
+	
+	/**
+	 *  支付状态-支付失败- 
+	 */
+    public int payState_fail = -1;
+	
+	/**
+	 *  支付状态-支付成功- 
+	 */
+    public int payState_success = 1;
+	
+	/**
+	 *  还款状态-新建- 
+	 */
+    public int repayState_new = 0;
+	
+	/**
+	 *  还款状态-还款成功- 
+	 */
+    public int repayState_success = 1;
+	
+	/**
+	 *  还款状态-处理中- 
+	 */
+    public int repayState_handling = 2;
+	
+	/**
+	 *  还款状态-还款失败- 
+	 */
+    public int repayState_fail = -1;
+	
+	/**
+	 *  还款类型-主动还款- 
+	 */
+    public int repayType_active = 0;
+	
+	/**
+	 *  还款类型-线下还款- 
+	 */
+    public int repayType_offline = 1;
+	
+	/**
+	 *  还款类型-自动扣款- 
+	 */
+    public int repayType_auto = 2;
+	
+	/**
+	 *  续借状态-新建- 
+	 */
+    public int renewalState_new = 0;
+	
+	/**
+	 *  续借状态-续期成功- 
+	 */
+    public int renewalState_success = 1;
+	
+	/**
+	 *  续借状态-处理中- 
+	 */
+    public int renewalState_handling = 2;
+	
+	/**
+	 *  续借状态-续期失败- 
+	 */
+    public int renewalState_fail = -1;
 }

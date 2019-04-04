@@ -82,13 +82,17 @@ public class ProductAppChannelController extends BaseController {
         //验证用户权限
         try {
             if( credential == null){
-                throw new TqException("登录过期，请重新登录");
+                return failJsonResult("登录过期，请重新登录");
             }
             //验证数据权限
             if( criteria.getAppId() !=null ){
-                validAuthData(null,criteria.getAppId());
+                try {
+                    validAuthData(null,criteria.getAppId());
+                }catch (Exception e){
+                    return failJsonResult(e.getMessage());
+                }
             }else{
-                throw  new TqException("应用数据查询失败");
+                return failJsonResult("应用数据查询失败");
 
             }
             if (criteria.getPagesize()==0) {
@@ -97,10 +101,10 @@ public class ProductAppChannelController extends BaseController {
             ListVo<ProductAppChannelListVo> list = productAppChannelService.getListByQuery(criteria);
             return successJsonResult("success", "list", list);
         }catch (Exception e) {
+            log.error("查询"+DESC+"异常",e);
             if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());
             }else{
-                log.warn("查询"+DESC+"异常",e);
                 return failJsonResult("查询失败");
             }
         }

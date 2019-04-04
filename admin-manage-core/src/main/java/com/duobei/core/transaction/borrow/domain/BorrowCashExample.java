@@ -586,52 +586,52 @@ public class BorrowCashExample {
             return (Criteria) this;
         }
 
-        public Criteria andBorrowDaysEqualTo(Byte value) {
+        public Criteria andBorrowDaysEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_days =", value, "borrowDays");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowDaysNotEqualTo(Byte value) {
+        public Criteria andBorrowDaysNotEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_days <>", value, "borrowDays");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowDaysGreaterThan(Byte value) {
+        public Criteria andBorrowDaysGreaterThan(Integer value) {
             addCriterion("borrow_cash.borrow_days >", value, "borrowDays");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowDaysGreaterThanOrEqualTo(Byte value) {
+        public Criteria andBorrowDaysGreaterThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_days >=", value, "borrowDays");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowDaysLessThan(Byte value) {
+        public Criteria andBorrowDaysLessThan(Integer value) {
             addCriterion("borrow_cash.borrow_days <", value, "borrowDays");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowDaysLessThanOrEqualTo(Byte value) {
+        public Criteria andBorrowDaysLessThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_days <=", value, "borrowDays");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowDaysIn(List<Byte> values) {
+        public Criteria andBorrowDaysIn(List<Integer> values) {
             addCriterion("borrow_cash.borrow_days in", values, "borrowDays");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowDaysNotIn(List<Byte> values) {
+        public Criteria andBorrowDaysNotIn(List<Integer> values) {
             addCriterion("borrow_cash.borrow_days not in", values, "borrowDays");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowDaysBetween(Byte value1, Byte value2) {
+        public Criteria andBorrowDaysBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.borrow_days between", value1, value2, "borrowDays");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowDaysNotBetween(Byte value1, Byte value2) {
+        public Criteria andBorrowDaysNotBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.borrow_days not between", value1, value2, "borrowDays");
             return (Criteria) this;
         }
@@ -646,52 +646,52 @@ public class BorrowCashExample {
             return (Criteria) this;
         }
 
-        public Criteria andBorrowStateEqualTo(Byte value) {
+        public Criteria andBorrowStateEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_state =", value, "borrowState");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowStateNotEqualTo(Byte value) {
+        public Criteria andBorrowStateNotEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_state <>", value, "borrowState");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowStateGreaterThan(Byte value) {
+        public Criteria andBorrowStateGreaterThan(Integer value) {
             addCriterion("borrow_cash.borrow_state >", value, "borrowState");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowStateGreaterThanOrEqualTo(Byte value) {
+        public Criteria andBorrowStateGreaterThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_state >=", value, "borrowState");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowStateLessThan(Byte value) {
+        public Criteria andBorrowStateLessThan(Integer value) {
             addCriterion("borrow_cash.borrow_state <", value, "borrowState");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowStateLessThanOrEqualTo(Byte value) {
+        public Criteria andBorrowStateLessThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_state <=", value, "borrowState");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowStateIn(List<Byte> values) {
+        public Criteria andBorrowStateIn(List<Integer> values) {
             addCriterion("borrow_cash.borrow_state in", values, "borrowState");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowStateNotIn(List<Byte> values) {
+        public Criteria andBorrowStateNotIn(List<Integer> values) {
             addCriterion("borrow_cash.borrow_state not in", values, "borrowState");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowStateBetween(Byte value1, Byte value2) {
+        public Criteria andBorrowStateBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.borrow_state between", value1, value2, "borrowState");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowStateNotBetween(Byte value1, Byte value2) {
+        public Criteria andBorrowStateNotBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.borrow_state not between", value1, value2, "borrowState");
             return (Criteria) this;
         }
@@ -706,52 +706,52 @@ public class BorrowCashExample {
             return (Criteria) this;
         }
 
-        public Criteria andRiskStateEqualTo(Byte value) {
+        public Criteria andRiskStateEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_state =", value, "riskState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskStateNotEqualTo(Byte value) {
+        public Criteria andRiskStateNotEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_state <>", value, "riskState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskStateGreaterThan(Byte value) {
+        public Criteria andRiskStateGreaterThan(Integer value) {
             addCriterion("borrow_cash.risk_state >", value, "riskState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskStateGreaterThanOrEqualTo(Byte value) {
+        public Criteria andRiskStateGreaterThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_state >=", value, "riskState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskStateLessThan(Byte value) {
+        public Criteria andRiskStateLessThan(Integer value) {
             addCriterion("borrow_cash.risk_state <", value, "riskState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskStateLessThanOrEqualTo(Byte value) {
+        public Criteria andRiskStateLessThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_state <=", value, "riskState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskStateIn(List<Byte> values) {
+        public Criteria andRiskStateIn(List<Integer> values) {
             addCriterion("borrow_cash.risk_state in", values, "riskState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskStateNotIn(List<Byte> values) {
+        public Criteria andRiskStateNotIn(List<Integer> values) {
             addCriterion("borrow_cash.risk_state not in", values, "riskState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskStateBetween(Byte value1, Byte value2) {
+        public Criteria andRiskStateBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.risk_state between", value1, value2, "riskState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskStateNotBetween(Byte value1, Byte value2) {
+        public Criteria andRiskStateNotBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.risk_state not between", value1, value2, "riskState");
             return (Criteria) this;
         }
@@ -766,52 +766,52 @@ public class BorrowCashExample {
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewFlagEqualTo(Boolean value) {
+        public Criteria andRiskReviewFlagEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_review_flag =", value, "riskReviewFlag");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewFlagNotEqualTo(Boolean value) {
+        public Criteria andRiskReviewFlagNotEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_review_flag <>", value, "riskReviewFlag");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewFlagGreaterThan(Boolean value) {
+        public Criteria andRiskReviewFlagGreaterThan(Integer value) {
             addCriterion("borrow_cash.risk_review_flag >", value, "riskReviewFlag");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewFlagGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andRiskReviewFlagGreaterThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_review_flag >=", value, "riskReviewFlag");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewFlagLessThan(Boolean value) {
+        public Criteria andRiskReviewFlagLessThan(Integer value) {
             addCriterion("borrow_cash.risk_review_flag <", value, "riskReviewFlag");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewFlagLessThanOrEqualTo(Boolean value) {
+        public Criteria andRiskReviewFlagLessThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_review_flag <=", value, "riskReviewFlag");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewFlagIn(List<Boolean> values) {
+        public Criteria andRiskReviewFlagIn(List<Integer> values) {
             addCriterion("borrow_cash.risk_review_flag in", values, "riskReviewFlag");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewFlagNotIn(List<Boolean> values) {
+        public Criteria andRiskReviewFlagNotIn(List<Integer> values) {
             addCriterion("borrow_cash.risk_review_flag not in", values, "riskReviewFlag");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewFlagBetween(Boolean value1, Boolean value2) {
+        public Criteria andRiskReviewFlagBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.risk_review_flag between", value1, value2, "riskReviewFlag");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewFlagNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andRiskReviewFlagNotBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.risk_review_flag not between", value1, value2, "riskReviewFlag");
             return (Criteria) this;
         }
@@ -826,123 +826,123 @@ public class BorrowCashExample {
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewStateEqualTo(Byte value) {
+        public Criteria andRiskReviewStateEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_review_state =", value, "riskReviewState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewStateNotEqualTo(Byte value) {
+        public Criteria andRiskReviewStateNotEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_review_state <>", value, "riskReviewState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewStateGreaterThan(Byte value) {
+        public Criteria andRiskReviewStateGreaterThan(Integer value) {
             addCriterion("borrow_cash.risk_review_state >", value, "riskReviewState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewStateGreaterThanOrEqualTo(Byte value) {
+        public Criteria andRiskReviewStateGreaterThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_review_state >=", value, "riskReviewState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewStateLessThan(Byte value) {
+        public Criteria andRiskReviewStateLessThan(Integer value) {
             addCriterion("borrow_cash.risk_review_state <", value, "riskReviewState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewStateLessThanOrEqualTo(Byte value) {
+        public Criteria andRiskReviewStateLessThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.risk_review_state <=", value, "riskReviewState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewStateIn(List<Byte> values) {
+        public Criteria andRiskReviewStateIn(List<Integer> values) {
             addCriterion("borrow_cash.risk_review_state in", values, "riskReviewState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewStateNotIn(List<Byte> values) {
+        public Criteria andRiskReviewStateNotIn(List<Integer> values) {
             addCriterion("borrow_cash.risk_review_state not in", values, "riskReviewState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewStateBetween(Byte value1, Byte value2) {
+        public Criteria andRiskReviewStateBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.risk_review_state between", value1, value2, "riskReviewState");
             return (Criteria) this;
         }
 
-        public Criteria andRiskReviewStateNotBetween(Byte value1, Byte value2) {
+        public Criteria andRiskReviewStateNotBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.risk_review_state not between", value1, value2, "riskReviewState");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoIsNull() {
-            addCriterion("borrow_cash.rish_order_no is null");
+        public Criteria andRiskOrderNoIsNull() {
+            addCriterion("borrow_cash.risk_order_no is null");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoIsNotNull() {
-            addCriterion("borrow_cash.rish_order_no is not null");
+        public Criteria andRiskOrderNoIsNotNull() {
+            addCriterion("borrow_cash.risk_order_no is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoEqualTo(String value) {
-            addCriterion("borrow_cash.rish_order_no =", value, "rishOrderNo");
+        public Criteria andRiskOrderNoEqualTo(String value) {
+            addCriterion("borrow_cash.risk_order_no =", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoNotEqualTo(String value) {
-            addCriterion("borrow_cash.rish_order_no <>", value, "rishOrderNo");
+        public Criteria andRiskOrderNoNotEqualTo(String value) {
+            addCriterion("borrow_cash.risk_order_no <>", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoGreaterThan(String value) {
-            addCriterion("borrow_cash.rish_order_no >", value, "rishOrderNo");
+        public Criteria andRiskOrderNoGreaterThan(String value) {
+            addCriterion("borrow_cash.risk_order_no >", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoGreaterThanOrEqualTo(String value) {
-            addCriterion("borrow_cash.rish_order_no >=", value, "rishOrderNo");
+        public Criteria andRiskOrderNoGreaterThanOrEqualTo(String value) {
+            addCriterion("borrow_cash.risk_order_no >=", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoLessThan(String value) {
-            addCriterion("borrow_cash.rish_order_no <", value, "rishOrderNo");
+        public Criteria andRiskOrderNoLessThan(String value) {
+            addCriterion("borrow_cash.risk_order_no <", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoLessThanOrEqualTo(String value) {
-            addCriterion("borrow_cash.rish_order_no <=", value, "rishOrderNo");
+        public Criteria andRiskOrderNoLessThanOrEqualTo(String value) {
+            addCriterion("borrow_cash.risk_order_no <=", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoLike(String value) {
-            addCriterion("borrow_cash.rish_order_no like", value, "rishOrderNo");
+        public Criteria andRiskOrderNoLike(String value) {
+            addCriterion("borrow_cash.risk_order_no like", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoNotLike(String value) {
-            addCriterion("borrow_cash.rish_order_no not like", value, "rishOrderNo");
+        public Criteria andRiskOrderNoNotLike(String value) {
+            addCriterion("borrow_cash.risk_order_no not like", value, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoIn(List<String> values) {
-            addCriterion("borrow_cash.rish_order_no in", values, "rishOrderNo");
+        public Criteria andRiskOrderNoIn(List<String> values) {
+            addCriterion("borrow_cash.risk_order_no in", values, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoNotIn(List<String> values) {
-            addCriterion("borrow_cash.rish_order_no not in", values, "rishOrderNo");
+        public Criteria andRiskOrderNoNotIn(List<String> values) {
+            addCriterion("borrow_cash.risk_order_no not in", values, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoBetween(String value1, String value2) {
-            addCriterion("borrow_cash.rish_order_no between", value1, value2, "rishOrderNo");
+        public Criteria andRiskOrderNoBetween(String value1, String value2) {
+            addCriterion("borrow_cash.risk_order_no between", value1, value2, "riskOrderNo");
             return (Criteria) this;
         }
 
-        public Criteria andRishOrderNoNotBetween(String value1, String value2) {
-            addCriterion("borrow_cash.rish_order_no not between", value1, value2, "rishOrderNo");
+        public Criteria andRiskOrderNoNotBetween(String value1, String value2) {
+            addCriterion("borrow_cash.risk_order_no not between", value1, value2, "riskOrderNo");
             return (Criteria) this;
         }
 
@@ -1526,52 +1526,52 @@ public class BorrowCashExample {
             return (Criteria) this;
         }
 
-        public Criteria andAccountTypeEqualTo(Byte value) {
+        public Criteria andAccountTypeEqualTo(Integer value) {
             addCriterion("borrow_cash.account_type =", value, "accountType");
             return (Criteria) this;
         }
 
-        public Criteria andAccountTypeNotEqualTo(Byte value) {
+        public Criteria andAccountTypeNotEqualTo(Integer value) {
             addCriterion("borrow_cash.account_type <>", value, "accountType");
             return (Criteria) this;
         }
 
-        public Criteria andAccountTypeGreaterThan(Byte value) {
+        public Criteria andAccountTypeGreaterThan(Integer value) {
             addCriterion("borrow_cash.account_type >", value, "accountType");
             return (Criteria) this;
         }
 
-        public Criteria andAccountTypeGreaterThanOrEqualTo(Byte value) {
+        public Criteria andAccountTypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.account_type >=", value, "accountType");
             return (Criteria) this;
         }
 
-        public Criteria andAccountTypeLessThan(Byte value) {
+        public Criteria andAccountTypeLessThan(Integer value) {
             addCriterion("borrow_cash.account_type <", value, "accountType");
             return (Criteria) this;
         }
 
-        public Criteria andAccountTypeLessThanOrEqualTo(Byte value) {
+        public Criteria andAccountTypeLessThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.account_type <=", value, "accountType");
             return (Criteria) this;
         }
 
-        public Criteria andAccountTypeIn(List<Byte> values) {
+        public Criteria andAccountTypeIn(List<Integer> values) {
             addCriterion("borrow_cash.account_type in", values, "accountType");
             return (Criteria) this;
         }
 
-        public Criteria andAccountTypeNotIn(List<Byte> values) {
+        public Criteria andAccountTypeNotIn(List<Integer> values) {
             addCriterion("borrow_cash.account_type not in", values, "accountType");
             return (Criteria) this;
         }
 
-        public Criteria andAccountTypeBetween(Byte value1, Byte value2) {
+        public Criteria andAccountTypeBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.account_type between", value1, value2, "accountType");
             return (Criteria) this;
         }
 
-        public Criteria andAccountTypeNotBetween(Byte value1, Byte value2) {
+        public Criteria andAccountTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.account_type not between", value1, value2, "accountType");
             return (Criteria) this;
         }
@@ -2466,52 +2466,52 @@ public class BorrowCashExample {
             return (Criteria) this;
         }
 
-        public Criteria andOverdueStateEqualTo(Byte value) {
+        public Criteria andOverdueStateEqualTo(Integer value) {
             addCriterion("borrow_cash.overdue_state =", value, "overdueState");
             return (Criteria) this;
         }
 
-        public Criteria andOverdueStateNotEqualTo(Byte value) {
+        public Criteria andOverdueStateNotEqualTo(Integer value) {
             addCriterion("borrow_cash.overdue_state <>", value, "overdueState");
             return (Criteria) this;
         }
 
-        public Criteria andOverdueStateGreaterThan(Byte value) {
+        public Criteria andOverdueStateGreaterThan(Integer value) {
             addCriterion("borrow_cash.overdue_state >", value, "overdueState");
             return (Criteria) this;
         }
 
-        public Criteria andOverdueStateGreaterThanOrEqualTo(Byte value) {
+        public Criteria andOverdueStateGreaterThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.overdue_state >=", value, "overdueState");
             return (Criteria) this;
         }
 
-        public Criteria andOverdueStateLessThan(Byte value) {
+        public Criteria andOverdueStateLessThan(Integer value) {
             addCriterion("borrow_cash.overdue_state <", value, "overdueState");
             return (Criteria) this;
         }
 
-        public Criteria andOverdueStateLessThanOrEqualTo(Byte value) {
+        public Criteria andOverdueStateLessThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.overdue_state <=", value, "overdueState");
             return (Criteria) this;
         }
 
-        public Criteria andOverdueStateIn(List<Byte> values) {
+        public Criteria andOverdueStateIn(List<Integer> values) {
             addCriterion("borrow_cash.overdue_state in", values, "overdueState");
             return (Criteria) this;
         }
 
-        public Criteria andOverdueStateNotIn(List<Byte> values) {
+        public Criteria andOverdueStateNotIn(List<Integer> values) {
             addCriterion("borrow_cash.overdue_state not in", values, "overdueState");
             return (Criteria) this;
         }
 
-        public Criteria andOverdueStateBetween(Byte value1, Byte value2) {
+        public Criteria andOverdueStateBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.overdue_state between", value1, value2, "overdueState");
             return (Criteria) this;
         }
 
-        public Criteria andOverdueStateNotBetween(Byte value1, Byte value2) {
+        public Criteria andOverdueStateNotBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.overdue_state not between", value1, value2, "overdueState");
             return (Criteria) this;
         }
@@ -2526,52 +2526,52 @@ public class BorrowCashExample {
             return (Criteria) this;
         }
 
-        public Criteria andCurrentOverdueStateEqualTo(Byte value) {
+        public Criteria andCurrentOverdueStateEqualTo(Integer value) {
             addCriterion("borrow_cash.current_overdue_state =", value, "currentOverdueState");
             return (Criteria) this;
         }
 
-        public Criteria andCurrentOverdueStateNotEqualTo(Byte value) {
+        public Criteria andCurrentOverdueStateNotEqualTo(Integer value) {
             addCriterion("borrow_cash.current_overdue_state <>", value, "currentOverdueState");
             return (Criteria) this;
         }
 
-        public Criteria andCurrentOverdueStateGreaterThan(Byte value) {
+        public Criteria andCurrentOverdueStateGreaterThan(Integer value) {
             addCriterion("borrow_cash.current_overdue_state >", value, "currentOverdueState");
             return (Criteria) this;
         }
 
-        public Criteria andCurrentOverdueStateGreaterThanOrEqualTo(Byte value) {
+        public Criteria andCurrentOverdueStateGreaterThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.current_overdue_state >=", value, "currentOverdueState");
             return (Criteria) this;
         }
 
-        public Criteria andCurrentOverdueStateLessThan(Byte value) {
+        public Criteria andCurrentOverdueStateLessThan(Integer value) {
             addCriterion("borrow_cash.current_overdue_state <", value, "currentOverdueState");
             return (Criteria) this;
         }
 
-        public Criteria andCurrentOverdueStateLessThanOrEqualTo(Byte value) {
+        public Criteria andCurrentOverdueStateLessThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.current_overdue_state <=", value, "currentOverdueState");
             return (Criteria) this;
         }
 
-        public Criteria andCurrentOverdueStateIn(List<Byte> values) {
+        public Criteria andCurrentOverdueStateIn(List<Integer> values) {
             addCriterion("borrow_cash.current_overdue_state in", values, "currentOverdueState");
             return (Criteria) this;
         }
 
-        public Criteria andCurrentOverdueStateNotIn(List<Byte> values) {
+        public Criteria andCurrentOverdueStateNotIn(List<Integer> values) {
             addCriterion("borrow_cash.current_overdue_state not in", values, "currentOverdueState");
             return (Criteria) this;
         }
 
-        public Criteria andCurrentOverdueStateBetween(Byte value1, Byte value2) {
+        public Criteria andCurrentOverdueStateBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.current_overdue_state between", value1, value2, "currentOverdueState");
             return (Criteria) this;
         }
 
-        public Criteria andCurrentOverdueStateNotBetween(Byte value1, Byte value2) {
+        public Criteria andCurrentOverdueStateNotBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.current_overdue_state not between", value1, value2, "currentOverdueState");
             return (Criteria) this;
         }
@@ -3436,52 +3436,52 @@ public class BorrowCashExample {
             return (Criteria) this;
         }
 
-        public Criteria andBorrowUseEqualTo(Byte value) {
+        public Criteria andBorrowUseEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_use =", value, "borrowUse");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowUseNotEqualTo(Byte value) {
+        public Criteria andBorrowUseNotEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_use <>", value, "borrowUse");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowUseGreaterThan(Byte value) {
+        public Criteria andBorrowUseGreaterThan(Integer value) {
             addCriterion("borrow_cash.borrow_use >", value, "borrowUse");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowUseGreaterThanOrEqualTo(Byte value) {
+        public Criteria andBorrowUseGreaterThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_use >=", value, "borrowUse");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowUseLessThan(Byte value) {
+        public Criteria andBorrowUseLessThan(Integer value) {
             addCriterion("borrow_cash.borrow_use <", value, "borrowUse");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowUseLessThanOrEqualTo(Byte value) {
+        public Criteria andBorrowUseLessThanOrEqualTo(Integer value) {
             addCriterion("borrow_cash.borrow_use <=", value, "borrowUse");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowUseIn(List<Byte> values) {
+        public Criteria andBorrowUseIn(List<Integer> values) {
             addCriterion("borrow_cash.borrow_use in", values, "borrowUse");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowUseNotIn(List<Byte> values) {
+        public Criteria andBorrowUseNotIn(List<Integer> values) {
             addCriterion("borrow_cash.borrow_use not in", values, "borrowUse");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowUseBetween(Byte value1, Byte value2) {
+        public Criteria andBorrowUseBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.borrow_use between", value1, value2, "borrowUse");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowUseNotBetween(Byte value1, Byte value2) {
+        public Criteria andBorrowUseNotBetween(Integer value1, Integer value2) {
             addCriterion("borrow_cash.borrow_use not between", value1, value2, "borrowUse");
             return (Criteria) this;
         }

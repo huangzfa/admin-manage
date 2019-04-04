@@ -21,26 +21,26 @@
 
 		<!-- 2：数据库连接信息 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-						connectionURL="jdbc:mysql://47.96.0.60:3306/duobei?useUnicode=true&amp;characterEncoding=utf-8"
+						connectionURL="jdbc:mysql://47.96.0.60:3306/pgy_platform_user?useUnicode=true&amp;characterEncoding=utf-8"
 						userId="root" 
 						password="Mi&amp;rong369" />
 
-		<javaModelGenerator targetProject="duobei-console-core/src/main/java" targetPackage="com.duobei.core.user.domain" />
-		<sqlMapGenerator targetProject="duobei-console-core/src/main/resources" targetPackage="com.duobei.core.user.dao.mapper" />
-		<javaClientGenerator targetProject="duobei-console-core/src/main/java" targetPackage="com.duobei.core.user.dao.mapper" type="XMLMAPPER" />
+		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.user.user.domain" />
+		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.user.user.dao.mapper" />
+		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.user.user.dao.mapper" type="XMLMAPPER" />
 
 		<!-- 用户 -->
-<!--		<table tableName="pgy_user" domainObjectName="User">
+		<table tableName="pgy_user" domainObjectName="User" alias="user">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>-->
+		</table>
 		<!--用户登录日志-->
 	<!--	<table tableName="pgy_user_login_log" domainObjectName="UserLoginLog">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>-->
 		<!-- 用户认证 -->
-		<table tableName="pgy_user_auth" domainObjectName="UserAuth" alias="uauth" >
+		<table tableName="pgy_user_auth" domainObjectName="UserAuth" alias="user_auth" >
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>

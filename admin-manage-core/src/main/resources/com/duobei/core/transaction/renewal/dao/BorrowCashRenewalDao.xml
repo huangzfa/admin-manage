@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.transaction.renewal.dao.BorrowCashRenewalDao">
+
+  <sql id="Base_Column_List">
+    renewal.id as id, renewal.product_id as product_id, renewal.user_id as user_id,
+    renewal.borrow_cash_id as borrow_cash_id, renewal.renewal_no as renewal_no,
+    renewal.state as state, renewal.renewal_amount as renewal_amount,
+    renewal.capital_amount as capital_amount, renewal.actual_amount as actual_amount,
+    renewal.renewal_day as renewal_day, renewal.renewal_poundage as renewal_poundage,
+    renewal.poundage_rate as poundage_rate, renewal.renewal_overdue_amount as renewal_overdue_amount,
+    renewal.gmt_plan_repayment as gmt_plan_repayment, renewal.bank_rate_amount as bank_rate_amount,
+    renewal.overdue_amount as overdue_amount, renewal.real_overdue_amount as real_overdue_amount,
+    renewal.unpaid_amount as unpaid_amount, renewal.ups_order_no as ups_order_no,
+    renewal.ups_third_order_no as ups_third_order_no, renewal.gmt_ups_req as gmt_ups_req,
+    renewal.gmt_ups_finish as gmt_ups_finish, renewal.account_type as account_type,
+    renewal.account_name as account_name, renewal.account_no as account_no,
+    renewal.account_no_md5 as account_no_md5, renewal.rebate_amount as rebate_amount,
+    renewal.fail_reason as fail_reason, renewal.remark as remark, renewal.data_version as data_version,
+    renewal.add_time as add_time, renewal.modify_time as modify_time,
+    renewal.is_delete as is_delete
+  </sql>
+  <select id="getListVoByQuery" resultType="com.duobei.core.transaction.renewal.domain.vo.BorrowCashRenewalListVo" parameterType="com.duobei.core.transaction.renewal.domain.criteria.BorrowCashRenewalCriteria">
+    select <include refid="Base_Column_List"/>
+    from tt_borrow_cash_renewal renewal
+    where renewal.is_delete = 0 and renewal.product_id = #{productId}
+    <if test="userId != null">
+      and renewal.user_id = #{userId}
+    </if>
+    <if test="borrowIds != null">
+      and renewal.borrow_cash_id
+      <foreach collection="borrowIds" open=" in(" close=")" separator="," item="borrowId">
+        #{borrowId}
+      </foreach>
+    </if>
+    order by renewal.add_time
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+  <select id="getById" parameterType="Long" resultType="com.duobei.core.transaction.renewal.domain.BorrowCashRenewal">
+    select <include refid="Base_Column_List"/>
+    from tt_borrow_cash_renewal renewal
+    where renewal.is_delete = 0 and renewal.id = #{id}
+  </select>
+</mapper>

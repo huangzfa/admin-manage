@@ -142,7 +142,7 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
             if( entity.getAppId() !=null ){
                 validAuthData(null,entity.getAppId());
             }else{
-                throw new TqException("数据操作权限失败");
+                throw new TqException("数据操作权限不足");
             }
 
             if( entity.getRedirectType().equals(ZD.redirectType_no)){

@@ -1,25 +1,34 @@
-package main.java.com.duobei.console.web.controller.app;
+package com.duobei.console.web.controller.app;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.BeanUtil;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.app.service.AppService;
 import com.duobei.core.operation.consume.domain.ConsumeLoanConfig;
+import com.duobei.core.operation.consume.domain.vo.BorrowShowConfigVo;
 import com.duobei.core.operation.consume.service.ConsumeLoanConfigService;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.startupPage.domain.StartupPage;
 import com.duobei.core.operation.startupPage.service.StartupPageService;
 import com.duobei.dic.ZD;
+import com.google.gson.JsonArray;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.xml.crypto.Data;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,24 +55,29 @@ public class BorrowShowController extends BaseController {
      */
     @RequiresPermissions(PERMISSIONPRE+"view")
     @RequestMapping(value = "/form")
-    public String startupPageForm( Model model,Integer productId)  {
+    public String borrowShowForm( Model model,Integer productId)  {
         OperatorCredential credential = getCredential();
         //获取用户产品权限
         List<Product> productList = credential.getProductList();
         if (productList == null || productList.size() <= 0){
             return failJsonResult("无产品权限");
         }
-        //应用列表
 
         if (productId == null){
             productId = productList.get(0).getId();
         }
         //查询应用
         ConsumeLoanConfig consumeLoanConfig = consumeLoanConfigService.getByProductId(productId);
+        BorrowShowConfigVo borrowShowConfigVo = new BorrowShowConfigVo();
         if (consumeLoanConfig == null){
-            model.addAttribute("borrowShow",new ConsumeLoanConfig());
+            model.addAttribute("borrowShow",borrowShowConfigVo);
         }else{
-            model.addAttribute("borrowShow",consumeLoanConfig);
+            BeanUtils.copyProperties(consumeLoanConfig,borrowShowConfigVo);
+            List<Integer> dayList = JSON.parseArray(consumeLoanConfig.getShowBorrowDays(),Integer.class);
+            borrowShowConfigVo.setDay1(dayList.get(0));
+            borrowShowConfigVo.setDay2(dayList.get(1));
+            borrowShowConfigVo.setDay3(dayList.get(2));
+            model.addAttribute("borrowShow",borrowShowConfigVo);
         }
         model.addAttribute("productList",productList);
         model.addAttribute("productId",productId);
@@ -73,7 +87,7 @@ public class BorrowShowController extends BaseController {
     @RequiresPermissions(PERMISSIONPRE + "edit")
     @RequestMapping(value = "/update")
     @ResponseBody
-    public String update (ConsumeLoanConfig consumeLoanConfig){
+    public String update (BorrowShowConfigVo borrowShowConfigVo){
 
         //获取用户产品权限
         try {
@@ -82,18 +96,29 @@ public class BorrowShowController extends BaseController {
                 throw new TqException("登录过期，请重新登录");
             }
             //验证数据权限
-            if( consumeLoanConfig.getProductId() != null ){
-                validAuthData(null,consumeLoanConfig.getProductId());
+            if( borrowShowConfigVo.getProductId() != null ){
+                validAuthData(borrowShowConfigVo.getProductId());
             }else{
-                throw new TqException("数据操作权限失败");
+                throw new TqException("数据操作权限不足");
             }
 
+            ConsumeLoanConfig consumeLoanConfig = new ConsumeLoanConfig();
+            //id 产品Id
+            consumeLoanConfig.setProductId(borrowShowConfigVo.getProductId());
+            consumeLoanConfig.setId(borrowShowConfigVo.getId());
             //修改时间、修改人
             consumeLoanConfig.setModifyOperatorId(credential.getOpId());
             consumeLoanConfig.setModifyTime(new Date());
+
             //显示最小、最大可借金额 元--->分
-            consumeLoanConfig.setShowMinAmount(consumeLoanConfig.getShowMinAmount()*1000);
-            consumeLoanConfig.setShowMaxAmount(consumeLoanConfig.getShowMaxAmount()*1000);
+            consumeLoanConfig.setShowMinAmount(borrowShowConfigVo.getSaveMinAmount().multiply(new BigDecimal(100)).longValue());
+            consumeLoanConfig.setShowMaxAmount(borrowShowConfigVo.getSaveMaxAmount().multiply(new BigDecimal(100)).longValue());
+            //天数转成 JSON数组
+            List dayList = new ArrayList();
+            dayList.add(borrowShowConfigVo.getDay1());
+            dayList.add(borrowShowConfigVo.getDay2());
+            dayList.add(borrowShowConfigVo.getDay3());
+            consumeLoanConfig.setShowBorrowDays(JSON.toJSONString(dayList));
             if (consumeLoanConfig.getId() == null){
                 //新增
                 //添加人、添加时间

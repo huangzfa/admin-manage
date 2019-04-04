@@ -134,4 +134,23 @@
       LIMIT #{offset}, #{pagesize}
     </if>
   </select>
+
+  <select id="getIdListByName" parameterType="String" resultType="Integer">
+    select id
+    from yy_promotion_channel
+    where is_delete = 0 and channel_name = #{channelName}
+  </select>
+
+  <select id="getAppChannelIdListByName" parameterType="String" resultType="Integer">
+    select id
+    from yy_promotion_channel
+    where is_delete = 0 and channel_name = #{channelName} and channel_type = 1
+  </select>
+
+    <select id="getListByType" parameterType="Integer" resultType="com.duobei.core.operation.channel.domain.PromotionChannel">
+    select <include refid="Base_Column_List"/>
+    from yy_promotion_channel promotion_channel
+    where promotion_channel.is_delete = 0  and promotion_channel.channel_type = #{type}
+  </select>
+
 </mapper>

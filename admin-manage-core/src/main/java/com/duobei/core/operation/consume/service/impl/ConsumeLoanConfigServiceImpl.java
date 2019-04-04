@@ -3,6 +3,7 @@ package com.duobei.core.operation.consume.service.impl;
 import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.core.operation.consume.dao.ConsumeLoanConfigDao;
+import com.duobei.core.operation.consume.dao.mapper.ConsumeLoanConfigMapper;
 import com.duobei.core.operation.consume.domain.ConsumeLoanConfig;
 import com.duobei.core.operation.consume.service.ConsumeLoanConfigService;
 import com.duobei.core.operation.product.dao.ProductAuthConfigDao;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +35,8 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
     private ProductConsumdebtGoodsDao productConsumdebtGoodsDao;
     @Autowired
     private RiskUtil riskUtil;
+    @Resource
+    private ConsumeLoanConfigMapper consumeLoanConfigMapper;
     /**
      * 根据产品id查询消费贷配置
      * @param productId
@@ -147,5 +151,10 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
         }
     }
 
+
+    @Override
+    public ConsumeLoanConfig getById(Integer id) {
+        return consumeLoanConfigMapper.selectByPrimaryKey(id);
+    }
 
 }

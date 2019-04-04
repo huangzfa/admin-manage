@@ -3,6 +3,7 @@ package com.duobei.core.operation.consume.service;
 import com.duobei.common.exception.TqException;
 import com.duobei.core.operation.consume.domain.ConsumeLoanConfig;
 import com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo;
+import com.duobei.core.operation.product.domain.vo.ProductConsumdebtGoodsVo;
 
 import java.util.List;
 

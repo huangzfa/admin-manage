@@ -48,17 +48,17 @@ public class AuthConfigController extends BaseController {
      * @param model
      * @return
      */
-    @RequiresPermissions("product:authConfig:view")
+    @RequiresPermissions("authConfig:list:view")
     @RequestMapping(value = "/list")
     public String index(Model model){
-        return "product/authConfig/authConfigList";
+        return "auth/authConfig/list";
     }
 
     /**
      * ajax查询认证项列表
      * @return
      */
-    @RequiresPermissions("product:authConfig:view")
+    @RequiresPermissions("authConfig:list:view")
     @RequestMapping(value = "/getAuthConfigData")
     @ResponseBody
     public String getAuthConfigData(AuthConfigCriteria criteria){
@@ -84,7 +84,7 @@ public class AuthConfigController extends BaseController {
      * @return
      * @throws TqException
      */
-    @RequiresPermissions("product:authConfig:edit")
+    @RequiresPermissions("authConfig:list:view")
     @RequestMapping(value = "/form")
     public String form(Model model, String authCode) throws TqException {
 
@@ -95,7 +95,7 @@ public class AuthConfigController extends BaseController {
         }
         model.addAttribute("authTypes", DictUtil.getDictList(ZD.authType));
 
-        return "product/authConfig/authForm";
+        return "auth/authConfig/form";
     }
 
     /**
@@ -104,7 +104,7 @@ public class AuthConfigController extends BaseController {
      * @return
      * @throws TqException
      */
-    @RequiresPermissions({ "product:authConfig:edit" })
+    @RequiresPermissions({ "authConfig:list:edit" })
     @RequestMapping(value = "/save")
     @ResponseBody
     public String save(AuthConfig entity) throws TqException {
@@ -138,7 +138,7 @@ public class AuthConfigController extends BaseController {
      * @param authCode
      * @return
      */
-    @RequiresPermissions({ "product:authConfig:edit" })
+    @RequiresPermissions({ "authConfig:list:edit" })
     @RequestMapping(value = "/editState")
     @ResponseBody
     public String editState(String authCode,String authState) throws RuntimeException{

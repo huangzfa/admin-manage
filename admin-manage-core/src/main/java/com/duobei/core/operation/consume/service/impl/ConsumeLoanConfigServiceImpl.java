@@ -6,7 +6,10 @@ import com.duobei.core.operation.consume.dao.ConsumeLoanConfigDao;
 import com.duobei.core.operation.consume.domain.ConsumeLoanConfig;
 import com.duobei.core.operation.consume.service.ConsumeLoanConfigService;
 import com.duobei.core.operation.product.dao.ProductAuthConfigDao;
+import com.duobei.core.operation.product.dao.ProductConsumdebtGoodsDao;
 import com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo;
+import com.duobei.core.operation.product.domain.vo.ProductConsumdebtGoodsVo;
+import com.duobei.utils.RiskUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,10 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
     private ConsumeLoanConfigDao consumeLoanConfigDao;
     @Autowired
     private ProductAuthConfigDao productAuthConfigDao;
+    @Autowired
+    private ProductConsumdebtGoodsDao productConsumdebtGoodsDao;
+    @Autowired
+    private RiskUtil riskUtil;
     /**
      * 根据产品id查询消费贷配置
      * @param productId
@@ -71,6 +78,54 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
                 vo.setModifyTime(new Date());
                 if( productAuthConfigDao.update(vo) <1){
                     throw  new TqException("认证项修改失败");
+                }
+            }
+        }
+    }
+    /**
+     * 消费贷相关配置保存
+     * @param record
+     * @param goodsList
+     * @throws TqException
+     */
+    @Override
+    public void saveLoan(ConsumeLoanConfig record,List<ProductConsumdebtGoodsVo> goodsList) throws TqException{
+/*        String result = riskUtil.SceneCodeHad(record.getQuotaSceneCode());
+        if ( !result.equals("success")) {
+            throw new TqException("额度风控场景编码，原因：" + result);
+        }
+        result = riskUtil.SceneCodeHad(record.getBorrowSceneCode());
+        if ( !result.equals("success")) {
+            throw new TqException("借款风控场景编码-非首次老用户，原因：" + result);
+        }
+        result = riskUtil.SceneCodeHad(record.getBorrowSceneCodeFirst());
+        if ( !result.equals("success")) {
+            throw new TqException("借款风控场景编码-首次新用户校验失败，原因：" + result);
+        }*/
+        if( record.getId() == null ){
+            if( consumeLoanConfigDao.save(record) <1 ){
+                throw new TqException("添加失败");
+            }
+        }else{
+            if( consumeLoanConfigDao.update(record) <1){
+                throw new TqException("修改失败");
+            }
+        }
+        //先删除所有记录
+        productConsumdebtGoodsDao.updateDelete(record.getProductId());
+        for(ProductConsumdebtGoodsVo vo : goodsList){
+            if(vo.getId() == null ){
+                vo.setAddOperatorId(record.getModifyOperatorId());
+                vo.setProductId(record.getProductId());
+                if( productConsumdebtGoodsDao.save(vo) <1){
+                    throw  new TqException("借贷商品保存失败");
+                }
+            }else{
+                vo.setModifyOperatorId(record.getModifyOperatorId());
+                vo.setModifyTime(new Date());
+                vo.setIsDelete(BizConstant.INT_ZERO);
+                if( productConsumdebtGoodsDao.update(vo) <1){
+                    throw  new TqException("借贷商品保存失败");
                 }
             }
         }

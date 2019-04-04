@@ -32,7 +32,7 @@
         <div class="control-group">
             <label class="control-label">央行基准年化利率：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写央行基准年化利率" ng-model="loan.baseBankRate" maxlength="8"  onkeyup='this.value=this.value.replace(/[^0-9,]/g,"")'></input>
+                <input type="text" class="form-control valid" descripe="请填写央行基准年化利率" ng-model="loan.baseBankRate" maxlength="8"  onkeyup='this.value=this.value.replace(/[^0-9,]/g,\"\")'></input>
             </div>
         </div>
         <div class="control-group">

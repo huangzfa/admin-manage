@@ -222,6 +222,12 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label">排序：</label>
+            <div class="controls">
+                <input type="text" class="form-control"  type="text" name="sort" id="sort" maxlength="4" value="${goods.sort}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label">备注：</label>
             <div class="controls">
                 <input type="text" class="form-control"  type="text" name="remark" id="remark" maxlength="250" value="${goods.remark}" ></input>

@@ -5,4 +5,7 @@
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.consume.domain.ConsumeLoanRenewalConfig" extends="com.duobei.core.operation.consume.dao.mapper.ConsumeLoanRenewalConfigMapper.BaseResultMap">
     </resultMap>
 
+    <select id="getByConfigId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.consume.domain.ConsumeLoanRenewalConfig">
+        select * from yy_consume_loan_renewal_config where consume_loan_config_id=#{configId} order by id  desc
+    </select>
 </mapper>

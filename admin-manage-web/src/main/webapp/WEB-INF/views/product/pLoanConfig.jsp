@@ -48,17 +48,17 @@
             </div>
             <div class="control-group">
                 <label class="control-label col-sm-1">额度风控场景编码：</label>
-                <input type="text" class="form-control valid" descripe="请填写额度风控场景编码" ng-model="loan.quotaSceneCode"  maxlength="32" value=""></input>
+                <input type="text" class="form-control valid" descripe="请填写额度风控场景编码" id="quotaSceneCode" ng-model="loan.quotaSceneCode"  maxlength="32" value=""></input>
                 <a href="javascript:validSceneId('quotaSceneCode')">校验场景id</a>
             </div>
             <div class="control-group">
                 <label class="control-label col-sm-1">借款风控场景编码-首次新用户：</label>
-                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-首次新用户" ng-model="loan.borrowSceneCodeFirst" maxlength="32" value=""></input>
+                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-首次新用户" id="borrowSceneCodeFirst" ng-model="loan.borrowSceneCodeFirst" maxlength="32" value=""></input>
                 <a href="javascript:validSceneId('borrowSceneCodeFirst')">校验场景id</a>
             </div>
             <div class="control-group">
                 <label class="control-label col-sm-1">借款风控场景编码-非首次老用户：</label>
-                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-非首次老用户" ng-model="loan.borrowSceneCode"maxlength="32" value=""></input>
+                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-非首次老用户" id="borrowSceneCode" ng-model="loan.borrowSceneCode"maxlength="32" value=""></input>
                 <a href="javascript:validSceneId('borrowSceneCode')">校验场景id</a>
             </div>
 
@@ -66,7 +66,7 @@
     </form>
     <div class="form-actions">
         <shiro:hasPermission name="product:list:edit">
-            <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" ng-disabled="{{btnState}}" style="width: 50px;"/>&nbsp;
+            <input id="btnSubmit" class="btn btn-primary" ng-click="save()" value="保 存" ng-disabled="{{btnState}}" style="width: 50px;"/>&nbsp;
         </shiro:hasPermission>
         <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/product/mpList'"/>
     </div>
@@ -110,7 +110,7 @@
                     $http({
                         method:'post',
                         url:"loan/save",
-                        data:{'loan':JSON.stringify($scope.loan),'auths':JSON.stringify($scope.auths)},
+                        data:{'loan':JSON.stringify($scope.loan),'goods':JSON.stringify($scope.goods)},
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         transformRequest: function(obj) {
                             var str = [];
@@ -157,7 +157,6 @@
             modalGoods.open({
                 productId: productId,
                 callback: function (data) {
-                    debugger;
                     var controllerScope = $('div[ng-controller="loanFormCtrl"]').scope();  // Get controller's scope
                     for( var  i = 0; i < data.list.length ; i++){
                         if( getIndex(data.list[i].goodsId,controllerScope) ==-1){

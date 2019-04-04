@@ -15,6 +15,7 @@ import com.duobei.core.operation.product.domain.ProductBusiness;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
 import com.duobei.core.operation.product.domain.vo.BusinessVo;
 import com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo;
+import com.duobei.core.operation.product.domain.vo.ProductConsumdebtGoodsVo;
 import com.duobei.core.operation.product.domain.vo.ProductVo;
 import com.duobei.core.operation.product.service.*;
 import com.duobei.utils.RiskUtil;
@@ -233,6 +234,7 @@ public class ProductController extends BaseController {
                 config.setProductId(product.getId());
                 //因为这一页只显示3项数据，所以没必要全部返回，返回record就好
                 if( record != null ){
+                    config.setId(record.getId());
                     config.setQuotaSceneCode(record.getQuotaSceneCode());
                     config.setBorrowSceneCode(record.getBorrowSceneCode());
                     config.setBorrowSceneCodeFirst(record.getBorrowSceneCodeFirst());
@@ -258,7 +260,6 @@ public class ProductController extends BaseController {
             Product product = productService.getByCode(productCode);
             model.addAttribute("product", product);
             if( product !=null ){
-                model.addAttribute("consumeLoanConfig",JSON.toJSONString(consumeLoanConfigService.getByProductId(product.getId())));
                 model.addAttribute("authConfigs",JSON.toJSONString(productAuthConfigService.getByProductId(product.getId())));
             }
         }
@@ -329,6 +330,18 @@ public class ProductController extends BaseController {
             if( StringUtil.isBlank(loans)){
                 throw new TqException("请填写借贷基本配置");
             }
+            ConsumeLoanConfig loan = JSON.parseObject(loans,ConsumeLoanConfig.class);
+            String goods = request.getParameter("goods");
+            if( goods == null || goods.length() == 0){
+                throw new TqException("至少关联一个借贷商品");
+            }
+            List<ProductConsumdebtGoodsVo> goodsList = JSON.parseArray(goods,ProductConsumdebtGoodsVo.class);
+            if( loan.getId() == null ){
+                loan.setAddOperatorId(credential.getOpId());
+            }
+            loan.setModifyTime(new Date());
+            loan.setModifyOperatorId(credential.getOpId());
+            consumeLoanConfigService.saveLoan(loan,goodsList);
             return simpleSuccessJsonResult("success");
         } catch (Exception e) {
             if (e instanceof TqException) {
@@ -379,11 +392,11 @@ public class ProductController extends BaseController {
     @ResponseBody
     public String validSceneCode(String code) throws TqException {
         if (StringUtil.isBlank(code)) {
-            throw new TqException("请填写场景id");
+            return failJsonResult("请填写场景id");
         }
         String result = riskUtil.SceneCodeHad(code);
         if ( !result.equals("success")) {
-            return failJsonResult("校验失败，原因：" + result);
+            return simpleSuccessJsonResult("校验失败，原因：" + result);
         } else {
             return simpleSuccessJsonResult(result);
         }

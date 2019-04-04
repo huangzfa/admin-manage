@@ -5,11 +5,14 @@
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.Product" extends="com.duobei.core.operation.product.dao.mapper.ProductMapper.BaseResultMap">
     </resultMap>
 
-    <select id="getPageList" resultType="com.duobei.core.operation.product.domain.Product" parameterType="com.duobei.core.operation.product.domain.criteria.ProductCriteria">
+    <select id="getPageList" resultType="com.duobei.core.operation.product.domain.vo.ProductVo" parameterType="com.duobei.core.operation.product.domain.criteria.ProductCriteria">
         select a.*,b.merchant_name from yy_product a left join sh_merchant b on a.merchant_id=b.id
         where 1=1
         <if test="productName != null and productName != '' ">
             and a.product_name like "%"#{productName,jdbcType=VARCHAR}"%"
+        </if>
+        <if test="productCode != null and productCode != '' ">
+            and a.product_code like "%"#{productCode,jdbcType=VARCHAR}"%"
         </if>
         <if test="merchantId != null and merchantId != '' ">
             and a.merchant_id = #{merchantId,jdbcType=INTEGER}

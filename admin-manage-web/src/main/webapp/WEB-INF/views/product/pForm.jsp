@@ -4,11 +4,7 @@
 <html>
 <head>
     <title></title>
-    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,select2,validation,ocupload"/>
-    <!--  -->
-    <style type="text/css">
-        .upload_button{list-style:none}
-    </style>
+    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,select2,validation"/>
 
 </head>
 <body>

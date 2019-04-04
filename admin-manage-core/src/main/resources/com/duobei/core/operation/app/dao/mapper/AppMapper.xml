@@ -8,11 +8,14 @@
     <result column="a_app_name" jdbcType="VARCHAR" property="appName" />
     <result column="a_app_type" jdbcType="TINYINT" property="appType" />
     <result column="a_state" jdbcType="TINYINT" property="state" />
+    <result column="a_merchant_id" jdbcType="INTEGER" property="merchantId" />
     <result column="a_add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="a_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="a_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
     <result column="a_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
     <result column="a_is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="a_android_url" jdbcType="VARCHAR" property="androidUrl" />
+    <result column="a_ios_url" jdbcType="VARCHAR" property="iosUrl" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -74,9 +77,9 @@
   </sql>
   <sql id="Base_Column_List">
     a.id as a_id, a.product_id as a_product_id, a.app_key as a_app_key, a.app_name as a_app_name, 
-    a.app_type as a_app_type, a.state as a_state, a.add_time as a_add_time, a.modify_time as a_modify_time, 
-    a.add_operator_id as a_add_operator_id, a.modify_operator_id as a_modify_operator_id, 
-    a.is_delete as a_is_delete
+    a.app_type as a_app_type, a.state as a_state, a.merchant_id as a_merchant_id, a.add_time as a_add_time, 
+    a.modify_time as a_modify_time, a.add_operator_id as a_add_operator_id, a.modify_operator_id as a_modify_operator_id, 
+    a.is_delete as a_is_delete, a.android_url as a_android_url, a.ios_url as a_ios_url
   </sql>
   <select id="selectByExample" parameterType="com.duobei.core.operation.app.domain.AppExample" resultMap="BaseResultMap">
     select
@@ -113,13 +116,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into yy_app (product_id, app_key, app_name, 
-      app_type, state, add_time, 
-      modify_time, add_operator_id, modify_operator_id, 
-      is_delete)
+      app_type, state, merchant_id, 
+      add_time, modify_time, add_operator_id, 
+      modify_operator_id, is_delete, android_url, 
+      ios_url)
     values (#{productId,jdbcType=INTEGER}, #{appKey,jdbcType=VARCHAR}, #{appName,jdbcType=VARCHAR}, 
-      #{appType,jdbcType=TINYINT}, #{state,jdbcType=TINYINT}, #{addTime,jdbcType=TIMESTAMP}, 
-      #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, 
-      #{isDelete,jdbcType=INTEGER})
+      #{appType,jdbcType=TINYINT}, #{state,jdbcType=TINYINT}, #{merchantId,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, 
+      #{modifyOperatorId,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{androidUrl,jdbcType=VARCHAR}, 
+      #{iosUrl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.duobei.core.operation.app.domain.App">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -142,6 +147,9 @@
       <if test="state != null">
         state,
       </if>
+      <if test="merchantId != null">
+        merchant_id,
+      </if>
       <if test="addTime != null">
         add_time,
       </if>
@@ -156,6 +164,12 @@
       </if>
       <if test="isDelete != null">
         is_delete,
+      </if>
+      <if test="androidUrl != null">
+        android_url,
+      </if>
+      <if test="iosUrl != null">
+        ios_url,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -174,6 +188,9 @@
       <if test="state != null">
         #{state,jdbcType=TINYINT},
       </if>
+      <if test="merchantId != null">
+        #{merchantId,jdbcType=INTEGER},
+      </if>
       <if test="addTime != null">
         #{addTime,jdbcType=TIMESTAMP},
       </if>
@@ -188,6 +205,12 @@
       </if>
       <if test="isDelete != null">
         #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="androidUrl != null">
+        #{androidUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="iosUrl != null">
+        #{iosUrl,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -218,6 +241,9 @@
       <if test="record.state != null">
         a.state = #{record.state,jdbcType=TINYINT},
       </if>
+      <if test="record.merchantId != null">
+        a.merchant_id = #{record.merchantId,jdbcType=INTEGER},
+      </if>
       <if test="record.addTime != null">
         a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
       </if>
@@ -233,6 +259,12 @@
       <if test="record.isDelete != null">
         a.is_delete = #{record.isDelete,jdbcType=INTEGER},
       </if>
+      <if test="record.androidUrl != null">
+        a.android_url = #{record.androidUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iosUrl != null">
+        a.ios_url = #{record.iosUrl,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -246,11 +278,14 @@
       a.app_name = #{record.appName,jdbcType=VARCHAR},
       a.app_type = #{record.appType,jdbcType=TINYINT},
       a.state = #{record.state,jdbcType=TINYINT},
+      a.merchant_id = #{record.merchantId,jdbcType=INTEGER},
       a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
       a.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
       a.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
       a.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
-      a.is_delete = #{record.isDelete,jdbcType=INTEGER}
+      a.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      a.android_url = #{record.androidUrl,jdbcType=VARCHAR},
+      a.ios_url = #{record.iosUrl,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -273,6 +308,9 @@
       <if test="state != null">
         state = #{state,jdbcType=TINYINT},
       </if>
+      <if test="merchantId != null">
+        merchant_id = #{merchantId,jdbcType=INTEGER},
+      </if>
       <if test="addTime != null">
         add_time = #{addTime,jdbcType=TIMESTAMP},
       </if>
@@ -288,6 +326,12 @@
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
+      <if test="androidUrl != null">
+        android_url = #{androidUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="iosUrl != null">
+        ios_url = #{iosUrl,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -298,11 +342,14 @@
       app_name = #{appName,jdbcType=VARCHAR},
       app_type = #{appType,jdbcType=TINYINT},
       state = #{state,jdbcType=TINYINT},
+      merchant_id = #{merchantId,jdbcType=INTEGER},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       add_operator_id = #{addOperatorId,jdbcType=INTEGER},
       modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
-      is_delete = #{isDelete,jdbcType=INTEGER}
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      android_url = #{androidUrl,jdbcType=VARCHAR},
+      ios_url = #{iosUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

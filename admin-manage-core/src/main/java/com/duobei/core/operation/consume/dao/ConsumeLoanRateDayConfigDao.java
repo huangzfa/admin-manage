@@ -18,4 +18,8 @@ public interface ConsumeLoanRateDayConfigDao {
      * @return
      */
     List<ConsumeLoanRateDayConfig> getByLoanConfigId(@Param("loanConfigId") Integer loanConfigId);
+
+    int batchSave(@Param("list") List<ConsumeLoanRateDayConfig> list);
+
+    int batchUpdate(@Param("list") List<ConsumeLoanRateDayConfig> list);
 }

@@ -44,4 +44,11 @@ public interface ConsumeLoanConfigDao {
      * @return
      */
     int saveBorrowShow(ConsumeLoanConfig consumeLoanConfig);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    ConsumeLoanConfig getById(Integer id);
 }

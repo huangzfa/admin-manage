@@ -78,7 +78,7 @@
         <shiro:hasPermission name="product:list:edit">
             <input id="btnSubmit" class="btn btn-primary" ng-click="save()"  value="保 存" style="width: 50px;"/>&nbsp;
         </shiro:hasPermission>
-        <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/product/list'"/>
+        <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.parent.location.href='${ctxA}/product/pList'"/>
     </div>
 </div>
 </body>

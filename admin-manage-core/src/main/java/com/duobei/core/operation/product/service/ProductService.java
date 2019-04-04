@@ -55,6 +55,18 @@ public interface ProductService {
     void saveMp(ProductVo  productVo) throws TqException;
 
     /**
+     * 修改产品
+     * @param product
+     */
+    void update(ProductVo  product) throws TqException;
+
+    /**
+     * 添加产品
+     * @param product
+     */
+    void save(ProductVo  product) throws TqException;
+
+    /**
      * 查询所有产品
      * @return
      */

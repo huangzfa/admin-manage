@@ -7,6 +7,20 @@
 
     <!-- 根据消费贷配置ID查询 消费贷利率天数配置 -->
     <select id="getByLoanConfigId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.consume.domain.ConsumeLoanRateDayConfig">
-         select * from yy_consume_loan_rate_day_config where consume_loan_config_id = #{loanConfigId,jdbcType=INTEGER}
+         select * from yy_consume_loan_rate_day_config where consume_loan_config_id = #{loanConfigId,jdbcType=INTEGER} order by day_rate asc
     </select>
+
+    <insert id="batchSave" parameterType="java.util.List">
+        insert into yy_consume_loan_rate_day_config(consume_loan_config_id,day_rate,borrow_days) VALUE
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.consumeLoanConfigId,jdbcType=INTEGER},#{item.dayRate,jdbcType=DECIMAL},#{item.borrowDays,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update yy_consume_loan_rate_day_config set borrow_days = #{item.borrowDays,jdbcType=VARCHAR}
+            where id = #{item.id,jdbcType=INTEGER}
+        </foreach>
+    </update>
 </mapper>

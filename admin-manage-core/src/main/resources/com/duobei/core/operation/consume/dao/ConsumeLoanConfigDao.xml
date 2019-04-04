@@ -9,6 +9,10 @@
         select * from yy_consume_loan_config where product_id = #{productId} order by id  desc limit 1
     </select>
 
+    <select id="getById" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.consume.domain.ConsumeLoanConfig">
+        select * from yy_consume_loan_config where id = #{id,jdbcType=INTEGER} order by id  desc limit 1
+    </select>
+
     <insert id="save" parameterType="com.duobei.core.operation.consume.domain.ConsumeLoanConfig">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
         SELECT LAST_INSERT_ID()
@@ -251,9 +255,6 @@
             <if test="borrowSceneCode != null">
                 borrow_scene_code = #{borrowSceneCode,jdbcType=VARCHAR},
             </if>
-            <if test="dataVersion != null">
-                data_version = #{dataVersion,jdbcType=INTEGER},
-            </if>
             <if test="addTime != null">
                 add_time = #{addTime,jdbcType=TIMESTAMP},
             </if>
@@ -266,8 +267,9 @@
             <if test="modifyOperatorId != null">
                 modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
             </if>
+            data_version = data_version+1,
         </set>
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} and data_version = #{dataVersion,jdbcType=INTEGER}
     </update>
 
     <update id="updateBorrowShowById"  parameterType="com.duobei.core.operation.consume.domain.ConsumeLoanConfig">

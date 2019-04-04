@@ -48,17 +48,17 @@
             </div>
             <div class="control-group">
                 <label class="control-label col-sm-1">额度风控场景编码：</label>
-                <input type="text" class="form-control valid" descripe="请填写额度风控场景编码" id="quotaSceneCode" ng-model="loan.quotaSceneCode"  maxlength="32" value=""></input>
+                <input type="text" class="form-control valid" descripe="请填写额度风控场景编码" id="quotaSceneCode" ng-model="loan.quotaSceneCode"  maxlength="32" value="" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
                 <a href="javascript:validSceneId('quotaSceneCode')">校验场景id</a>
             </div>
             <div class="control-group">
                 <label class="control-label col-sm-1">借款风控场景编码-首次新用户：</label>
-                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-首次新用户" id="borrowSceneCodeFirst" ng-model="loan.borrowSceneCodeFirst" maxlength="32" value=""></input>
+                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-首次新用户" id="borrowSceneCodeFirst" ng-model="loan.borrowSceneCodeFirst" maxlength="32" value="" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
                 <a href="javascript:validSceneId('borrowSceneCodeFirst')">校验场景id</a>
             </div>
             <div class="control-group">
                 <label class="control-label col-sm-1">借款风控场景编码-非首次老用户：</label>
-                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-非首次老用户" id="borrowSceneCode" ng-model="loan.borrowSceneCode"maxlength="32" value=""></input>
+                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-非首次老用户" id="borrowSceneCode" ng-model="loan.borrowSceneCode"maxlength="32" value="" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
                 <a href="javascript:validSceneId('borrowSceneCode')">校验场景id</a>
             </div>
 
@@ -68,7 +68,7 @@
         <shiro:hasPermission name="product:list:edit">
             <input id="btnSubmit" class="btn btn-primary" ng-click="save()" value="保 存" ng-disabled="{{btnState}}" style="width: 50px;"/>&nbsp;
         </shiro:hasPermission>
-        <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/product/mpList'"/>
+        <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.parent.location.href='${ctxA}/product/pList'"/>
     </div>
 </div>
 </body>

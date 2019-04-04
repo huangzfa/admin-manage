@@ -9,7 +9,12 @@ import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.operation.consume.domain.ConsumeLoanConfig;
+import com.duobei.core.operation.consume.domain.ConsumeLoanRateDayConfig;
+import com.duobei.core.operation.consume.domain.ConsumeLoanRenewalConfig;
+import com.duobei.core.operation.consume.domain.vo.ConsumeLoanRenewalConfigVo;
 import com.duobei.core.operation.consume.service.ConsumeLoanConfigService;
+import com.duobei.core.operation.consume.service.ConsumeLoanRateDayConfigService;
+import com.duobei.core.operation.consume.service.ConsumeLoanRenewalConfigService;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.ProductBusiness;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
@@ -56,6 +61,10 @@ public class ProductController extends BaseController {
     private BusinessService businessService;
     @Autowired
     private ProductConsumdebtGoodsService productConsumdebtGoodsService;
+    @Autowired
+    private ConsumeLoanRateDayConfigService rateDayConfigService;
+    @Autowired
+    private ConsumeLoanRenewalConfigService renewalConfigService;
     @Autowired
     private RiskUtil riskUtil;
 
@@ -238,6 +247,7 @@ public class ProductController extends BaseController {
                     config.setQuotaSceneCode(record.getQuotaSceneCode());
                     config.setBorrowSceneCode(record.getBorrowSceneCode());
                     config.setBorrowSceneCodeFirst(record.getBorrowSceneCodeFirst());
+                    config.setDataVersion(record.getDataVersion());
                 }
                 model.addAttribute("consumeLoanConfig",JSON.toJSONString(config));
                 //返回消费贷关联的是商品
@@ -256,17 +266,39 @@ public class ProductController extends BaseController {
     @RequiresPermissions("product:list:edit")
     @RequestMapping(value = "/config/rateDay")
     public String rateDay(Model model, String productCode) {
+        List<ConsumeLoanRateDayConfig> rateDays = new ArrayList<>();
+        List<ConsumeLoanRenewalConfigVo> renewalConfigs = new ArrayList<>();
+        ConsumeLoanConfig config = null;
         if (!StringUtil.isBlank(productCode)) {
             Product product = productService.getByCode(productCode);
             model.addAttribute("product", product);
             if( product !=null ){
-                model.addAttribute("authConfigs",JSON.toJSONString(productAuthConfigService.getByProductId(product.getId())));
+                //查询消费贷基础配置
+                ConsumeLoanConfig record = consumeLoanConfigService.getByProductId(product.getId());
+                config = new ConsumeLoanConfig();
+                config.setProductId(product.getId());
+                //因为这一页只显示3项数据，所以没必要全部返回，返回record就好
+                if( record != null ){
+                    config.setId(record.getId());
+                    config.setRenewalDay(record.getRenewalDay());
+                    config.setCanRenewalDayLimit(record.getCanRenewalDayLimit());
+                    config.setRenewalAmount(record.getRenewalAmount());
+                    config.setDataVersion(record.getDataVersion());
+
+                }
+
             }
         }
+        if( config == null){
+            config = new ConsumeLoanConfig();
+        }
+        model.addAttribute("consumeLoanConfig",JSON.toJSONString(config));
+        model.addAttribute("rateDays",JSON.toJSONString(rateDayConfigService.getByLoanConfigId(config.getId())));
+        model.addAttribute("renewalConfigs",JSON.toJSONString(renewalConfigService.getByConfigId(config.getId())));
         return "product/pRateDayConfig";
     }
     /**
-     * 产品保存修改操作
+     * 基础借款配置保存
      *
      * @param request
      * @return
@@ -275,7 +307,7 @@ public class ProductController extends BaseController {
     @RequiresPermissions("product:list:edit")
     @RequestMapping(value = "/config/auth/save")
     @ResponseBody
-    public String authSave(HttpServletRequest request) throws TqException {
+    public String authSave(HttpServletRequest request)  {
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {
@@ -317,10 +349,65 @@ public class ProductController extends BaseController {
 
         }
     }
+
+    /**
+     * 消费贷期限利率配置保存
+     * @param request
+     * @return
+     * @throws TqException
+     */
+    @RequiresPermissions("product:list:edit")
+    @RequestMapping(value = "/config/rateDay/save")
+    @ResponseBody
+    public String rateDaySave(HttpServletRequest request) {
+        try {
+            OperatorCredential credential = getCredential();
+            if (credential == null) {
+                throw new TqException("登录过期，请重新登录");
+            }
+            String loans = request.getParameter("loan");
+            if( StringUtil.isBlank(loans)){
+                throw new TqException("请填写借贷基本配置");
+            }
+            ConsumeLoanConfig loan = JSON.parseObject(loans,ConsumeLoanConfig.class);
+            String rateDays = request.getParameter("rateDays");
+            if( rateDays == null || rateDays.length() == 0){
+                throw new TqException("系统错误");
+            }
+            List<ConsumeLoanRateDayConfig> rateDayList = JSON.parseArray(rateDays,ConsumeLoanRateDayConfig.class);
+            String renewalConfigs = request.getParameter("renewalConfigs");
+            if( renewalConfigs == null || renewalConfigs.length() == 0){
+                throw new TqException("系统错误");
+            }
+            List<ConsumeLoanRenewalConfig> renewalsList = JSON.parseArray(renewalConfigs,ConsumeLoanRenewalConfig.class);
+            if( loan.getId() == null ){
+                loan.setAddOperatorId(credential.getOpId());
+            }
+            loan.setModifyTime(new Date());
+            loan.setModifyOperatorId(credential.getOpId());
+            consumeLoanConfigService.rateDaySave(loan,rateDayList,renewalsList);
+            return simpleSuccessJsonResult("success");
+        } catch (Exception e) {
+            if (e instanceof TqException) {
+                return failJsonResult(e.getMessage());
+            } else {
+                log.warn("save产品异常", e);
+                return failJsonResult("save产品异常");
+            }
+
+        }
+    }
+
+    /**
+     * 消费贷相关配置保存
+     * @param request
+     * @return
+     * @throws TqException
+     */
     @RequiresPermissions("product:list:edit")
     @RequestMapping(value = "/config/loan/save")
     @ResponseBody
-    public String loanSave(HttpServletRequest request) throws TqException {
+    public String loanSave(HttpServletRequest request) {
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {
@@ -354,10 +441,17 @@ public class ProductController extends BaseController {
         }
     }
 
+    /**
+     * 产品保存
+     * @param request
+     * @param productVo
+     * @return
+     * @throws TqException
+     */
     @RequiresPermissions("product:list:edit")
     @RequestMapping(value = "/mpSave")
     @ResponseBody
-    public String mpSave(HttpServletRequest request,ProductVo productVo) throws TqException {
+    public String mpSave(HttpServletRequest request,ProductVo productVo){
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {
@@ -370,6 +464,34 @@ public class ProductController extends BaseController {
                 productVo.setModifyTime(new Date());
                 productVo.setModifyOperatorId(credential.getOpId());
                 productService.updateMp(productVo);
+            }
+            return simpleSuccessJsonResult("success");
+        }catch (Exception e){
+            if (e instanceof TqException) {
+                return failJsonResult(e.getMessage());
+            } else {
+                log.warn("save产品异常", e);
+                return failJsonResult("save产品异常");
+            }
+        }
+    }
+
+    @RequiresPermissions("product:list:edit")
+    @RequestMapping(value = "/save")
+    @ResponseBody
+    public String save(HttpServletRequest request,ProductVo product) throws TqException {
+        try {
+            OperatorCredential credential = getCredential();
+            if (credential == null) {
+                throw new TqException("登录过期，请重新登录");
+            }
+            if( product.getId() == null ){
+                product.setAddOperatorId(credential.getOpId());
+                productService.save(product);
+            }else{
+                product.setModifyTime(new Date());
+                product.setModifyOperatorId(credential.getOpId());
+                productService.update(product);
             }
             return simpleSuccessJsonResult("success");
         }catch (Exception e){

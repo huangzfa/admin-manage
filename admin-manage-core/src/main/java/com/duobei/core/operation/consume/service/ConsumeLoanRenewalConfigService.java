@@ -1,6 +1,7 @@
 package com.duobei.core.operation.consume.service;
 
 import com.duobei.core.operation.consume.domain.ConsumeLoanRenewalConfig;
+import com.duobei.core.operation.consume.domain.vo.ConsumeLoanRenewalConfigVo;
 
 import java.util.List;
 
@@ -15,5 +16,9 @@ public interface ConsumeLoanRenewalConfigService {
      * @param configId
      * @return
      */
-    List<ConsumeLoanRenewalConfig> getByConfigId(Integer configId);
+    List<ConsumeLoanRenewalConfigVo> getByConfigId(Integer configId);
+
+    int save (ConsumeLoanRenewalConfig renewalConfig);
+
+    int update (ConsumeLoanRenewalConfig renewalConfig);
 }

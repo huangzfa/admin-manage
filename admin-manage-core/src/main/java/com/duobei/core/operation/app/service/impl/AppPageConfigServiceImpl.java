@@ -9,9 +9,7 @@ import com.duobei.core.operation.app.domain.AppPageConfigExample;
 import com.duobei.core.operation.app.domain.AppPageConfigExample.Criteria;
 import com.duobei.core.operation.app.domain.criteria.AppPageConfigCriteria;
 import com.duobei.core.operation.app.service.AppPageConfigService;
-import com.duobei.dic.ZD;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;

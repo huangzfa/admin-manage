@@ -2,7 +2,10 @@ package com.duobei.core.operation.consume.service;
 
 import com.duobei.common.exception.TqException;
 import com.duobei.core.operation.consume.domain.ConsumeLoanConfig;
+import com.duobei.core.operation.consume.domain.ConsumeLoanRateDayConfig;
+import com.duobei.core.operation.consume.domain.ConsumeLoanRenewalConfig;
 import com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo;
+import com.duobei.core.operation.product.domain.vo.ProductConsumdebtGoodsVo;
 
 import java.util.List;
 
@@ -41,4 +44,13 @@ public interface ConsumeLoanConfigService {
      * @throws TqException
      */
     void saveLoan(ConsumeLoanConfig record,List<ProductConsumdebtGoodsVo> goodsList) throws TqException;
+
+    /**
+     * 利率期限配置
+     * @param record
+     * @param rateDayList
+     * @param renewalsList
+     * @throws TqException
+     */
+    void rateDaySave(ConsumeLoanConfig record,List<ConsumeLoanRateDayConfig> rateDayList,List<ConsumeLoanRenewalConfig> renewalsList)throws TqException;
 }

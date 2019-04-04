@@ -17,4 +17,8 @@ public interface ConsumeLoanRateDayConfigService {
      * @return
      */
     List<ConsumeLoanRateDayConfig> getByLoanConfigId(Integer loanConfigId);
+
+    void batchSave(List<ConsumeLoanRateDayConfig> list);
+
+    void batchUpdate(List<ConsumeLoanRateDayConfig> list);
 }

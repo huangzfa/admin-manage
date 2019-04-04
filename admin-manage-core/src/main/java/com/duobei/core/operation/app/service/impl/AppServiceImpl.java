@@ -1,9 +1,14 @@
 package com.duobei.core.operation.app.service.impl;
 
+import com.duobei.common.constant.BizConstant;
+import com.duobei.common.exception.TqException;
+import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.app.dao.AppDao;
 import com.duobei.core.operation.app.dao.mapper.AppMapper;
 import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.app.domain.AppPageConfig;
+import com.duobei.core.operation.app.domain.criteria.AppCriteria;
+import com.duobei.core.operation.app.domain.vo.AppVo;
 import com.duobei.core.operation.app.service.AppService;
 import com.duobei.core.operation.product.domain.Product;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +33,21 @@ public class AppServiceImpl implements AppService{
 
     @Resource
     private AppMapper appMapper;
+
+    /**
+     * 分页查询
+     * @param criteria
+     * @return
+     */
+    @Override
+    public ListVo<AppVo> getLists(AppCriteria criteria){
+        int total = appDao.countByCriteria(criteria);
+        List<AppVo> list = null;
+        if (total > 0) {
+            list = appDao.getPageList(criteria);
+        }
+        return new ListVo<AppVo>(total, list);
+    }
 
     /**
      * 根据产品查询app
@@ -55,5 +75,35 @@ public class AppServiceImpl implements AppService{
     @Override
     public App getAppById(Integer id) {
         return appMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     *
+     * @param app
+     * @return
+     */
+    @Override
+    public void save(App app) throws TqException{
+        if( appDao.countByAppKey(app) >BizConstant.INT_ZERO){
+            throw new TqException("appKey已存在");
+        }
+        if(appDao.save(app) <1){
+            throw new TqException("添加失败");
+        }
+    }
+
+    /**
+     *
+     * @param app
+     * @return
+     */
+    @Override
+    public void update(App app) throws TqException{
+        if( appDao.countByAppKey(app) > BizConstant.INT_ZERO){
+            throw new TqException("appKey已存在");
+        }
+        if(appDao.update(app) <1){
+            throw new TqException("修改失败");
+        }
     }
 }

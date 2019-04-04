@@ -139,7 +139,27 @@ public class ProductServiceImpl implements ProductService {
         }
 
     }
+    /**
+     * 修改产品
+     * @param product
+     */
+    @Override
+    public void update(ProductVo  product) throws TqException{
+        if( productDao.save(product) <1){
+            throw new TqException("添加失败");
+        }
+    }
 
+    /**
+     * 添加产品
+     * @param product
+     */
+    @Override
+    public void save(ProductVo  product) throws TqException{
+        if( productDao.update(product) <1){
+            throw new TqException("修改失败");
+        }
+    }
     /**
      * 查询所有产品
      * @return

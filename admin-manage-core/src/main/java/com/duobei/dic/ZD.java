@@ -51,7 +51,7 @@ public interface ZD {
 	/**
 	 *  终端系统类型
 	 */
-    public String osType = "osType";
+		public String osType = "osType";
 	
 	/**
 	 *  通知业务类型

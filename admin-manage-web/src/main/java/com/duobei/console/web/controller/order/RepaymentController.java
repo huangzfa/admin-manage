@@ -5,6 +5,7 @@ import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.transaction.borrow.domain.BorrowCash;
 import com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder;
 import com.duobei.core.transaction.repayment.domain.BorrowCashRepayment;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,8 +51,12 @@ public class RepaymentController extends BaseController {
     @RequiresPermissions(PERMISSIONPRE+"view")
     @RequestMapping(value = "/list")
     public String list(Integer productId, Model model) {
-        OperatorCredential credential = getCredential();
-        model.addAttribute("productLists", JSON.toJSONString(credential.getProductList()));
+        List<Product> productList = getCredential().getProductList();
+        if (productId == null && productList != null && productList.size() > 0){
+            //如果未传productId 则赋予初始值
+            productId = productList.get(0).getId();
+        }
+        model.addAttribute("productLists", JSON.toJSONString(productList));
         model.addAttribute("productId",productId);
         return ADDRESSPRE+"repaymentList";
     }

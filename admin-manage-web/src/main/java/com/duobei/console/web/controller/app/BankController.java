@@ -1,12 +1,14 @@
 package com.duobei.console.web.controller.app;
 
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.operation.bank.domain.Bank;
 import com.duobei.core.operation.bank.domain.criteria.BankCriteria;
 import com.duobei.core.operation.bank.service.BankService;
+import com.duobei.core.operation.copywrite.service.CopywritingConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -38,6 +40,7 @@ public class BankController extends BaseController {
     private final static String DESC = "银行卡";
     @Resource
     BankService bankService;
+
 
 
     @RequiresPermissions(PERMISSIONPRE+"view")
@@ -123,7 +126,26 @@ public class BankController extends BaseController {
 
     }
 
-    private void validParam(Bank entity) {
+    private void validParam(Bank entity) throws TqException {
+        //银行名称判断
+        if (StringUtil.isEmpty(entity.getBankName())){
+            throw new TqException("请输入银行名称");
+        }
+        if (entity.getBankName().length() > 16){
+            throw new TqException("银行名称最大可输入长度为16");
+        }
+        //高亮图标
+        if (StringUtil.isEmpty(entity.getBankIcon())){
+            throw new TqException("请上传银行图标");
+        }
+        //置灰图标
+        if (StringUtil.isEmpty(entity.getBankIconGrey())){
+            throw new TqException("请上传银行置灰图标");
+        }
+        //背景图片
+        if (StringUtil.isEmpty(entity.getBankIconBack())){
+            throw new TqException("请上传背景图片");
+        }
     }
 
     /**

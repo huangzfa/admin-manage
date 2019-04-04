@@ -21,18 +21,34 @@
 
 		<!-- 2：数据库连接信息 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-						connectionURL="jdbc:mysql://47.96.0.60:3306/pgy_platform_operation?useUnicode=true&amp;characterEncoding=utf-8"
+						connectionURL="jdbc:mysql://localhost/pgy_platform_operation?useUnicode=true&amp;characterEncoding=utf-8"
 						userId="root"
-						password="Mi&amp;rong369" />
+						password="123456" />
 
-		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.bank.domain" />
-		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.operation.bank.dao.mapper" />
-		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.bank.dao.mapper" type="XMLMAPPER" />
+		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.consumeLoanConfig.domain" />
+		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.operation.consumeLoanConfig.dao.mapper" />
+		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.consumeLoanConfig.dao.mapper" type="XMLMAPPER" />
 
 		<!-- 银行卡 -->
-		<table tableName="cf_bank" domainObjectName="Bank" alias="bank">
+		<!--<table tableName="cf_bank" domainObjectName="Bank" alias="bank">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="menu_id" sqlStatement="MySql" identity="true" />
+		</table>-->
+	<!--	<table tableName="yy_copywriting_config" domainObjectName="CopywritingConfig" alias="copywriting_config">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>-->
+	<!--	<table tableName="yy_function_switch" domainObjectName="FunctionSwitch" alias="function_switch">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>-->
+	<!--	<table tableName="yy_function_switch_app" domainObjectName="FunctionSwitchApp" alias="function_switch_app">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>-->
+		<table tableName="yy_consume_loan_config" domainObjectName="ConsumeLoanConfig" alias="consume_loan_config">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>
 	</context>
 </generatorConfiguration>

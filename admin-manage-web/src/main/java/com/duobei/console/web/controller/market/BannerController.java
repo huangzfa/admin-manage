@@ -8,7 +8,7 @@ import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.app.service.AppService;
-import com.duobei.core.operation.banner.BannerService;
+import com.duobei.core.operation.banner.service.BannerService;
 import com.duobei.core.operation.banner.domain.Banner;
 import com.duobei.core.operation.banner.domain.criteria.BannerCriteria;
 import com.duobei.dic.ZD;

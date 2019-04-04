@@ -1,4 +1,3 @@
-
 package com.duobei.console.web.controller.app;
 
 import com.alibaba.fastjson.JSON;
@@ -40,7 +39,7 @@ public class AppPageConfigController extends  BaseController{
 
 	private final static String PERMISSIONPRE = "app:pageConfig:";
 	private final static String ADDRESSPRE = "app/pageConfig/";
-	private final static String DESC = "应用页面";
+	private final static String DESC = "应用页签配置";
 
 	@Resource
 	private AppPageConfigService appPageConfigService;

@@ -21,4 +21,10 @@ public interface ConsumeLoanConfigService {
     ConsumeLoanConfig getByProductId(Integer productId);
 
     void saveAuth(ConsumeLoanConfig record,List<ProductAuthConfigVo> auth) throws TqException;
+
+    void updateBorrowShowById(ConsumeLoanConfig consumeLoanConfig) throws TqException;
+
+    void saveBorrowShow(ConsumeLoanConfig consumeLoanConfig) throws TqException;
+
+    ConsumeLoanConfig getById(Integer id);
 }

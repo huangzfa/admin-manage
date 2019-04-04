@@ -6,6 +6,7 @@ import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.transaction.renewal.domain.criteria.BorrowCashRenewalCriteria;
 import com.duobei.core.transaction.renewal.domain.vo.BorrowCashRenewalListVo;
 import com.duobei.core.transaction.renewal.domain.vo.BorrowCashRenewalVo;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,8 +48,12 @@ public class RenewalController extends BaseController{
     @RequiresPermissions(PERMISSIONPRE+"view")
     @RequestMapping(value = "/list")
     public String list(Integer productId, Model model) {
-        OperatorCredential credential = getCredential();
-        model.addAttribute("productLists", JSON.toJSONString(credential.getProductList()));
+        List<Product> productList = getCredential().getProductList();
+        if (productId == null && productList != null && productList.size() > 0){
+            //如果未传productId 则赋予初始值
+            productId = productList.get(0).getId();
+        }
+        model.addAttribute("productLists", JSON.toJSONString(productList));
         model.addAttribute("productId",productId);
         return ADDRESSPRE+"renewalList";
     }

@@ -31,4 +31,17 @@ public interface ConsumeLoanConfigDao {
      */
     int update(ConsumeLoanConfig loanConfig);
 
+    /**
+     * 修改借钱默认页配置
+     * @param consumeLoanConfig
+     * @return
+     */
+    int updateBorrowShowById(ConsumeLoanConfig consumeLoanConfig);
+
+    /**
+     * 保存借钱默认页配置
+     * @param consumeLoanConfig
+     * @return
+     */
+    int saveBorrowShow(ConsumeLoanConfig consumeLoanConfig);
 }

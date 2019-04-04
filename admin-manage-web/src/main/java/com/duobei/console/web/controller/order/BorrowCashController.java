@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,8 +57,12 @@ public class BorrowCashController extends BaseController {
     @RequiresPermissions(PERMISSIONPRE+"view")
     @RequestMapping(value = "/list")
     public String list(Integer productId, Model model) {
-        OperatorCredential credential = getCredential();
-        model.addAttribute("productLists", JSON.toJSONString(credential.getProductList()));
+        List<Product> productList = getCredential().getProductList();
+        if (productId == null && productList != null && productList.size() > 0){
+            //如果未传productId 则赋予初始值
+            productId = productList.get(0).getId();
+        }
+        model.addAttribute("productLists", JSON.toJSONString(productList));
         model.addAttribute("productId",productId);
         return ADDRESSPRE+"borrowCashList";
     }

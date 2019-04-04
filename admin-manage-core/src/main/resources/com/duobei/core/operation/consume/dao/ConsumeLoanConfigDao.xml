@@ -269,4 +269,27 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <update id="updateBorrowShowById"  parameterType="com.duobei.core.operation.consume.domain.ConsumeLoanConfig">
+      update yy_consume_loan_config
+      set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId}
+       ,show_min_amount = #{showMinAmount},show_max_amount = #{showMaxAmount}
+       ,show_borrow_days = #{showBorrowDays}, data_version = data_version + 1
+       where id = #{id} and data_version = #{dataVersion}
+    </update>
+
+    <insert id="saveBorrowShow" parameterType="com.duobei.core.operation.consume.domain.ConsumeLoanConfig">
+    insert into yy_consume_loan_config(product_id, show_min_amount
+    , show_max_amount, show_day_rate, show_borrow_days, day_amount_limit
+    , min_amount, max_amount, base_bank_rate, poundage_rate, overdue_rate
+    , max_overdue_rate, renewal_day, renewal_capital_rate, renewal_amount
+    , can_renewal_day_limit, auth_selete_rule, quota_scene_code, borrow_scene_code_first
+    , borrow_scene_code, add_time, modify_time, add_operator_id, modify_operator_id)
+    values (#{productId},#{showMinAmount}
+    ,#{showMaxAmount},#{showDayRate},#{showBorrowDays},#{dayAmountLimit}
+    ,#{minAmount},#{maxAmount},#{baseBankRate},#{poundageRate},#{overdueRate}
+    ,#{maxOverdueRate},#{renewalDay},#{renewalCapitalRate},#{renewalAmount}
+    ,#{canRenewalDayLimit},#{authSeleteRule},#{quotaSceneCode},#{borrowSceneCodeFirst}
+    ,#{borrowSceneCode},#{addTime},#{modifyTime},#{addOperatorId},#{modifyOperatorId})
+    </insert>
 </mapper>

@@ -167,7 +167,7 @@
 			<th style="width:5%;" data-options="field:'bankName',width:80,align:'center',halign:'center',fixed:true">银行名称</th>
 			<th style="width:15%;" data-options="field:'bankIcon',width:120,align:'center',halign:'center',fixed:true,formatter:bankIconformatter">银行图标1</th>
 			<th style="width:10%;" data-options="field:'bankIconGrey',width:160,align:'center',halign:'center',fixed:true,formatter:bankIconformatter">银行灰度图标</th>
-			<th style="width:5%;" data-options="field:'bankIconBack',width:160,align:'center',halign:'center',fixed:true,formatter:bankIconBackformatter">背景图片/th>
+			<th style="width:5%;" data-options="field:'bankIconBack',width:160,align:'center',halign:'center',fixed:true,formatter:bankIconBackformatter">背景图片</th>
 			<th style="width:15%;" data-options="field:'isEnable',width:160,align:'center',halign:'center',fixed:true,formatter:stateformatter">是否有效</th>
 			<th style="width:10%;" data-options="field:'skRemark',width:160,align:'center',halign:'center',fixed:true">收款文案</th>
 			<th style="width:10%;" data-options="field:'kkRemark',width:160,align:'center',halign:'center',fixed:true">扣款文案</th>

@@ -80,7 +80,7 @@ public class StartUpPageController extends BaseController {
             if( startupPage.getAppId() !=null ){
                 validAuthData(null,startupPage.getAppId());
             }else{
-                throw new TqException("数据操作权限失败");
+                throw new TqException("数据操作权限不足");
             }
             //修改时间、修改人
             startupPage.setModifyOperatorId(credential.getOpId());
@@ -127,7 +127,7 @@ public class StartUpPageController extends BaseController {
             if( startupPage.getAppId() !=null ){
                 validAuthData(null,startupPage.getAppId());
             }else{
-                throw new TqException("数据操作权限失败");
+                throw new TqException("数据操作权限不足");
             }
             //修改时间、修改人
             startupPage.setModifyOperatorId(credential.getOpId());

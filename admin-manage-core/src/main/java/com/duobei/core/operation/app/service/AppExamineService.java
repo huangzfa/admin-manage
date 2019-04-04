@@ -4,6 +4,7 @@ import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.app.domain.AppExamine;
 import com.duobei.core.operation.app.domain.criteria.AppExamineCriteria;
+import com.duobei.core.operation.app.domain.vo.AppExamineVo;
 
 /**
  * @author huangzhongfa
@@ -16,5 +17,9 @@ public interface AppExamineService {
      * @param appExamineCriteria
      * @return
      */
-    ListVo<AppExamine> getPageList(AppExamineCriteria appExamineCriteria) throws TqException;
+    ListVo<AppExamineVo> getListVoByQuery(AppExamineCriteria appExamineCriteria) throws TqException;
+
+    AppExamine getById(Integer id);
+
+    void delete(AppExamine appExamine) throws TqException;
 }

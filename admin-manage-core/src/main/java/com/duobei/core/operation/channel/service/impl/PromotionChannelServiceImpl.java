@@ -96,4 +96,9 @@ public class PromotionChannelServiceImpl implements PromotionChannelService {
     public PromotionChannel getByCode(String channelCode) {
         return promotionChannelDao.getByCode(channelCode);
     }
+
+    @Override
+    public List<PromotionChannel> getChannelListByType(Integer type) {
+        return promotionChannelDao.getListByType(type);
+    }
 }

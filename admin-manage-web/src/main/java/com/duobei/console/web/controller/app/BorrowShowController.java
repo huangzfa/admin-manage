@@ -62,7 +62,6 @@ public class BorrowShowController extends BaseController {
         if (productList == null || productList.size() <= 0){
             return failJsonResult("无产品权限");
         }
-        //应用列表
 
         if (productId == null){
             productId = productList.get(0).getId();
@@ -98,9 +97,9 @@ public class BorrowShowController extends BaseController {
             }
             //验证数据权限
             if( borrowShowConfigVo.getProductId() != null ){
-                validAuthData(null,borrowShowConfigVo.getProductId());
+                validAuthData(borrowShowConfigVo.getProductId());
             }else{
-                throw new TqException("数据操作权限失败");
+                throw new TqException("数据操作权限不足");
             }
 
             ConsumeLoanConfig consumeLoanConfig = new ConsumeLoanConfig();

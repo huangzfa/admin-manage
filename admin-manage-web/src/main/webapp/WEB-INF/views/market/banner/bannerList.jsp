@@ -147,7 +147,7 @@
         return '未知';
     }
     function del(id){
-        top.$.jBox.confirm("确定删除该轮播图吗吗",'系统提示',function(v,h,f){
+        top.$.jBox.confirm("确定删除该轮播图吗？",'系统提示',function(v,h,f){
             if(v=='ok'){
                 jQuery.post("${ctxA}/market/banner/delete", {'id':id},
                     function(data) {

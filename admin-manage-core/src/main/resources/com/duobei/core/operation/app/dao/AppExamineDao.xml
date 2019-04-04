@@ -4,7 +4,12 @@
 
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.app.domain.AppExamine" extends="com.duobei.core.operation.app.dao.mapper.AppExamineMapper.BaseResultMap">
     </resultMap>
-
+    <sql id="Base_Column_List">
+    ae.id as id, ae.product_id as product_id, ae.app_id as app_id, ae.app_os_type as app_os_type,
+    ae.channel_id as channel_id, ae.version_number as version_number, ae.add_time as add_time,
+    ae.modify_time as modify_time, ae.add_operator_id as add_operator_id, ae.modify_operator_id as modify_operator_id,
+    ae.is_delete as is_delete
+  </sql>
     <select id="getPageList" resultType="com.duobei.core.operation.app.domain.AppExamine" parameterType="com.duobei.core.operation.app.domain.criteria.AppExamineCriteria">
         select * from yy_app_examine where is_delete = 0 order by id desc
         <if test="pagesize != 0">
@@ -86,4 +91,39 @@
             </if>
         </trim>
     </insert>
+
+    <select id="getListVoByQuery" resultType="com.duobei.core.operation.app.domain.vo.AppExamineVo" parameterType="com.duobei.core.operation.app.domain.criteria.AppExamineCriteria">
+        select <include refid="Base_Column_List"/> , channel.channel_name
+        from yy_app_examine ae
+        left join yy_promotion_channel channel on ae.channel_id = channel.id
+        where ae.is_delete = 0
+        <if test="appId != null">
+            and ae.app_iD = #{appId}
+        </if>
+        <if test="versionNumber != null and versionNumber != ''">
+            and ae.version_number = #{versionNumber}
+        </if>
+        <if test="channelName != null and channelName != ''">
+            and ae.channel_id
+            <foreach collection="channelIds" item="id" separator="," open=" in(" close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="appIds != null ">
+            and ae.app_id
+            <foreach collection="appIds" item="id" separator="," open=" in(" close=")">
+                #{id}
+            </foreach>
+        </if>
+        order by ae.add_time desc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <update id="delete" parameterType="Integer">
+        update yy_app_examine
+        set modify_operator_id = #{modifyOperatorId},modify_time = #{modifyTime},is_delete = #{id}
+        where id = #{id} and is_delete = 0
+</update>
 </mapper>

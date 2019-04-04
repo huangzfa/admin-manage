@@ -92,7 +92,7 @@
                             top.layer.alert("操作完成", {
                                 icon: 6,
                                 end: function(){
-                                    window.location.href="${ctxA}/app/firstContact/list?appId="+$("#appId").val();
+                                    getData();
                                 }
                             });
                         } else {

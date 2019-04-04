@@ -2,7 +2,9 @@ package com.duobei.core.operation.app.dao;
 
 
 import com.duobei.core.operation.app.domain.AppExamine;
+import com.duobei.core.operation.app.domain.AppExamineExample;
 import com.duobei.core.operation.app.domain.criteria.AppExamineCriteria;
+import com.duobei.core.operation.app.domain.vo.AppExamineVo;
 
 import java.util.List;
 
@@ -28,4 +30,13 @@ public interface AppExamineDao {
     List getPageList(AppExamineCriteria criteria);
 
     int save(AppExamine appExamine);
+
+    /**
+     * 根据条件查询
+     * @param criteria
+     * @return
+     */
+    List<AppExamineVo> getListVoByQuery(AppExamineExample.Criteria criteria);
+
+    int delete(AppExamine appExamine);
 }

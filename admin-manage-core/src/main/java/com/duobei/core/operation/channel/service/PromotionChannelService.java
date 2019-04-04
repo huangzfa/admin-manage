@@ -6,6 +6,8 @@ import com.duobei.core.operation.channel.domain.PromotionChannel;
 import com.duobei.core.operation.channel.domain.criteria.AppMarketChannelCriteria;
 import com.duobei.core.operation.channel.domain.criteria.PromotionChannelCriteria;
 
+import java.util.List;
+
 /**
  * @author litianxiong
  * @description
@@ -57,4 +59,11 @@ public interface PromotionChannelService {
      * @return
      */
     PromotionChannel getByCode(String channelCode);
+
+    /**
+     * 根据渠道类型查询渠道
+     * @param type
+     * @return
+     */
+    List<PromotionChannel> getChannelListByType(Integer type);
 }

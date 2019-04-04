@@ -33,4 +33,10 @@ public interface PromotionChannelDao {
     PromotionChannel getByCode(String channelCode);
 
     List<ProductAppChannelListVo> getChannelByProductAppChannelQuery(ProductAppChannelCriteria productAppChannelCriteria);
+
+    List<Integer> getIdListByName(String channelName);
+
+    List<Integer> getAppChannelIdListByName(String channelName);
+
+    List<PromotionChannel> getListByType(Integer type);
 }

@@ -28,7 +28,7 @@
     function getData(){
         hjnUtils.ajax({
             type:'post',
-            url:'${ctxA}/product/authConfig/getAuthConfigData',
+            url:'${ctxA}/authConfig/getAuthConfigData',
             data:'&page='+pageNum+'&pagesize='+pageSize,
             dataType:'json',
             success:function(data){
@@ -106,11 +106,11 @@
     //操作
     function optionformater(value,row,index){
         var opStr='';
-        <shiro:hasPermission name="product:list:edit">
-		    var authState = 0;
-		    if( row.authState == 0) authState = 1;
-			opStr+="<a class='si-option-a' href='javascript:editState(\""+row.authCode+"\",\""+authState+"\")'>"+(row.authState==1?"禁用":"启用")+"</a>";
-			opStr+="<a class='si-option-a' href='${ctxA}/product/authConfig/form?authCode="+row.authCode+"'>编辑</a>";
+        <shiro:hasPermission name="authConfig:list:edit">
+		    var isEnable = 0;
+		    if( row.isEnable == 0) isEnable = 1;
+			opStr+="<a class='si-option-a' href='javascript:editState(\""+row.authCode+"\",\""+isEnable+"\")'>"+(row.isEnable==1?"禁用":"启用")+"</a>";
+			opStr+="<a class='si-option-a' href='${ctxA}/authConfig/form?authCode="+row.authCode+"'>编辑</a>";
         </shiro:hasPermission>
         return opStr;
     }
@@ -121,7 +121,7 @@
 		}
         top.$.jBox.confirm(title,'系统提示',function(v,h,f){
             if(v=='ok'){
-                jQuery.post("${ctxA}/product/authConfig/editState", {'authCode':authCode,'authState':authState},
+                jQuery.post("${ctxA}/authConfig/editState", {'authCode':authCode,'authState':authState},
                     function(data) {
                         if (data.code ==1) {
                             top.layer.alert("操作完成", {
@@ -146,15 +146,14 @@
 		   data-options="idField:'id',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
 		<thead>
 		<tr>
+			<th data-options="field:'authCode',width:100,align:'center',halign:'center',fixed:true">认证编码</th>
 			<th data-options="field:'authType',width:120,align:'center',halign:'center',fixed:true,formatter:typeformater">认证类型</th>
 			<th data-options="field:'authName',width:120,align:'center',halign:'center',fixed:true">认证项名称</th>
 			<th data-options="field:'unImg',width:100,align:'center',halign:'center',fixed:true,formatter:iconurlformater">未认证图标</th>
 			<th data-options="field:'successImg',width:100,align:'center',halign:'center',fixed:true,formatter:iconurlformater">认证完成图标</th>
 			<th data-options="field:'ingImg',width:100,align:'center',halign:'center',fixed:true,formatter:iconurlformater">认证中图标</th>
 			<th data-options="field:'failImg',width:100,align:'center',halign:'center',fixed:true,formatter:iconurlformater">认证失败图标</th>
-			<th width="10%" data-options="field:'validVal',width:160,align:'center',halign:'center',fixed:true,formatter:validValformater">认证有效期</th>
-			<th width="10%" data-options="field:'authState',width:160,align:'center',halign:'center',fixed:true,formatter:stateformater">是否可用</th>
-			<th width="10%" data-options="field:'authSort',width:80,align:'center',halign:'center',fixed:true">排序</th>
+			<th width="10%" data-options="field:'isEnable',width:160,align:'center',halign:'center',fixed:true,formatter:stateformater">是否可用</th>
 			<th width="10%" data-options="field:'pageType',width:160,align:'center',halign:'center',fixed:true,formatter:pageformater">跳转类型</th>
 			<th width="20%" data-options="field:'option',width:120,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
 		</tr>

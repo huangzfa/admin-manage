@@ -23,7 +23,7 @@ public interface AuthConfigDao {
 
     AuthConfig getByCode(@Param("code") String code);
 
-    int updateState(@Param("code") String code,@Param("authState") String authState);
+    int updateState(@Param("isEnable") String isEnable,@Param("code") String code);
 
     int update(AuthConfig record);
 }

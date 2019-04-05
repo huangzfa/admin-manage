@@ -5,16 +5,22 @@
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.AuthConfig" extends="com.duobei.core.operation.product.dao.mapper.AuthConfigMapper.BaseResultMap">
     </resultMap>
 
-    <select id="getListPage" resultType="com.duobei.core.operation.product.domain.AuthConfig" parameterType="com.duobei.core.operation.product.domain.criteria.AuthConfigCriteria">
+    <select id="getPageList" resultType="com.duobei.core.operation.product.domain.AuthConfig" parameterType="com.duobei.core.operation.product.domain.criteria.AuthConfigCriteria">
         SELECT   * FROM yy_auth_config
         where is_delete = 0 order by auth_sort asc
         <if test="pagesize != 0">
             LIMIT #{offset}, #{pagesize}
         </if>
     </select>
-    <select id="countByCriteria" parameterType="com.duobei.core.operation.product.domain.criteria.AuthConfigCriteria">
-        SELECT   * FROM yy_auth_config where is_delete = 0 order by auth_sort asc
+
+    <select id="countByCriteria" resultType="java.lang.Integer" parameterType="com.duobei.core.operation.product.domain.criteria.AuthConfigCriteria">
+        SELECT  count(*) FROM yy_auth_config where is_delete = 0 order by auth_sort asc
     </select>
+
+    <select id="getByCode" resultType="com.duobei.core.operation.product.domain.AuthConfig" parameterType="java.lang.String">
+        select * from yy_auth_config where is_delete = 0 and auth_code = #{code,jdbcType=VARCHAR} order by id desc
+    </select>
+
     <insert id="save" parameterType="com.duobei.core.operation.product.domain.AuthConfig">
         insert into yy_auth_config
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -119,55 +125,55 @@
         </trim>
     </insert>
     <update id="update" parameterType="com.duobei.core.operation.product.domain.AuthConfig">
-        update yy_auth_config ac
+        update yy_auth_config
         <set>
             <if test="id != null">
-                ac.id = #{id,jdbcType=INTEGER},
+                id = #{id,jdbcType=INTEGER},
             </if>
             <if test="authName != null">
-                ac.auth_name = #{authName,jdbcType=VARCHAR},
+                auth_name = #{authName,jdbcType=VARCHAR},
             </if>
             <if test="authCode != null">
-                ac.auth_code = #{authCode,jdbcType=VARCHAR},
+                auth_code = #{authCode,jdbcType=VARCHAR},
             </if>
             <if test="authType != null">
-                ac.auth_type = #{authType,jdbcType=VARCHAR},
+                auth_type = #{authType,jdbcType=VARCHAR},
             </if>
             <if test="pageType != null">
-                ac.page_type = #{pageType,jdbcType=VARCHAR},
+                page_type = #{pageType,jdbcType=VARCHAR},
             </if>
             <if test="isEnable != null">
-                ac.is_enable = #{isEnable,jdbcType=VARCHAR},
+                is_enable = #{isEnable,jdbcType=VARCHAR},
             </if>
             <if test="authSort != null">
-                ac.auth_sort = #{authSort,jdbcType=INTEGER},
+                auth_sort = #{authSort,jdbcType=INTEGER},
             </if>
             <if test="unImg != null">
-                ac.un_img = #{unImg,jdbcType=VARCHAR},
+                un_img = #{unImg,jdbcType=VARCHAR},
             </if>
             <if test="ingImg != null">
-                ac.ing_img = #{ingImg,jdbcType=VARCHAR},
+                ing_img = #{ingImg,jdbcType=VARCHAR},
             </if>
             <if test="successImg != null">
-                ac.success_img = #{successImg,jdbcType=VARCHAR},
+                success_img = #{successImg,jdbcType=VARCHAR},
             </if>
             <if test="failImg != null">
-                ac.fail_img = #{failImg,jdbcType=VARCHAR},
+                fail_img = #{failImg,jdbcType=VARCHAR},
             </if>
             <if test="addTime != null">
-                ac.add_time = #{addTime,jdbcType=TIMESTAMP},
+                add_time = #{addTime,jdbcType=TIMESTAMP},
             </if>
             <if test="modifyTime != null">
-                ac.modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
             </if>
             <if test="addOperatorId != null">
-                ac.add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+                add_operator_id = #{addOperatorId,jdbcType=INTEGER},
             </if>
             <if test="modifyOperatorId != null">
-                ac.modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+                modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
             </if>
             <if test="isDelete != null">
-                ac.is_delete = #{isDelete,jdbcType=BIGINT},
+                is_delete = #{isDelete,jdbcType=BIGINT},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}

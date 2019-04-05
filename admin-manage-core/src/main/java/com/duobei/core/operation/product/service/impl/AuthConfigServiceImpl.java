@@ -99,7 +99,7 @@ public class AuthConfigServiceImpl implements AuthConfigService {
      * @throws RuntimeException
      */
     @Override
-    @Transactional(rollbackFor = RuntimeException.class)
+    @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
     public void editState(String code,String authState) throws RuntimeException{
         AuthConfig entity = authConfigDao.getByCode(code);
         if( entity == null ){
@@ -120,7 +120,7 @@ public class AuthConfigServiceImpl implements AuthConfigService {
                 throw new RuntimeException(msg);
             }
         }
-        if( authConfigDao.updateState(code,authState) !=1){
+        if( authConfigDao.updateState(authState,code) !=1){
             throw new RuntimeException("认证项配置修改状态失败");
         }
 

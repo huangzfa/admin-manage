@@ -13,16 +13,16 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/product/authConfig/list">认证项列表</a></li>
+    <li><a href="${ctxA}/authConfig/list">认证项列表</a></li>
     <li class="active">
-        <shiro:hasPermission name="product:authConfig:edit">
+        <shiro:hasPermission name="authConfig:list:edit">
             <a href="javascript:void(0);">${not empty authConfig.id?'修改':'添加'}认证项</a>
         </shiro:hasPermission>
     </li>
 </ul>
 <div class="si-warp">
     <br/>
-    <form:form id="authConfigForm" modelAttribute="authConfig"   action="${ctxA}/product/authConfig/save" method="post" class="form-horizontal">
+    <form:form id="authConfigForm" modelAttribute="authConfig"   action="${ctxA}/authConfig/save" method="post" class="form-horizontal">
         <input type="hidden" name="id" value="${not empty authConfig.id?authConfig.id:''}">
         <div class="control-group">
             <label class="control-label">跳转类型：</label>
@@ -87,12 +87,6 @@
             <label class="control-label">认证项名称：</label>
             <div class="controls">
                 <input type="text" class="form-control valid" descripe="请填写认证项名称" type="text" name="authName" id="authName" maxlength="6" value="${authConfig.authName}"></input>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">认证有效期：</label>
-            <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写认证有效期" type="text" name="validVal" id="validVal" maxlength="3" value="${authConfig.validVal}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>天
             </div>
         </div>
         <div class="control-group">
@@ -196,10 +190,10 @@
             </div>
         </div>--%>
         <div class="form-actions">
-            <shiro:hasPermission name="product:authConfig:edit">
+            <shiro:hasPermission name="authConfig:list:edit">
                 <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;"/>&nbsp;
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/product/authConfig/list'"/>
+            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/authConfig/list'"/>
         </div>
     </form:form>
 
@@ -266,7 +260,7 @@
                 top.layer.alert("操作成功", {
                     icon: 6,
                     end: function(){
-                        window.location.href="${ctxA}/product/authConfig/list";
+                        window.location.href="${ctxA}/authConfig/list";
                     }
                 });
             } else {

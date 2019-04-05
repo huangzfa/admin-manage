@@ -51,7 +51,7 @@ public class AuthConfigController extends BaseController {
     @RequiresPermissions("authConfig:list:view")
     @RequestMapping(value = "/list")
     public String index(Model model){
-        return "auth/authConfig/list";
+        return "authConfig/list";
     }
 
     /**
@@ -94,8 +94,9 @@ public class AuthConfigController extends BaseController {
             model.addAttribute("authConfig", new AuthConfig());
         }
         model.addAttribute("authTypes", DictUtil.getDictList(ZD.authType));
+        model.addAttribute("pageTypes", DictUtil.getDictList(ZD.aPMenuType));
 
-        return "auth/authConfig/form";
+        return "authConfig/form";
     }
 
     /**

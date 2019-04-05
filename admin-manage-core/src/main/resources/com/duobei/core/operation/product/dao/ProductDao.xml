@@ -64,7 +64,7 @@
 
     <!--根据认证项id查询-->
     <select id="getByAuthId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.product.domain.Product">
-        select DISTINCT(a.id) ,a.product_name from yy_product a left join yy_product_auth_config b on a.id=b.product_id where   a.auth_id =#{authId,jdbcType=VARCHAR} order by a.id desc
+        select DISTINCT(a.id) ,a.product_name from yy_product a left join yy_product_auth_config b on a.id=b.product_id where   b.auth_id =#{authId,jdbcType=VARCHAR} order by a.id desc
     </select>
 
     <insert id="save" parameterType="com.duobei.core.operation.product.domain.vo.ProductVo">

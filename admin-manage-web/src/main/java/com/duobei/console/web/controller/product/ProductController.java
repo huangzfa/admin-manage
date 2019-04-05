@@ -1,6 +1,7 @@
 package com.duobei.console.web.controller.product;
 
 import com.alibaba.fastjson.JSON;
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.enums.BusinessEnum;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.lang.StringUtil;
@@ -215,6 +216,9 @@ public class ProductController extends BaseController {
                 if( config == null ){
                     config = new ConsumeLoanConfig();
                 }
+                config.setDayAmountLimit(config.getDayAmountLimit()/100);
+                config.setShowMinAmount(config.getShowMinAmount()/100);
+                config.setShowMaxAmount(config.getShowMaxAmount()/100);
                 config.setProductId(product.getId());
                 model.addAttribute("consumeLoanConfig",JSON.toJSONString(config));
                 //查询消费贷基础配置，关联的认证项
@@ -282,7 +286,7 @@ public class ProductController extends BaseController {
                     config.setId(record.getId());
                     config.setRenewalDay(record.getRenewalDay());
                     config.setCanRenewalDayLimit(record.getCanRenewalDayLimit());
-                    config.setRenewalAmount(record.getRenewalAmount());
+                    config.setRenewalAmount(record.getRenewalAmount()/100);
                     config.setDataVersion(record.getDataVersion());
 
                 }
@@ -322,14 +326,17 @@ public class ProductController extends BaseController {
                 throw new TqException("至少关联一个认证项配置");
             }
             ConsumeLoanConfig loan = JSON.parseObject(loans,ConsumeLoanConfig.class);
+            loan.setDayAmountLimit(loan.getDayAmountLimit()*100);//分单位
+            loan.setShowMinAmount(loan.getShowMinAmount()*100);//分单位
+            loan.setShowMaxAmount(loan.getShowMaxAmount()*100);//分单位
             if( loan.getShowMinAmount() >= loan.getShowMaxAmount()){
                 throw new TqException("借款额度范围，第一个值必须小于第二个值");
             }
-            if( loan.getShowMinAmount() < 100 || loan.getShowMinAmount() % 100 >0 || loan.getShowMaxAmount() % 100 >0){
+            if( loan.getShowMinAmount() < 100 || loan.getShowMinAmount() % 100 >BizConstant.INT_ZERO || loan.getShowMaxAmount() % 100 >BizConstant.INT_ZERO){
                 throw new TqException("借款额度范围，请填写100的整数倍");
             }
             List<ProductAuthConfigVo> auth = JSON.parseArray(auths,ProductAuthConfigVo.class);
-            if( auth.size() == 0){
+            if( auth.size() == BizConstant.INT_ZERO){
                 throw new TqException("至少关联一个认证项配置");
             }
             if( loan.getId() == null ){
@@ -370,6 +377,7 @@ public class ProductController extends BaseController {
                 throw new TqException("请填写借贷基本配置");
             }
             ConsumeLoanConfig loan = JSON.parseObject(loans,ConsumeLoanConfig.class);
+            loan.setRenewalAmount(loan.getRenewalAmount()*100);//分单位
             String rateDays = request.getParameter("rateDays");
             if( rateDays == null || rateDays.length() == 0){
                 throw new TqException("系统错误");
@@ -419,7 +427,7 @@ public class ProductController extends BaseController {
             }
             ConsumeLoanConfig loan = JSON.parseObject(loans,ConsumeLoanConfig.class);
             String goods = request.getParameter("goods");
-            if( goods == null || goods.length() == 0){
+            if( goods == null || goods.length() == BizConstant.INT_ZERO){
                 throw new TqException("至少关联一个借贷商品");
             }
             List<ProductConsumdebtGoodsVo> goodsList = JSON.parseArray(goods,ProductConsumdebtGoodsVo.class);

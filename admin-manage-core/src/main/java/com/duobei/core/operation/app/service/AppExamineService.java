@@ -6,6 +6,7 @@ import com.duobei.core.operation.app.domain.AppExamine;
 import com.duobei.core.operation.app.domain.criteria.AppExamineCriteria;
 import com.duobei.core.operation.app.domain.vo.AppExamineVo;
 
+
 /**
  * @author huangzhongfa
  * @description
@@ -22,4 +23,8 @@ public interface AppExamineService {
     AppExamine getById(Integer id);
 
     void delete(AppExamine appExamine) throws TqException;
+
+    void save(AppExamine entity) throws TqException;
+
+    void update(AppExamine entity) throws TqException;
 }

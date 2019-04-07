@@ -74,9 +74,16 @@ public class BorrowShowController extends BaseController {
         }else{
             BeanUtils.copyProperties(consumeLoanConfig,borrowShowConfigVo);
             List<Integer> dayList = JSON.parseArray(consumeLoanConfig.getShowBorrowDays(),Integer.class);
-            borrowShowConfigVo.setDay1(dayList.get(0));
-            borrowShowConfigVo.setDay2(dayList.get(1));
-            borrowShowConfigVo.setDay3(dayList.get(2));
+           if (dayList != null){
+               borrowShowConfigVo.setDay1(dayList.get(0));
+               borrowShowConfigVo.setDay2(dayList.get(1));
+               borrowShowConfigVo.setDay3(dayList.get(2));
+           }else{
+               borrowShowConfigVo.setDay1(null);
+               borrowShowConfigVo.setDay2(null);
+               borrowShowConfigVo.setDay3(null);
+           }
+
             model.addAttribute("borrowShow",borrowShowConfigVo);
         }
         model.addAttribute("productList",productList);

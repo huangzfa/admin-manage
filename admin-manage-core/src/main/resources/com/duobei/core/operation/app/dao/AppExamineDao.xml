@@ -98,7 +98,7 @@
         left join yy_promotion_channel channel on ae.channel_id = channel.id
         where ae.is_delete = 0
         <if test="appId != null">
-            and ae.app_iD = #{appId}
+            and ae.app_id = #{appId}
         </if>
         <if test="versionNumber != null and versionNumber != ''">
             and ae.version_number = #{versionNumber}
@@ -121,9 +121,29 @@
         </if>
     </select>
 
-    <update id="delete" parameterType="Integer">
+    <update id="delete" parameterType="com.duobei.core.operation.app.domain.AppExamine">
         update yy_app_examine
         set modify_operator_id = #{modifyOperatorId},modify_time = #{modifyTime},is_delete = #{id}
+        where id = #{id} and is_delete = 0
+</update>
+    <update id="update"  parameterType="com.duobei.core.operation.app.domain.AppExamine">
+             update yy_app_examine
+        set modify_operator_id = #{modifyOperatorId},modify_time = #{modifyTime}
+        <if test="productId != null">
+            ,product_id = #{productId}
+        </if>
+        <if test="appId != null">
+            ,app_id = #{appId}
+        </if>
+        <if test="appOsType != null">
+            ,app_os_type = #{appOsType}
+        </if>
+        <if test="channelId != null">
+            ,channel_id = #{channelId}
+        </if>
+        <if test="versionNumber != null">
+            ,version_number = #{versionNumber}
+        </if>
         where id = #{id} and is_delete = 0
 </update>
 </mapper>

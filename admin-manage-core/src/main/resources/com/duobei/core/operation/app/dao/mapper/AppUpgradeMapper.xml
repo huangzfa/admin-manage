@@ -2,28 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.duobei.core.operation.app.dao.mapper.AppUpgradeMapper">
   <resultMap id="BaseResultMap" type="com.duobei.core.operation.app.domain.AppUpgrade">
-    <id column="au_id" jdbcType="INTEGER" property="id" />
-    <result column="au_product_id" jdbcType="INTEGER" property="productId" />
-    <result column="au_app_id" jdbcType="INTEGER" property="appId" />
-    <result column="au_state" jdbcType="TINYINT" property="state" />
-    <result column="au_version_number" jdbcType="INTEGER" property="versionNumber" />
-    <result column="au_version_name" jdbcType="VARCHAR" property="versionName" />
-    <result column="au_upgrade_range" jdbcType="TINYINT" property="upgradeRange" />
-    <result column="au_min_version_number" jdbcType="INTEGER" property="minVersionNumber" />
-    <result column="au_max_version_number" jdbcType="INTEGER" property="maxVersionNumber" />
-    <result column="au_is_force" jdbcType="BIT" property="isForce" />
-    <result column="au_is_silence" jdbcType="BIT" property="isSilence" />
-    <result column="au_apk_url" jdbcType="VARCHAR" property="apkUrl" />
-    <result column="au_apk_md5" jdbcType="VARCHAR" property="apkMd5" />
-    <result column="au_app_os_type" jdbcType="VARCHAR" property="appOsType" />
-    <result column="au_add_time" jdbcType="TIMESTAMP" property="addTime" />
-    <result column="au_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="au_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
-    <result column="au_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
-    <result column="au_is_delete" jdbcType="INTEGER" property="isDelete" />
+    <id column="app_upgrade_id" jdbcType="INTEGER" property="id" />
+    <result column="app_upgrade_product_id" jdbcType="INTEGER" property="productId" />
+    <result column="app_upgrade_app_id" jdbcType="INTEGER" property="appId" />
+    <result column="app_upgrade_state" jdbcType="TINYINT" property="state" />
+    <result column="app_upgrade_version_number" jdbcType="INTEGER" property="versionNumber" />
+    <result column="app_upgrade_version_name" jdbcType="VARCHAR" property="versionName" />
+    <result column="app_upgrade_upgrade_range" jdbcType="TINYINT" property="upgradeRange" />
+    <result column="app_upgrade_min_version_number" jdbcType="INTEGER" property="minVersionNumber" />
+    <result column="app_upgrade_max_version_number" jdbcType="INTEGER" property="maxVersionNumber" />
+    <result column="app_upgrade_is_force" jdbcType="BIT" property="isForce" />
+    <result column="app_upgrade_is_silence" jdbcType="BIT" property="isSilence" />
+    <result column="app_upgrade_apk_url" jdbcType="VARCHAR" property="apkUrl" />
+    <result column="app_upgrade_apk_md5" jdbcType="VARCHAR" property="apkMd5" />
+    <result column="app_upgrade_app_os_type" jdbcType="VARCHAR" property="appOsType" />
+    <result column="app_upgrade_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="app_upgrade_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="app_upgrade_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="app_upgrade_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
+    <result column="app_upgrade_is_delete" jdbcType="INTEGER" property="isDelete" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.duobei.core.operation.app.domain.AppUpgrade">
-    <result column="au_version_remark" jdbcType="LONGVARCHAR" property="versionRemark" />
+    <result column="app_upgrade_version_remark" jdbcType="LONGVARCHAR" property="versionRemark" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -84,16 +84,19 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    au.id as au_id, au.product_id as au_product_id, au.app_id as au_app_id, au.state as au_state, 
-    au.version_number as au_version_number, au.version_name as au_version_name, au.upgrade_range as au_upgrade_range, 
-    au.min_version_number as au_min_version_number, au.max_version_number as au_max_version_number, 
-    au.is_force as au_is_force, au.is_silence as au_is_silence, au.apk_url as au_apk_url, 
-    au.apk_md5 as au_apk_md5, au.app_os_type as au_app_os_type, au.add_time as au_add_time, 
-    au.modify_time as au_modify_time, au.add_operator_id as au_add_operator_id, au.modify_operator_id as au_modify_operator_id, 
-    au.is_delete as au_is_delete
+    app_upgrade.id as app_upgrade_id, app_upgrade.product_id as app_upgrade_product_id, 
+    app_upgrade.app_id as app_upgrade_app_id, app_upgrade.state as app_upgrade_state, 
+    app_upgrade.version_number as app_upgrade_version_number, app_upgrade.version_name as app_upgrade_version_name, 
+    app_upgrade.upgrade_range as app_upgrade_upgrade_range, app_upgrade.min_version_number as app_upgrade_min_version_number, 
+    app_upgrade.max_version_number as app_upgrade_max_version_number, app_upgrade.is_force as app_upgrade_is_force, 
+    app_upgrade.is_silence as app_upgrade_is_silence, app_upgrade.apk_url as app_upgrade_apk_url, 
+    app_upgrade.apk_md5 as app_upgrade_apk_md5, app_upgrade.app_os_type as app_upgrade_app_os_type, 
+    app_upgrade.add_time as app_upgrade_add_time, app_upgrade.modify_time as app_upgrade_modify_time, 
+    app_upgrade.add_operator_id as app_upgrade_add_operator_id, app_upgrade.modify_operator_id as app_upgrade_modify_operator_id, 
+    app_upgrade.is_delete as app_upgrade_is_delete
   </sql>
   <sql id="Blob_Column_List">
-    au.version_remark as au_version_remark
+    app_upgrade.version_remark as app_upgrade_version_remark
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="com.duobei.core.operation.app.domain.AppUpgradeExample" resultMap="ResultMapWithBLOBs">
     select
@@ -103,7 +106,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from yy_app_upgrade au
+    from yy_app_upgrade app_upgrade
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -117,7 +120,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from yy_app_upgrade au
+    from yy_app_upgrade app_upgrade
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -130,15 +133,15 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from yy_app_upgrade au
-    where au.id = #{id,jdbcType=INTEGER}
+    from yy_app_upgrade app_upgrade
+    where app_upgrade.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from yy_app_upgrade
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.duobei.core.operation.app.domain.AppUpgradeExample">
-    delete from yy_app_upgrade au
+    delete from yy_app_upgrade app_upgrade
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -287,73 +290,73 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.duobei.core.operation.app.domain.AppUpgradeExample" resultType="java.lang.Long">
-    select count(*) from yy_app_upgrade au
+    select count(*) from yy_app_upgrade app_upgrade
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update yy_app_upgrade au
+    update yy_app_upgrade app_upgrade
     <set>
       <if test="record.id != null">
-        au.id = #{record.id,jdbcType=INTEGER},
+        app_upgrade.id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.productId != null">
-        au.product_id = #{record.productId,jdbcType=INTEGER},
+        app_upgrade.product_id = #{record.productId,jdbcType=INTEGER},
       </if>
       <if test="record.appId != null">
-        au.app_id = #{record.appId,jdbcType=INTEGER},
+        app_upgrade.app_id = #{record.appId,jdbcType=INTEGER},
       </if>
       <if test="record.state != null">
-        au.state = #{record.state,jdbcType=TINYINT},
+        app_upgrade.state = #{record.state,jdbcType=TINYINT},
       </if>
       <if test="record.versionNumber != null">
-        au.version_number = #{record.versionNumber,jdbcType=INTEGER},
+        app_upgrade.version_number = #{record.versionNumber,jdbcType=INTEGER},
       </if>
       <if test="record.versionName != null">
-        au.version_name = #{record.versionName,jdbcType=VARCHAR},
+        app_upgrade.version_name = #{record.versionName,jdbcType=VARCHAR},
       </if>
       <if test="record.upgradeRange != null">
-        au.upgrade_range = #{record.upgradeRange,jdbcType=TINYINT},
+        app_upgrade.upgrade_range = #{record.upgradeRange,jdbcType=TINYINT},
       </if>
       <if test="record.minVersionNumber != null">
-        au.min_version_number = #{record.minVersionNumber,jdbcType=INTEGER},
+        app_upgrade.min_version_number = #{record.minVersionNumber,jdbcType=INTEGER},
       </if>
       <if test="record.maxVersionNumber != null">
-        au.max_version_number = #{record.maxVersionNumber,jdbcType=INTEGER},
+        app_upgrade.max_version_number = #{record.maxVersionNumber,jdbcType=INTEGER},
       </if>
       <if test="record.isForce != null">
-        au.is_force = #{record.isForce,jdbcType=BIT},
+        app_upgrade.is_force = #{record.isForce,jdbcType=BIT},
       </if>
       <if test="record.isSilence != null">
-        au.is_silence = #{record.isSilence,jdbcType=BIT},
+        app_upgrade.is_silence = #{record.isSilence,jdbcType=BIT},
       </if>
       <if test="record.apkUrl != null">
-        au.apk_url = #{record.apkUrl,jdbcType=VARCHAR},
+        app_upgrade.apk_url = #{record.apkUrl,jdbcType=VARCHAR},
       </if>
       <if test="record.apkMd5 != null">
-        au.apk_md5 = #{record.apkMd5,jdbcType=VARCHAR},
+        app_upgrade.apk_md5 = #{record.apkMd5,jdbcType=VARCHAR},
       </if>
       <if test="record.appOsType != null">
-        au.app_os_type = #{record.appOsType,jdbcType=VARCHAR},
+        app_upgrade.app_os_type = #{record.appOsType,jdbcType=VARCHAR},
       </if>
       <if test="record.addTime != null">
-        au.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+        app_upgrade.add_time = #{record.addTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.modifyTime != null">
-        au.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+        app_upgrade.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.addOperatorId != null">
-        au.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+        app_upgrade.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
       </if>
       <if test="record.modifyOperatorId != null">
-        au.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+        app_upgrade.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
       </if>
       <if test="record.isDelete != null">
-        au.is_delete = #{record.isDelete,jdbcType=INTEGER},
+        app_upgrade.is_delete = #{record.isDelete,jdbcType=INTEGER},
       </if>
       <if test="record.versionRemark != null">
-        au.version_remark = #{record.versionRemark,jdbcType=LONGVARCHAR},
+        app_upgrade.version_remark = #{record.versionRemark,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -361,52 +364,52 @@
     </if>
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map">
-    update yy_app_upgrade au
-    set au.id = #{record.id,jdbcType=INTEGER},
-      au.product_id = #{record.productId,jdbcType=INTEGER},
-      au.app_id = #{record.appId,jdbcType=INTEGER},
-      au.state = #{record.state,jdbcType=TINYINT},
-      au.version_number = #{record.versionNumber,jdbcType=INTEGER},
-      au.version_name = #{record.versionName,jdbcType=VARCHAR},
-      au.upgrade_range = #{record.upgradeRange,jdbcType=TINYINT},
-      au.min_version_number = #{record.minVersionNumber,jdbcType=INTEGER},
-      au.max_version_number = #{record.maxVersionNumber,jdbcType=INTEGER},
-      au.is_force = #{record.isForce,jdbcType=BIT},
-      au.is_silence = #{record.isSilence,jdbcType=BIT},
-      au.apk_url = #{record.apkUrl,jdbcType=VARCHAR},
-      au.apk_md5 = #{record.apkMd5,jdbcType=VARCHAR},
-      au.app_os_type = #{record.appOsType,jdbcType=VARCHAR},
-      au.add_time = #{record.addTime,jdbcType=TIMESTAMP},
-      au.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
-      au.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
-      au.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
-      au.is_delete = #{record.isDelete,jdbcType=INTEGER},
-      au.version_remark = #{record.versionRemark,jdbcType=LONGVARCHAR}
+    update yy_app_upgrade app_upgrade
+    set app_upgrade.id = #{record.id,jdbcType=INTEGER},
+      app_upgrade.product_id = #{record.productId,jdbcType=INTEGER},
+      app_upgrade.app_id = #{record.appId,jdbcType=INTEGER},
+      app_upgrade.state = #{record.state,jdbcType=TINYINT},
+      app_upgrade.version_number = #{record.versionNumber,jdbcType=INTEGER},
+      app_upgrade.version_name = #{record.versionName,jdbcType=VARCHAR},
+      app_upgrade.upgrade_range = #{record.upgradeRange,jdbcType=TINYINT},
+      app_upgrade.min_version_number = #{record.minVersionNumber,jdbcType=INTEGER},
+      app_upgrade.max_version_number = #{record.maxVersionNumber,jdbcType=INTEGER},
+      app_upgrade.is_force = #{record.isForce,jdbcType=BIT},
+      app_upgrade.is_silence = #{record.isSilence,jdbcType=BIT},
+      app_upgrade.apk_url = #{record.apkUrl,jdbcType=VARCHAR},
+      app_upgrade.apk_md5 = #{record.apkMd5,jdbcType=VARCHAR},
+      app_upgrade.app_os_type = #{record.appOsType,jdbcType=VARCHAR},
+      app_upgrade.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      app_upgrade.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      app_upgrade.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      app_upgrade.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      app_upgrade.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      app_upgrade.version_remark = #{record.versionRemark,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update yy_app_upgrade au
-    set au.id = #{record.id,jdbcType=INTEGER},
-      au.product_id = #{record.productId,jdbcType=INTEGER},
-      au.app_id = #{record.appId,jdbcType=INTEGER},
-      au.state = #{record.state,jdbcType=TINYINT},
-      au.version_number = #{record.versionNumber,jdbcType=INTEGER},
-      au.version_name = #{record.versionName,jdbcType=VARCHAR},
-      au.upgrade_range = #{record.upgradeRange,jdbcType=TINYINT},
-      au.min_version_number = #{record.minVersionNumber,jdbcType=INTEGER},
-      au.max_version_number = #{record.maxVersionNumber,jdbcType=INTEGER},
-      au.is_force = #{record.isForce,jdbcType=BIT},
-      au.is_silence = #{record.isSilence,jdbcType=BIT},
-      au.apk_url = #{record.apkUrl,jdbcType=VARCHAR},
-      au.apk_md5 = #{record.apkMd5,jdbcType=VARCHAR},
-      au.app_os_type = #{record.appOsType,jdbcType=VARCHAR},
-      au.add_time = #{record.addTime,jdbcType=TIMESTAMP},
-      au.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
-      au.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
-      au.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
-      au.is_delete = #{record.isDelete,jdbcType=INTEGER}
+    update yy_app_upgrade app_upgrade
+    set app_upgrade.id = #{record.id,jdbcType=INTEGER},
+      app_upgrade.product_id = #{record.productId,jdbcType=INTEGER},
+      app_upgrade.app_id = #{record.appId,jdbcType=INTEGER},
+      app_upgrade.state = #{record.state,jdbcType=TINYINT},
+      app_upgrade.version_number = #{record.versionNumber,jdbcType=INTEGER},
+      app_upgrade.version_name = #{record.versionName,jdbcType=VARCHAR},
+      app_upgrade.upgrade_range = #{record.upgradeRange,jdbcType=TINYINT},
+      app_upgrade.min_version_number = #{record.minVersionNumber,jdbcType=INTEGER},
+      app_upgrade.max_version_number = #{record.maxVersionNumber,jdbcType=INTEGER},
+      app_upgrade.is_force = #{record.isForce,jdbcType=BIT},
+      app_upgrade.is_silence = #{record.isSilence,jdbcType=BIT},
+      app_upgrade.apk_url = #{record.apkUrl,jdbcType=VARCHAR},
+      app_upgrade.apk_md5 = #{record.apkMd5,jdbcType=VARCHAR},
+      app_upgrade.app_os_type = #{record.appOsType,jdbcType=VARCHAR},
+      app_upgrade.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      app_upgrade.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      app_upgrade.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      app_upgrade.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      app_upgrade.is_delete = #{record.isDelete,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

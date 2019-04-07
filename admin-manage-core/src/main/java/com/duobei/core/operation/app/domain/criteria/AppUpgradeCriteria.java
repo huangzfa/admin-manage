@@ -9,16 +9,12 @@ import java.util.List;
  * @description
  * @date 2019/4/4
  */
-public class AppExamineCriteria extends Pagination {
+public class AppUpgradeCriteria extends Pagination {
     private Integer productId;
 
     private Integer appId;
 
     private List<Integer> appIds;
-
-    private String channelName;
-
-    private List<Integer> channelIds;
 
     private Integer versionNumber;
 
@@ -39,13 +35,6 @@ public class AppExamineCriteria extends Pagination {
         this.appId = appId;
     }
 
-    public String getChannelName() {
-        return channelName;
-    }
-
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
-    }
 
     public Integer getVersionNumber() {
         return versionNumber;
@@ -63,11 +52,4 @@ public class AppExamineCriteria extends Pagination {
         this.appIds = appIds;
     }
 
-    public List<Integer> getChannelIds() {
-        return channelIds;
-    }
-
-    public void setChannelIds(List<Integer> channelIds) {
-        this.channelIds = channelIds;
-    }
 }

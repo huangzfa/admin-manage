@@ -1,9 +1,24 @@
 package com.duobei.core.operation.app.dao;
 
+import com.duobei.core.operation.app.domain.AppUpgrade;
+import com.duobei.core.operation.app.domain.criteria.AppUpgradeCriteria;
+import com.duobei.core.operation.app.domain.vo.AppUpgradeVo;
+
+import java.util.List;
+
 /**
- * @author huangzhongfa
+ * @author litianxiong
  * @description
- * @date 2019/3/1
+ * @date 2019/4/4
  */
 public interface AppUpgradeDao {
+    List<AppUpgradeVo> getListVoByQuery(AppUpgradeCriteria appUpgradeCriteria);
+
+    int delete(AppUpgrade appUpgrade);
+
+    int save(AppUpgrade entity);
+
+    int update(AppUpgrade entity);
+
+    int updateState(AppUpgrade entity);
 }

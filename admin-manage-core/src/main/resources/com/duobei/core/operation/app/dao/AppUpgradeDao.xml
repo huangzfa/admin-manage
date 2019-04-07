@@ -2,8 +2,110 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.duobei.core.operation.app.dao.AppUpgradeDao" >
 
-    <resultMap id="BaseResultMap" type="com.duobei.core.operation.app.domain.AppUpgrade" extends="com.duobei.core.operation.app.dao.mapper.AppUpgradeMapper.BaseResultMap">
+    <sql id="Base_Column_List">
+    app_upgrade.id as id, app_upgrade.product_id as product_id,
+    app_upgrade.app_id as app_id, app_upgrade.state as state,
+    app_upgrade.version_number as version_number, app_upgrade.version_name as version_name,
+    app_upgrade.upgrade_range as upgrade_range, app_upgrade.min_version_number as min_version_number,
+    app_upgrade.max_version_number as max_version_number, app_upgrade.is_force as is_force,
+    app_upgrade.is_silence as is_silence, app_upgrade.apk_url as apk_url,
+    app_upgrade.apk_md5 as apk_md5, app_upgrade.app_os_type as app_os_type,
+    app_upgrade.add_time as add_time, app_upgrade.modify_time as modify_time,
+    app_upgrade.add_operator_id as add_operator_id, app_upgrade.modify_operator_id as modify_operator_id,
+    app_upgrade.is_delete as is_delete
+  </sql>
+    <select id="getListVoByQuery" resultType="com.duobei.core.operation.app.domain.vo.AppUpgradeVo" parameterType="com.duobei.core.operation.app.domain.criteria.AppUpgradeCriteria">
+        select <include refid="Base_Column_List"/>
+        from yy_app_upgrade app_upgrade
+        where app_upgrade.is_delete = 0
+        <if test="appId != null">
+            and app_upgrade.app_id = #{appId}
+        </if>
+        <if test="versionNumber != null and versionNumber != ''">
+            and app_upgrade.version_number = #{versionNumber}
+        </if>
+        <if test="appIds != null ">
+            and app_upgrade.app_id
+            <foreach collection="appIds" item="id" separator="," open=" in(" close=")">
+                #{id}
+            </foreach>
+        </if>
+        order by app_upgrade.add_time desc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
 
-    </resultMap>
+    <insert id="save" parameterType="com.duobei.core.operation.app.domain.AppUpgrade">
+        insert into yy_app_upgrade(product_id, app_id
+        , state, version_number, version_name, version_remark
+        , upgrade_range, min_version_number, max_version_number
+        , is_force, is_silence, apk_url, apk_md5, app_os_type
+        , add_time, modify_time, add_operator_id, modify_operator_id)
+        values (#{productId},#{appId}
+        ,#{state},#{versionNumber},#{versionName},#{versionRemark}
+        ,#{upgradeRange},#{minVersionNumber},#{maxVersionNumber}
+        ,#{isForce},#{isSilence},#{apkUrl},#{apkMd5},#{appOsType}
+        ,#{addTime},#{modifyTime},#{addOperatorId},#{modifyOperatorId})
+    </insert>
 
+    <update id="update" parameterType="com.duobei.core.operation.app.domain.AppUpgrade">
+      update yy_app_upgrade
+      set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId}
+        <if test="productId != null">
+            ,product_id = #{productId}
+        </if>
+        <if test="appId != null">
+            ,app_id = #{appId}
+        </if>
+        <if test="state != null">
+            ,state = #{state}
+        </if>
+        <if test="versionNumber != null">
+            ,version_number = #{versionNumber}
+        </if>
+        <if test="versionName != null and versionName != ''">
+            ,version_name = #{versionName}
+        </if>
+        <if test="versionRemark != null and versionRemark != ''">
+            ,version_remark = #{versionRemark}
+        </if>
+        <if test="upgradeRange != null">
+            ,upgrade_range = #{upgradeRange}
+        </if>
+        <if test="minVersionNumber != null">
+            ,min_version_number = #{minVersionNumber}
+        </if>
+        <if test="maxVersionNumber != null">
+            ,max_version_number = #{maxVersionNumber}
+        </if>
+        <if test="isForce != null">
+            ,is_force = #{isForce}
+        </if>
+        <if test="isSilence != null">
+            ,is_silence = #{isSilence}
+        </if>
+        <if test="apkUrl != null and apkUrl != ''">
+            ,apk_url = #{apkUrl}
+        </if>
+        <if test="apkMd5 != null and apkMd5 != ''">
+            ,apk_md5 = #{apkMd5}
+        </if>
+        <if test="appOsType != null">
+            ,app_os_type = #{appOsType}
+        </if>
+        where id = #{id} and is_delete = 0
+    </update>
+
+    <update id="delete" parameterType="com.duobei.core.operation.app.domain.AppUpgrade">
+        update yy_app_upgrade
+        set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId},is_delete = #{id}
+        where id = #{id} and is_delete = 0
+    </update>
+
+    <update id="updateState" parameterType="com.duobei.core.operation.app.domain.AppUpgrade">
+        update yy_app_upgrade
+        set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId},state = #{state}
+        where id = #{id} and is_delete = 0
+    </update>
 </mapper>

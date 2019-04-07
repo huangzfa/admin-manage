@@ -1,28 +1,25 @@
 package com.duobei.console.web.controller.app;
 
+
 import com.alibaba.fastjson.JSON;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
-import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.app.domain.App;
-import com.duobei.core.operation.app.domain.AppExamine;
-import com.duobei.core.operation.app.domain.criteria.AppExamineCriteria;
-import com.duobei.core.operation.app.domain.vo.AppExamineVo;
-import com.duobei.core.operation.app.service.AppExamineService;
-import com.duobei.core.operation.channel.domain.PromotionChannel;
-import com.duobei.core.operation.channel.service.PromotionChannelService;
+import com.duobei.core.operation.app.domain.AppUpgrade;
+import com.duobei.core.operation.app.domain.criteria.AppUpgradeCriteria;
+import com.duobei.core.operation.app.domain.vo.AppUpgradeVo;
+import com.duobei.core.operation.app.service.AppUpgradeService;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.dic.ZD;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.duobei.console.web.controller.base.BaseController;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -35,17 +32,14 @@ import java.util.*;
  */
 @Slf4j
 @Controller
-@RequestMapping(value = "${authzPath}/app/examine")
-public class AppExamineController extends BaseController{
-    private final static String PERMISSIONPRE = "app:examine:";
-    private final static String ADDRESSPRE = "app/examine/";
-    private final static String DESC = "app审核";
+@RequestMapping(value = "${authzPath}/app/upgrade")
+public class AppUpgradeController extends BaseController {
+    private final static String PERMISSIONPRE = "app:upgrade:";
+    private final static String ADDRESSPRE = "app/upgrade/";
+    private final static String DESC = "app升级";
 
     @Resource
-    AppExamineService appExamineService;
-
-    @Resource
-    PromotionChannelService promotionChannelService;
+    AppUpgradeService appUpgradeService;
     /**
      *显示
      * @return
@@ -66,55 +60,52 @@ public class AppExamineController extends BaseController{
 
     /**
      * 数据查询
-     * @param appExamineCriteria
+     * @param appUpgradeCriteria
      * @return
      */
     @RequiresPermissions(PERMISSIONPRE+"view")
     @ResponseBody
-    @RequestMapping(value = "/appExamList")
-    public String appExamList(AppExamineCriteria appExamineCriteria) {
+    @RequestMapping(value = "/upgradeList")
+    public String upgradeList(AppUpgradeCriteria appUpgradeCriteria) {
         //验证数据权限
-        if( appExamineCriteria.getProductId() !=null ){
+        if( appUpgradeCriteria.getProductId() !=null ){
             try {
-                if (appExamineCriteria.getAppId() == null){
-                    validAuthData(appExamineCriteria.getProductId());
+                if (appUpgradeCriteria.getAppId() == null){
+                    validAuthData(appUpgradeCriteria.getProductId());
                 }else{
-                    validAuthData(appExamineCriteria.getProductId(),appExamineCriteria.getAppId());
+                    validAuthData(appUpgradeCriteria.getProductId(),appUpgradeCriteria.getAppId());
                 }
-
             }catch (Exception e){
                 return failJsonResult(e.getMessage());
             }
-
         }else{
             return failJsonResult("产品数据查询失败");
 
         }
-        if (appExamineCriteria.getPagesize() == 0) {
-            appExamineCriteria.setPagesize(GlobalConfig.getPageSize());
+        if (appUpgradeCriteria.getPagesize() == 0) {
+            appUpgradeCriteria.setPagesize(GlobalConfig.getPageSize());
         }
         try {
-
-            Map<String,Object> dataMap = new HashMap<>();
             //应用查询条件
             List<App> appList = new ArrayList<>();
             List<Integer> appIds = new ArrayList<>();
             Map<Integer,App> appMap = new HashMap<>();
+            Map<String,Object> dataMap = new HashMap<>();
             for(App app : getCredential().getAppList()){
-                if (app.getProductId() == appExamineCriteria.getProductId()){
-                    appList.add(app);
+                if (app.getProductId() == appUpgradeCriteria.getProductId()){
                     appIds.add(app.getId());
+                    appList.add(app);
                     appMap.put(app.getId(),app);
                 }
             }
             dataMap.put("appList",appList);
             //如果查询全部应用，则查询该用户目前拥有的应用操作权限的信息
-            if (appExamineCriteria.getAppId() == null){
-                appExamineCriteria.setAppIds(appIds);
+            if (appUpgradeCriteria.getAppId() == null){
+                appUpgradeCriteria.setAppIds(appIds);
             }
             //查询数据
-            ListVo<AppExamineVo> list = appExamineService.getListVoByQuery(appExamineCriteria);
-            for (AppExamineVo appExamineVo : list.getRows()){
+            ListVo<AppUpgradeVo> list = appUpgradeService.getListVoByQuery(appUpgradeCriteria);
+            for (AppUpgradeVo appExamineVo : list.getRows()){
                 //应用名称
                 appExamineVo.setAppName(appMap.get(appExamineVo.getAppId()).getAppName());
             }
@@ -147,13 +138,20 @@ public class AppExamineController extends BaseController{
         model.addAttribute("appList",getCredential().getAppList());
         //系统下拉框
         model.addAttribute("osList",DictUtil.getDictList(ZD.osTypeString));
-        //应用市场渠道下拉框
-        model.addAttribute("channelList",promotionChannelService.getChannelListByType(1));
+        //app升级状态
+        model.addAttribute("stateList",DictUtil.getDictList(ZD.appUpgradeState));
+        //app升级范围下拉框
+        model.addAttribute("upgradeRangeList",DictUtil.getDictList(ZD.upgradeRangeState));
+        //是否强制升级
+        model.addAttribute("isForceList",DictUtil.getDictList(ZD.appUpgradeIsForce));
+        //是否静默升级
+        model.addAttribute("isSilenceList",DictUtil.getDictList(ZD.silenceUpgrade));
+
         if ( id !=null ) {
-            //查询app审核详情
-            model.addAttribute("appExamine", appExamineService.getById(id));
+            //查询app升级详情
+            model.addAttribute("upgrade", appUpgradeService.getById(id));
         }else{
-            model.addAttribute("appExamine", new AppExamine());
+            model.addAttribute("upgrade", new AppUpgrade());
         }
         return ADDRESSPRE+"/form";
     }
@@ -175,13 +173,13 @@ public class AppExamineController extends BaseController{
             if( id == null){
                 throw new TqException("参数为空");
             }
-            AppExamine appExamine = appExamineService.getById(id);
-            if( appExamine == null ){
+            AppUpgrade appUpgrade = appUpgradeService.getById(id);
+            if( appUpgrade == null ){
                 throw new TqException(DESC+"不存在");
             }
-            appExamine.setModifyTime(new Date());
-            appExamine.setModifyOperatorId(credential.getOpId());
-            appExamineService.delete(appExamine);
+            appUpgrade.setModifyTime(new Date());
+            appUpgrade.setModifyOperatorId(credential.getOpId());
+            appUpgradeService.delete(appUpgrade);
             return simpleSuccessJsonResult("success");
 
         } catch (Exception e) {
@@ -204,7 +202,7 @@ public class AppExamineController extends BaseController{
     @RequiresPermissions({ PERMISSIONPRE+"edit" })
     @RequestMapping(value = "/save")
     @ResponseBody
-    public String save(AppExamine entity) throws RuntimeException {
+    public String save(AppUpgrade entity) throws RuntimeException {
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {
@@ -213,17 +211,16 @@ public class AppExamineController extends BaseController{
             validParam(entity);
             //验证数据权限
             validAuthData(entity.getProductId(),entity.getAppId());
-
             entity.setModifyTime(new Date());
             entity.setModifyOperatorId(credential.getOpId());
             if (entity.getId() == null || entity.getId().equals(0)) {
                 entity.setAddOperatorId(credential.getOpId());
                 entity.setAddTime(entity.getModifyTime());
                 //新增
-                appExamineService.save(entity);
+                appUpgradeService.save(entity);
             } else {
                 //修改
-                appExamineService.update(entity);
+                appUpgradeService.update(entity);
             }
             return simpleSuccessJsonResult("success");
         } catch (Exception e) {
@@ -238,7 +235,7 @@ public class AppExamineController extends BaseController{
 
     }
 
-    private void validParam(AppExamine entity) throws TqException {
+    private void validParam(AppUpgrade entity) throws TqException {
         if (entity.getProductId() == null){
             throw new TqException("产品未选择，请全部配置完成后保存");
         }
@@ -248,12 +245,30 @@ public class AppExamineController extends BaseController{
         if (entity.getAppOsType() == null){
             throw new TqException("系统未选择，请全部配置完成后保存");
         }
-        if (entity.getChannelId() == null){
-            throw new TqException("渠道未选择，请全部配置完成后保存");
-        }
         if (entity.getVersionNumber() == null){
             throw new TqException("版本号未填写或格式填写有误，请全部配置完成后保存");
         }
     }
+    @RequiresPermissions(PERMISSIONPRE+"edit")
+    @ResponseBody
+    @RequestMapping(value = "/editState")
+    public String updateStatus(AppUpgrade entity){
+        OperatorCredential credential = getCredential();
+        try {
+            entity.setModifyOperatorId(credential.getOpId());
+            entity.setModifyTime(new Date());
+                /**
+                 * 修改状态
+                 */
+                appUpgradeService.updateStatus(entity);
+
+        }catch (Exception e){
+            log.error("修改{}状态失败{}",DESC,e.getMessage());
+            return failJsonResult("修改"+DESC+"状态异常");
+        }
+        Map<String,Object> resultMap = new HashMap<>();
+        return successJsonResult(resultMap);
+    }
+
 
 }

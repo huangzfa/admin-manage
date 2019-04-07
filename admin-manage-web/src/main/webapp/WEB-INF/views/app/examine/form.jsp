@@ -8,69 +8,6 @@
     <!--  -->
     <style type="text/css">
     </style>
-    <script type="text/javascript">
-
-
-      $(function(){
-        $("#inputForm").validate({
-          rules: {
-            menuName:{
-              required:true
-            },
-            pageTemplet:{
-              required:true
-            },
-            menuSort:{
-              required:true,
-              digits:true
-            },
-            iconUrl:{
-              required:true
-            },
-            menuVal:{
-              required:true
-            },
-            selectIconUrl:{
-              required:true
-            }
-          },
-          messages: {
-            menuName:{required : "必填信息"},
-            pageTemplet:{required : "必填信息"},
-            menuSort:{required:"必填信息",digits:"只能输入整数"},
-            iconUrl:{required : "必填信息"},
-            menuVal:{required : "必填信息"},
-            selectIconUrl:{required : "必填信息"}
-          },
-          submitHandler: function(form){
-            loading('正在提交，请稍等...');
-            form.submit();
-          },
-          errorPlacement: function(error, element) {
-            if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-              error.appendTo(element.parent().parent());
-            } else {
-              error.insertAfter(element);
-            }
-          }
-        });
-      });
-
-
-      function sortFormate(){
-        var inputdata = $('#menuSort').val().replace(/\D/g, '');
-        console.log(inputdata)
-        if (inputdata != '' && inputdata > 5) {
-          inputdata = 5;
-        }else if(inputdata != '' && inputdata <= 5 && inputdata > 0){
-          // alert(inputdata
-          inputdata = parseInt(inputdata)
-        }else {
-          inputdata = 1;
-        }
-        $('#menuSort').val(inputdata);
-      }
-    </script>
 </head>
 <style>
     .update{
@@ -116,100 +53,78 @@
 
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/ac/apppage/list?id=${object.id}">应用页面配置</a></li>
+    <li><a href="${ctxA}/app/examine/list?productId=${appExamine.productId}">APP审核列表</a></li>
     <li class="active">
-        <shiro:hasPermission name="ac:apppage:edit">
-            <a href="javascript:void(0);">${not empty object.id?'修改':'添加'}菜单</a>
+        <shiro:hasPermission name="app:examine:edit">
+            <a href="javascript:void(0);">${not empty object.id?'修改':'添加'}APP审核配置</a>
         </shiro:hasPermission>
-        <shiro:lacksPermission name="ac:apppage:edit">
+        <shiro:lacksPermission name="app:examine:edit">
             <a href="javascript:void(0);">查看菜单</a>
         </shiro:lacksPermission>
     </li>
 </ul>
 <div class="si-warp">
     <br/>
-    <sys:message content="${message}"/>
-    <form:form id="inputForm" modelAttribute="apppage" action="${ctxA}/ac/apppage/save" method="post" class="form-horizontal">
-        <form:hidden path="id" />
+    <form:form id="appExamineForm" modelAttribute="appExamine"  action="${ctxA}/app/examine/save" method="post" class="form-horizontal">
+        <input type="hidden" name="id" id="id" value="${not empty appExamine.id?appExamine.id:''}">
+        <input type="hidden" name="productId" value="${not empty appExamine.productId?appExamine.productId:''}">
+        <input type="hidden" name="appId" value="${not empty appExamine.appId?appExamine.appId:''}">
         <div class="control-group">
-            <label class="control-label">菜单名称：</label>
+            <label class="control-label">产品：</label>
             <div class="controls">
-                <form:input path="menuName" htmlEscape="false" maxlength="4" class="input-xlarge"/>
-                <span class="help-inline"><font color="red">*</font></span>
+                <select  name="product" id="product" class="selectpicker show-tick form-control valid" descripe="产品未选择，请全部配置完成后保存" style="width: 15%;" onchange="productChange()">
+                    <option value="">请选择产品</option>
+                    <c:forEach items="${productList}" var="product">
+                        <option value="${product.id}" ${not empty appExamine && appExamine.productId==product.id?"selected":''}>${product.productName}</option>
+                    </c:forEach>
+                </select>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">选择模板：</label>
+            <label class="control-label">应用：</label>
             <div class="controls">
-                <c:choose>
-                    <c:when test="${apppage.pageTemplet != null}">
-                        <form:input path="pageTemplet" htmlEscape="false"  maxlength="50" class="input-xlarge" readonly="true" />
-                    </c:when>
-                    <c:otherwise>
-                        <form:input path="pageTemplet" htmlEscape="false" value="认证页模板" maxlength="50" class="input-xlarge" readonly="true" />
-                    </c:otherwise>
-                </c:choose>
-                <span class="help-inline"><font color="red">*</font></span>
+                <select  name="app" id="app" class="selectpicker show-tick form-control valid" descripe="应用未选择，请全部配置完成后保存" style="width: 15%;" onchange="appChange()">
+                    <option value="" pid = "">请选择应用</option>
+                    <c:forEach items="${appList}" var="app">
+                        <option value="${app.id}" pid = "${app.productId}" ${not empty appExamine && appExamine.appId==app.id?"selected":''}>${app.appName}</option>
+                    </c:forEach>
+                </select>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">排序：</label>
+            <label class="control-label">系统：</label>
             <div class="controls">
-                <form:input path="menuSort" id="menuSort" htmlEscape="false" maxlength="10" type="number" class="input-xlarge" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')" onchange="sortFormate()"/>
-                <span class="help-inline"><font color="red">*</font></span>
+                <select  name="osType" id="osType" class="selectpicker show-tick form-control valid" descripe="系统未选择，请全部配置完成后保存" style="width: 15%;">
+                    <option value="">请选择系统</option>
+                    <c:forEach items="${osList}" var="os">
+                        <option value="${os.dicVal}" ${not empty appExamine && appExamine.appOsType == os.dicVal?"selected":''}>${os.dicCode}</option>
+                    </c:forEach>
+                </select>
             </div>
-        </div>
-
+        </div>、
         <div class="control-group">
-            <label class="control-label">模板链接：</label>
+            <label class="control-label">应用市场渠道：</label>
             <div class="controls">
-                <form:input path="menuVal" htmlEscape="false" maxlength="200" class="input-xlarge"/>
+                <select  name="channel" id="channel" class="selectpicker show-tick form-control valid" descripe="渠道未选择，请全部配置完成后保存" style="width: 15%;">
+                    <option value="">请选择渠道</option>
+                    <c:forEach items="${channelList}" var="channel">
+                        <option value="${channel.id}" ${not empty appExamine && appExamine.channelId==channel.id?"selected":''}>${channel.channelName}</option>
+                    </c:forEach>
+                </select>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">icon：</label>
+            <label class="control-label">版本号：</label>
             <div class="controls">
-                <form:hidden path="iconUrl" htmlEscape="false"/>
-                <div class="thumbImgBox">
-                        <img id="imgPic" class="imgPic" src="${not empty apppage.iconUrl?apppage.iconUrl:'/static/img/dftimage.png'}" />
-                        <input type="file" style="margin-left:40px;" id="new_file" placeholder="请选择文件">
-                        <div class="update" id="update" style="margin-right:40px;" type="primary">上传图片</div>
-                </div>
-                <div class="controls">
-                    <ul style="margin-left: 6%;">
-                        <small class="help-block owner_ID">建议尺寸：48*48</small>
-                        <small class="help-block owner_ID">图片格式：PNG、JPG、JPEG、GIF</small>
-                        <small class="help-block owner_ID">图片大小：100kb以内</small>
-                    </ul>
-                </div>
+                <input type="text" class="form-control valid" type="text"  maxlength="11" placeholder="请输入版本号（格式：175）"  descripe="版本号未填写或格式填写有误，请全部配置完成后保存"  name="versionNumber" id="versionNumber" value="${appExamine.versionNumber}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' ></input>
             </div>
         </div>
-
-        <div class="control-group">
-            <label class="control-label">icon点击效果：</label>
-            <div class="controls">
-                <form:hidden path="selectIconUrl" htmlEscape="false"/>
-                <div class="thumbImgBox">
-                    <img id="imgPic1" class="imgPic" src="${not empty apppage.selectIconUrl?apppage.selectIconUrl:'/static/img/dftimage.png'}" />
-                    <input type="file" style="margin-left:40px;" id="new_file1" placeholder="请选择文件">
-                    <div class="update" id="update1" style="margin-right:40px;" type="primary">上传图片</div>
-                </div>
-                <div class="controls">
-                    <ul style="margin-left: 6%;">
-                        <small class="help-block owner_ID">建议尺寸：48*48</small>
-                        <small class="help-block owner_ID">图片格式：PNG、JPG、JPEG、GIF</small>
-                        <small class="help-block owner_ID">图片大小：100kb以内</small>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
 
         <div class="form-actions">
-            <shiro:hasPermission name="ac:apppage:edit">
-                <input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+            <shiro:hasPermission name="app:examine:edit">
+                <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;"/>&nbsp;
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/ac/apppage/list?id=${object.id}'"/>
+            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/app/examine/list?productId=${appExamine.productId}'"/>
         </div>
     </form:form>
 
@@ -217,69 +132,70 @@
 </div>
 </body>
 <script>
-    var enableFileTypes='png,jpg,jpeg,gif';
-  $('#update').click(() => {
-    let oMyForm = new FormData();
-    oMyForm.append("file", $('#new_file')[0].files[0]);
-
-    let url = '${ctxA}/common/uploadImage?maxFileSize=100&enableFileTypes='+enableFileTypes;
-    if ($('#new_file')[0].files[0]) {
-      $.ajax({
-        url: url,
-        type: "POST",
-        data: oMyForm,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: (data) => {
-          let newData = JSON.parse(data)
-          if (newData.success) {
-            $("#imgPic").attr("src", newData.url);
-            $('#iconUrl').val(newData.url);
-          } else {
-            top.$.jBox.tip(newData.msg);
-          }
-        },
-        error: function (data) {
-          window.alert(data.msg);
+    function save(){
+        var bool = true;
+        /*******  验证表单必填项目   ****************/
+        $(".valid").each(function() {
+            var descripe  = $(this).attr("descripe");
+            if( $(this).val()=="" && descripe!=""){
+                top.layer.alert(descripe, {icon: 5});
+                bool = false;
+                return false;
+            }
+        })
+        if( !bool ){
+            return false;
         }
-      })
-    }else {
-      top.layer.alert("请先选择图片", {icon: 5});
+        $("#btnSubmit").attr("disabled",true);
+        var form=$("#appExamineForm");
+        var action = form[0].action;
+        var productId = $("#product").val()
+        var data = {"id":$("#id").val(),"productId":productId,"appId":$("#app").val()
+            ,"appOsType":$("#osType").val(),"channelId":$("#channel").val(),"versionNumber":$("#versionNumber").val()}
+
+        jQuery.post(action,data, function(data) {
+            $("#btnSubmit").attr("disabled",false);
+            if (data.code ==1) {
+                top.layer.alert("操作成功", {
+                    icon: 6,
+                    end: function(){
+                        window.location.href="${ctxA}/app/examine/list?productId="+productId;
+                    }
+                });
+            } else {
+                top.layer.alert(data.msg, {icon: 5});
+            }
+        }, "json");
     }
-  })
-
-
-  $('#update1').click(() => {
-    let oMyForm = new FormData();
-    oMyForm.append("file", $('#new_file1')[0].files[0]);
-    console.log($('#new_file1')[0].files[0]);
-    let url = '${ctxA}/common/uploadImage?maxFileSize=100&enableFileTypes='+enableFileTypes;
-    if ($('#new_file1')[0].files[0]) {
-      $.ajax({
-        url: url,
-        type: "POST",
-        data: oMyForm,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: (data) => {
-          let newData = JSON.parse(data)
-          if (newData.success) {
-            $("#imgPic1").attr("src", newData.url);
-            $('#selectIconUrl').val(newData.url);
-          } else {
-            top.$.jBox.tip(newData.msg);
-          }
-        },
-        error: function (data) {
-          window.alert(data.msg);
+    function  productChange() {
+       selectChange();
+       $("#app").val("");
+    }
+    function selectChange() {
+        var productNow = $("#product").val()
+        if (productNow == ''){
+            $("#app option").each(function() {
+                $(this).show();
+            })
+        } else{
+            $("#app option").each(function() {
+                var pid = $(this).attr("pid")
+                if (pid != '') {
+                    if (productNow != pid) {
+                        $(this).hide();
+                    } else {
+                        $(this).show();
+                    }
+                }
+            })
         }
-      })
-    }else {
-      top.layer.alert("请先选择图片", {icon: 5});
     }
-  })
-
+    function appChange() {
+        var pid = $("#app option:selected").attr("pid")
+        if (pid != '') {
+            $("#product").val(pid)
+        }
+        selectChange();
+    }
 </script>
 </html>

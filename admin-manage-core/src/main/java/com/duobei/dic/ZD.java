@@ -4,16 +4,6 @@ package com.duobei.dic;
 public interface ZD {
 	
 	/**
-	 *  链接类型
-	 */
-    public String redirectType = "redirectType";
-	
-	/**
-	 *  商品图片类型
-	 */
-    public String goodsPicType = "1";
-	
-	/**
 	 *  菜单类型
 	 */
     public String menuType = "menuType";
@@ -44,6 +34,16 @@ public interface ZD {
     public String dataState = "dataState";
 	
 	/**
+	 *  连接类型
+	 */
+    public String redirectType = "redirectType";
+	
+	/**
+	 *  商品图片类型
+	 */
+    public String goodsPicType = "1";
+	
+	/**
 	 *  用户状态
 	 */
     public String profileState = "profileState";
@@ -51,7 +51,7 @@ public interface ZD {
 	/**
 	 *  终端系统类型
 	 */
-		public String osType = "osType";
+    public String osType = "osType";
 	
 	/**
 	 *  通知业务类型
@@ -189,6 +189,16 @@ public interface ZD {
     public String renewalState = "renewalState";
 	
 	/**
+	 *  终端系统类型(String)
+	 */
+    public String osTypeString = "osTypeString";
+	
+	/**
+	 *  是否静默升级
+	 */
+    public String silenceUpgrade = "silenceUpgrade";
+	
+	/**
 	 *  菜单类型-菜单- 
 	 */
     public String menuType_m = "m";
@@ -241,17 +251,42 @@ public interface ZD {
 	/**
 	 *  数据状态-有效- 
 	 */
-    public int dataState_valid = 1;
+    public String dataState_valid = "10";
 	
 	/**
 	 *  数据状态-无效- 
 	 */
-    public int dataState_invalid = 0;
+    public String dataState_invalid = "20";
 	
 	/**
 	 *  数据状态-异常- 
 	 */
-    public int dataState_exce = 90;
+    public String dataState_exce = "90";
+	
+	/**
+	 *  连接类型-URL- 
+	 */
+    public String redirectType_url = "url";
+	
+	/**
+	 *  连接类型-商品- 
+	 */
+    public String redirectType_shop = "shop";
+	
+	/**
+	 *  连接类型-无连接- 
+	 */
+    public String redirectType_no = "no";
+	
+	/**
+	 *  商品图片类型-轮播图- 
+	 */
+    public int goodsPicType_banner = 1;
+	
+	/**
+	 *  商品图片类型-详情图- 
+	 */
+    public int goodsPicType_detail = 2;
 	
 	/**
 	 *  用户状态-正常- 
@@ -264,7 +299,7 @@ public interface ZD {
     public int profileState_c = 2;
 	
 	/**
-	 *  终端系统类型-苹果- 
+	 *  终端系统类型-ios- 
 	 */
     public int osType_ios = 1;
 	
@@ -287,6 +322,11 @@ public interface ZD {
 	 *  通知业务类型-登录短信验证码- 
 	 */
     public int notifyBizType_login = 3;
+	
+	/**
+	 *  通知业务类型-修改密码- 
+	 */
+    public int notifyBizType_update = 4;
 	
 	/**
 	 *  菜单类型-h5- 
@@ -356,7 +396,7 @@ public interface ZD {
 	/**
 	 *  app升级状态-新建- 
 	 */
-    public String appUpgradeState_new = "0";
+    public String appUpgradeState_new = "2";
 	
 	/**
 	 *  app升级状态-开启- 
@@ -366,7 +406,7 @@ public interface ZD {
 	/**
 	 *  app升级状态-关闭- 
 	 */
-    public String appUpgradeState_close = "-1";
+    public String appUpgradeState_close = "0";
 	
 	/**
 	 *  APP升级范围-所有版本- 
@@ -399,21 +439,6 @@ public interface ZD {
     public int channelStylebtTempt_circul = 2;
 	
 	/**
-	 *  链接类型-URL- 
-	 */
-    public String redirectType_url = "url";
-	
-	/**
-	 *  链接类型-商品- 
-	 */
-    public String redirectType_shop = "shop";
-	
-	/**
-	 *  链接类型-无连接- 
-	 */
-    public String redirectType_no = "no";
-	
-	/**
 	 *  优惠券类型-借款券- 
 	 */
     public int couponType_jkq = 1;
@@ -429,19 +454,9 @@ public interface ZD {
     public int loginType_in = 1;
 	
 	/**
-	 *  登录类型-多贝- 
-	 */
-    public String platform_duobei = "duobei";
-	
-	/**
 	 *  登录类型-登出- 
 	 */
     public int loginType_out = 2;
-	
-	/**
-	 *  登录类型-修改密码- 
-	 */
-    public int notifyBizType_update = 4;
 	
 	/**
 	 *  轮播图类型-借钱页顶部轮播图- 
@@ -496,22 +511,12 @@ public interface ZD {
 	/**
 	 *  渠道状态-启用- 
 	 */
-    public int channelStatus_yes  = 1;
+    public int channelStatus_yes = 1;
 	
 	/**
 	 *  渠道状态-禁用- 
 	 */
     public int channelStatus_no = 0;
-	
-	/**
-	 *  商品图片类型-轮播图- 
-	 */
-    public int goodsPicType_banner = 1;
-	
-	/**
-	 *  商品图片类型-详情图- 
-	 */
-    public int goodsPicType_detail = 2;
 	
 	/**
 	 *  下载页类型-不更改- 
@@ -659,7 +664,7 @@ public interface ZD {
     public int payState_success = 1;
 	
 	/**
-	 *  还款状态-新建- 
+	 *  还款状态-新建状态- 
 	 */
     public int repayState_new = 0;
 	
@@ -694,22 +699,42 @@ public interface ZD {
     public int repayType_auto = 2;
 	
 	/**
-	 *  续借状态-新建- 
+	 *  新建-新建- 
 	 */
     public int renewalState_new = 0;
 	
 	/**
-	 *  续借状态-续期成功- 
+	 *  新建-续期成功- 
 	 */
     public int renewalState_success = 1;
 	
 	/**
-	 *  续借状态-处理中- 
+	 *  新建-处理中- 
 	 */
     public int renewalState_handling = 2;
 	
 	/**
-	 *  续借状态-续期失败- 
+	 *  新建-续期失败- 
 	 */
     public int renewalState_fail = -1;
+	
+	/**
+	 *  终端系统类型(String)-ios- 
+	 */
+    public String osTypeString_ios = "ios";
+	
+	/**
+	 *  终端系统类型(String)-安卓- 
+	 */
+    public String osTypeString_an = "android";
+	
+	/**
+	 *  是否静默升级-否- 
+	 */
+    public int silenceUpgrade_no = 0;
+	
+	/**
+	 *  是否静默升级-是- 
+	 */
+    public int silenceUpgrade_yes = 1;
 }

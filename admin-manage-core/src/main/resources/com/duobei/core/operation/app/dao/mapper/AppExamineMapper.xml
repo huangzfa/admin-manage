@@ -2,17 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.duobei.core.operation.app.dao.mapper.AppExamineMapper">
   <resultMap id="BaseResultMap" type="com.duobei.core.operation.app.domain.AppExamine">
-    <id column="ae_id" jdbcType="INTEGER" property="id" />
-    <result column="ae_product_id" jdbcType="INTEGER" property="productId" />
-    <result column="ae_app_id" jdbcType="INTEGER" property="appId" />
-    <result column="ae_app_os_type" jdbcType="VARCHAR" property="appOsType" />
-    <result column="ae_channel_id" jdbcType="INTEGER" property="channelId" />
-    <result column="ae_version_number" jdbcType="INTEGER" property="versionNumber" />
-    <result column="ae_add_time" jdbcType="TIMESTAMP" property="addTime" />
-    <result column="ae_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="ae_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
-    <result column="ae_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
-    <result column="ae_is_delete" jdbcType="BIGINT" property="isDelete" />
+    <id column="app_examine_id" jdbcType="INTEGER" property="id" />
+    <result column="app_examine_product_id" jdbcType="INTEGER" property="productId" />
+    <result column="app_examine_app_id" jdbcType="INTEGER" property="appId" />
+    <result column="app_examine_app_os_type" jdbcType="VARCHAR" property="appOsType" />
+    <result column="app_examine_channel_id" jdbcType="INTEGER" property="channelId" />
+    <result column="app_examine_version_number" jdbcType="INTEGER" property="versionNumber" />
+    <result column="app_examine_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="app_examine_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="app_examine_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="app_examine_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
+    <result column="app_examine_is_delete" jdbcType="BIGINT" property="isDelete" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,10 +73,12 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    ae.id as ae_id, ae.product_id as ae_product_id, ae.app_id as ae_app_id, ae.app_os_type as ae_app_os_type, 
-    ae.channel_id as ae_channel_id, ae.version_number as ae_version_number, ae.add_time as ae_add_time, 
-    ae.modify_time as ae_modify_time, ae.add_operator_id as ae_add_operator_id, ae.modify_operator_id as ae_modify_operator_id, 
-    ae.is_delete as ae_is_delete
+    app_examine.id as app_examine_id, app_examine.product_id as app_examine_product_id, 
+    app_examine.app_id as app_examine_app_id, app_examine.app_os_type as app_examine_app_os_type, 
+    app_examine.channel_id as app_examine_channel_id, app_examine.version_number as app_examine_version_number, 
+    app_examine.add_time as app_examine_add_time, app_examine.modify_time as app_examine_modify_time, 
+    app_examine.add_operator_id as app_examine_add_operator_id, app_examine.modify_operator_id as app_examine_modify_operator_id, 
+    app_examine.is_delete as app_examine_is_delete
   </sql>
   <select id="selectByExample" parameterType="com.duobei.core.operation.app.domain.AppExamineExample" resultMap="BaseResultMap">
     select
@@ -84,7 +86,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from yy_app_examine ae
+    from yy_app_examine app_examine
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -95,15 +97,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from yy_app_examine ae
-    where ae.id = #{id,jdbcType=INTEGER}
+    from yy_app_examine app_examine
+    where app_examine.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from yy_app_examine
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.duobei.core.operation.app.domain.AppExamineExample">
-    delete from yy_app_examine ae
+    delete from yy_app_examine app_examine
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -192,46 +194,46 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.duobei.core.operation.app.domain.AppExamineExample" resultType="java.lang.Long">
-    select count(*) from yy_app_examine ae
+    select count(*) from yy_app_examine app_examine
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update yy_app_examine ae
+    update yy_app_examine app_examine
     <set>
       <if test="record.id != null">
-        ae.id = #{record.id,jdbcType=INTEGER},
+        app_examine.id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.productId != null">
-        ae.product_id = #{record.productId,jdbcType=INTEGER},
+        app_examine.product_id = #{record.productId,jdbcType=INTEGER},
       </if>
       <if test="record.appId != null">
-        ae.app_id = #{record.appId,jdbcType=INTEGER},
+        app_examine.app_id = #{record.appId,jdbcType=INTEGER},
       </if>
       <if test="record.appOsType != null">
-        ae.app_os_type = #{record.appOsType,jdbcType=VARCHAR},
+        app_examine.app_os_type = #{record.appOsType,jdbcType=VARCHAR},
       </if>
       <if test="record.channelId != null">
-        ae.channel_id = #{record.channelId,jdbcType=INTEGER},
+        app_examine.channel_id = #{record.channelId,jdbcType=INTEGER},
       </if>
       <if test="record.versionNumber != null">
-        ae.version_number = #{record.versionNumber,jdbcType=INTEGER},
+        app_examine.version_number = #{record.versionNumber,jdbcType=INTEGER},
       </if>
       <if test="record.addTime != null">
-        ae.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+        app_examine.add_time = #{record.addTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.modifyTime != null">
-        ae.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+        app_examine.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.addOperatorId != null">
-        ae.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+        app_examine.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
       </if>
       <if test="record.modifyOperatorId != null">
-        ae.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+        app_examine.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
       </if>
       <if test="record.isDelete != null">
-        ae.is_delete = #{record.isDelete,jdbcType=BIGINT},
+        app_examine.is_delete = #{record.isDelete,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -239,18 +241,18 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update yy_app_examine ae
-    set ae.id = #{record.id,jdbcType=INTEGER},
-      ae.product_id = #{record.productId,jdbcType=INTEGER},
-      ae.app_id = #{record.appId,jdbcType=INTEGER},
-      ae.app_os_type = #{record.appOsType,jdbcType=VARCHAR},
-      ae.channel_id = #{record.channelId,jdbcType=INTEGER},
-      ae.version_number = #{record.versionNumber,jdbcType=INTEGER},
-      ae.add_time = #{record.addTime,jdbcType=TIMESTAMP},
-      ae.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
-      ae.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
-      ae.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
-      ae.is_delete = #{record.isDelete,jdbcType=BIGINT}
+    update yy_app_examine app_examine
+    set app_examine.id = #{record.id,jdbcType=INTEGER},
+      app_examine.product_id = #{record.productId,jdbcType=INTEGER},
+      app_examine.app_id = #{record.appId,jdbcType=INTEGER},
+      app_examine.app_os_type = #{record.appOsType,jdbcType=VARCHAR},
+      app_examine.channel_id = #{record.channelId,jdbcType=INTEGER},
+      app_examine.version_number = #{record.versionNumber,jdbcType=INTEGER},
+      app_examine.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      app_examine.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      app_examine.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      app_examine.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      app_examine.is_delete = #{record.isDelete,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

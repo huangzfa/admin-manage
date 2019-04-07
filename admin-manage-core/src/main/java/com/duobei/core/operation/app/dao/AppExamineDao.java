@@ -36,7 +36,9 @@ public interface AppExamineDao {
      * @param criteria
      * @return
      */
-    List<AppExamineVo> getListVoByQuery(AppExamineExample.Criteria criteria);
+    List<AppExamineVo> getListVoByQuery(AppExamineCriteria criteria);
 
     int delete(AppExamine appExamine);
+
+    int update(AppExamine entity);
 }

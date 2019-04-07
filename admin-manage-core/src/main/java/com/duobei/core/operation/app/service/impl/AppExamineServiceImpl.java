@@ -66,11 +66,10 @@ public class AppExamineServiceImpl implements AppExamineService {
         Long total = appExamineMapper.countByExample(example);
         List<AppExamineVo> appExamineVos = null;
         if (total > 0) {
-            appExamineVos = appExamineDao.getListVoByQuery(criteria);
+            appExamineVos = appExamineDao.getListVoByQuery(appExamineCriteria);
         }
 
         return new ListVo<AppExamineVo>(total.intValue(),appExamineVos);
-
 
     }
 
@@ -84,6 +83,22 @@ public class AppExamineServiceImpl implements AppExamineService {
         int count = appExamineDao.delete(appExamine);
         if (count != 1){
             throw new TqException("删除app审核失败");
+        }
+    }
+
+    @Override
+    public void save(AppExamine entity) throws TqException {
+        int count = appExamineDao.save(entity);
+        if (count != 1){
+            throw new TqException("新增app审核失败");
+        }
+    }
+
+    @Override
+    public void update(AppExamine entity) throws TqException {
+        int count = appExamineDao.update(entity);
+        if (count != 1){
+            throw new TqException("修改app审核失败");
         }
     }
 

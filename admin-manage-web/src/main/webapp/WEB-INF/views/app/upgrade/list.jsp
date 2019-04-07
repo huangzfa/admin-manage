@@ -60,7 +60,7 @@
         }
 		  hjnUtils.ajax({
 			  type:'post',
-			  url:'${ctxA}/app/examine/appExamList',
+			  url:'${ctxA}/app/upgrade/upgradeList',
 			  dataType:'json',
 			  data:data,
 			  success:function(data){
@@ -95,7 +95,7 @@
 			  }
 		  });
 	}
-	function appSystemTypeformater(value,row,index){
+	function appSystemTypeformatter(value,row,index){
             if(value == 'ios'){
                 return "IOS";
             }else if(value == 'android'){
@@ -105,18 +105,57 @@
             }
             return '未知';
 	}
-	function optionformater(value,row,index){
+    function stateformatter(value,row,index){
+ 		if (value == '0'){
+ 		    return '关闭状态'
+		}else if (value == '1'){
+ 		    return '开启状态'
+		}
+		return '未知';
+    }
+    function upgradeRangeformatter(value,row,index){
+        if (value == '0'){
+            return '所有版本'
+        }else if (value == '1'){
+            return row.minVersionNumber+"~"+row.maxVersionNumber
+        }
+        return '未知';
+    }
+    function isForceformatter(value,row,index){
+        if (value == '0'){
+            return '否'
+        }else if (value == '1'){
+            return '是'
+        }
+        return '未知';
+    }
+    function isSilenceformatter(value,row,index){
+        if (value == '0'){
+            return '否'
+        }else if (value == '1'){
+            return '是'
+        }
+        return '未知';
+    }
+
+    function optionformatter(value,row,index){
             var opStr='';
-            <shiro:hasPermission name="app:examine:edit">
-            opStr+='<a class="si-option-a" href="${ctxA}/app/examine/form?id='+row.id+'">编辑</a>';
+            <shiro:hasPermission name="app:upgrade:edit">
+            opStr+='<a class="si-option-a" href="${ctxA}/app/upgrade/form?id='+row.id+'">编辑</a>';
        		 opStr+="<a class='si-option-a' href='javascript:del(\""+row.id+"\")'>删除</a>";
+			var isEnable = 0;
+        	if( row.state == 0) {isEnable = 1;}
+
+        opStr+="<a class='si-option-a' href='javascript:editState(\""+isEnable+"\" ,\""+row.id+"\"   )'>"+(row.state==0?"禁用":"启用")+"</a>";
             </shiro:hasPermission>
             return opStr;
 	}
+
+
     function del(id){
         top.$.jBox.confirm("确定删除该审核吗？",'系统提示',function(v,h,f){
             if(v=='ok'){
-                jQuery.post("${ctxA}/app/examine/delete", {'id':id},
+                jQuery.post("${ctxA}/app/upgrade/delete", {'id':id},
                     function(data) {
                         if (data.code ==1) {
                             top.layer.alert("操作完成", {
@@ -134,16 +173,44 @@
             }
         })
     }
+
+    function editState(state,id) {
+        $('#tt').datagrid('loading');
+        var title = "确定启用？";
+        if(status == 1){
+            title = "确定禁用？";
+        }
+        top.$.jBox.confirm(title,'系统提示',function(v,h,f){
+            $('#tt').datagrid('loaded');
+            if(v=='ok'){
+                jQuery.post('${ctxA}/app/upgrade/editState',{'state':state,'id':id},
+                    function(data) {
+                        if (data.code ==1) {
+                            top.layer.alert("操作完成", {
+                                icon: 6,
+                                end: function(){
+                                    getData();
+                                }
+                            });
+                        } else {
+                            top.layer.alert(data.msg, {icon: 5});
+                        }
+                        return;
+                    }, "json");
+            }
+        })
+
+    }
     function flush() {
-        window.location.href="${ctxA}/app/examine/list?productId="+$("#productId").val();
+        window.location.href="${ctxA}/app/upgrade/list?productId="+$("#productId").val();
     }
 </script>
 </head>
 <body>
 <ul class="nav nav-tabs" style="margin-bottom:3px;">
-	<li class="active"><a href="javascript:void(0);">APP审核管理</a></li>
-	<shiro:hasPermission name="app:examine:edit">
-		<li><a href="${ctxA}/app/examine/form">新增APP审核配置</a></li>
+	<li class="active"><a href="javascript:void(0);">APP升级管理</a></li>
+	<shiro:hasPermission name="app:upgrade:edit">
+		<li><a href="${ctxA}/app/upgrade/form">新增APP升级配置</a></li>
 	</shiro:hasPermission>
 </ul>
 
@@ -155,18 +222,16 @@
 			</select>
 		</li>
 		<li>
-			<label>渠道：</label>
-			<input id="channelName" placeholder="请输入渠道名称" class="input-large" type="text" value="" maxlength="50"/>
-		</li>
-		<li>
-			<label>版本：</label>
-			<input id="versionNumber" placeholder="请输入版本号" class="input-large" type="text" value="" maxlength="50"/>
-		</li>
-		<li>
 			<label>应用：</label>
 			<select id="appId" name="appId" class="selectpicker show-tick form-control">
 			</select>
 		</li>
+
+		<li>
+			<label>版本号：</label>
+			<input id="versionNumber" placeholder="请输入版本号" class="input-large" type="text" value="" maxlength="50"/>
+		</li>
+
 		<li class="btns">
 			<input id="search" class="btn btn-primary" type="submit" value="查询"/>
 		</li>
@@ -182,11 +247,15 @@
 		   data-options="idField:'appExamId',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
 		<thead>
 		<tr>
-			<th style="width: 20%" data-options="field:'appName',width:216,align:'center',halign:'center',fixed:true">应用</th>
-			<th style="width: 20%" data-options="field:'channelName',width:216,align:'center',halign:'center',fixed:true">渠道</th>
-			<th style="width: 20%" data-options="field:'appOsType',width:216,align:'center',halign:'center',fixed:true,formatter:appSystemTypeformater">系统</th>
-			<th style="width: 20%" data-options="field:'versionNumber',width:216,align:'center',halign:'center',fixed:true">版本号</th>
-			<th style="width: 20%" data-options="field:'option',width:216,align:'center',halign:'center',fixed:true,formatter:optionformater">操作</th>
+			<th style="width: 10%" data-options="field:'appName',width:216,align:'center',halign:'center',fixed:true">应用</th>
+			<th style="width: 10%" data-options="field:'versionNumber',width:216,align:'center',halign:'center',fixed:true">版本号</th>
+			<th style="width: 10%" data-options="field:'versionName',width:216,align:'center',halign:'center',fixed:true">版本名</th>
+			<th style="width: 5%" data-options="field:'state',width:216,align:'center',halign:'center',fixed:true,formatter:stateformatter">系统</th>
+			<th style="width: 30%" data-options="field:'versionRemark',width:216,align:'center',halign:'center',fixed:true">版本描述</th>
+			<th style="width: 5%" data-options="field:'upgradeRange',width:216,align:'center',halign:'center',fixed:true,formatter:upgradeRangeformatter">升级范围</th>
+			<th style="width: 5%" data-options="field:'isForce',width:216,align:'center',halign:'center',fixed:true,formatter:isForceformatter">升级范围</th>
+			<th style="width: 5%" data-options="field:'isSilence',width:216,align:'center',halign:'center',fixed:true,formatter:isSilenceformatter">升级范围</th>
+			<th style="width: 20%" data-options="field:'option',width:216,align:'center',halign:'center',fixed:true,formatter:optionformatter">操作</th>
 		</tr>
 		</thead>
 	</table>

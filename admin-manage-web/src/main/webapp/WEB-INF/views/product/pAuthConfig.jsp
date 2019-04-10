@@ -66,7 +66,7 @@
                                 <td>
                                     <input type="checkbox" ng-model="x.isRequired" ng-checked="{{x.isRequired==1}}" ng-disabled="{{x.isEnable ==0}}"  ng-true-value="1" ng-false-value="0"/>
                                 </td>
-                                <td><input type="text" ng-model="x.validVal" ng-disabled="{{x.isEnable ==0}}" >{{x.validUnit==0?'小时':'天'}}</td>
+                                <td><input type="text" ng-model="x.validVal" ng-disabled="{{x.isEnable ==0}}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'>{{x.validUnit==0?'小时':'天'}}</td>
                                 <td><input type="text" style="background-color:${auth.authState==0?'#e5e5e5':''}" ng-model="x.authSort" ng-disabled="{{x.isEnable ==0}}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></td>
                             </tr>
                     </tbody>

@@ -326,15 +326,15 @@ public class ProductController extends BaseController {
                 throw new TqException("至少关联一个认证项配置");
             }
             ConsumeLoanConfig loan = JSON.parseObject(loans,ConsumeLoanConfig.class);
-            loan.setDayAmountLimit(loan.getDayAmountLimit()*100);//分单位
-            loan.setShowMinAmount(loan.getShowMinAmount()*100);//分单位
-            loan.setShowMaxAmount(loan.getShowMaxAmount()*100);//分单位
             if( loan.getShowMinAmount() >= loan.getShowMaxAmount()){
                 throw new TqException("借款额度范围，第一个值必须小于第二个值");
             }
             if( loan.getShowMinAmount() < 100 || loan.getShowMinAmount() % 100 >BizConstant.INT_ZERO || loan.getShowMaxAmount() % 100 >BizConstant.INT_ZERO){
                 throw new TqException("借款额度范围，请填写100的整数倍");
             }
+            loan.setDayAmountLimit(loan.getDayAmountLimit()*100);//分单位
+            loan.setShowMinAmount(loan.getShowMinAmount()*100);//分单位
+            loan.setShowMaxAmount(loan.getShowMaxAmount()*100);//分单位
             List<ProductAuthConfigVo> auth = JSON.parseArray(auths,ProductAuthConfigVo.class);
             if( auth.size() == BizConstant.INT_ZERO){
                 throw new TqException("至少关联一个认证项配置");
@@ -377,6 +377,9 @@ public class ProductController extends BaseController {
                 throw new TqException("请填写借贷基本配置");
             }
             ConsumeLoanConfig loan = JSON.parseObject(loans,ConsumeLoanConfig.class);
+            if( loan.getRenewalAmount() < 100 || loan.getRenewalAmount() % 100 >BizConstant.INT_ZERO ){
+                throw new TqException("续借金额请填写100的整数倍");
+            }
             loan.setRenewalAmount(loan.getRenewalAmount()*100);//分单位
             String rateDays = request.getParameter("rateDays");
             if( rateDays == null || rateDays.length() == 0){

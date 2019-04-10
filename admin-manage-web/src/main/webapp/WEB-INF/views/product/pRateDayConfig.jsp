@@ -25,7 +25,7 @@
         </div>
         <div class="control-group">
             <label class="control-label col-sm-1">允许续借天数（天）：</label>
-            <input type="text" class="form-control"  ng-model="loan.renewalDay"  maxlength="2" value="" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
+            <input type="text" class="form-control"  ng-model="loan.renewalDay"  maxlength="3" value="" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
         </div>
         <div class="control-group">
             <label class="control-label col-sm-1">可续借日期限制（天）：</label>

@@ -98,6 +98,7 @@
                     authId:$(this).attr("authId"),
                     authName:$(this).attr("authName"),
                     isEnable:$(this).attr("isEnable"),
+                    isRequired:1,
                     bizCode:'xjd',
                     productId:$("#modalAuthConfig .authConfigDialog #productId").val()
                 }

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.activity.dao.mapper.ActivityPrizeRelMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.operation.activity.domain.ActivityPrizeRel">
+    <id column="a_act_prize_id" jdbcType="INTEGER" property="actPrizeId" />
+    <result column="a_act_id" jdbcType="INTEGER" property="actId" />
+    <result column="a_prize_id" jdbcType="INTEGER" property="prizeId" />
+    <result column="a_chance" jdbcType="DOUBLE" property="chance" />
+    <result column="a_is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="a_create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="a_create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="a_update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="a_update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    a.act_prize_id as a_act_prize_id, a.act_id as a_act_id, a.prize_id as a_prize_id, 
+    a.chance as a_chance, a.is_delete as a_is_delete, a.create_by as a_create_by, a.create_time as a_create_time, 
+    a.update_by as a_update_by, a.update_time as a_update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.operation.activity.domain.ActivityPrizeRelExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from yy_activity_prize_rel a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yy_activity_prize_rel a
+    where a.act_prize_id = #{actPrizeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from yy_activity_prize_rel
+    where act_prize_id = #{actPrizeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.operation.activity.domain.ActivityPrizeRelExample">
+    delete from yy_activity_prize_rel a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.operation.activity.domain.ActivityPrizeRel">
+    insert into yy_activity_prize_rel (act_prize_id, act_id, prize_id, 
+      chance, is_delete, create_by, 
+      create_time, update_by, update_time
+      )
+    values (#{actPrizeId,jdbcType=INTEGER}, #{actId,jdbcType=INTEGER}, #{prizeId,jdbcType=INTEGER}, 
+      #{chance,jdbcType=DOUBLE}, #{isDelete,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.operation.activity.domain.ActivityPrizeRel">
+    insert into yy_activity_prize_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="actPrizeId != null">
+        act_prize_id,
+      </if>
+      <if test="actId != null">
+        act_id,
+      </if>
+      <if test="prizeId != null">
+        prize_id,
+      </if>
+      <if test="chance != null">
+        chance,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="actPrizeId != null">
+        #{actPrizeId,jdbcType=INTEGER},
+      </if>
+      <if test="actId != null">
+        #{actId,jdbcType=INTEGER},
+      </if>
+      <if test="prizeId != null">
+        #{prizeId,jdbcType=INTEGER},
+      </if>
+      <if test="chance != null">
+        #{chance,jdbcType=DOUBLE},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.operation.activity.domain.ActivityPrizeRelExample" resultType="java.lang.Long">
+    select count(*) from yy_activity_prize_rel a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update yy_activity_prize_rel a
+    <set>
+      <if test="record.actPrizeId != null">
+        a.act_prize_id = #{record.actPrizeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.actId != null">
+        a.act_id = #{record.actId,jdbcType=INTEGER},
+      </if>
+      <if test="record.prizeId != null">
+        a.prize_id = #{record.prizeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.chance != null">
+        a.chance = #{record.chance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.isDelete != null">
+        a.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null">
+        a.create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        a.create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        a.update_by = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        a.update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update yy_activity_prize_rel a
+    set a.act_prize_id = #{record.actPrizeId,jdbcType=INTEGER},
+      a.act_id = #{record.actId,jdbcType=INTEGER},
+      a.prize_id = #{record.prizeId,jdbcType=INTEGER},
+      a.chance = #{record.chance,jdbcType=DOUBLE},
+      a.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      a.create_by = #{record.createBy,jdbcType=VARCHAR},
+      a.create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      a.update_by = #{record.updateBy,jdbcType=VARCHAR},
+      a.update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.activity.domain.ActivityPrizeRel">
+    update yy_activity_prize_rel
+    <set>
+      <if test="actId != null">
+        act_id = #{actId,jdbcType=INTEGER},
+      </if>
+      <if test="prizeId != null">
+        prize_id = #{prizeId,jdbcType=INTEGER},
+      </if>
+      <if test="chance != null">
+        chance = #{chance,jdbcType=DOUBLE},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where act_prize_id = #{actPrizeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.activity.domain.ActivityPrizeRel">
+    update yy_activity_prize_rel
+    set act_id = #{actId,jdbcType=INTEGER},
+      prize_id = #{prizeId,jdbcType=INTEGER},
+      chance = #{chance,jdbcType=DOUBLE},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where act_prize_id = #{actPrizeId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -14,6 +14,7 @@
     var pageList=[pageSize,30,50];
     var pageNum =1;
     $(function(){
+        $("#myModal").hide();
         var productLists ='${productLists}';
         var productList = eval("("+productLists+")");
         var productId = '${productId}';

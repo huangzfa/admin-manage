@@ -12,7 +12,7 @@
     app_upgrade.apk_md5 as apk_md5, app_upgrade.app_os_type as app_os_type,
     app_upgrade.add_time as add_time, app_upgrade.modify_time as modify_time,
     app_upgrade.add_operator_id as add_operator_id, app_upgrade.modify_operator_id as modify_operator_id,
-    app_upgrade.is_delete as is_delete
+    app_upgrade.is_delete as is_delete,app_upgrade.version_remark as version_remark
   </sql>
     <select id="getListVoByQuery" resultType="com.duobei.core.operation.app.domain.vo.AppUpgradeVo" parameterType="com.duobei.core.operation.app.domain.criteria.AppUpgradeCriteria">
         select <include refid="Base_Column_List"/>

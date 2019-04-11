@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/test")
-public class TestController extends BaseController {
+public class TestController extends com.duobei.console.web.controller.base.BaseController {
 	private final static Logger log = LoggerFactory.getLogger(TestController.class);
 //	当你想在controller的映射requestMapping之间进行跳转一定要加前缀：foward  或者redirect
 	

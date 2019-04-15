@@ -28,23 +28,24 @@ public class ActivityType implements Serializable {
     private Integer isDelete;
 
     /**
-     * 
+     * 添加时间
      */
-    private String createBy;
+    private Date addTime;
 
     /**
-     * 
+     * 修改时间
      */
-    private Date createTime;
+    private Date modifyTime;
 
     /**
-     * 
+     * 添加人id
      */
-    private String updateBy;
+    private Integer addOperatorId;
 
     /**
-     * 
+     * 修改人id
      */
-    private Date updateTime;
+    private Integer modifyOperatorId;
+
 
 }

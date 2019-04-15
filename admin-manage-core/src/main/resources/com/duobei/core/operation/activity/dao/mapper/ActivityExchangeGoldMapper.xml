@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.activity.dao.mapper.ActivityExchangeGoldMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.operation.activity.domain.ActivityExchangeGold">
+    <id column="a_id" jdbcType="INTEGER" property="id" />
+    <result column="a_phone" jdbcType="VARCHAR" property="phone" />
+    <result column="a_act_id" jdbcType="INTEGER" property="actId" />
+    <result column="a_prize_id" jdbcType="INTEGER" property="prizeId" />
+    <result column="a_gold_number" jdbcType="INTEGER" property="goldNumber" />
+    <result column="a_exchange_num" jdbcType="INTEGER" property="exchangeNum" />
+    <result column="a_exchange_after_num" jdbcType="INTEGER" property="exchangeAfterNum" />
+    <result column="a_time" jdbcType="VARCHAR" property="time" />
+    <result column="a_add_time" jdbcType="TIMESTAMP" property="addTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    a.id as a_id, a.phone as a_phone, a.act_id as a_act_id, a.prize_id as a_prize_id, 
+    a.gold_number as a_gold_number, a.exchange_num as a_exchange_num, a.exchange_after_num as a_exchange_after_num, 
+    a.time as a_time, a.add_time as a_add_time
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.operation.activity.domain.ActivityExchangeGoldExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from yy_activity_exchange_gold a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yy_activity_exchange_gold a
+    where a.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from yy_activity_exchange_gold
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.operation.activity.domain.ActivityExchangeGoldExample">
+    delete from yy_activity_exchange_gold a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.operation.activity.domain.ActivityExchangeGold">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into yy_activity_exchange_gold (phone, act_id, prize_id, 
+      gold_number, exchange_num, exchange_after_num, 
+      time, add_time)
+    values (#{phone,jdbcType=VARCHAR}, #{actId,jdbcType=INTEGER}, #{prizeId,jdbcType=INTEGER}, 
+      #{goldNumber,jdbcType=INTEGER}, #{exchangeNum,jdbcType=INTEGER}, #{exchangeAfterNum,jdbcType=INTEGER}, 
+      #{time,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.operation.activity.domain.ActivityExchangeGold">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into yy_activity_exchange_gold
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="actId != null">
+        act_id,
+      </if>
+      <if test="prizeId != null">
+        prize_id,
+      </if>
+      <if test="goldNumber != null">
+        gold_number,
+      </if>
+      <if test="exchangeNum != null">
+        exchange_num,
+      </if>
+      <if test="exchangeAfterNum != null">
+        exchange_after_num,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="actId != null">
+        #{actId,jdbcType=INTEGER},
+      </if>
+      <if test="prizeId != null">
+        #{prizeId,jdbcType=INTEGER},
+      </if>
+      <if test="goldNumber != null">
+        #{goldNumber,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeNum != null">
+        #{exchangeNum,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeAfterNum != null">
+        #{exchangeAfterNum,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.operation.activity.domain.ActivityExchangeGoldExample" resultType="java.lang.Long">
+    select count(*) from yy_activity_exchange_gold a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update yy_activity_exchange_gold a
+    <set>
+      <if test="record.id != null">
+        a.id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.phone != null">
+        a.phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actId != null">
+        a.act_id = #{record.actId,jdbcType=INTEGER},
+      </if>
+      <if test="record.prizeId != null">
+        a.prize_id = #{record.prizeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.goldNumber != null">
+        a.gold_number = #{record.goldNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.exchangeNum != null">
+        a.exchange_num = #{record.exchangeNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.exchangeAfterNum != null">
+        a.exchange_after_num = #{record.exchangeAfterNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.time != null">
+        a.time = #{record.time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null">
+        a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update yy_activity_exchange_gold a
+    set a.id = #{record.id,jdbcType=INTEGER},
+      a.phone = #{record.phone,jdbcType=VARCHAR},
+      a.act_id = #{record.actId,jdbcType=INTEGER},
+      a.prize_id = #{record.prizeId,jdbcType=INTEGER},
+      a.gold_number = #{record.goldNumber,jdbcType=INTEGER},
+      a.exchange_num = #{record.exchangeNum,jdbcType=INTEGER},
+      a.exchange_after_num = #{record.exchangeAfterNum,jdbcType=INTEGER},
+      a.time = #{record.time,jdbcType=VARCHAR},
+      a.add_time = #{record.addTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.activity.domain.ActivityExchangeGold">
+    update yy_activity_exchange_gold
+    <set>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="actId != null">
+        act_id = #{actId,jdbcType=INTEGER},
+      </if>
+      <if test="prizeId != null">
+        prize_id = #{prizeId,jdbcType=INTEGER},
+      </if>
+      <if test="goldNumber != null">
+        gold_number = #{goldNumber,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeNum != null">
+        exchange_num = #{exchangeNum,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeAfterNum != null">
+        exchange_after_num = #{exchangeAfterNum,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.activity.domain.ActivityExchangeGold">
+    update yy_activity_exchange_gold
+    set phone = #{phone,jdbcType=VARCHAR},
+      act_id = #{actId,jdbcType=INTEGER},
+      prize_id = #{prizeId,jdbcType=INTEGER},
+      gold_number = #{goldNumber,jdbcType=INTEGER},
+      exchange_num = #{exchangeNum,jdbcType=INTEGER},
+      exchange_after_num = #{exchangeAfterNum,jdbcType=INTEGER},
+      time = #{time,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

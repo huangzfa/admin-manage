@@ -4,4 +4,30 @@
 
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.activity.domain.Activity" extends="com.duobei.core.operation.activity.dao.mapper.ActivityMapper.BaseResultMap">
     </resultMap>
+
+    <!-- 分页查询 -->
+    <select id="getPageList" resultType="com.duobei.core.operation.activity.domain.Activity" parameterType="com.duobei.core.operation.activity.domain.criteria.ActivityCriteria">
+        select * from yy_activity
+        where is_delete = 0
+        <if test="productId != null ">
+            and product_id =#{productId}
+        </if>
+        order by id desc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <select id="countByCriteria" parameterType="com.duobei.core.operation.activity.domain.criteria.ActivityCriteria" resultType="java.lang.Integer">
+        select * from yy_activity
+        where is_delete = 0
+        <if test="productId != null ">
+            and product_id =#{productId}
+        </if>
+        order by id desc
+    </select>
+
+    <select id="getByCode" parameterType="java.lang.String" resultType="com.duobei.core.operation.activity.domain.Activity">
+        select * from yy_activity where is_delete = 0 and code=#{code} limit 1;
+    </select>
 </mapper>

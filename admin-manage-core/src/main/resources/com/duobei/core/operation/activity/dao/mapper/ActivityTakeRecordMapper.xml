@@ -15,7 +15,7 @@
     <result column="a_after_used_times" jdbcType="INTEGER" property="afterUsedTimes" />
     <result column="a_is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="a_gmt_ymd" jdbcType="INTEGER" property="gmtYmd" />
-    <result column="a_create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="a_add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="a_prize_type" jdbcType="VARCHAR" property="prizeType" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -80,8 +80,7 @@
     a.id as a_id, a.act_id as a_act_id, a.act_prize_id as a_act_prize_id, a.hongbao_prize_id as a_hongbao_prize_id, 
     a.at_code as a_at_code, a.prize_id as a_prize_id, a.prize_name as a_prize_name, a.user_id as a_user_id, 
     a.phone as a_phone, a.before_used_times as a_before_used_times, a.after_used_times as a_after_used_times, 
-    a.is_delete as a_is_delete, a.gmt_ymd as a_gmt_ymd, a.create_time as a_create_time, 
-    a.prize_type as a_prize_type
+    a.is_delete as a_is_delete, a.gmt_ymd as a_gmt_ymd, a.add_time as a_add_time, a.prize_type as a_prize_type
   </sql>
   <select id="selectByExample" parameterType="com.duobei.core.operation.activity.domain.ActivityTakeRecordExample" resultMap="BaseResultMap">
     select
@@ -121,12 +120,12 @@
       at_code, prize_id, prize_name, 
       user_id, phone, before_used_times, 
       after_used_times, is_delete, gmt_ymd, 
-      create_time, prize_type)
+      add_time, prize_type)
     values (#{actId,jdbcType=INTEGER}, #{actPrizeId,jdbcType=INTEGER}, #{hongbaoPrizeId,jdbcType=INTEGER}, 
       #{atCode,jdbcType=VARCHAR}, #{prizeId,jdbcType=INTEGER}, #{prizeName,jdbcType=VARCHAR}, 
       #{userId,jdbcType=BIGINT}, #{phone,jdbcType=VARCHAR}, #{beforeUsedTimes,jdbcType=INTEGER}, 
       #{afterUsedTimes,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{gmtYmd,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{prizeType,jdbcType=VARCHAR})
+      #{addTime,jdbcType=TIMESTAMP}, #{prizeType,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.duobei.core.operation.activity.domain.ActivityTakeRecord">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -170,8 +169,8 @@
       <if test="gmtYmd != null">
         gmt_ymd,
       </if>
-      <if test="createTime != null">
-        create_time,
+      <if test="addTime != null">
+        add_time,
       </if>
       <if test="prizeType != null">
         prize_type,
@@ -214,8 +213,8 @@
       <if test="gmtYmd != null">
         #{gmtYmd,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
       </if>
       <if test="prizeType != null">
         #{prizeType,jdbcType=VARCHAR},
@@ -270,8 +269,8 @@
       <if test="record.gmtYmd != null">
         a.gmt_ymd = #{record.gmtYmd,jdbcType=INTEGER},
       </if>
-      <if test="record.createTime != null">
-        a.create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      <if test="record.addTime != null">
+        a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.prizeType != null">
         a.prize_type = #{record.prizeType,jdbcType=VARCHAR},
@@ -296,7 +295,7 @@
       a.after_used_times = #{record.afterUsedTimes,jdbcType=INTEGER},
       a.is_delete = #{record.isDelete,jdbcType=INTEGER},
       a.gmt_ymd = #{record.gmtYmd,jdbcType=INTEGER},
-      a.create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
       a.prize_type = #{record.prizeType,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -341,8 +340,8 @@
       <if test="gmtYmd != null">
         gmt_ymd = #{gmtYmd,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
       </if>
       <if test="prizeType != null">
         prize_type = #{prizeType,jdbcType=VARCHAR},
@@ -364,7 +363,7 @@
       after_used_times = #{afterUsedTimes,jdbcType=INTEGER},
       is_delete = #{isDelete,jdbcType=INTEGER},
       gmt_ymd = #{gmtYmd,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
       prize_type = #{prizeType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>

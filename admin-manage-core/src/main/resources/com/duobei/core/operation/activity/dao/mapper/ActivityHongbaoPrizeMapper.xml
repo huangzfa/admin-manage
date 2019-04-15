@@ -6,11 +6,11 @@
     <result column="a_act_id" jdbcType="INTEGER" property="actId" />
     <result column="a_prize_id" jdbcType="BIGINT" property="prizeId" />
     <result column="a_days" jdbcType="INTEGER" property="days" />
-    <result column="a_create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="a_create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="a_update_by" jdbcType="VARCHAR" property="updateBy" />
-    <result column="a_update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="a_is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="a_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="a_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="a_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="a_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,8 +72,8 @@
   </sql>
   <sql id="Base_Column_List">
     a.act_prize_id as a_act_prize_id, a.act_id as a_act_id, a.prize_id as a_prize_id, 
-    a.days as a_days, a.create_by as a_create_by, a.create_time as a_create_time, a.update_by as a_update_by, 
-    a.update_time as a_update_time, a.is_delete as a_is_delete
+    a.days as a_days, a.is_delete as a_is_delete, a.add_time as a_add_time, a.modify_time as a_modify_time, 
+    a.add_operator_id as a_add_operator_id, a.modify_operator_id as a_modify_operator_id
   </sql>
   <select id="selectByExample" parameterType="com.duobei.core.operation.activity.domain.ActivityHongbaoPrizeExample" resultMap="BaseResultMap">
     select
@@ -107,12 +107,12 @@
   </delete>
   <insert id="insert" parameterType="com.duobei.core.operation.activity.domain.ActivityHongbaoPrize">
     insert into yy_activity_hongbao_prize (act_prize_id, act_id, prize_id, 
-      days, create_by, create_time, 
-      update_by, update_time, is_delete
+      days, is_delete, add_time, 
+      modify_time, add_operator_id, modify_operator_id
       )
     values (#{actPrizeId,jdbcType=INTEGER}, #{actId,jdbcType=INTEGER}, #{prizeId,jdbcType=BIGINT}, 
-      #{days,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
+      #{days,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.duobei.core.operation.activity.domain.ActivityHongbaoPrize">
@@ -130,20 +130,20 @@
       <if test="days != null">
         days,
       </if>
-      <if test="createBy != null">
-        create_by,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateBy != null">
-        update_by,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
       <if test="isDelete != null">
         is_delete,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id,
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -159,20 +159,20 @@
       <if test="days != null">
         #{days,jdbcType=INTEGER},
       </if>
-      <if test="createBy != null">
-        #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null">
-        #{updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="isDelete != null">
         #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        #{modifyOperatorId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -197,20 +197,20 @@
       <if test="record.days != null">
         a.days = #{record.days,jdbcType=INTEGER},
       </if>
-      <if test="record.createBy != null">
-        a.create_by = #{record.createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="record.createTime != null">
-        a.create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.updateBy != null">
-        a.update_by = #{record.updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="record.updateTime != null">
-        a.update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="record.isDelete != null">
         a.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null">
+        a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        a.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addOperatorId != null">
+        a.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifyOperatorId != null">
+        a.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -223,11 +223,11 @@
       a.act_id = #{record.actId,jdbcType=INTEGER},
       a.prize_id = #{record.prizeId,jdbcType=BIGINT},
       a.days = #{record.days,jdbcType=INTEGER},
-      a.create_by = #{record.createBy,jdbcType=VARCHAR},
-      a.create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      a.update_by = #{record.updateBy,jdbcType=VARCHAR},
-      a.update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      a.is_delete = #{record.isDelete,jdbcType=INTEGER}
+      a.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      a.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      a.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      a.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -244,20 +244,20 @@
       <if test="days != null">
         days = #{days,jdbcType=INTEGER},
       </if>
-      <if test="createBy != null">
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null">
-        update_by = #{updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
       </if>
     </set>
     where act_prize_id = #{actPrizeId,jdbcType=INTEGER}
@@ -267,11 +267,11 @@
     set act_id = #{actId,jdbcType=INTEGER},
       prize_id = #{prizeId,jdbcType=BIGINT},
       days = #{days,jdbcType=INTEGER},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      is_delete = #{isDelete,jdbcType=INTEGER}
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER}
     where act_prize_id = #{actPrizeId,jdbcType=INTEGER}
   </update>
 </mapper>

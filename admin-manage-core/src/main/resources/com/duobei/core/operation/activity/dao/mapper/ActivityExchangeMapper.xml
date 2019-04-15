@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.activity.dao.mapper.ActivityExchangeMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.operation.activity.domain.ActivityExchange">
+    <result column="a_act_id" jdbcType="INTEGER" property="actId" />
+    <result column="a_time_axis" jdbcType="VARCHAR" property="timeAxis" />
+    <result column="a_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="a_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="a_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="a_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    a.act_id as a_act_id, a.time_axis as a_time_axis, a.add_time as a_add_time, a.modify_time as a_modify_time, 
+    a.add_operator_id as a_add_operator_id, a.modify_operator_id as a_modify_operator_id
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.operation.activity.domain.ActivityExchangeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from yy_activity_exchange a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.duobei.core.operation.activity.domain.ActivityExchangeExample">
+    delete from yy_activity_exchange a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.operation.activity.domain.ActivityExchange">
+    insert into yy_activity_exchange (act_id, time_axis, add_time, 
+      modify_time, add_operator_id, modify_operator_id
+      )
+    values (#{actId,jdbcType=INTEGER}, #{timeAxis,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.operation.activity.domain.ActivityExchange">
+    insert into yy_activity_exchange
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="actId != null">
+        act_id,
+      </if>
+      <if test="timeAxis != null">
+        time_axis,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id,
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="actId != null">
+        #{actId,jdbcType=INTEGER},
+      </if>
+      <if test="timeAxis != null">
+        #{timeAxis,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.operation.activity.domain.ActivityExchangeExample" resultType="java.lang.Long">
+    select count(*) from yy_activity_exchange a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update yy_activity_exchange a
+    <set>
+      <if test="record.actId != null">
+        a.act_id = #{record.actId,jdbcType=INTEGER},
+      </if>
+      <if test="record.timeAxis != null">
+        a.time_axis = #{record.timeAxis,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null">
+        a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        a.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addOperatorId != null">
+        a.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifyOperatorId != null">
+        a.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update yy_activity_exchange a
+    set a.act_id = #{record.actId,jdbcType=INTEGER},
+      a.time_axis = #{record.timeAxis,jdbcType=VARCHAR},
+      a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      a.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      a.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      a.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

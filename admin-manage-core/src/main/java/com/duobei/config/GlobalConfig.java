@@ -50,12 +50,22 @@ public class GlobalConfig {
 
 	/**
 	 * 是否测试环境
-	 * 
+	 *
 	 * @return
 	 */
 	public static boolean isTestEnvironment() {
 		return "test".equals(Global.getValAsString("environment"));
 	}
+
+	/**
+	 * 是否测试环境
+	 *
+	 * @return
+	 */
+	public static boolean isPreviewEnvironment() {
+		return "preview".equals(Global.getValAsString("environment"));
+	}
+
 
 	/**
 	 * 是否生产环境

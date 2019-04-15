@@ -50,14 +50,14 @@
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>-->
-		<table tableName="yy_app_examine" domainObjectName="AppExamine" alias="app_examine">
-			<property name="useActualColumnNames" value="false" />
-			<generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>
-<!--		<table tableName="yy_app_upgrade" domainObjectName="AppUpgrade" alias="app_upgrade">
+	<!--	<table tableName="yy_app_examine" domainObjectName="AppExamine" alias="app_examine">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>-->
+		<table tableName="yy_app_upgrade" domainObjectName="AppUpgrade" alias="app_upgrade">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
 
 	</context>
 </generatorConfiguration>

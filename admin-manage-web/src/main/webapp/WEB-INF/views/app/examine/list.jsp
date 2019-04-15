@@ -156,11 +156,11 @@
 		</li>
 		<li>
 			<label>渠道：</label>
-			<input id="channelName" placeholder="请输入渠道名称" class="input-large" type="text" value="" maxlength="50"/>
+			<input id="channelName" class="input-large" type="text" value="" maxlength="50"/>
 		</li>
 		<li>
 			<label>版本：</label>
-			<input id="versionNumber" placeholder="请输入版本号" class="input-large" type="text" value="" maxlength="50"/>
+			<input id="versionNumber" class="input-large" type="text" value="" maxlength="50"/>
 		</li>
 		<li>
 			<label>应用：</label>

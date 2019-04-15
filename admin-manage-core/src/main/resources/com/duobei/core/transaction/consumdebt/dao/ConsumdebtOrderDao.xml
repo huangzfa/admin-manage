@@ -23,7 +23,90 @@
   select <include refid="Base_Column_List"/>
     from tt_consumdebt_order consumdebt_order
     where consumdebt_order.is_delete = 0 and consumdebt_order.user_id = #{userId}  and consumdebt_order.borrow_cash_id = #{borrowId}
-
   </select>
 
+  <update id="updateDelivery" parameterType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
+      update tt_consumdebt_order
+      set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId},remark = #{remark}
+      <if test="consigneeMobile != null consigneeMobile != ''">
+        ,consignee_mobile = #{consigneeMobile}
+      </if>
+    <if test="consignee != null consignee != ''">
+      ,consignee = #{consignee}
+    </if>
+    <if test="address != null address != ''">
+      ,address = #{address}
+    </if>
+    <if test="state != null">
+      ,state = #{state}
+    </if>
+      where id = #{id} and is_delete = 0
+  </update>
+
+  <select id="getById" parameterType="Long" resultType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
+    select <include refid="Base_Column_List"/>
+    from tt_consumdebt_order consumdebt_order
+    where consumdebt_order.is_delete = 0 and consumdebt_order.id = #{id}
+  </select>
+  
+  <select id="getListByQuery" parameterType="com.duobei.core.transaction.consumdebt.domain.criteria.ConsumdebtOrderCriteria" resultType="com.duobei.core.transaction.consumdebt.domain.vo.ConsumdebtOrderListVo">
+  select <include refid="Base_Column_List"/> ,borrow.borrow_no
+  from tt_consumdebt_order consumdebt_order
+  left join tt_borrow_cash borrow on consumdebt_order.borrow_cash_id = borrow.id
+  where consumdebt_order.is_delete = 0
+    <if test="orderNo != null and orderNo != ''">
+      and consumdebt_order.order_no
+    </if>
+    <if test="productId != null">
+      and consumdebt_order.product_id = #{productId}
+    </if>
+    <if test="userId != null ">
+      and consumdebt_order.user_id = #{userId}
+    </if>
+    <if test="logisticsNo != null and logisticsNo != ''">
+      and consumdebt_order.logistics_no = #{logisticsNo}
+    </if>
+
+    <if test="startTime != null ">
+      and consumdebt_order.add_time <![CDATA[ >= ]]> #{startTime}
+    </if>
+    <if test="endTime != null ">
+      and consumdebt_order.add_time <![CDATA[ <=]]> #{endTime}
+    </if>
+    <if test="state != null ">
+      and consumdebt_order.state = #{state}
+    </if>
+    order by consumdebt_order.add_time desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+  <select id="getListByReportQuery" parameterType="com.duobei.core.transaction.consumdebt.domain.criteria.ConsumdebtOrderCriteria" resultType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
+    select <include refid="Base_Column_List"/>
+    from tt_consumdebt_order consumdebt_order
+    where consumdebt_order.is_delete = 0
+    <if test="orderNo != null and orderNo != ''">
+      and consumdebt_order.order_no
+    </if>
+    <if test="productId != null">
+      and consumdebt_order.product_id = #{productId}
+    </if>
+    <if test="userId != null ">
+      and consumdebt_order.user_id = #{userId}
+    </if>
+    <if test="logisticsNo != null and logisticsNo != ''">
+      and consumdebt_order.logistics_no = #{logisticsNo}
+    </if>
+
+    <if test="startTime != null ">
+      and consumdebt_order.add_time <![CDATA[ >= ]]> #{startTime}
+    </if>
+    <if test="endTime != null ">
+      and consumdebt_order.add_time <![CDATA[ <=]]> #{endTime}
+    </if>
+    <if test="state != null ">
+      and consumdebt_order.state = #{state}
+    </if>
+  </select>
 </mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.biz.dao.BizResourceDao">
+
+  <sql id="Base_Column_List">
+    biz_resource.id as id, biz_resource.product_id as product_id,
+    biz_resource.app_id as app_id, biz_resource.name as name,
+    biz_resource.res_type as res_type, biz_resource.res_type_sec as res_type_sec,
+    biz_resource.remark as remark, biz_resource.int_value as int_value,
+    biz_resource.long_value as long_value, biz_resource.string_value as string_value,
+    biz_resource.string_value1 as string_value1, biz_resource.string_value2 as string_value2,
+    biz_resource.decimal_value as decimal_value, biz_resource.add_time as add_time,
+    biz_resource.modify_time as modify_time, biz_resource.add_operator_id as add_operator_id,
+    biz_resource.modify_operator_id as modify_operator_id, biz_resource.is_delete as is_delete
+  </sql>
+
+  <select id="getByResTypeAnResTypeSec" resultType="com.duobei.core.operation.biz.domain.BizResource">
+    select <include refid="Base_Column_List"/>
+    from yy_biz_resource resource
+    where resource.is_delete = 0 and resource.res_type = #{resType} and resource.res_type_sec = #{resTypeSec}
+    limit 1
+  </select>
+</mapper>

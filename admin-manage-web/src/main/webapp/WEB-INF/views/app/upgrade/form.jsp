@@ -95,7 +95,7 @@
         <div class="control-group">
             <label class="control-label">版本名称：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" type="text" placeholder="版本名，必填"  maxlength="32" descripe="版本名未填,请全部配置完成后保存"  name="versionName" id="versionName" value="${upgrade.versionName}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' />
+                <input type="text" class="form-control valid" type="text" placeholder="版本名，必填"  maxlength="32" descripe="版本名未填,请全部配置完成后保存"  name="versionName" id="versionName" value="${upgrade.versionName}" onkeyup="value=value.replace(/[^\d^\.]+/g,'')" />
             </div>
         </div>
         <div class="control-group">
@@ -111,13 +111,13 @@
         <div class="control-group">
             <label class="control-label">版本描述：</label>
             <div class="controls">
-                <textarea class="form-control" type="text"  maxlength="50"  name="versionRemark" id="versionRemark" >${appUpgrade.versionRemark}</textarea>
+                <textarea class="form-control valid" descripe="版本描述为空,请全部配置完成后保存"   type="text"  maxlength="50"  name="versionRemark" id="versionRemark">${upgrade.versionRemark}</textarea>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">下载地址：</label>
             <div class="controls">
-                <input type="text"   class="form-control valid" type="text" placeholder="下载地址，必填"  descripe="下载地址,请全部配置完成后保存"  name="apkUrl" id="apkUrl" value="${upgrade.apkUrl}"  />
+                <input type="text"   class="form-control valid" type="text" placeholder="下载地址，必填"  descripe="下载地址为空,请全部配置完成后保存"  name="apkUrl" id="apkUrl" value="${upgrade.apkUrl}"  />
             </div>
         </div>
         <div class="control-group">

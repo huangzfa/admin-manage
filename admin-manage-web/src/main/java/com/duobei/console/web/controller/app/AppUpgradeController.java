@@ -3,6 +3,7 @@ package com.duobei.console.web.controller.app;
 
 import com.alibaba.fastjson.JSON;
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
@@ -247,6 +248,17 @@ public class AppUpgradeController extends BaseController {
         }
         if (entity.getVersionNumber() == null){
             throw new TqException("版本号未填写或格式填写有误，请全部配置完成后保存");
+        }
+        if(StringUtil.isEmpty(entity.getVersionRemark()) || entity.getVersionRemark().length() > 50){
+            throw new TqException("版本描述不能为空且长度不能大于50字");
+        }
+        if (ZD.upgradeRangeState_part.equals(entity.getUpgradeRange())){
+            if (entity.getMaxVersionNumber() == null || entity.getMinVersionNumber() == null){
+                throw new TqException("部分版本升级需配置最小升级版本和最大升级版本");
+            }
+            if (entity.getMinVersionNumber() > entity.getMaxVersionNumber()){
+                throw new TqException("最小升级版本不能大于最大升级版本");
+            }
         }
     }
     @RequiresPermissions(PERMISSIONPRE+"edit")

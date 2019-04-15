@@ -23,6 +23,7 @@
         var pageNum = 1;
         var pager;
         $(function(){
+            $("#myModal").hide();
             var appLists ='${appLists}';
             var appList = eval("("+appLists+")");
             var appId = '${appId}';

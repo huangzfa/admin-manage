@@ -229,7 +229,7 @@
 
 		<li>
 			<label>版本号：</label>
-			<input id="versionNumber" placeholder="请输入版本号" class="input-large" type="text" value="" maxlength="50"/>
+			<input id="versionNumber"  class="input-large" type="text" value="" maxlength="50"/>
 		</li>
 
 		<li class="btns">

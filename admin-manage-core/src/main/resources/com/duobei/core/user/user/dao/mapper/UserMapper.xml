@@ -14,7 +14,7 @@
     <result column="user_channel_id" jdbcType="INTEGER" property="channelId" />
     <result column="user_add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="user_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="user_is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="user_is_delete" jdbcType="BIGINT" property="isDelete" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -123,7 +123,7 @@
     values (#{productId,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, #{globalUserId,jdbcType=VARCHAR}, 
       #{userName,jdbcType=VARCHAR}, #{userNameMd5,jdbcType=VARCHAR}, #{userNameEncrypt,jdbcType=VARCHAR}, 
       #{pwd,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{channelId,jdbcType=INTEGER}, 
-      #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
+      #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.duobei.core.user.user.domain.User">
@@ -204,7 +204,7 @@
         #{modifyTime,jdbcType=TIMESTAMP},
       </if>
       <if test="isDelete != null">
-        #{isDelete,jdbcType=INTEGER},
+        #{isDelete,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -254,7 +254,7 @@
         user.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.isDelete != null">
-        user.is_delete = #{record.isDelete,jdbcType=INTEGER},
+        user.is_delete = #{record.isDelete,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -275,7 +275,7 @@
       user.channel_id = #{record.channelId,jdbcType=INTEGER},
       user.add_time = #{record.addTime,jdbcType=TIMESTAMP},
       user.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
-      user.is_delete = #{record.isDelete,jdbcType=INTEGER}
+      user.is_delete = #{record.isDelete,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -317,7 +317,7 @@
         modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       </if>
       <if test="isDelete != null">
-        is_delete = #{isDelete,jdbcType=INTEGER},
+        is_delete = #{isDelete,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -335,7 +335,7 @@
       channel_id = #{channelId,jdbcType=INTEGER},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      is_delete = #{isDelete,jdbcType=INTEGER}
+      is_delete = #{isDelete,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

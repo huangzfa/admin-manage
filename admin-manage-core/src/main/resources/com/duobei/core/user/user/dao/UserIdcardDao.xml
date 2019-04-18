@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.user.user.dao.UserIdcardDao">
+
+  <sql id="Base_Column_List">
+    uidcard.id as id, uidcard.product_id as product_id, uidcard.user_id as user_id,
+    uidcard.real_name as real_name, uidcard.real_name_md5 as real_name_md5,
+    uidcard.real_name_encrypt as real_name_encrypt, uidcard.idcard as idcard,
+    uidcard.idcard_md5 as idcard_md5, uidcard.idcard_encrypt as idcard_encrypt,
+    uidcard.edit_name as edit_name, uidcard.edit_name_md5 as edit_name_md5,
+    uidcard.edit_name_encrypt as edit_name_encrypt, uidcard.edit_idcard as edit_idcard,
+    uidcard.edit_idcard_md5 as edit_idcard_md5, uidcard.edit_idcard_encrypt as edit_idcard_encrypt,
+    uidcard.address as address, uidcard.gender as gender, uidcard.nation as nation,
+    uidcard.valid_begin as valid_begin, uidcard.valid_end as valid_end,
+    uidcard.birthday as birthday, uidcard.agency as agency, uidcard.idcard_front_url as idcard_front_url,
+    uidcard.idcard_behind_url as idcard_behind_url, uidcard.face_url as face_url,
+    uidcard.face_type as face_type, uidcard.download_pic as download_pic,
+    uidcard.face_env_url as face_env_url, uidcard.face_act_1_url as face_act_1_url,
+    uidcard.face_act_2_url as face_act_2_url, uidcard.face_act_3_url as face_act_3_url,
+    uidcard.is_delete as is_delete, uidcard.add_time as add_time, uidcard.modify_time as modify_time
+  </sql>
+
+  <select id="getUserIdsByRealName" parameterType="String" resultType="Long">
+    select id
+    from pgy_user_idcard
+    where is_delete = 0 and real_name_md5 = #{realName}
+  </select>
+
+</mapper>

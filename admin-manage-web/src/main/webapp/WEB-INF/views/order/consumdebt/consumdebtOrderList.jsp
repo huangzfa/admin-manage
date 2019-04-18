@@ -193,7 +193,7 @@
                     var id =  $("#id").val();
                     var consigneeMobile = $("#consigneeMobile").val();
                     var consignee = $("#consignee").val();
-                    var address = $("#address").html();
+                    var address = $("#address").val();
                     if (consigneeMobile == "" || consigneeMobile == null){
                         top.layer.alert("收货手机号码不能为空", {icon: 5});
                         return false;
@@ -247,10 +247,12 @@
                         '&state'+$("#stateQuery").val();
                     jQuery.post('${ctxA}/order/consumdebt/export', data,
                         function(data) {
+                            debugger;
                             if (data.code ==1) {
+
                                 window.open("${ctxA}/order/consumdebt/exportConsumdebtOrderList?"+url);
                             } else {
-                                top.layer.alert("系统异常", {icon: 5});
+                                top.layer.alert(data.msg, {icon: 5});
                             }
 
                         }, "json");
@@ -259,6 +261,33 @@
         }
 
 
+        //上传文件路径
+        function uploadFile(){
+            var src = "${ctxA}/order/consumdebt/upload";
+            if($('#filePath').val()==''){
+                top.layer.alert("请选择上传文件", {icon: 5});
+                return false;
+            }
+            var loading = layer.load(2);
+            jQuery.ajaxFileUpload({
+                url:src, //需要链接到服务器地址
+                secureuri:false,
+                fileElementId:"filePath", //文件选择框的id属性
+                dataType: 'json',  //服务器返回的格式类型
+                success: function (data, status){
+                    layer.close(loading);
+                    if(data.success){
+                        $('#filePath').attr('data-value',data.url);
+                        top.layer.alert(data.msg, {icon: 6});
+                    }else{
+                        top.layer.alert(data.msg, {icon: 5});
+                    }
+                },
+                error: function (data, status, e){
+                    top.layer.alert(data.msg, {icon: 5});
+                }
+            })
+        }
 	</script>
 </head>
 <body>
@@ -275,7 +304,7 @@
 
 		<li>
 			<label>产品名称：</label>
-			<select id="productId" name="productId" class="selectpicker show-tick form-control">
+			<select id="productId" name="productId" class="selectpicker show-tick form-control" onchange="getData()">
 			</select>
 		</li>
 		<li>
@@ -312,7 +341,7 @@
 			<input id="export" class="btn btn-primary" type="submit" value="导出CSV格式报表" onclick="exportCosumdebtOrder()" />
 		</li>
 		<li class="btns">
-			<input id="batchDelivery" class="btn btn-primary" type="submit" value="批量发货" />
+			<input id="batchDelivery" class="btn btn-primary"  data-toggle="modal" data-target="#myModal1"  type="submit" value="批量发货" />
 		</li>
 		<li class="clearfix"></li>
 	</ul>
@@ -392,6 +421,34 @@
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal -->
+
+
 </div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content radius">
+			<div class="modal-header" style="height: 60px;">
+				<h3 class="modal-title" style="float: left;">批量发货</h3>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<font color="#FF0000">批量发货需导入物流单号文件</font>
+				</div>
+				<div class="form-group">
+					<button class="btn btn-primary" type="button" onclick="">已上传直接导入</button>
+				</div>
+				<div class="form-group">
+					<input name="file" data-value="$!{filePath}" id="filePath" type="file"/><br>
+					<button class="btn btn-primary" type="button" onclick="uploadFile()">上传物流单号文件</button>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+
+		</div>
+	</div><!-- /.modal-content -->
+</div><!-- /.modal -->
 </body>
 </html>

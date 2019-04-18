@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.zfb.dao.ZfbAccountDao">
+
+  <sql id="Base_Column_List">
+    zfb_account.id as id, zfb_account.product_id as product_id,
+    zfb_account.name as name, zfb_account.account as account,
+    zfb_account.is_enable as is_enable, zfb_account.qrcode as qrcode,
+    zfb_account.add_time as add_time, zfb_account.modify_time as modify_time,
+    zfb_account.add_operator_id as add_operator_id, zfb_account.modify_operator_id as modify_operator_id,
+    zfb_account.is_delete as is_delete
+  </sql>
+  
+  <select id="getListByQuery" parameterType="com.duobei.core.operation.zfb.domain.criteria.ZfbAccountCriteria" resultType="com.duobei.core.operation.zfb.domain.ZfbAccount">
+    select <include refid="Base_Column_List"/>
+    from yy_zfb_account zfb_account
+    where zfb_account.is_delete = 0 and zfb_account.product_id = #{productId}
+    ORDER BY zfb_account.add_time desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+  <select id="getById" parameterType="Integer" resultType="com.duobei.core.operation.zfb.domain.ZfbAccount">
+    select <include refid="Base_Column_List"/>
+    from yy_zfb_account zfb_account
+    where zfb_account.is_delete = 0 and zfb_account.id = #{id}
+  </select>
+
+  <update id="delete" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccount">
+    update yy_zfb_account
+    set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId},is_delete = id
+    where is_delete = 0 and id  = #{id}
+  </update>
+
+  <update id="updateStatus" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccount">
+    update yy_zfb_account
+    set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId},is_enable = #{isEnable}
+    where is_delete = 0 and id  = #{id}
+  </update>
+
+  <insert id="save" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccount" useGeneratedKeys="true" keyProperty="id">
+    insert into yy_zfb_account(product_id, `name`, account
+    , is_enable, qrcode, add_time, modify_time
+    , add_operator_id, modify_operator_id)
+    values(#{productId},#{name},#{account}
+    ,#{isEnable},#{qrcode},#{addTime},#{modifyTime}
+    ,#{addOperatorId},#{modifyOperatorId})
+  </insert>
+
+  <update id="update" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccount">
+    update yy_zfb_account
+    set  modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId}
+      <if test="name != null and name != ''">
+        ,`name` = #{name}
+      </if>
+      <if test="account != null and account != ''">
+        ,`account` = #{account}
+      </if>
+    <if test="qrcode != null and qrcode != ''">
+        ,`qrcode` = #{qrcode}
+    </if>
+    where is_delete = 0 and id = #{id}
+  </update>
+
+    <select id="countByIsEnableAndProductId" resultType="Integer">
+    select count(id)
+    from yy_zfb_account
+    where is_delete = 0 and product_id = #{productId} and is_enable = #{isEnable}
+  </select>
+</mapper>

@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.zfb.dao.mapper.ZfbAccountMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.operation.zfb.domain.ZfbAccount">
+    <id column="zfb_account_id" jdbcType="INTEGER" property="id" />
+    <result column="zfb_account_product_id" jdbcType="INTEGER" property="productId" />
+    <result column="zfb_account_name" jdbcType="VARCHAR" property="name" />
+    <result column="zfb_account_account" jdbcType="VARCHAR" property="account" />
+    <result column="zfb_account_is_enable" jdbcType="BIT" property="isEnable" />
+    <result column="zfb_account_qrcode" jdbcType="VARCHAR" property="qrcode" />
+    <result column="zfb_account_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="zfb_account_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="zfb_account_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="zfb_account_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
+    <result column="zfb_account_is_delete" jdbcType="INTEGER" property="isDelete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    zfb_account.id as zfb_account_id, zfb_account.product_id as zfb_account_product_id, 
+    zfb_account.name as zfb_account_name, zfb_account.account as zfb_account_account, 
+    zfb_account.is_enable as zfb_account_is_enable, zfb_account.qrcode as zfb_account_qrcode, 
+    zfb_account.add_time as zfb_account_add_time, zfb_account.modify_time as zfb_account_modify_time, 
+    zfb_account.add_operator_id as zfb_account_add_operator_id, zfb_account.modify_operator_id as zfb_account_modify_operator_id, 
+    zfb_account.is_delete as zfb_account_is_delete
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccountExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from yy_zfb_account zfb_account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yy_zfb_account zfb_account
+    where zfb_account.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from yy_zfb_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccountExample">
+    delete from yy_zfb_account zfb_account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccount">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into yy_zfb_account (product_id, name, account, 
+      is_enable, qrcode, add_time, 
+      modify_time, add_operator_id, modify_operator_id, 
+      is_delete)
+    values (#{productId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{isEnable,jdbcType=BIT}, #{qrcode,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccount">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into yy_zfb_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="isEnable != null">
+        is_enable,
+      </if>
+      <if test="qrcode != null">
+        qrcode,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id,
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnable != null">
+        #{isEnable,jdbcType=BIT},
+      </if>
+      <if test="qrcode != null">
+        #{qrcode,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccountExample" resultType="java.lang.Long">
+    select count(*) from yy_zfb_account zfb_account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update yy_zfb_account zfb_account
+    <set>
+      <if test="record.id != null">
+        zfb_account.id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.productId != null">
+        zfb_account.product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        zfb_account.name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.account != null">
+        zfb_account.account = #{record.account,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isEnable != null">
+        zfb_account.is_enable = #{record.isEnable,jdbcType=BIT},
+      </if>
+      <if test="record.qrcode != null">
+        zfb_account.qrcode = #{record.qrcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null">
+        zfb_account.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        zfb_account.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addOperatorId != null">
+        zfb_account.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifyOperatorId != null">
+        zfb_account.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDelete != null">
+        zfb_account.is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update yy_zfb_account zfb_account
+    set zfb_account.id = #{record.id,jdbcType=INTEGER},
+      zfb_account.product_id = #{record.productId,jdbcType=INTEGER},
+      zfb_account.name = #{record.name,jdbcType=VARCHAR},
+      zfb_account.account = #{record.account,jdbcType=VARCHAR},
+      zfb_account.is_enable = #{record.isEnable,jdbcType=BIT},
+      zfb_account.qrcode = #{record.qrcode,jdbcType=VARCHAR},
+      zfb_account.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      zfb_account.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      zfb_account.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      zfb_account.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      zfb_account.is_delete = #{record.isDelete,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccount">
+    update yy_zfb_account
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnable != null">
+        is_enable = #{isEnable,jdbcType=BIT},
+      </if>
+      <if test="qrcode != null">
+        qrcode = #{qrcode,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccount">
+    update yy_zfb_account
+    set product_id = #{productId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      is_enable = #{isEnable,jdbcType=BIT},
+      qrcode = #{qrcode,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

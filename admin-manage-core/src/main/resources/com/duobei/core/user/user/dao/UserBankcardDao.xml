@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.user.user.dao.UserBankcardDao">
+  
+  <sql id="Base_Column_List">
+    ubank.id as id, ubank.product_id as product_id, ubank.user_id as user_id, 
+    ubank.mobile as mobile, ubank.mobile_md5 as mobile_md5, ubank.mobile_encrypt as mobile_encrypt, 
+    ubank.bank_name as bank_name, ubank.bank_code as bank_code, ubank.card_no as card_no, 
+    ubank.card_no_md5 as card_no_md5, ubank.card_no_encrypt as card_no_encrypt, 
+    ubank.is_main as is_main, ubank.bind_state as bind_state, ubank.add_time as add_time, 
+    ubank.modify_time as modify_time, ubank.is_delete as is_delete
+  </sql>
+
+  <select id="getByUserId" resultType="com.duobei.core.user.user.domain.UserBankcard" parameterType="Long">
+    select <include refid="Base_Column_List"/>
+    from pgy_user_bankcard ubank
+    where ubank.is_delete = 0 and  ubank.user_id = #{id} order by ubank.is_main desc ,ubank.add_time desc
+  </select>
+
+  <update id="setNotMainBankByUserId" parameterType="Long">
+    update pgy_user_bankcard
+    set is_main = 0
+    where user_id = #{userId} and is_main = 1
+  </update>
+
+  <update id="setMainBank" >
+    update pgy_user_bankcard
+    set is_main = 1
+    where is_delete = 0 and user_id = #{userId} and id = #{id}
+  </update>
+</mapper>

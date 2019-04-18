@@ -68,6 +68,15 @@
             success:function(data){
                 if(data.code==1){
                     $('#tt').datagrid('loadData', data.list);
+                    pager.pagination({
+                        pageSize: pageSize,//每页显示的记录条数，默认为10
+                        pageList: pageList,//可以设置每页记录条数的列表
+                        pageNumber:pageNum,
+                        layout:['list','sep','first','prev','links','next','last','sep','manual'],
+                        beforePageText: '',
+                        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                        afterPageText: ' 共 {pages} 页'
+                    })
                 }else{
                     top.$.jBox.tip(data.msg);
                 }
@@ -142,13 +151,10 @@
 
         <li>
             <label>应用名称：</label>
-            <select id="appId" name="appId" class="selectpicker show-tick form-control">
+            <select id="appId" name="appId" class="selectpicker show-tick form-control" onchange="getData()">
             </select>
         </li>
 
-        <li class="btns">
-            <input id="search" class="btn btn-primary" type="submit" value="查询" />
-        </li>
     </ul>
 </div>
 

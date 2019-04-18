@@ -124,12 +124,10 @@
 	<ul class="ul-form">
 		<li>
 			<label>选择应用：</label>
-			<select id="appId" name="appId" class="selectpicker show-tick form-control">
+			<select id="appId" name="appId" class="selectpicker show-tick form-control" onchange="getData()">
 			</select>
 		</li>
-		<li class="btns">
-			<input id="search" class="btn btn-primary" type="submit" value="查询" />
-		</li>
+
 		<li class="clearfix"></li>
 	</ul>
 </div>

@@ -108,7 +108,13 @@ public class BorrowCashController extends BaseController {
     @RequiresPermissions(PERMISSIONPRE+"view")
     @RequestMapping(value = "/form")
     public String getInfo(BorrowCash borrowCash,Model model) throws TqException {
-
+        /**
+         * 判断从哪个页面进入借款详情页，如果存在用户id则是用户详情界面1，如果不存在则是借款列表0
+         */
+        Integer returnType = 0;
+        if (borrowCash.getUserId() != null){
+            returnType = 1;
+        }
         try {
             //查询借款信息
             borrowCash = borrowCashService.getById(borrowCash.getId());
@@ -120,6 +126,11 @@ public class BorrowCashController extends BaseController {
                 model.addAttribute("userInfo",userInfoVo);
                 model.addAttribute("consumdebtOrder",consumdebtOrder);
                 model.addAttribute("borrowCash",borrowCash);
+                if (returnType == 0){
+                    model.addAttribute("returnUrl","/a/order/borrow/list?productId="+borrowCash.getProductId());
+                 }else{
+                    model.addAttribute("returnUrl","/a/customer/userFiles/form?id="+borrowCash.getUserId());
+                 }
             }
         } catch (Exception e) {
             log.error("查询借款信息异常", e);

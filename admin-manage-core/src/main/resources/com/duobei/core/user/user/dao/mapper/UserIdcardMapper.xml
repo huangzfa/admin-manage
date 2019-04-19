@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.user.user.dao.mapper.UserIdcardMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.user.user.domain.UserIdcard">
+    <id column="uidcard_id" jdbcType="BIGINT" property="id" />
+    <result column="uidcard_product_id" jdbcType="INTEGER" property="productId" />
+    <result column="uidcard_user_id" jdbcType="BIGINT" property="userId" />
+    <result column="uidcard_real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="uidcard_real_name_md5" jdbcType="VARCHAR" property="realNameMd5" />
+    <result column="uidcard_real_name_encrypt" jdbcType="VARCHAR" property="realNameEncrypt" />
+    <result column="uidcard_idcard" jdbcType="VARCHAR" property="idcard" />
+    <result column="uidcard_idcard_md5" jdbcType="VARCHAR" property="idcardMd5" />
+    <result column="uidcard_idcard_encrypt" jdbcType="VARCHAR" property="idcardEncrypt" />
+    <result column="uidcard_edit_name" jdbcType="VARCHAR" property="editName" />
+    <result column="uidcard_edit_name_md5" jdbcType="VARCHAR" property="editNameMd5" />
+    <result column="uidcard_edit_name_encrypt" jdbcType="VARCHAR" property="editNameEncrypt" />
+    <result column="uidcard_edit_idcard" jdbcType="VARCHAR" property="editIdcard" />
+    <result column="uidcard_edit_idcard_md5" jdbcType="VARCHAR" property="editIdcardMd5" />
+    <result column="uidcard_edit_idcard_encrypt" jdbcType="VARCHAR" property="editIdcardEncrypt" />
+    <result column="uidcard_address" jdbcType="VARCHAR" property="address" />
+    <result column="uidcard_gender" jdbcType="TINYINT" property="gender" />
+    <result column="uidcard_nation" jdbcType="VARCHAR" property="nation" />
+    <result column="uidcard_valid_begin" jdbcType="VARCHAR" property="validBegin" />
+    <result column="uidcard_valid_end" jdbcType="VARCHAR" property="validEnd" />
+    <result column="uidcard_birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="uidcard_agency" jdbcType="VARCHAR" property="agency" />
+    <result column="uidcard_idcard_front_url" jdbcType="VARCHAR" property="idcardFrontUrl" />
+    <result column="uidcard_idcard_behind_url" jdbcType="VARCHAR" property="idcardBehindUrl" />
+    <result column="uidcard_face_url" jdbcType="VARCHAR" property="faceUrl" />
+    <result column="uidcard_face_type" jdbcType="VARCHAR" property="faceType" />
+    <result column="uidcard_download_pic" jdbcType="VARCHAR" property="downloadPic" />
+    <result column="uidcard_face_env_url" jdbcType="VARCHAR" property="faceEnvUrl" />
+    <result column="uidcard_face_act_1_url" jdbcType="VARCHAR" property="faceAct1Url" />
+    <result column="uidcard_face_act_2_url" jdbcType="VARCHAR" property="faceAct2Url" />
+    <result column="uidcard_face_act_3_url" jdbcType="VARCHAR" property="faceAct3Url" />
+    <result column="uidcard_is_delete" jdbcType="BIGINT" property="isDelete" />
+    <result column="uidcard_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="uidcard_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    uidcard.id as uidcard_id, uidcard.product_id as uidcard_product_id, uidcard.user_id as uidcard_user_id, 
+    uidcard.real_name as uidcard_real_name, uidcard.real_name_md5 as uidcard_real_name_md5, 
+    uidcard.real_name_encrypt as uidcard_real_name_encrypt, uidcard.idcard as uidcard_idcard, 
+    uidcard.idcard_md5 as uidcard_idcard_md5, uidcard.idcard_encrypt as uidcard_idcard_encrypt, 
+    uidcard.edit_name as uidcard_edit_name, uidcard.edit_name_md5 as uidcard_edit_name_md5, 
+    uidcard.edit_name_encrypt as uidcard_edit_name_encrypt, uidcard.edit_idcard as uidcard_edit_idcard, 
+    uidcard.edit_idcard_md5 as uidcard_edit_idcard_md5, uidcard.edit_idcard_encrypt as uidcard_edit_idcard_encrypt, 
+    uidcard.address as uidcard_address, uidcard.gender as uidcard_gender, uidcard.nation as uidcard_nation, 
+    uidcard.valid_begin as uidcard_valid_begin, uidcard.valid_end as uidcard_valid_end, 
+    uidcard.birthday as uidcard_birthday, uidcard.agency as uidcard_agency, uidcard.idcard_front_url as uidcard_idcard_front_url, 
+    uidcard.idcard_behind_url as uidcard_idcard_behind_url, uidcard.face_url as uidcard_face_url, 
+    uidcard.face_type as uidcard_face_type, uidcard.download_pic as uidcard_download_pic, 
+    uidcard.face_env_url as uidcard_face_env_url, uidcard.face_act_1_url as uidcard_face_act_1_url, 
+    uidcard.face_act_2_url as uidcard_face_act_2_url, uidcard.face_act_3_url as uidcard_face_act_3_url, 
+    uidcard.is_delete as uidcard_is_delete, uidcard.add_time as uidcard_add_time, uidcard.modify_time as uidcard_modify_time
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.user.user.domain.UserIdcardExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pgy_user_idcard uidcard
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pgy_user_idcard uidcard
+    where uidcard.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from pgy_user_idcard
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.user.user.domain.UserIdcardExample">
+    delete from pgy_user_idcard uidcard
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.user.user.domain.UserIdcard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pgy_user_idcard (product_id, user_id, real_name, 
+      real_name_md5, real_name_encrypt, idcard, 
+      idcard_md5, idcard_encrypt, edit_name, 
+      edit_name_md5, edit_name_encrypt, edit_idcard, 
+      edit_idcard_md5, edit_idcard_encrypt, address, 
+      gender, nation, valid_begin, 
+      valid_end, birthday, agency, 
+      idcard_front_url, idcard_behind_url, face_url, 
+      face_type, download_pic, face_env_url, 
+      face_act_1_url, face_act_2_url, face_act_3_url, 
+      is_delete, add_time, modify_time
+      )
+    values (#{productId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{realName,jdbcType=VARCHAR}, 
+      #{realNameMd5,jdbcType=VARCHAR}, #{realNameEncrypt,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
+      #{idcardMd5,jdbcType=VARCHAR}, #{idcardEncrypt,jdbcType=VARCHAR}, #{editName,jdbcType=VARCHAR}, 
+      #{editNameMd5,jdbcType=VARCHAR}, #{editNameEncrypt,jdbcType=VARCHAR}, #{editIdcard,jdbcType=VARCHAR}, 
+      #{editIdcardMd5,jdbcType=VARCHAR}, #{editIdcardEncrypt,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=TINYINT}, #{nation,jdbcType=VARCHAR}, #{validBegin,jdbcType=VARCHAR}, 
+      #{validEnd,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{agency,jdbcType=VARCHAR}, 
+      #{idcardFrontUrl,jdbcType=VARCHAR}, #{idcardBehindUrl,jdbcType=VARCHAR}, #{faceUrl,jdbcType=VARCHAR}, 
+      #{faceType,jdbcType=VARCHAR}, #{downloadPic,jdbcType=VARCHAR}, #{faceEnvUrl,jdbcType=VARCHAR}, 
+      #{faceAct1Url,jdbcType=VARCHAR}, #{faceAct2Url,jdbcType=VARCHAR}, #{faceAct3Url,jdbcType=VARCHAR}, 
+      #{isDelete,jdbcType=BIGINT}, #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.user.user.domain.UserIdcard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pgy_user_idcard
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="realNameMd5 != null">
+        real_name_md5,
+      </if>
+      <if test="realNameEncrypt != null">
+        real_name_encrypt,
+      </if>
+      <if test="idcard != null">
+        idcard,
+      </if>
+      <if test="idcardMd5 != null">
+        idcard_md5,
+      </if>
+      <if test="idcardEncrypt != null">
+        idcard_encrypt,
+      </if>
+      <if test="editName != null">
+        edit_name,
+      </if>
+      <if test="editNameMd5 != null">
+        edit_name_md5,
+      </if>
+      <if test="editNameEncrypt != null">
+        edit_name_encrypt,
+      </if>
+      <if test="editIdcard != null">
+        edit_idcard,
+      </if>
+      <if test="editIdcardMd5 != null">
+        edit_idcard_md5,
+      </if>
+      <if test="editIdcardEncrypt != null">
+        edit_idcard_encrypt,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="nation != null">
+        nation,
+      </if>
+      <if test="validBegin != null">
+        valid_begin,
+      </if>
+      <if test="validEnd != null">
+        valid_end,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="agency != null">
+        agency,
+      </if>
+      <if test="idcardFrontUrl != null">
+        idcard_front_url,
+      </if>
+      <if test="idcardBehindUrl != null">
+        idcard_behind_url,
+      </if>
+      <if test="faceUrl != null">
+        face_url,
+      </if>
+      <if test="faceType != null">
+        face_type,
+      </if>
+      <if test="downloadPic != null">
+        download_pic,
+      </if>
+      <if test="faceEnvUrl != null">
+        face_env_url,
+      </if>
+      <if test="faceAct1Url != null">
+        face_act_1_url,
+      </if>
+      <if test="faceAct2Url != null">
+        face_act_2_url,
+      </if>
+      <if test="faceAct3Url != null">
+        face_act_3_url,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="realNameMd5 != null">
+        #{realNameMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="realNameEncrypt != null">
+        #{realNameEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardMd5 != null">
+        #{idcardMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardEncrypt != null">
+        #{idcardEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="editName != null">
+        #{editName,jdbcType=VARCHAR},
+      </if>
+      <if test="editNameMd5 != null">
+        #{editNameMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="editNameEncrypt != null">
+        #{editNameEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="editIdcard != null">
+        #{editIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="editIdcardMd5 != null">
+        #{editIdcardMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="editIdcardEncrypt != null">
+        #{editIdcardEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="nation != null">
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="validBegin != null">
+        #{validBegin,jdbcType=VARCHAR},
+      </if>
+      <if test="validEnd != null">
+        #{validEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="agency != null">
+        #{agency,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardFrontUrl != null">
+        #{idcardFrontUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardBehindUrl != null">
+        #{idcardBehindUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="faceUrl != null">
+        #{faceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="faceType != null">
+        #{faceType,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadPic != null">
+        #{downloadPic,jdbcType=VARCHAR},
+      </if>
+      <if test="faceEnvUrl != null">
+        #{faceEnvUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="faceAct1Url != null">
+        #{faceAct1Url,jdbcType=VARCHAR},
+      </if>
+      <if test="faceAct2Url != null">
+        #{faceAct2Url,jdbcType=VARCHAR},
+      </if>
+      <if test="faceAct3Url != null">
+        #{faceAct3Url,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.user.user.domain.UserIdcardExample" resultType="java.lang.Long">
+    select count(*) from pgy_user_idcard uidcard
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pgy_user_idcard uidcard
+    <set>
+      <if test="record.id != null">
+        uidcard.id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.productId != null">
+        uidcard.product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        uidcard.user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.realName != null">
+        uidcard.real_name = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realNameMd5 != null">
+        uidcard.real_name_md5 = #{record.realNameMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realNameEncrypt != null">
+        uidcard.real_name_encrypt = #{record.realNameEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcard != null">
+        uidcard.idcard = #{record.idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcardMd5 != null">
+        uidcard.idcard_md5 = #{record.idcardMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcardEncrypt != null">
+        uidcard.idcard_encrypt = #{record.idcardEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editName != null">
+        uidcard.edit_name = #{record.editName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editNameMd5 != null">
+        uidcard.edit_name_md5 = #{record.editNameMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editNameEncrypt != null">
+        uidcard.edit_name_encrypt = #{record.editNameEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editIdcard != null">
+        uidcard.edit_idcard = #{record.editIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editIdcardMd5 != null">
+        uidcard.edit_idcard_md5 = #{record.editIdcardMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editIdcardEncrypt != null">
+        uidcard.edit_idcard_encrypt = #{record.editIdcardEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        uidcard.address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null">
+        uidcard.gender = #{record.gender,jdbcType=TINYINT},
+      </if>
+      <if test="record.nation != null">
+        uidcard.nation = #{record.nation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validBegin != null">
+        uidcard.valid_begin = #{record.validBegin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validEnd != null">
+        uidcard.valid_end = #{record.validEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null">
+        uidcard.birthday = #{record.birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agency != null">
+        uidcard.agency = #{record.agency,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcardFrontUrl != null">
+        uidcard.idcard_front_url = #{record.idcardFrontUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcardBehindUrl != null">
+        uidcard.idcard_behind_url = #{record.idcardBehindUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faceUrl != null">
+        uidcard.face_url = #{record.faceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faceType != null">
+        uidcard.face_type = #{record.faceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.downloadPic != null">
+        uidcard.download_pic = #{record.downloadPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faceEnvUrl != null">
+        uidcard.face_env_url = #{record.faceEnvUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faceAct1Url != null">
+        uidcard.face_act_1_url = #{record.faceAct1Url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faceAct2Url != null">
+        uidcard.face_act_2_url = #{record.faceAct2Url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faceAct3Url != null">
+        uidcard.face_act_3_url = #{record.faceAct3Url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDelete != null">
+        uidcard.is_delete = #{record.isDelete,jdbcType=BIGINT},
+      </if>
+      <if test="record.addTime != null">
+        uidcard.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        uidcard.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pgy_user_idcard uidcard
+    set uidcard.id = #{record.id,jdbcType=BIGINT},
+      uidcard.product_id = #{record.productId,jdbcType=INTEGER},
+      uidcard.user_id = #{record.userId,jdbcType=BIGINT},
+      uidcard.real_name = #{record.realName,jdbcType=VARCHAR},
+      uidcard.real_name_md5 = #{record.realNameMd5,jdbcType=VARCHAR},
+      uidcard.real_name_encrypt = #{record.realNameEncrypt,jdbcType=VARCHAR},
+      uidcard.idcard = #{record.idcard,jdbcType=VARCHAR},
+      uidcard.idcard_md5 = #{record.idcardMd5,jdbcType=VARCHAR},
+      uidcard.idcard_encrypt = #{record.idcardEncrypt,jdbcType=VARCHAR},
+      uidcard.edit_name = #{record.editName,jdbcType=VARCHAR},
+      uidcard.edit_name_md5 = #{record.editNameMd5,jdbcType=VARCHAR},
+      uidcard.edit_name_encrypt = #{record.editNameEncrypt,jdbcType=VARCHAR},
+      uidcard.edit_idcard = #{record.editIdcard,jdbcType=VARCHAR},
+      uidcard.edit_idcard_md5 = #{record.editIdcardMd5,jdbcType=VARCHAR},
+      uidcard.edit_idcard_encrypt = #{record.editIdcardEncrypt,jdbcType=VARCHAR},
+      uidcard.address = #{record.address,jdbcType=VARCHAR},
+      uidcard.gender = #{record.gender,jdbcType=TINYINT},
+      uidcard.nation = #{record.nation,jdbcType=VARCHAR},
+      uidcard.valid_begin = #{record.validBegin,jdbcType=VARCHAR},
+      uidcard.valid_end = #{record.validEnd,jdbcType=VARCHAR},
+      uidcard.birthday = #{record.birthday,jdbcType=VARCHAR},
+      uidcard.agency = #{record.agency,jdbcType=VARCHAR},
+      uidcard.idcard_front_url = #{record.idcardFrontUrl,jdbcType=VARCHAR},
+      uidcard.idcard_behind_url = #{record.idcardBehindUrl,jdbcType=VARCHAR},
+      uidcard.face_url = #{record.faceUrl,jdbcType=VARCHAR},
+      uidcard.face_type = #{record.faceType,jdbcType=VARCHAR},
+      uidcard.download_pic = #{record.downloadPic,jdbcType=VARCHAR},
+      uidcard.face_env_url = #{record.faceEnvUrl,jdbcType=VARCHAR},
+      uidcard.face_act_1_url = #{record.faceAct1Url,jdbcType=VARCHAR},
+      uidcard.face_act_2_url = #{record.faceAct2Url,jdbcType=VARCHAR},
+      uidcard.face_act_3_url = #{record.faceAct3Url,jdbcType=VARCHAR},
+      uidcard.is_delete = #{record.isDelete,jdbcType=BIGINT},
+      uidcard.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      uidcard.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.user.user.domain.UserIdcard">
+    update pgy_user_idcard
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="realNameMd5 != null">
+        real_name_md5 = #{realNameMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="realNameEncrypt != null">
+        real_name_encrypt = #{realNameEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardMd5 != null">
+        idcard_md5 = #{idcardMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardEncrypt != null">
+        idcard_encrypt = #{idcardEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="editName != null">
+        edit_name = #{editName,jdbcType=VARCHAR},
+      </if>
+      <if test="editNameMd5 != null">
+        edit_name_md5 = #{editNameMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="editNameEncrypt != null">
+        edit_name_encrypt = #{editNameEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="editIdcard != null">
+        edit_idcard = #{editIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="editIdcardMd5 != null">
+        edit_idcard_md5 = #{editIdcardMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="editIdcardEncrypt != null">
+        edit_idcard_encrypt = #{editIdcardEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="nation != null">
+        nation = #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="validBegin != null">
+        valid_begin = #{validBegin,jdbcType=VARCHAR},
+      </if>
+      <if test="validEnd != null">
+        valid_end = #{validEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="agency != null">
+        agency = #{agency,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardFrontUrl != null">
+        idcard_front_url = #{idcardFrontUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardBehindUrl != null">
+        idcard_behind_url = #{idcardBehindUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="faceUrl != null">
+        face_url = #{faceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="faceType != null">
+        face_type = #{faceType,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadPic != null">
+        download_pic = #{downloadPic,jdbcType=VARCHAR},
+      </if>
+      <if test="faceEnvUrl != null">
+        face_env_url = #{faceEnvUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="faceAct1Url != null">
+        face_act_1_url = #{faceAct1Url,jdbcType=VARCHAR},
+      </if>
+      <if test="faceAct2Url != null">
+        face_act_2_url = #{faceAct2Url,jdbcType=VARCHAR},
+      </if>
+      <if test="faceAct3Url != null">
+        face_act_3_url = #{faceAct3Url,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.user.user.domain.UserIdcard">
+    update pgy_user_idcard
+    set product_id = #{productId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      real_name = #{realName,jdbcType=VARCHAR},
+      real_name_md5 = #{realNameMd5,jdbcType=VARCHAR},
+      real_name_encrypt = #{realNameEncrypt,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      idcard_md5 = #{idcardMd5,jdbcType=VARCHAR},
+      idcard_encrypt = #{idcardEncrypt,jdbcType=VARCHAR},
+      edit_name = #{editName,jdbcType=VARCHAR},
+      edit_name_md5 = #{editNameMd5,jdbcType=VARCHAR},
+      edit_name_encrypt = #{editNameEncrypt,jdbcType=VARCHAR},
+      edit_idcard = #{editIdcard,jdbcType=VARCHAR},
+      edit_idcard_md5 = #{editIdcardMd5,jdbcType=VARCHAR},
+      edit_idcard_encrypt = #{editIdcardEncrypt,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      nation = #{nation,jdbcType=VARCHAR},
+      valid_begin = #{validBegin,jdbcType=VARCHAR},
+      valid_end = #{validEnd,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=VARCHAR},
+      agency = #{agency,jdbcType=VARCHAR},
+      idcard_front_url = #{idcardFrontUrl,jdbcType=VARCHAR},
+      idcard_behind_url = #{idcardBehindUrl,jdbcType=VARCHAR},
+      face_url = #{faceUrl,jdbcType=VARCHAR},
+      face_type = #{faceType,jdbcType=VARCHAR},
+      download_pic = #{downloadPic,jdbcType=VARCHAR},
+      face_env_url = #{faceEnvUrl,jdbcType=VARCHAR},
+      face_act_1_url = #{faceAct1Url,jdbcType=VARCHAR},
+      face_act_2_url = #{faceAct2Url,jdbcType=VARCHAR},
+      face_act_3_url = #{faceAct3Url,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=BIGINT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

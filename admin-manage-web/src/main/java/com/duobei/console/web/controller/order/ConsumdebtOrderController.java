@@ -5,12 +5,15 @@ import com.duobei.common.enums.ConsumdebtOrderStateEumn;
 import com.duobei.common.enums.ResourceResTypeEumn;
 import com.duobei.common.enums.ResourceResTypeSecEumn;
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.OSSUtil;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.core.base.SpecialDateEditor;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.manage.sys.domain.Dict;
+import com.duobei.core.manage.sys.domain.OssUploadResult;
+import com.duobei.core.manage.sys.service.CommonService;
 import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.biz.domain.BizResource;
 import com.duobei.core.operation.biz.service.BizResourceService;
@@ -30,18 +33,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import com.duobei.console.web.controller.base.BaseController;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -62,6 +63,9 @@ public class ConsumdebtOrderController extends BaseController {
 
     @Resource
     BizResourceService bizResourceService;
+
+    @Resource
+    CommonService commonService;
 
     @InitBinder
     private void initBinder(WebDataBinder b) {
@@ -140,7 +144,7 @@ public class ConsumdebtOrderController extends BaseController {
      * @throws TqException
      */
     @RequiresPermissions(PERMISSIONPRE+"edit")
-    @RequestMapping(value = "/save")
+    @RequestMapping(value = "/update")
     @ResponseBody
     public String save(ConsumdebtOrder entity) throws TqException {
         try {
@@ -187,7 +191,7 @@ public class ConsumdebtOrderController extends BaseController {
 
 
     @RequiresPermissions(PERMISSIONPRE+"export")
-    @RequestMapping(value = "/export", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+    @RequestMapping(value = "/export", method = RequestMethod.POST)
     @ResponseBody
     public String export(ConsumdebtOrderCriteria consumdebtOrderCriteria) throws Exception {
         try {
@@ -243,8 +247,8 @@ public class ConsumdebtOrderController extends BaseController {
         String orderNo = ObjectUtils.toString(request.getParameter("orderNo"), null);
 
         Integer productId = Integer.parseInt(request.getParameter("productId"));
-        Long userId = Long.valueOf(request.getParameter("userId"));
-        Integer state = Integer.valueOf(request.getParameter("state"));
+        Long userId ="".equals(request.getParameter("userId")) ? null :  Long.parseLong(request.getParameter("userId"));
+        Integer state ="".equals(request.getParameter("state"))  ? null :  Integer.parseInt(request.getParameter("state"));
         String gmtStartStr = ObjectUtils.toString(request.getParameter("startTime"), null);
         String gmtEndStr = ObjectUtils.toString(request.getParameter("endTime"), null);
         String logisticsNo = ObjectUtils.toString(request.getParameter("logisticsNo"), null);
@@ -272,6 +276,50 @@ public class ConsumdebtOrderController extends BaseController {
                 .append("\"")
                 .toString();
     }
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    @ResponseBody
+    public String uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+        String path="/home/admin/project/file/";
+        OssUploadResult our = commonService.uploadFileToOssWithPath(file,path);
+        return JSON.toJSONString(our);
+    }
 
+/*
+    @RequestMapping(value="/batchDeliveryConsumdebtOrder",method=RequestMethod.GET,produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String batchDeliveryConsumdebtOrder(ModelMap model, String filePath){
+        logger.info("===============filePath===========" + filePath);
+        BatchDeliveryResult result=null;
+        if (filePath!=null) {
+            result=consumdebtOrderService.batchDeliveryConsumdebtOrder(filePath);
+            if (result!=null) {
+                logger.info("batchDelivery ConsumdebtOrder  error with lsdConsumdebtOrderService=" + result);
+                File file=new File(result.getFailFilePath());
+                String failFileName=file.getName();
+                InputStream is;
+                try {
+                    is = new FileInputStream(file);
+                    OssUploadResult uploadFileToOss = commonService.uploadImageToOss(is, failFileName, (int)file.length());
+                    if ("upload inputStream to oss succeed".equals(uploadFileToOss.getMsg())) {
+                        result.setFailFilePath(uploadFileToOss.getUrl());
+                    }
+                } catch (FileNotFoundException e) {
+                    logger.info("StatisticsAssetDataJob error", e);
+                    result.setMsg("文件上传服务器失败");
+                }
+            }else {
+                result=new BatchDeliveryResult();
+                result.setSuccess(false);
+                result.setMsg("操作失败");
+            }
+        }else {
+            result=new BatchDeliveryResult();
+            result.setSuccess(false);
+            result.setMsg("请上传物流单号文件");
+        }
+
+        return JSON.toJSONString(result);
+    }
+*/
 
 }

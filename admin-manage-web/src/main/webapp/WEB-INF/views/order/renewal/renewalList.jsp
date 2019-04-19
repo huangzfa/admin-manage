@@ -131,7 +131,7 @@
 
 		<li>
 			<label>产品名称：</label>
-			<select id="productId" name="productId" class="selectpicker show-tick form-control">
+			<select id="productId" name="productId" class="selectpicker show-tick form-control" onchange="getData()">
 			</select>
 		</li>
 

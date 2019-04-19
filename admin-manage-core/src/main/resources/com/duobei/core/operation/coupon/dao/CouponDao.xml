@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.coupon.dao.CouponDao">
+
+  <sql id="Base_Column_List">
+    coupon.id as id, coupon.product_id as product_id, coupon.coupon_name as coupon_name,
+    coupon.coupon_type as coupon_type, coupon.amount as amount, coupon.limit_amount as limit_amount,
+    coupon.use_explain as use_explain, coupon.quota as quota, coupon.quota_send as quota_send,
+    coupon.person_limit_count as person_limit_count, coupon.expiry_type as expiry_type,
+    coupon.valid_days as valid_days, coupon.gmt_start as gmt_start, coupon.gmt_end as gmt_end,
+    coupon.receive_type as receive_type, coupon.receive_start as receive_start,
+    coupon.receive_end as receive_end, coupon.remark as remark, coupon.add_time as add_time,
+    coupon.modify_time as modify_time, coupon.add_operator_id as add_operator_id,
+    coupon.modify_operator_id as modify_operator_id, coupon.is_delete as is_delete
+  </sql>
+
+  <select id="getMapByIds" resultType="com.duobei.core.operation.coupon.domain.Coupon">
+    select <include refid="Base_Column_List"/>
+    from yy_coupon coupon
+    where coupon.is_delete = 0 and coupon.id
+    <foreach collection="ids" item="id" separator="," open=" in(" close=")">
+      #{id}
+    </foreach>
+  </select>
+
+</mapper>

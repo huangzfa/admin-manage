@@ -151,12 +151,8 @@
 
 		<li>
 			<label>产品名称：</label>
-			<select id="productId" name="productId" class="selectpicker show-tick form-control">
+			<select id="productId" name="productId" class="selectpicker show-tick form-control" onchange="getData()">
 			</select>
-		</li>
-
-		<li class="btns">
-			<input id="search" class="btn btn-primary" type="submit" value="查询" />
 		</li>
 	</ul>
 </div>

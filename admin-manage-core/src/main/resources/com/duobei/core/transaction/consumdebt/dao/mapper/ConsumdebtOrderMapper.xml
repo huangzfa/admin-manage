@@ -12,8 +12,8 @@
     <result column="consumdebt_order_goods_id" jdbcType="INTEGER" property="goodsId" />
     <result column="consumdebt_order_goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="consumdebt_order_goods_icon" jdbcType="VARCHAR" property="goodsIcon" />
-    <result column="consumdebt_order_price_amount" jdbcType="DECIMAL" property="priceAmount" />
-    <result column="consumdebt_order_sale_amount" jdbcType="DECIMAL" property="saleAmount" />
+    <result column="consumdebt_order_price_amount" jdbcType="BIGINT" property="priceAmount" />
+    <result column="consumdebt_order_sale_amount" jdbcType="BIGINT" property="saleAmount" />
     <result column="consumdebt_order_gmt_finished" jdbcType="TIMESTAMP" property="gmtFinished" />
     <result column="consumdebt_order_gmt_affirm_end" jdbcType="TIMESTAMP" property="gmtAffirmEnd" />
     <result column="consumdebt_order_consignee" jdbcType="VARCHAR" property="consignee" />
@@ -29,7 +29,7 @@
     <result column="consumdebt_order_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="consumdebt_order_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
     <result column="consumdebt_order_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
-    <result column="consumdebt_order_is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="consumdebt_order_is_delete" jdbcType="BIGINT" property="isDelete" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -152,12 +152,12 @@
     values (#{productId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{borrowCashId,jdbcType=BIGINT}, 
       #{orderNo,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{payState,jdbcType=TINYINT}, 
       #{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{goodsIcon,jdbcType=VARCHAR}, 
-      #{priceAmount,jdbcType=DECIMAL}, #{saleAmount,jdbcType=DECIMAL}, #{gmtFinished,jdbcType=TIMESTAMP}, 
+      #{priceAmount,jdbcType=BIGINT}, #{saleAmount,jdbcType=BIGINT}, #{gmtFinished,jdbcType=TIMESTAMP}, 
       #{gmtAffirmEnd,jdbcType=TIMESTAMP}, #{consignee,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{consigneeMobile,jdbcType=VARCHAR}, #{logisticsCompany,jdbcType=VARCHAR}, #{logisticsNo,jdbcType=VARCHAR}, 
       #{gmtDeliver,jdbcType=TIMESTAMP}, #{gmtClosed,jdbcType=TIMESTAMP}, #{closedReason,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, 
-      #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}
+      #{addOperatorId,jdbcType=INTEGER}, #{modifyOperatorId,jdbcType=INTEGER}, #{isDelete,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
@@ -277,10 +277,10 @@
         #{goodsIcon,jdbcType=VARCHAR},
       </if>
       <if test="priceAmount != null">
-        #{priceAmount,jdbcType=DECIMAL},
+        #{priceAmount,jdbcType=BIGINT},
       </if>
       <if test="saleAmount != null">
-        #{saleAmount,jdbcType=DECIMAL},
+        #{saleAmount,jdbcType=BIGINT},
       </if>
       <if test="gmtFinished != null">
         #{gmtFinished,jdbcType=TIMESTAMP},
@@ -328,7 +328,7 @@
         #{modifyOperatorId,jdbcType=INTEGER},
       </if>
       <if test="isDelete != null">
-        #{isDelete,jdbcType=INTEGER},
+        #{isDelete,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -372,10 +372,10 @@
         consumdebt_order.goods_icon = #{record.goodsIcon,jdbcType=VARCHAR},
       </if>
       <if test="record.priceAmount != null">
-        consumdebt_order.price_amount = #{record.priceAmount,jdbcType=DECIMAL},
+        consumdebt_order.price_amount = #{record.priceAmount,jdbcType=BIGINT},
       </if>
       <if test="record.saleAmount != null">
-        consumdebt_order.sale_amount = #{record.saleAmount,jdbcType=DECIMAL},
+        consumdebt_order.sale_amount = #{record.saleAmount,jdbcType=BIGINT},
       </if>
       <if test="record.gmtFinished != null">
         consumdebt_order.gmt_finished = #{record.gmtFinished,jdbcType=TIMESTAMP},
@@ -423,7 +423,7 @@
         consumdebt_order.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
       </if>
       <if test="record.isDelete != null">
-        consumdebt_order.is_delete = #{record.isDelete,jdbcType=INTEGER},
+        consumdebt_order.is_delete = #{record.isDelete,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -442,8 +442,8 @@
       consumdebt_order.goods_id = #{record.goodsId,jdbcType=INTEGER},
       consumdebt_order.goods_name = #{record.goodsName,jdbcType=VARCHAR},
       consumdebt_order.goods_icon = #{record.goodsIcon,jdbcType=VARCHAR},
-      consumdebt_order.price_amount = #{record.priceAmount,jdbcType=DECIMAL},
-      consumdebt_order.sale_amount = #{record.saleAmount,jdbcType=DECIMAL},
+      consumdebt_order.price_amount = #{record.priceAmount,jdbcType=BIGINT},
+      consumdebt_order.sale_amount = #{record.saleAmount,jdbcType=BIGINT},
       consumdebt_order.gmt_finished = #{record.gmtFinished,jdbcType=TIMESTAMP},
       consumdebt_order.gmt_affirm_end = #{record.gmtAffirmEnd,jdbcType=TIMESTAMP},
       consumdebt_order.consignee = #{record.consignee,jdbcType=VARCHAR},
@@ -459,7 +459,7 @@
       consumdebt_order.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
       consumdebt_order.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
       consumdebt_order.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
-      consumdebt_order.is_delete = #{record.isDelete,jdbcType=INTEGER}
+      consumdebt_order.is_delete = #{record.isDelete,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -495,10 +495,10 @@
         goods_icon = #{goodsIcon,jdbcType=VARCHAR},
       </if>
       <if test="priceAmount != null">
-        price_amount = #{priceAmount,jdbcType=DECIMAL},
+        price_amount = #{priceAmount,jdbcType=BIGINT},
       </if>
       <if test="saleAmount != null">
-        sale_amount = #{saleAmount,jdbcType=DECIMAL},
+        sale_amount = #{saleAmount,jdbcType=BIGINT},
       </if>
       <if test="gmtFinished != null">
         gmt_finished = #{gmtFinished,jdbcType=TIMESTAMP},
@@ -546,7 +546,7 @@
         modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
       </if>
       <if test="isDelete != null">
-        is_delete = #{isDelete,jdbcType=INTEGER},
+        is_delete = #{isDelete,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -562,8 +562,8 @@
       goods_id = #{goodsId,jdbcType=INTEGER},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       goods_icon = #{goodsIcon,jdbcType=VARCHAR},
-      price_amount = #{priceAmount,jdbcType=DECIMAL},
-      sale_amount = #{saleAmount,jdbcType=DECIMAL},
+      price_amount = #{priceAmount,jdbcType=BIGINT},
+      sale_amount = #{saleAmount,jdbcType=BIGINT},
       gmt_finished = #{gmtFinished,jdbcType=TIMESTAMP},
       gmt_affirm_end = #{gmtAffirmEnd,jdbcType=TIMESTAMP},
       consignee = #{consignee,jdbcType=VARCHAR},
@@ -579,7 +579,7 @@
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       add_operator_id = #{addOperatorId,jdbcType=INTEGER},
       modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
-      is_delete = #{isDelete,jdbcType=INTEGER}
+      is_delete = #{isDelete,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

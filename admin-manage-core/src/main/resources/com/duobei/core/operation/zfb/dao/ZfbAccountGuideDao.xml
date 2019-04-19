@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.zfb.dao.ZfbAccountGuideDao">
+
+  <sql id="Base_Column_List">
+    zfb_account_guide.id as id, zfb_account_guide.zfb_account_id as zfb_account_id,
+    zfb_account_guide.img_url as img_url, zfb_account_guide.img_sort as img_sort,
+    zfb_account_guide.add_time as add_time, zfb_account_guide.modify_time as modify_time,
+    zfb_account_guide.add_operator_id as add_operator_id, zfb_account_guide.modify_operator_id as modify_operator_id,
+    zfb_account_guide.is_delete as is_delete
+  </sql>
+
+  <update id="deleteOldGuideByAccount" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccountGuide">
+    update yy_zfb_account_guide
+    set modify_operator_id = #{modifyOperatorId},modify_time = #{modifyTime},is_delete = id
+    where zfb_account_id = #{id}
+  </update>
+
+  <insert id="saveList">
+  insert into yy_zfb_account_guide(zfb_account_id, img_url, img_sort, add_time, modify_time, add_operator_id, modify_operator_id)
+  values
+  <foreach collection="guideList" separator="," item="guide">
+    (#{guide.zfbAccountId},#{guide.imgUrl},#{guide.imgSort},#{guide.addTime},#{guide.modifyTime},#{guide.addOperatorId},#{guide.modifyOperatorId})
+  </foreach>
+  </insert>
+
+  <select id="queryZfbAccountGuideByZfbAccountId" parameterType="Integer" resultType="com.duobei.core.operation.zfb.domain.ZfbAccountGuide">
+    select <include refid="Base_Column_List"/>
+    from yy_zfb_account_guide zfb_account_guide
+    where zfb_account_guide.is_delete = 0 and zfb_account_guide.zfb_account_id = #{id}
+    order by zfb_account_guide.img_sort asc
+  </select>
+</mapper>

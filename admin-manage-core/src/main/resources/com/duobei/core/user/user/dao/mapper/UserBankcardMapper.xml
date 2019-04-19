@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.user.user.dao.mapper.UserBankcardMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.user.user.domain.UserBankcard">
+    <id column="ubank_id" jdbcType="BIGINT" property="id" />
+    <result column="ubank_product_id" jdbcType="INTEGER" property="productId" />
+    <result column="ubank_user_id" jdbcType="BIGINT" property="userId" />
+    <result column="ubank_mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="ubank_mobile_md5" jdbcType="VARCHAR" property="mobileMd5" />
+    <result column="ubank_mobile_encrypt" jdbcType="VARCHAR" property="mobileEncrypt" />
+    <result column="ubank_bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="ubank_bank_code" jdbcType="VARCHAR" property="bankCode" />
+    <result column="ubank_card_no" jdbcType="VARCHAR" property="cardNo" />
+    <result column="ubank_card_no_md5" jdbcType="VARCHAR" property="cardNoMd5" />
+    <result column="ubank_card_no_encrypt" jdbcType="VARCHAR" property="cardNoEncrypt" />
+    <result column="ubank_is_main" jdbcType="BIT" property="isMain" />
+    <result column="ubank_bind_state" jdbcType="TINYINT" property="bindState" />
+    <result column="ubank_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="ubank_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="ubank_is_delete" jdbcType="BIGINT" property="isDelete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ubank.id as ubank_id, ubank.product_id as ubank_product_id, ubank.user_id as ubank_user_id, 
+    ubank.mobile as ubank_mobile, ubank.mobile_md5 as ubank_mobile_md5, ubank.mobile_encrypt as ubank_mobile_encrypt, 
+    ubank.bank_name as ubank_bank_name, ubank.bank_code as ubank_bank_code, ubank.card_no as ubank_card_no, 
+    ubank.card_no_md5 as ubank_card_no_md5, ubank.card_no_encrypt as ubank_card_no_encrypt, 
+    ubank.is_main as ubank_is_main, ubank.bind_state as ubank_bind_state, ubank.add_time as ubank_add_time, 
+    ubank.modify_time as ubank_modify_time, ubank.is_delete as ubank_is_delete
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.user.user.domain.UserBankcardExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pgy_user_bankcard ubank
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pgy_user_bankcard ubank
+    where ubank.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from pgy_user_bankcard
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.user.user.domain.UserBankcardExample">
+    delete from pgy_user_bankcard ubank
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.user.user.domain.UserBankcard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pgy_user_bankcard (product_id, user_id, mobile, 
+      mobile_md5, mobile_encrypt, bank_name, 
+      bank_code, card_no, card_no_md5, 
+      card_no_encrypt, is_main, bind_state, 
+      add_time, modify_time, is_delete
+      )
+    values (#{productId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{mobile,jdbcType=VARCHAR}, 
+      #{mobileMd5,jdbcType=VARCHAR}, #{mobileEncrypt,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
+      #{bankCode,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{cardNoMd5,jdbcType=VARCHAR}, 
+      #{cardNoEncrypt,jdbcType=VARCHAR}, #{isMain,jdbcType=BIT}, #{bindState,jdbcType=TINYINT}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.user.user.domain.UserBankcard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pgy_user_bankcard
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="mobileMd5 != null">
+        mobile_md5,
+      </if>
+      <if test="mobileEncrypt != null">
+        mobile_encrypt,
+      </if>
+      <if test="bankName != null">
+        bank_name,
+      </if>
+      <if test="bankCode != null">
+        bank_code,
+      </if>
+      <if test="cardNo != null">
+        card_no,
+      </if>
+      <if test="cardNoMd5 != null">
+        card_no_md5,
+      </if>
+      <if test="cardNoEncrypt != null">
+        card_no_encrypt,
+      </if>
+      <if test="isMain != null">
+        is_main,
+      </if>
+      <if test="bindState != null">
+        bind_state,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileMd5 != null">
+        #{mobileMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileEncrypt != null">
+        #{mobileEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null">
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNoMd5 != null">
+        #{cardNoMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNoEncrypt != null">
+        #{cardNoEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="isMain != null">
+        #{isMain,jdbcType=BIT},
+      </if>
+      <if test="bindState != null">
+        #{bindState,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.user.user.domain.UserBankcardExample" resultType="java.lang.Long">
+    select count(*) from pgy_user_bankcard ubank
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pgy_user_bankcard ubank
+    <set>
+      <if test="record.id != null">
+        ubank.id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.productId != null">
+        ubank.product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        ubank.user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.mobile != null">
+        ubank.mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobileMd5 != null">
+        ubank.mobile_md5 = #{record.mobileMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobileEncrypt != null">
+        ubank.mobile_encrypt = #{record.mobileEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankName != null">
+        ubank.bank_name = #{record.bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankCode != null">
+        ubank.bank_code = #{record.bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardNo != null">
+        ubank.card_no = #{record.cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardNoMd5 != null">
+        ubank.card_no_md5 = #{record.cardNoMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardNoEncrypt != null">
+        ubank.card_no_encrypt = #{record.cardNoEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isMain != null">
+        ubank.is_main = #{record.isMain,jdbcType=BIT},
+      </if>
+      <if test="record.bindState != null">
+        ubank.bind_state = #{record.bindState,jdbcType=TINYINT},
+      </if>
+      <if test="record.addTime != null">
+        ubank.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        ubank.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDelete != null">
+        ubank.is_delete = #{record.isDelete,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pgy_user_bankcard ubank
+    set ubank.id = #{record.id,jdbcType=BIGINT},
+      ubank.product_id = #{record.productId,jdbcType=INTEGER},
+      ubank.user_id = #{record.userId,jdbcType=BIGINT},
+      ubank.mobile = #{record.mobile,jdbcType=VARCHAR},
+      ubank.mobile_md5 = #{record.mobileMd5,jdbcType=VARCHAR},
+      ubank.mobile_encrypt = #{record.mobileEncrypt,jdbcType=VARCHAR},
+      ubank.bank_name = #{record.bankName,jdbcType=VARCHAR},
+      ubank.bank_code = #{record.bankCode,jdbcType=VARCHAR},
+      ubank.card_no = #{record.cardNo,jdbcType=VARCHAR},
+      ubank.card_no_md5 = #{record.cardNoMd5,jdbcType=VARCHAR},
+      ubank.card_no_encrypt = #{record.cardNoEncrypt,jdbcType=VARCHAR},
+      ubank.is_main = #{record.isMain,jdbcType=BIT},
+      ubank.bind_state = #{record.bindState,jdbcType=TINYINT},
+      ubank.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      ubank.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      ubank.is_delete = #{record.isDelete,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.user.user.domain.UserBankcard">
+    update pgy_user_bankcard
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileMd5 != null">
+        mobile_md5 = #{mobileMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileEncrypt != null">
+        mobile_encrypt = #{mobileEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null">
+        bank_code = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null">
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNoMd5 != null">
+        card_no_md5 = #{cardNoMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNoEncrypt != null">
+        card_no_encrypt = #{cardNoEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="isMain != null">
+        is_main = #{isMain,jdbcType=BIT},
+      </if>
+      <if test="bindState != null">
+        bind_state = #{bindState,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.user.user.domain.UserBankcard">
+    update pgy_user_bankcard
+    set product_id = #{productId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      mobile_md5 = #{mobileMd5,jdbcType=VARCHAR},
+      mobile_encrypt = #{mobileEncrypt,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      bank_code = #{bankCode,jdbcType=VARCHAR},
+      card_no = #{cardNo,jdbcType=VARCHAR},
+      card_no_md5 = #{cardNoMd5,jdbcType=VARCHAR},
+      card_no_encrypt = #{cardNoEncrypt,jdbcType=VARCHAR},
+      is_main = #{isMain,jdbcType=BIT},
+      bind_state = #{bindState,jdbcType=TINYINT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

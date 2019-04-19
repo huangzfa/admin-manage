@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.activity.dao.ActivityExchangePrizeDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.activity.domain.ActivityExchangePrize" extends="com.duobei.core.operation.activity.dao.mapper.ActivityExchangePrizeMapper.BaseResultMap">
+    </resultMap>
+
+    <select id="getByActId" resultType="com.duobei.core.operation.activity.domain.vo.ActivityExchangePrizeVo" parameterType="java.util.HashMap">
+        SELECT a.*,b.prize_name,b.prize_type FROM yy_activity_exchange_prize a left join yy_activity_prize b on a.prize_id=b.prize_id where a.is_delete = 0
+        and b.is_delete=0
+        <if test="actId != null and actId != '' ">
+            and a.act_id = #{actId,jdbcType=INTEGER}
+        </if>
+        <if test="prizeId != null and prizeId != '' ">
+            and a.prize_id = #{prizeId,jdbcType=INTEGER}
+        </if>
+        order by a.act_prize_id  asc;
+    </select>
+</mapper>

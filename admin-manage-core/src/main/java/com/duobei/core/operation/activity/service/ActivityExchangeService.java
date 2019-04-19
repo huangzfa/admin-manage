@@ -1,6 +1,10 @@
 package com.duobei.core.operation.activity.service;
 
 import com.duobei.core.operation.activity.domain.ActivityExchange;
+import com.duobei.core.operation.activity.domain.vo.ActivityExchangePrizeVo;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author huangzhongfa
@@ -10,4 +14,6 @@ import com.duobei.core.operation.activity.domain.ActivityExchange;
 public interface ActivityExchangeService {
 
     ActivityExchange getById(Integer id);
+
+
 }

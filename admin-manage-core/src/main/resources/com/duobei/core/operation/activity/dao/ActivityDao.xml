@@ -30,4 +30,22 @@
     <select id="getByCode" parameterType="java.lang.String" resultType="com.duobei.core.operation.activity.domain.Activity">
         select * from yy_activity where is_delete = 0 and code=#{code} limit 1;
     </select>
+
+    <!-- 查询优惠券奖品，other,bzj -->
+    <select id="getByActId" resultType="com.duobei.core.operation.activity.domain.ActivityPrize" parameterType="java.util.HashMap">
+        SELECT * FROM yy_activity_prize  where is_delete = 0
+        <if test="couponId != null and couponId != '' ">
+            and coupon_id = #{couponId,jdbcType=INTEGER}
+        </if>
+        and prize_type in('other','bzj') order by create_time  desc
+    </select>
+    <!-- 查询优惠券奖品，jkq,hkq -->
+    <select id="getCouponByActId" resultType="com.duobei.core.operation.activity.domain.ActivityPrize" parameterType="java.util.HashMap">
+        SELECT a.* FROM yy_activity_prize a left join lsd_coupon c  on a.coupon_id=c.id where a.is_delete = 0 and c.is_delete=0 and c.quota > c.quota_send
+        <if test="couponId != null and couponId != '' ">
+            and a.coupon_id = #{couponId,jdbcType=INTEGER}
+        </if>
+        and ((c.expiry_type = 0) or ( c.expiry_type = 1 and c.gmt_end > NOW() and c.gmt_start &lt; NOW()))
+        order by a.create_time  desc
+    </select>
 </mapper>

@@ -11,6 +11,6 @@ import java.util.List;
  * @date 2019/4/18
  */
 public interface ActivityExchangePrizeDao {
-    List<ActivityExchangePrizeVo> getByActId(HashMap<String,Object> param)
+    List<ActivityExchangePrizeVo> getByActId(HashMap<String,Object> param);
 
 }

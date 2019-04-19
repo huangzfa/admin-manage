@@ -1,7 +1,13 @@
 package com.duobei.core.operation.activity.service.impl;
 
+import com.duobei.core.operation.activity.dao.ActivityPrizeRelDao;
+import com.duobei.core.operation.activity.domain.vo.ActivityPrizeRelVo;
 import com.duobei.core.operation.activity.service.ActivityPrizeRelService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author huangzhongfa
@@ -10,4 +16,16 @@ import org.springframework.stereotype.Service;
  */
 @Service("activityPrizeRelService")
 public class ActivityPrizeRelServiceImpl implements ActivityPrizeRelService {
+
+    @Autowired
+    private ActivityPrizeRelDao prizeRelDao;
+    /**
+     * 查询红包或者转盘活动关联的普通奖品
+     * @param params
+     * @return
+     */
+    @Override
+    public List<ActivityPrizeRelVo> getByActId(HashMap<String,Object> params){
+        return prizeRelDao.getByActId(params);
+    }
 }

@@ -4,4 +4,16 @@
 
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.activity.domain.ActivityPrizeRel" extends="com.duobei.core.operation.activity.dao.mapper.ActivityPrizeRelMapper.BaseResultMap">
     </resultMap>
+
+    <select id="getByActId" resultType="com.duobei.core.operation.activity.domain.vo.ActivityPrizeRelVo" parameterType="java.util.HashMap">
+        SELECT a.*,b.prize_name,b.prize_type   FROM yy_activity_prize_rel a left join yy_activity_prize b on a.prize_id=b.prize_id where a.is_delete = 0
+        and b.is_delete=0
+        <if test="actId != null and actId != '' ">
+            and a.act_id = #{actId,jdbcType=INTEGER}
+        </if>
+        <if test="prizeId != null and prizeId != '' ">
+            and a.prize_id = #{prizeId,jdbcType=INTEGER}
+        </if>
+        order by a.act_prize_id  asc
+    </select>
 </mapper>

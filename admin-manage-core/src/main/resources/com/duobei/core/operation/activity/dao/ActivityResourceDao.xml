@@ -4,4 +4,17 @@
 
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.activity.domain.ActivityResource" extends="com.duobei.core.operation.activity.dao.mapper.ActivityResourceMapper.BaseResultMap">
     </resultMap>
+
+    <!-- 根据环境查询配置资源-->
+    <select id="getListByEnivr" resultType="com.duobei.core.operation.activity.domain.ActivityResource" parameterType="java.util.HashMap">
+        SELECT type,name,value,envir_type FROM yy_activity_resource
+        where is_delete = 0
+        <if test="type != null and type != '' ">
+            and  type = #{type,jdbcType=VARCHAR}
+        </if>
+        <if test="envirType != null and envirType != '' ">
+            and  envir_type = #{envirType,jdbcType=VARCHAR}
+        </if>
+        order by create_time desc
+    </select>
 </mapper>

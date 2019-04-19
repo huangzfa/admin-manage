@@ -11,10 +11,13 @@ import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.operation.activity.domain.Activity;
 import com.duobei.core.operation.activity.domain.ActivityExchange;
+import com.duobei.core.operation.activity.domain.ActivityExchangePrize;
+import com.duobei.core.operation.activity.domain.ActivityPrize;
 import com.duobei.core.operation.activity.domain.criteria.ActivityCriteria;
-import com.duobei.core.operation.activity.service.ActivityExchangeService;
-import com.duobei.core.operation.activity.service.ActivityService;
-import com.duobei.core.operation.activity.service.ActivityStaticService;
+import com.duobei.core.operation.activity.domain.vo.ActivityExchangePrizeVo;
+import com.duobei.core.operation.activity.domain.vo.ActivityHongbaoPrizeVo;
+import com.duobei.core.operation.activity.domain.vo.ActivityPrizeRelVo;
+import com.duobei.core.operation.activity.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +46,16 @@ public class ActivityController extends BaseController {
     private ActivityStaticService staticService;
     @Autowired
     private ActivityExchangeService exchangeService;
+    @Autowired
+    private ActivityExchangePrizeService exchangePrizeService;
+    @Autowired
+    private ActivityPrizeRelService prizeRelService;
+    @Autowired
+    private ActivityHongbaoPrizeService hongbaoPrizeService;
+    @Autowired
+    private ActivityResourceService resourceService;
+    @Autowired
+    private ActivityPrizeService prizeService;
 
 
     /**
@@ -91,43 +104,45 @@ public class ActivityController extends BaseController {
     public void form(Model model, String code) {
         if(StringUtil.isNotEmpty(code)){
             Activity activity = activityService.getByCode(code);
-            if( activity == null ){
+            if( activity != null ){
                 model.addAttribute("activity",JSON.toJSONString(activity));
-            }
-            HashMap<String,Object> params = new HashMap<>();
-            String envioment = Global.getValAsString("environment");
-            //静态模板
-            /*if( activity.getAtCode().equals(ActivityTypeEnum.STATIC.getEnv())){
-                model.addAttribute("static",staticService.getById(activity.getActId()));
-            }else if(activity.getAtCode().equals(ActivityTypeEnum.EXCHANGE.getEnv())){
-                ActivityExchange exchangeDo =  exchangeService.getById(activity.getActId());
-                model.addAttribute("exchange",exchangeDo);
-                model.addAttribute("timeAxis",exchangeDo.getTimeAxis().split(","));
-                params.put("actId",activity.getActId());
-                //活动奖品关联数据
-                List<LsdActivityExchangePrizeDto> przie_rel_list = exchangePrizeService.getByActId(params);
-                model.put("prize_exchange_list",przie_rel_list);
-
-            }else{
-                params.put("actId",actId);
-                //活动奖品关联数据
-                List<LsdActivityPrizeRelDto> prize_exchange_list = prizeRelService.getByActId(params);
-                model.put("przie_rel_list",prize_exchange_list);
-
-                if( activityDo.getAtCode().equals(ActivityTypeEnum.HONGBAO.getEnv())){
-                    //额外奖品列表
-                    List<LsdActivityOtherHongbaoDto> prize_hongbao_list = otherHongbaoService.getByActId(params);
-                    model.put("prize_hongbao_list", prize_hongbao_list);
-                    //活动红包表
-                    model.put("hongbao",hongbaoService.getById((long)actId));
-                    activityType = ResourceType.ACTIVITY_HONGBAO_LINK.getCode();
-                    //活动转盘表
-                }else if(activityDo.getAtCode().equals(ActivityTypeEnum.ZHUANPAN.getEnv())){
-                    model.put("dazhuanpan",dazhuanpanService.getById((long)actId));
-                    activityType = ResourceType.ACTIVITY_DAZHUANPAN_LINK.getCode();
+                HashMap<String,Object> params = new HashMap<>();
+                //当前环境
+                String envioment = Global.getValAsString("environment");
+                //静态模板
+                if( activity.getAtCode().equals(ActivityTypeEnum.STATIC.getEnv())){
+                    model.addAttribute("static",staticService.getById(activity.getActId()));
                 }
-            }*/
+                //兑换模板
+                else if(activity.getAtCode().equals(ActivityTypeEnum.EXCHANGE.getEnv())){
+                    ActivityExchange exchangeDo =  exchangeService.getById(activity.getActId());
+                    model.addAttribute("exchange",exchangeDo);
+                    model.addAttribute("timeAxis",exchangeDo.getTimeAxis().split(","));
+                    params.put("actId",activity.getActId());
+                    //活动奖品关联数据
+                    List<ActivityExchangePrizeVo> przieRelList = exchangePrizeService.getByActId(params);
+                    model.addAttribute("przieRelList",JSON.toJSONString(przieRelList));
+
+                }else{//普通模板（红包和转盘）
+                    params.put("actId",activity.getActId());
+                    //活动奖品关联数据
+                    List<ActivityPrizeRelVo> przieRelList = prizeRelService.getByActId(params);
+                    model.addAttribute("przieRelList",JSON.toJSONString(przieRelList));
+                    if( activity.getAtCode().equals(ActivityTypeEnum.HONGBAO.getEnv())){
+                        //额外奖品列表
+                        List<ActivityHongbaoPrizeVo> prizeHongbaoList = hongbaoPrizeService.getByActId(params);
+                        model.addAttribute("prizeHongbaoList", JSON.toJSONString(prizeHongbaoList));
+                    }
+                }
+                model.addAttribute("activity", activity);
+                params.put("envirType",envioment);
+                params.put("type",activity.getAtCode());
+                model.addAttribute("links",resourceService.getListByEnivr(params));
+            }
         }
+        //查询优惠券列表
+        //List<ActivityPrize> prize_list1 = prizeService.getByActId(params);//其他品类和不中奖奖品
+        //List<ActivityPrize> prize_list2 = prizeService.getCouponByActId(params);//优惠券和借款券
     }
 
     @RequiresPermissions("activity:list:edit")

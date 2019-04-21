@@ -13,5 +13,6 @@ public class PgyHandleUtil {
         System.out.println(PgyDataHandler.chineseName("李天雄"));
         System.out.println(PgyDataHandler.md5("李天雄43018119970320905X"));
         System.out.println(PgyDataHandler.idcard("43018119970320905X"));
+        System.out.println(PgyDataHandler.bankCard("222222222222222222"));
     }
 }

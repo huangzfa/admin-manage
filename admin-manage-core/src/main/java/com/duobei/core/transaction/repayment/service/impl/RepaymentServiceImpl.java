@@ -5,6 +5,7 @@ import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.dao.ProductDao;
 import com.duobei.core.operation.product.domain.Product;
+import com.duobei.core.operation.report.criteria.FinanceReportCriteria;
 import com.duobei.core.transaction.borrow.dao.BorrowCashDao;
 import com.duobei.core.transaction.borrow.domain.BorrowCash;
 import com.duobei.core.transaction.repayment.dao.BorrowCashRepaymentDao;
@@ -178,5 +179,10 @@ public class RepaymentServiceImpl implements RepaymentService {
 
         }
         return vo;
+    }
+
+    @Override
+    public List<BorrowCashRepayment> getReportList(FinanceReportCriteria criteria) {
+        return null;
     }
 }

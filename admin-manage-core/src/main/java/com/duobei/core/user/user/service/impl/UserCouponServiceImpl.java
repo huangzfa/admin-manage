@@ -11,6 +11,7 @@ import com.duobei.dic.ZD;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,8 @@ public class UserCouponServiceImpl implements UserCouponService {
             orderName = "used_time";
         }else if(state == ZD.couponState_expire){
             orderName = "end_time";
+        }else if (state == ZD.couponState_frozen){
+            orderName = "end_time";
         }else{
             orderName = null;
         }
@@ -52,8 +55,11 @@ public class UserCouponServiceImpl implements UserCouponService {
         Map<Integer,Coupon> couponMap = couponDao.getMapByIds(couponIds);
         //赋值优惠券名称
         for (UserCouponVo userCouponVo : list){
-            Coupon coupon = couponMap.get(userCouponVo);
-            userCouponVo.setCouponName(coupon.getCouponName());
+            Coupon coupon = couponMap.get(new Long(userCouponVo.getCouponId()));
+            if (coupon != null){
+                userCouponVo.setCouponName(coupon.getCouponName());
+                userCouponVo.setAmount(new BigDecimal(coupon.getAmount()).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
+            }
         }
         return list;
     }

@@ -22,16 +22,21 @@ public class SpecialDateEditor extends PropertyEditorSupport {
                 date = format.parse(text);
             }
         } catch (ParseException e) {
-            format = new SimpleDateFormat("yyyy-MM-dd");
+                format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
                 date = format.parse(text);
-            } catch (ParseException e1) {
-                format = new SimpleDateFormat("yyyy-MM");
-
+            }catch (ParseException e0){
+                format = new SimpleDateFormat("yyyy-MM-dd");
                 try {
                     date = format.parse(text);
-                } catch (Exception e2) {
-                    logger.error("自动绑定日期数据出错", e);
+                } catch (ParseException e1) {
+                    format = new SimpleDateFormat("yyyy-MM");
+
+                    try {
+                        date = format.parse(text);
+                    } catch (Exception e2) {
+                        logger.error("自动绑定日期数据出错", e);
+                    }
                 }
             }
         }

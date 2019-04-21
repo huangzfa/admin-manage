@@ -11,4 +11,6 @@ import lombok.Data;
 @Data
 public class ProductAuthConfigVo extends ProductAuthConfig {
     private String authName;
+
+    private String authCode;
 }

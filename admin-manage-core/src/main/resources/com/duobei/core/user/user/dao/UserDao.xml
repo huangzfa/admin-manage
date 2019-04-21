@@ -55,4 +55,40 @@
       #{renewal.userId}
     </foreach>
   </select>
+
+  <select id="getListByQuery" parameterType="com.duobei.core.user.user.domain.criteria.UserCriteria" resultType="com.duobei.core.user.user.domain.vo.UserListVo">
+    select <include refid="Base_Column_List"/>,user_idcard.real_name,user_idcard.real_name_md5,user_idcard.real_name_encrypt
+    from pgy_user `user`
+    left join pgy_user_idcard user_idcard on `user`.id = user_idcard.user_id
+    where `user`.is_delete = 0
+    and `user`.product_id
+    <foreach collection="productList" open=" in(" close=")" separator="," item="product">
+      #{product.id}
+    </foreach>
+    <if test="userId != null">
+      and `user`.id = #{userId}
+    </if>
+    <if test="userName != null and userName != ''">
+      and `user`.user_name_md5 = #{userName}
+    </if>
+    <if test="globalUserId != null and globalUserId != ''">
+      and `user`.global_user_id = #{globalUserId}
+    </if>
+    <if test="realName != null and realName != ''">
+      and `user`.id
+      <foreach collection="userIds" open=" in(" close=")" separator="," item="id">
+      #{id}
+    </foreach>
+    </if>
+    order by  `user`.add_time desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+  <select id="getById" parameterType="Long" resultType="com.duobei.core.user.user.domain.User">
+    select <include refid="Base_Column_List"/>
+    from pgy_user `user`
+    where `user`.is_delete = 0 and `user`.id = #{id}
+  </select>
 </mapper>

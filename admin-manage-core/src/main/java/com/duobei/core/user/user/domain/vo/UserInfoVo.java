@@ -1,6 +1,7 @@
 package com.duobei.core.user.user.domain.vo;
 
 import com.duobei.core.operation.app.domain.App;
+import com.duobei.core.operation.channel.domain.PromotionChannel;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.user.user.domain.User;
 
@@ -36,6 +37,32 @@ public class UserInfoVo extends User {
      * @return
      */
     private App app;
+
+    /**
+     * 渠道
+     */
+    private PromotionChannel promotionChannel;
+
+    /**
+     * 最后登录时间
+     */
+    private UserLoginLastLogVo lastLogVo;
+
+    public UserLoginLastLogVo getLastLogVo() {
+        return lastLogVo;
+    }
+
+    public void setLastLogVo(UserLoginLastLogVo lastLogVo) {
+        this.lastLogVo = lastLogVo;
+    }
+
+    public PromotionChannel getPromotionChannel() {
+        return promotionChannel;
+    }
+
+    public void setPromotionChannel(PromotionChannel promotionChannel) {
+        this.promotionChannel = promotionChannel;
+    }
 
     public Product getProduct() {
         return product;

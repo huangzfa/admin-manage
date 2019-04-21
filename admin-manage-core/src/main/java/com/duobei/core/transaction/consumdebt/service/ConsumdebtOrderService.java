@@ -49,4 +49,11 @@ public interface ConsumdebtOrderService {
      * @return
      */
     List<ConsumdebtOrder> getListByReportQuery(ConsumdebtOrderCriteria criteria);
+
+   /* *//**
+     * 批量导入发货数据
+     * @param filePath
+     * @return
+     *//*
+    BatchDeliveryResult batchDeliveryConsumdebtOrder(String filePath);*/
 }

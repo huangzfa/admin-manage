@@ -3,11 +3,15 @@ package com.duobei.core.transaction.borrow.service;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.operation.report.criteria.FinanceReportCriteria;
 import com.duobei.core.transaction.borrow.domain.BorrowCash;
 import com.duobei.core.transaction.borrow.domain.criteria.BorrowCashCriteria;
 import com.duobei.core.transaction.borrow.domain.vo.BorrowCashListVo;
+import com.duobei.core.user.user.domain.criteria.UserBorrowCriteria;
+import com.duobei.core.user.user.domain.vo.UserBorrowListVo;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author litianxiong
@@ -43,4 +47,14 @@ public interface BorrowCashService {
      * @param credential
      */
     void overdueDerate(BorrowCash borrowCash, BigDecimal derateAmount, OperatorCredential credential) throws TqException;
+
+    /**
+     * 获取导出数据
+     * @param criteria
+     * @return
+     */
+    List<BorrowCash> getReportList(FinanceReportCriteria criteria);
+
+
+    ListVo<UserBorrowListVo> getStageBorrowByUserIdAndState(UserBorrowCriteria criteria);
 }

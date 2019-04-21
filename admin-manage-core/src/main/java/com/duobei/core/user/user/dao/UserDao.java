@@ -3,9 +3,14 @@ package com.duobei.core.user.user.dao;
 import com.duobei.core.transaction.borrow.domain.vo.BorrowCashListVo;
 import com.duobei.core.transaction.renewal.domain.vo.BorrowCashRenewalListVo;
 import com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentListVo;
+import com.duobei.core.user.user.domain.User;
+import com.duobei.core.user.user.domain.UserExample;
+import com.duobei.core.user.user.domain.criteria.UserCriteria;
 import com.duobei.core.user.user.domain.vo.UserAndIdCardVo;
 import com.duobei.core.user.user.domain.vo.UserInfoVo;
 import java.util.List;
+
+import com.duobei.core.user.user.domain.vo.UserListVo;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,4 +36,8 @@ public interface UserDao {
 
     @MapKey("id")
     Map<Long,UserAndIdCardVo> getUserAndIdCardMapByRenelwalUserIds(@Param("renewalData") List<BorrowCashRenewalListVo> data);
+
+    List<UserListVo> getListByQuery(UserCriteria criteria);
+
+    User getById(Long id);
 }

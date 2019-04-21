@@ -2,6 +2,8 @@ package com.duobei.console.web.controller.customer;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.duobei.common.exception.TqException;
+import com.duobei.common.util.Pagination;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
@@ -14,6 +16,7 @@ import com.duobei.core.transaction.borrow.service.BorrowCashService;
 import com.duobei.core.user.user.domain.UserAddress;
 import com.duobei.core.user.user.domain.UserBankcard;
 import com.duobei.core.user.user.domain.UserLoginLog;
+import com.duobei.core.user.user.domain.criteria.UserBorrowCriteria;
 import com.duobei.core.user.user.domain.criteria.UserCriteria;
 import com.duobei.core.user.user.domain.vo.*;
 import com.duobei.core.user.user.service.*;
@@ -31,6 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -128,18 +132,23 @@ public class UserFilesController extends BaseController {
             /**
              * 借款查询条件
              */
-            List<Dict> stageBorrowQueryList = DictUtil.getDictList(ZD.borrowState);
+            List<Dict> stageBorrowQueryList = DictUtil.getDictList(ZD.userFilesBorrwoQuery);
 
             //查询借款信息 默认显示(申请/未审核，已结清，打款中，已经打款/待还款)状态借款信息
             List<Integer> borrowState = new ArrayList<>();
             borrowState.add(ZD.borrowState_ing);
             borrowState.add(ZD.borrowState_waitRepay);
             borrowState.add(ZD.borrowState_new);
-            List<BorrowCashListVo> stageBorrowVoList = borrowCashService.getStageBorrowByUserIdAndState(userVo.getId(),borrowState);
+            UserBorrowCriteria criteria = new UserBorrowCriteria();
+            criteria.setUserId(userVo.getId());
+            criteria.setBorrowState(borrowState);
+            criteria.setPage(1);
+            criteria.setPagesize(10);
+            ListVo<UserBorrowListVo> stageBorrowVoList = borrowCashService.getStageBorrowByUserIdAndState(criteria);
             /**
-             * 用户认证信息
+             * 用户产品认证信息
              */
-             List<UserAuthListVo> userAuthList = userAuthService.getAuthListVoByUserId(userVo.getId());
+             List<UserAuthListVo> userAuthList = userAuthService.getAuthListVoByUser(userVo);
 
             /**
              * 用户优惠券(默认已使用)
@@ -203,18 +212,19 @@ public class UserFilesController extends BaseController {
     @RequiresPermissions(PERMISSIONPRE+"view")
     @ResponseBody
     @RequestMapping(value = "/stageBorrowListQuery")
-    public String stageBorrowListQuery(HttpServletRequest request ,Long userId,Integer state) {
+    public String stageBorrowListQuery(UserBorrowCriteria criteria) {
         List<Integer> borrowState = new ArrayList<>();
-        if (state == 1){
+        if (criteria.getStateQueryType() == 1){
             borrowState.add(ZD.borrowState_new);
             borrowState.add(ZD.borrowState_ing);
             borrowState.add(ZD.borrowState_waitRepay);
-        }else if(state == 2){
+        }else if(criteria.getStateQueryType() == 2){
             borrowState.add(ZD.borrowState_finish);
             borrowState.add(ZD.borrowState_close);
             borrowState.add(ZD.borrowState_fail);
         }
-        List<BorrowCashListVo> list = borrowCashService.getStageBorrowByUserIdAndState(userId,borrowState);
+        criteria.setBorrowState(borrowState);
+        ListVo<UserBorrowListVo> list = borrowCashService.getStageBorrowByUserIdAndState(criteria);
         return JSONObject.toJSONString(list);
     }
 
@@ -222,10 +232,11 @@ public class UserFilesController extends BaseController {
     @RequiresPermissions(PERMISSIONPRE+"auth:edit")
     @ResponseBody
     @RequestMapping(value = "/resetAuthState")
-    public String resetAuthState(HttpServletRequest request , String authCode,Long userId) {
+    public String resetAuthState(HttpServletRequest request , String authCode,Long userId) throws TqException {
         if (StringUtils.isBlank(authCode) || userId == null){
             return null;
         }
+
         try {
             /**
              * 重置用户认证状态
@@ -237,7 +248,8 @@ public class UserFilesController extends BaseController {
             /**
              * 用户认证信息
              */
-            List<UserAuthListVo> list = userAuthService.getAuthListVoByUserId(userId);
+            UserInfoVo userInfoVo = userService.getUserInfoById(userId);
+            List<UserAuthListVo> list = userAuthService.getAuthListVoByUser(userInfoVo);
             return JSONObject.toJSONString(list);
         }
     }

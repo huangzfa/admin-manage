@@ -1,7 +1,10 @@
 package com.duobei.core.user.user.service;
 
+import com.duobei.common.vo.ListVo;
+import com.duobei.core.user.user.domain.criteria.UserCriteria;
 import com.duobei.core.user.user.domain.vo.UserAndIdCardVo;
 import com.duobei.core.user.user.domain.vo.UserInfoVo;
+import com.duobei.core.user.user.domain.vo.UserListVo;
 
 /**
  * @author litianxiong
@@ -15,4 +18,6 @@ public interface UserService {
      * @return
      */
     UserInfoVo getUserInfoById(Long userId);
+
+    ListVo<UserListVo> getListByQuery(UserCriteria userCriteria);
 }

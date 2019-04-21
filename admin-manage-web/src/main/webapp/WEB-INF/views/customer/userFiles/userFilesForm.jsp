@@ -267,7 +267,7 @@
             </thead>
             <tbody id="bankTable">
             <c:forEach items="${bankList}" var="bankInfo">
-                <h bankId ='${bankInfo.id}'>
+                <tr  bankId ='${bankInfo.id}'>
                     <td>${bankInfo.bankName}</td>
                     <td>${bankInfo.cardNo}</td>
                     <td>${cfg:getDictLabel('bankIsMain',bankInfo.isMain)}</td>
@@ -296,7 +296,7 @@
             <div style="text-align: center" class="query_group">
                 <table style="margin-left: 47%">
                 <tr>
-                    <c:forEach items="${customer.stageBorrowQuery}" var="stageQuery">
+                    <c:forEach items="${stageBorrowQuery}" var="stageQuery">
                         <td class="stageBorrowQuery
                         <c:if test="${stageQuery.des == '1'}">
                         active
@@ -326,22 +326,22 @@
                 <th style="text-align: center;"class="list_th">操作</th>
                 </thead>
                 <tbody id="borrowInfoTable">
-                <c:forEach items="${stageBorrowVoList}" var="borrowInfo">
+                <c:forEach items="${stageBorrowVoList.rows}" var="borrowInfo">
                     <tr borrowId ='${borrowInfo.id}'>
                         <td>${borrowInfo.id}</td>
                         <td>${borrowInfo.borrowNo}</td>
                         <td>${cfg:amountLongToBigDecimal(borrowInfo.amount)}</td>
-                        <td>${customer.borrowDays}</td>
+                        <td>${borrowInfo.borrowDays}</td>
                         <td>${cfg:amountLongToBigDecimal(borrowInfo.poundage)}</td>
                         <td>${cfg:amountLongToBigDecimal(borrowInfo.couponAmount)}</td>
                         <td>${cfg:amountLongToBigDecimal(borrowInfo.arrivalAmount)}</td>
-                        <td>${cfg:getDictLabel('borrowState',borrowInfo.borrowState)}</td>
-                        <td>${cfg:getDictLabel('riskState',borrowInfo.riskState)}</td>
+                        <td>${borrowInfo.borrowStateName}</td>
+                        <td>${borrowInfo.riskStateName}</td>
                         <td><fmt:formatDate value="${borrowInfo.addTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td><fmt:formatDate value="${borrowInfo.gmtPlanRepayment}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td>${borrowInfo.renewalNum}</td>
-                        <td>${cfg:amountLongToBigDecimal(borrowInfo.overdueAmount-borrowInfo.derateOverdue-borrowInfo.sumOverdueAmount)}</td>
-                        <td>${cfg:amountLongToBigDecimal(borrowInfo.amount+borrowInfo.overdueAmount+borrowInfo.poundage+borrowInfo.poundage-borrowInfo.consumeAmount - borrowInfo.repayAmount - borrowInfo.derateOverdue)}</td>
+                        <td>${borrowInfo.waitOverdueAmount}</td>
+                        <td>${borrowInfo.waitAmount}</td>
                         <td><a class="si-option-a" href="${ctxA}/order/borrow/form?userId=${user.id}&id=${borrowInfo.id}">查看</a>
                             <c:if test="${borrowInfo.borrowState == 2}">
                             <a href="#">重新回调</a>
@@ -352,6 +352,17 @@
                 </tbody>
             </table>
             <br>
+            <div style="text-align: right">总数:<span id="borrowTotal">${stageBorrowVoList.total}</span>
+                <a id="pageLast" onclick="pageAcount(-1)">上一页</a>
+
+
+                    <a id="pageNext" onclick="pageAcount(1)"
+                    <c:if test="${stageBorrowVoList.total < 10}">
+                        style="display: none"
+                    </c:if>
+                    >下一页</a>
+
+            </div>
          </div>
         </div>
 
@@ -376,8 +387,14 @@
                             <shiro:hasPermission name="customer:userFiles:auth:edit">
                             <c:choose>
                                 <c:when test="${userAuthInfo.operState == 'reset'}">
-                                    <td><a href="#" onclick="resetAuthState('${userAuthInfo.code}')">重置</a></td>
-
+                                    <c:choose>
+                                        <c:when test="${userAuthInfo.authState == '已认证'}">
+                                            <td><a href="#" onclick="resetAuthState('${userAuthInfo.code}')">重置</a></td>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <td>——</td>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:when>
                                 <c:otherwise>
                                     <td>——</td>
@@ -418,8 +435,8 @@
                         <tr userCouponId ='${userCouponInfo.id}'>
                             <td>${userCouponInfo.couponName}</td>
                             <td>${userCouponInfo.couponTypeName}</td>
-                            <td>${cfg:amountLongToBigDecimal(userCouponInfo.amount)}</td>
-                            <td><fmt:formatDate value="${userCouponInfo.validEndTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                            <td>${userCouponInfo.amount}</td>
+                            <td><fmt:formatDate value="${userCouponInfo.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -441,10 +458,93 @@
 </div>
 </body>
 <script>
+    var pager;
+    var pageSize=${cfg:getPageSize()};
+    var pageList=[pageSize,30,50];
+    var pageNum =1;
     $(function () {
+        $("#pageLast").hide();
         $("#login").dialog("close")
     })
+    function pageAcount(addpage) {
+        $("#borrowTotal").html("");
+        pageNum += addpage;
+        if(pageNum < 1){
+            pageNum = 1;
+        }
+        getData();
+    }
 
+    function amountformatter(value){
+        if (value == null || value == ''){
+            return 0.00;
+        }else{
+            return (value/100).toFixed(2);
+        }
+    }
+    function getData(){
+        var data = {'userId':$('#userId').val(),'stateQueryType':$(".stageBorrowQuery.active").attr("stageQueryState"),
+            'page':pageNum,'pagesize':pageSize}
+        $('#tt').datagrid('loading');
+
+        var borrowInfoTable = $("#borrowInfoTable")
+        $.ajax({
+            type: "POST",
+            url: '${ctxA}/customer/userFiles/stageBorrowListQuery',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            data: data,
+            dataType: "json",
+            success: function(data){
+                $('#tt').datagrid('loaded');
+                borrowInfoTable.html("");
+                for (var i = 0; i < data.rows.length; i++) {
+                    var tr = "<tr borrowId ='"+data.rows[i].id+"'>";
+                    tr += "<td>" + data.rows[i].id + "</td>"
+                    tr += "<td>" + data.rows[i].borrowNo + "</td>"
+                    tr += "<td>" + amountformatter(data.rows[i].amount) + "</td>"
+                    tr += "<td>" + data.rows[i].borrowDays + "</td>"
+                    tr += "<td>" + amountformatter(data.rows[i].poundage) + "</td>"
+                    tr += "<td>" + amountformatter(data.rows[i].couponAmount) + "</td>"
+                    tr += "<td>" + amountformatter(data.rows[i].arrivalAmount) + "</td>"
+                    tr += "<td>" + data.rows[i].borrowStateName + "</td>"
+                    tr += "<td>" + data.rows[i].riskStateName + "</td>"
+                    if (data.rows[i].addTime != null ) {
+                        tr += "<td>" + formatDateTime(data.rows[i].addTime) + "</td>"
+                    }else{
+                        tr += "<td></td>"
+                    }
+                    if (data.rows[i].gmtPlanRepayment != null ) {
+                        tr += "<td>" + formatDateTime(data.rows[i].gmtPlanRepayment) + "</td>"
+                    }else{
+                        tr += "<td></td>"
+                    }
+                    tr += "<td>" + data.rows[i].renewalNum + "</td>"
+                    tr += "<td>" + data.rows[i].waitOverdueAmount + "</td>"
+                    tr += "<td>" + data.rows[i].waitAmount + "</td>"
+                    tr += "<td><a class='si-option-a' href='${ctxA}/order/borrow/form?userId="+$("#userId").val()+"&id=" + data.rows[i].id + "'>查看</a> "
+                    if(data.rows[i].borrowState == '2'){
+                        tr += "<a href='#'>重新回调</a></td>"
+                    }
+
+                    tr += "</tr>"
+                    $(tr).appendTo(borrowInfoTable)
+                }
+                $("#pageLast").hide()
+                $("#pageNext").hide()
+                if (pageNum > 1){
+                    $("#pageLast").show()
+                }
+                if ((pageNum * pageSize) < data.total){
+                    $("#pageNext").show()
+                }
+                $("#borrowTotal").html(data.total);
+            },
+            error: function(msg){
+                $('#tt').datagrid('loaded');
+                top.layer.alert("查询借款信息失败",{icon: 5});
+            }
+        });
+    }
     function getLoginLog() {
         $('#tt').datagrid('loading');
         var loginTable = $("#loginTable")
@@ -546,7 +646,8 @@
                                     }else{
                                         tr += "<td></td>";
                                     }
-                                    if (data[i].operState != 'reset'){
+                                    if (data[i].operState != 'reset' || data[i].authState != '已认证'){
+
                                         tr += "<td>——</td>"
                                     }else{
                                         tr += "<td><a href='#' onclick='resetAuthState(\""+data[i].code+"\")'>重置</a></td>"
@@ -566,119 +667,15 @@
         })
     }
     $(".stageBorrowQuery").click(function(){
+
         var obj = this;
-        var borrowInfoTable = $("#borrowInfoTable")
-        $('#tt').datagrid('loading');
-        var userId = $("#userId").val();
-        $.ajax({
-            type: "POST",
-            url: '${ctxA}/customer/userFiles/stageBorrowListQuery',
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            data: {'state':$(this).attr('stageQueryState'),"userId":userId},
-            dataType: "json",
-            success: function(data){
-                $('#tt').datagrid('loaded');
-                borrowInfoTable.html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tr = "<tr borrowId ='"+data[i].id+"'>";
-                    tr += "<td>" + data[i].id + "</td>"
-                    tr += "<td>" + data[i].borrowNo + "</td>"
-                    tr += "<td>" + data[i].productName + "</td>"
-                    tr += "<td>" +$("#realName").val() + "</td>"
-                    tr += "<td>" +$("#userName").val()+ "</td>"
-                    tr += "<td>" + data[i].amount + "</td>"
-                    tr += "<td>" + data[i].rateAmount + "</td>"
-                    tr += "<td>" + data[i].nperName + "</td>"
-                    tr += "<td>" + data[i].couponAmount + "</td>"
-                    tr += "<td>" + data[i].arrivalAmount + "</td>"
-                    tr += "<td>" + data[i].reviewStateName + "</td>"
-                    tr += "<td>" + data[i].reviewBorrowName + "</td>"
-                    tr += "<td>" + data[i].borrowStateName + "</td>"
-                    if (data[i].addTime != null ) {
-                        tr += "<td>" + formatDateTime(data[i].addTime) + "</td>"
-                    }else{
-                        tr += "<td></td>"
-                    }
-                    tr += "<td><a class='si-option-a' href='${ctxA}/order/borrow/form?id=" + data[i].id + "'>查看</a> "
-                    if(data[i].borrowState == '2'){
-                        tr += "<a href='#'>重新回调</a></td>"
-                    }
 
-                    tr += "</tr>"
-                    $(tr).appendTo(borrowInfoTable)
-                }
-                $(".stageBorrowQuery").removeClass('active')
-                $(obj).addClass('active')
-            },
-            error: function(msg){
-                $('#tt').datagrid('loaded');
-                top.layer.alert("查询借款信息失败",{icon: 5});
-            }
-        });
+        $('#tt').datagrid('loading');
+        $(".stageBorrowQuery").removeClass('active')
+        $(obj).addClass('active')
+        pageNum = 1;
+        getData();
     })
-
-    function getProductAuthConfig(id) {
-        $('#tt').datagrid('loading');
-        var productAuthConfigTable1 = $("#productAuthConfigTable1")
-        productAuthConfigTable1.html("");
-
-        var productAuthConfigTable2 = $("#productAuthConfigTable2")
-        productAuthConfigTable2.html("");
-        $.ajax({
-            type: "POST",
-            url: '${ctxA}/csc/customer/productAuthConfig',
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            data: {'id':id},
-            dataType: "json",
-            success: function(data){
-                $('#tt').datagrid('loaded');
-                    $("#productAuthConfig").dialog("open")
-                    for (var i = 0; i < data.basicList.length; i++) {
-                        var tr = "<tr>";
-                        tr += "<td>" + data.basicList[i].authName + "</td>"
-
-                        if (data.basicList[i].authState == 1) {
-                            tr += "<td>可用</td>"
-                        } else if(data.basicList[i].authState == 0) {
-                            tr += "<td>不可用</td>"
-                        }
-                        if (data.basicList[i].isRequired == 1) {
-                            tr += "<td>必填 </td>"
-                        } else if (data.basicList[i].isRequired == 0) {
-                            tr += "<td>不必填</td>"
-                        }
-
-                        tr += "<td>" + data.basicList[i].authSort + "</td>"
-                        tr += "</tr>"
-                        $(tr).appendTo(productAuthConfigTable1)
-                    }
-                    for (var i = 0; i < data.supplyList.length; i++) {
-                        var tr = "<tr>";
-                        tr += "<td>" + data.supplyList[i].authName + "</td>"
-
-                        if (data.supplyList[i].authState == 1) {
-                            tr += "<td>可用</td>"
-                        } else if(data.supplyList[i].authState == 0) {
-                            tr += "<td>不可用</td>"
-                        }
-                        if (data.supplyList[i].isRequired == 1) {
-                            tr += "<td>必填 </td>"
-                        } else if (data.supplyList[i].isRequired == 0) {
-                            tr += "<td>不必填</td>"
-                        }
-
-                        +"</td>"
-                        tr += "<td>" + data.supplyList[i].authSort + "</td>"
-                        tr += "</tr>"
-                        $(tr).appendTo(productAuthConfigTable2)
-                    }
-            },
-            error: function(msg){
-                $('#tt').datagrid('loaded');
-                top.layer.alert("查询认证项失败",{icon: 5});
-            }
-        });
-    }
 
     $(".couponStateQuery").click(function(){
         $('#tt').datagrid('loading');
@@ -686,7 +683,7 @@
         var userCouponTable = $("#userCouponTable")
         $.ajax({
             type: "POST",
-            url: '${ctxA}/csc/customer/userCouponListQuery',
+            url: '${ctxA}/customer/userFiles/userCouponListQuery',
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
             data: {'state':$(this).attr('couponState'),"userId":$("#userId").val()},
             dataType: "json",
@@ -698,8 +695,8 @@
                     tr += "<td>" + data[i].couponName + "</td>"
                     tr += "<td>" + data[i].couponTypeName + "</td>"
                     tr += "<td>" + data[i].amount + "</td>"
-                    if (data[i].validEndTime != null) {
-                        tr += "<td>" + formatDateTime(data[i].validEndTime) + "</td>"
+                    if (data[i].endTime != null) {
+                        tr += "<td>" + formatDateTime(data[i].endTime) + "</td>"
                     }else{
                         tr += "<td></td>"
                     }

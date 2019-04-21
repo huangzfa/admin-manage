@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.user.user.dao.UserAuthDao">
+  <sql id="Base_Column_List">
+    user_auth.id as id, user_auth.product_id as product_id, user_auth.global_user_id as global_user_id,
+    user_auth.user_id as user_id, user_auth.realname_idcard_state as realname_idcard_state,
+    user_auth.gmt_realname_idcard as gmt_realname_idcard, user_auth.realname_face_state as realname_face_state,
+    user_auth.realname_face_similar as realname_face_similar, user_auth.gmt_realname_face as gmt_realname_face,
+    user_auth.bankcard_state as bankcard_state, user_auth.gmt_bankcard as gmt_bankcard,
+    user_auth.zhima_state as zhima_state, user_auth.gmt_zhima as gmt_zhima,
+    user_auth.zhima_score as zhima_score, user_auth.mobile_state as mobile_state,
+    user_auth.gmt_mobile as gmt_mobile, user_auth.contacts_state as contacts_state,
+    user_auth.gmt_contacts as gmt_contacts, user_auth.taobao_state as taobao_state,
+    user_auth.gmt_taobao as gmt_taobao, user_auth.jingdong_state as jingdong_state,
+    user_auth.gmt_jingdong as gmt_jingdong, user_auth.fund_state as fund_state,
+    user_auth.gmt_fund as gmt_fund, user_auth.social_state as social_state,
+    user_auth.gmt_social as gmt_social, user_auth.credit_state as credit_state,
+    user_auth.gmt_credit as gmt_credit, user_auth.alipay_state as alipay_state,
+    user_auth.gmt_alipay as gmt_alipay, user_auth.mall_status as mall_status,
+    user_auth.gmt_mall as gmt_mall, user_auth.add_time as add_time,
+    user_auth.modify_time as modify_time, user_auth.is_delete as is_delete
+  </sql>
+
+  <select id="getByUserId" parameterType="Long" resultType="com.duobei.core.user.user.domain.UserAuth">
+    select <include refid="Base_Column_List"/>
+    from pgy_user_auth user_auth
+    where user_auth.is_delete = 0 and user_auth.user_id = #{userId}
+  </select>
+
+  <update id="resetState">
+    update pgy_user_auth
+    set modify_time = now(),${authCode}_state = 0
+    where user_id = #{userId} and is_delete = 0
+  </update>
+</mapper>

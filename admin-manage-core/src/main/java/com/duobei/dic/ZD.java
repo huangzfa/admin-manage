@@ -199,6 +199,31 @@ public interface ZD {
     public String silenceUpgrade = "silenceUpgrade";
 	
 	/**
+	 *  报表类型
+	 */
+    public String reportType = "reportType";
+	
+	/**
+	 *  用户优惠券状态
+	 */
+    public String couponState = "couponState";
+	
+	/**
+	 *  银行卡主副卡
+	 */
+    public String bankIsMain = "bankIsMain";
+	
+	/**
+	 *  用户档案借款查询条件
+	 */
+    public String userFilesBorrwoQuery = "userFilesBorrwoQuery";
+	
+	/**
+	 *  认证状态
+	 */
+    public String authState = "authState";
+	
+	/**
 	 *  菜单类型-菜单- 
 	 */
     public String menuType_m = "m";
@@ -419,14 +444,14 @@ public interface ZD {
     public String upgradeRangeState_part = "1";
 	
 	/**
-	 *  APP是否强制升级-是- 
-	 */
-    public String appUpgradeIsForce_yes = "1";
-	
-	/**
 	 *  APP是否强制升级-否- 
 	 */
     public String appUpgradeIsForce_no = "0";
+	
+	/**
+	 *  APP是否强制升级-是- 
+	 */
+    public String appUpgradeIsForce_yes = "1";
 	
 	/**
 	 *  渠道样式模板-方框模板- 
@@ -441,12 +466,12 @@ public interface ZD {
 	/**
 	 *  优惠券类型-借款券- 
 	 */
-    public int couponType_jkq = 1;
+    public String couponType_jkq = "jk";
 	
 	/**
 	 *  优惠券类型-还款券- 
 	 */
-    public int couponType_hkq = 2;
+    public String couponType_hkq = "hk";
 	
 	/**
 	 *  登录类型-登录- 
@@ -699,22 +724,22 @@ public interface ZD {
     public int repayType_auto = 2;
 	
 	/**
-	 *  新建-新建- 
+	 *  续借状态-新建- 
 	 */
     public int renewalState_new = 0;
 	
 	/**
-	 *  新建-续期成功- 
+	 *  续借状态-续期成功- 
 	 */
     public int renewalState_success = 1;
 	
 	/**
-	 *  新建-处理中- 
+	 *  续借状态-处理中- 
 	 */
     public int renewalState_handling = 2;
 	
 	/**
-	 *  新建-续期失败- 
+	 *  续借状态-续期失败- 
 	 */
     public int renewalState_fail = -1;
 	
@@ -737,4 +762,84 @@ public interface ZD {
 	 *  是否静默升级-是- 
 	 */
     public int silenceUpgrade_yes = 1;
+	
+	/**
+	 *  报表类型-借款信息- 
+	 */
+    public int reportType_borrow = 1;
+	
+	/**
+	 *  报表类型-还款信息- 
+	 */
+    public int reportType_repay = 2;
+	
+	/**
+	 *  报表类型-续借信息- 
+	 */
+    public int reportType_renwal = 3;
+	
+	/**
+	 *  用户优惠券状态-未使用-1 
+	 */
+    public int couponState_new = 0;
+	
+	/**
+	 *  用户优惠券状态-已使用- 
+	 */
+    public int couponState_used = 1;
+	
+	/**
+	 *  用户优惠券状态-冻结- 
+	 */
+    public int couponState_frozen = 2;
+	
+	/**
+	 *  用户优惠券状态-过期- 
+	 */
+    public int couponState_expire = 3;
+	
+	/**
+	 *  银行卡主副卡-主卡- 
+	 */
+    public int bankIsMain_yes = 1;
+	
+	/**
+	 *  银行卡主副卡-副卡- 
+	 */
+    public int bankIsMain_no = 0;
+	
+	/**
+	 *  用户档案借款查询条件-当前借款-1 
+	 */
+    public int userFilesBorrwoQuery_now = 1;
+	
+	/**
+	 *  用户档案借款查询条件-已结束- 
+	 */
+    public int userFilesBorrwoQuery_finish = 2;
+	
+	/**
+	 *  认证状态-未认证- 
+	 */
+    public int authState_init = 0;
+	
+	/**
+	 *  认证状态-认证失败- 
+	 */
+    public int authState_fail = -1;
+	
+	/**
+	 *  认证状态-认证成功- 
+	 */
+    public int authState_success = 1;
+	
+	/**
+	 *  认证状态-认证中- 
+	 */
+    public int authState_ing = 2;
+	
+	/**
+	 *  认证状态-过期- 
+	 */
+    public int authState_expire = 3;
 }

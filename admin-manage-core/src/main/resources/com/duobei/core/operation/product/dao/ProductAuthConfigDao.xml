@@ -6,7 +6,7 @@
     </resultMap>
 
     <select id="getByProductId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo">
-        select a.*,b.auth_name from yy_product_auth_config a left join yy_auth_config b on a.auth_id = b.id where a.product_id=#{productId,jdbcType=INTEGER} order by auth_sort asc
+        select a.*,b.auth_name,b.auth_code from yy_product_auth_config a left join yy_auth_config b on a.auth_id = b.id where a.product_id=#{productId,jdbcType=INTEGER} order by auth_sort asc
     </select>
 
     <update id="updateAuthState" parameterType="java.lang.String">

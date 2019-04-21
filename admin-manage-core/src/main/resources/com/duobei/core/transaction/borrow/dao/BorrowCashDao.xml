@@ -112,4 +112,21 @@
     set modify_time = #{modifyTime},data_version = data_version + 1,derate_overdue = #{derateOverdue}
     where id = #{id} and is_delete = 0 and data_version = #{dataVersion}
   </update>
+
+  <select id="getStageBorrowByUserIdAndState" parameterType="com.duobei.core.user.user.domain.criteria.UserBorrowCriteria" resultType="com.duobei.core.user.user.domain.vo.UserBorrowListVo">
+    select <include refid="Base_Column_List"/>
+    from tt_borrow_cash borrow_cash
+    where borrow_cash.is_delete = 0 and borrow_cash.user_id = #{userId}
+    and borrow_cash.borrow_state
+    <foreach collection="borrowState" open=" in(" close=")" separator="," item="state">
+      #{state}
+    </foreach>
+
+    order by borrow_cash.add_time desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+  
+  <select id="getReportList" parameterType="collection"/>
 </mapper>

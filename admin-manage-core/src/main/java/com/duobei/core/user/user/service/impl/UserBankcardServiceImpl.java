@@ -5,6 +5,7 @@ import com.duobei.core.user.user.dao.UserBankcardDao;
 import com.duobei.core.user.user.dao.mapper.UserBankcardMapper;
 import com.duobei.core.user.user.domain.UserBankcard;
 import com.duobei.core.user.user.service.UserBankcardService;
+import com.pgy.data.handler.PgyDataHandler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,7 +25,11 @@ public class UserBankcardServiceImpl implements UserBankcardService {
     UserBankcardMapper userBankcardMapper;
     @Override
     public List<UserBankcard> getByUserId(Long userId) {
-        return userBankcardDao.getByUserId(userId);
+        List<UserBankcard> data = userBankcardDao.getByUserId(userId);
+        for (UserBankcard userBankcard : data){
+            userBankcard.setCardNo(PgyDataHandler.decrypt(userBankcard.getCardNoEncrypt()));
+        }
+        return data;
     }
 
     @Override

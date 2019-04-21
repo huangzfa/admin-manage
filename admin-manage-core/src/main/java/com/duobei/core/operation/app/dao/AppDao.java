@@ -4,9 +4,11 @@ package com.duobei.core.operation.app.dao;
 import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.app.domain.criteria.AppCriteria;
 import com.duobei.core.operation.app.domain.vo.AppVo;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author huangzhongfa
@@ -67,4 +69,15 @@ public interface AppDao {
      * @return
      */
     App getById(Integer id);
+
+    /**
+     * 根据应用id集合获取map
+     * @param appIds
+     * @return
+     */
+    @MapKey("id")
+    Map<Integer,App> getMapByIds(@Param("ids") List<Integer> appIds);
+
+    @MapKey("id")
+    Map<Integer,App> getMapAll();
 }

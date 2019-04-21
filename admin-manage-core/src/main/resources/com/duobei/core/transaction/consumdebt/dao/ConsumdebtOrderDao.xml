@@ -28,13 +28,13 @@
   <update id="updateDelivery" parameterType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
       update tt_consumdebt_order
       set modify_time = #{modifyTime},modify_operator_id = #{modifyOperatorId},remark = #{remark}
-      <if test="consigneeMobile != null consigneeMobile != ''">
+      <if test="consigneeMobile != null and  consigneeMobile != ''">
         ,consignee_mobile = #{consigneeMobile}
       </if>
-    <if test="consignee != null consignee != ''">
+    <if test="consignee != null and consignee != ''">
       ,consignee = #{consignee}
     </if>
-    <if test="address != null address != ''">
+    <if test="address != null and address != ''">
       ,address = #{address}
     </if>
     <if test="state != null">

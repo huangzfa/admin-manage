@@ -70,7 +70,7 @@ public class ConsumdebtOrderServiceImpl implements ConsumdebtOrderService {
     public Long queryCount(ConsumdebtOrderCriteria consumdebtOrderCriteria) {
         ConsumdebtOrderExample example = new ConsumdebtOrderExample();
         ConsumdebtOrderExample.Criteria criteria = example.createCriteria();
-        criteria.andIsDeleteEqualTo(0);
+        criteria.andIsDeleteEqualTo(0L);
         //搜索条件封装
         if (StringUtil.isNotEmpty(consumdebtOrderCriteria.getOrderNo())){
             criteria.andOrderNoEqualTo(consumdebtOrderCriteria.getOrderNo());

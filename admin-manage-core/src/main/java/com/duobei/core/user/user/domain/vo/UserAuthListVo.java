@@ -27,7 +27,7 @@ public class UserAuthListVo {
     private Date authTime;
 
     /**
-     * 操作类型 0:无 1:重置
+     * 操作类型 0:无 1:重置reset
      */
     private String operState;
 

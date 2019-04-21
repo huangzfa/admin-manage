@@ -16,8 +16,8 @@
 
   <select id="getByResTypeAnResTypeSec" resultType="com.duobei.core.operation.biz.domain.BizResource">
     select <include refid="Base_Column_List"/>
-    from yy_biz_resource resource
-    where resource.is_delete = 0 and resource.res_type = #{resType} and resource.res_type_sec = #{resTypeSec}
+    from yy_biz_resource biz_resource
+    where biz_resource.is_delete = 0 and biz_resource.res_type = #{resType} and biz_resource.res_type_sec = #{resTypeSec}
     limit 1
   </select>
 </mapper>

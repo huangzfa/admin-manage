@@ -4,8 +4,10 @@ import com.duobei.common.exception.TqException;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.product.dao.ProductDao;
 import com.duobei.core.operation.product.domain.Product;
+import com.duobei.core.operation.report.criteria.FinanceReportCriteria;
 import com.duobei.core.transaction.borrow.dao.BorrowCashDao;
 import com.duobei.core.transaction.borrow.dao.mapper.BorrowCashMapper;
 import com.duobei.core.transaction.borrow.domain.BorrowCash;
@@ -16,7 +18,9 @@ import com.duobei.core.transaction.borrow.service.BorrowCashService;
 import com.duobei.core.transaction.overdue.dao.OverdueDerateRecordDao;
 import com.duobei.core.transaction.overdue.domain.OverdueDerateRecord;
 import com.duobei.core.user.user.dao.UserDao;
+import com.duobei.core.user.user.domain.criteria.UserBorrowCriteria;
 import com.duobei.core.user.user.domain.vo.UserAndIdCardVo;
+import com.duobei.core.user.user.domain.vo.UserBorrowListVo;
 import com.duobei.dic.ZD;
 import com.pgy.data.handler.PgyDataHandler;
 
@@ -24,7 +28,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -210,5 +213,41 @@ public class BorrowCashServiceImpl implements BorrowCashService {
             throw new TqException("逾期费减免失败");
         }
     }
+
+    @Override
+    public List<BorrowCash> getReportList(FinanceReportCriteria criteria) {
+        return borrowCashDao.getReportList(criteria);
+    }
+
+    @Override
+    public ListVo<UserBorrowListVo> getStageBorrowByUserIdAndState(UserBorrowCriteria criteria) {
+        BorrowCashExample example = new BorrowCashExample();
+        BorrowCashExample.Criteria criteria1 = example.createCriteria();
+        criteria1.andIsDeleteEqualTo(0L);
+        if (criteria.getUserId() != null){
+            criteria1.andUserIdEqualTo(criteria.getUserId());
+        }
+        if (criteria.getBorrowState() != null && criteria.getBorrowState().size() > 0){
+            criteria1.andBorrowStateIn(criteria.getBorrowState());
+        }
+        Long total = borrowCashMapper.countByExample(example);
+        List<UserBorrowListVo> data = null;
+        if(total >0 ){
+            data = borrowCashDao.getStageBorrowByUserIdAndState(criteria);
+            for (UserBorrowListVo borrowListVo : data){
+                borrowListVo.setBorrowStateName(DictUtil.getDictLabel(ZD.borrowState,borrowListVo.getBorrowState().toString()));
+                borrowListVo.setRiskStateName(DictUtil.getDictLabel(ZD.riskState,borrowListVo.getRiskState().toString()));
+                //待还逾期费 = 逾期费 - 已还逾期费 - 减免金额
+                Long waitOverdueAmount = borrowListVo.getOverdueAmount() - borrowListVo.getSumOverdueAmount() - borrowListVo.getDerateOverdue();
+                borrowListVo.setWaitOverdueAmount(new BigDecimal(waitOverdueAmount).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
+                //剩余待还金额 = 申请金额 + 利息 （手续费-消费金额） + 手续费 + 逾期费 -减免金额 - 已还金额
+                Long waitAmount = borrowListVo.getAmount() + (borrowListVo.getPoundage() * 2) - borrowListVo.getConsumeAmount() + borrowListVo.getOverdueAmount() - borrowListVo.getDerateOverdue() - borrowListVo.getRepayAmount();
+                borrowListVo.setWaitAmount(new BigDecimal(waitAmount).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
+            }
+        }
+
+        return new ListVo(total.intValue(),data);
+    }
+
 
 }

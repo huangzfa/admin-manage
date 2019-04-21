@@ -21,29 +21,50 @@
 
 		<!-- 2：数据库连接信息 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-						connectionURL="jdbc:mysql://47.96.0.60:3306/pgy_platform_user?useUnicode=true&amp;characterEncoding=utf-8"
-						userId="root" 
-						password="Mi&amp;rong369" />
+						connectionURL="jdbc:mysql://47.99.143.121:3306/pgy_platform_user?useUnicode=true&amp;characterEncoding=utf-8"
+						userId="root"
+						password="Hjn184736351" />
 
 		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.user.user.domain" />
 		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.user.user.dao.mapper" />
 		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.user.user.dao.mapper" type="XMLMAPPER" />
 
 		<!-- 用户 -->
-		<table tableName="pgy_user" domainObjectName="User" alias="user">
-			<property name="useActualColumnNames" value="false" />
-			<generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>
-		<!--用户登录日志-->
-	<!--	<table tableName="pgy_user_login_log" domainObjectName="UserLoginLog">
+		<!--<table tableName="pgy_user_login_log" domainObjectName="UserLoginLog" alias="user_login_log">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>-->
-		<!-- 用户认证 -->
-		<table tableName="pgy_user_auth" domainObjectName="UserAuth" alias="user_auth" >
+		<table tableName="pgy_user_address" domainObjectName="UserAddress" alias="user_address">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>
+<!--		<table tableName="pgy_user" domainObjectName="User" alias="user">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>-->
+		<!--用户登录日志-->
+	<!---->
+		<!-- 用户认证 -->
+	<!--	<table tableName="pgy_user_auth" domainObjectName="UserAuth" alias="user_auth" >
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="pgy_user_account" domainObjectName="UserAccount" alias="uaccount" >
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="pgy_user_bankcard" domainObjectName="UserBankcard" alias="ubank">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="pgy_user_coupon" domainObjectName="UserCoupon" alias="ucoupon">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		<table tableName="pgy_user_idcard" domainObjectName="UserIdcard" alias="uidcard">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>-->
 		<!--	&lt;!&ndash; 用户资金账户 &ndash;&gt;
             <table tableName="pgy_user_account" domainObjectName="UserAccount" alias="uaccount" >
                 <property name="useActualColumnNames" value="false" />

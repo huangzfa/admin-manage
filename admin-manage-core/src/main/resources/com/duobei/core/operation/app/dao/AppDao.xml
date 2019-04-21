@@ -190,4 +190,18 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <select id="getMapByIds" resultType="com.duobei.core.operation.app.domain.App">
+        select *
+        from yy_app
+        where is_delete = 0 and id
+        <foreach collection="ids" open=" in(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+    <select id="getMapAll" resultType="com.duobei.core.operation.app.domain.App">
+        select *
+        from yy_app
+        where is_delete = 0
+    </select>
 </mapper>

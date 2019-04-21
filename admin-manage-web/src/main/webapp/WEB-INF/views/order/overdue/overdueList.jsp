@@ -83,7 +83,7 @@
     }
 
 
-    function amountformatter(value,row,index){
+    function amountformatter(value){
         if (value == null || value == ''){
             return 0.00;
         }else{

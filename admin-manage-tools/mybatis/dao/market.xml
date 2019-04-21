@@ -21,22 +21,26 @@
 
 		<!-- 2：数据库连接信息 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-						connectionURL="jdbc:mysql://47.96.0.60:3306/pgy_platform_operation?useUnicode=true&amp;characterEncoding=utf-8"
+						connectionURL="jdbc:mysql://47.99.143.121:3306/pgy_platform_operation?useUnicode=true&amp;characterEncoding=utf-8"
 						userId="root"
-						password="Mi&amp;rong369" />
+						password="Hjn184736351" />
 
-		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.startupPage.domain" />
-		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.operation.startupPage.dao.mapper" />
-		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.startupPage.dao.mapper" type="XMLMAPPER" />
+		<javaModelGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.coupon.domain" />
+		<sqlMapGenerator targetProject="admin-manage-core/src/main/resources" targetPackage="com.duobei.core.operation.coupon.dao.mapper" />
+		<javaClientGenerator targetProject="admin-manage-core/src/main/java" targetPackage="com.duobei.core.operation.coupon.dao.mapper" type="XMLMAPPER" />
 
 		<!--业务开关-->
 	<!--	<table tableName="yy_banner" domainObjectName="AppPageConfig" alias="banner">
 			<property name="useActualColumnNames" value="false" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>-->
-		<table tableName="yy_startup_page" domainObjectName="StartupPage" alias="startup_page">
+		<!--<table tableName="yy_startup_page" domainObjectName="StartupPage" alias="startup_page">
                 <property name="useActualColumnNames" value="false" />
                 <generatedKey column="id" sqlStatement="MySql" identity="true" />
-            </table>
+            </table>-->
+		<table tableName="yy_coupon" domainObjectName="Coupon" alias="coupon">
+			<property name="useActualColumnNames" value="false" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
 	</context>
 </generatorConfiguration>

@@ -46,4 +46,23 @@
     from tt_borrow_cash_repayment repayment
     where repayment.is_delete = 0 and repayment.id = #{id}
   </select>
+
+  <select id="getReportList" parameterType="com.duobei.core.operation.report.criteria.FinanceReportCriteria" resultType="com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentReportVo">
+    select <include refid="Base_Column_List"/>,borrow.borrow_no,borrow.gmt_plan_repayment
+    from tt_borrow_cash_repayment repayment
+    left join tt_borrow_cash borrow on repayment.borrow_cash_id = borrow.id
+    where repayment.is_delete = 0 and repayment.product_id = #{productId}
+    <if test="state != null">
+      and  repayment.repay_state = #{state}
+    </if>
+    <if test="startTime != null ">
+      and repayment.add_time <![CDATA[ >= ]]> #{startTime}
+    </if>
+    <if test="endTime != null ">
+      and repayment.add_time <![CDATA[ <=]]> #{endTime}
+    </if>
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
 </mapper>

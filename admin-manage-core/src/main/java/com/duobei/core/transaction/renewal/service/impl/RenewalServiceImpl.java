@@ -2,8 +2,10 @@ package com.duobei.core.transaction.renewal.service.impl;
 
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
+import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.product.dao.ProductDao;
 import com.duobei.core.operation.product.domain.Product;
+import com.duobei.core.operation.report.criteria.FinanceReportCriteria;
 import com.duobei.core.transaction.borrow.dao.BorrowCashDao;
 import com.duobei.core.transaction.borrow.domain.BorrowCash;
 import com.duobei.core.transaction.renewal.dao.BorrowCashRenewalDao;
@@ -12,10 +14,13 @@ import com.duobei.core.transaction.renewal.domain.BorrowCashRenewal;
 import com.duobei.core.transaction.renewal.domain.BorrowCashRenewalExample;
 import com.duobei.core.transaction.renewal.domain.criteria.BorrowCashRenewalCriteria;
 import com.duobei.core.transaction.renewal.domain.vo.BorrowCashRenewalListVo;
+import com.duobei.core.transaction.renewal.domain.vo.BorrowCashRenewalReportVo;
 import com.duobei.core.transaction.renewal.domain.vo.BorrowCashRenewalVo;
 import com.duobei.core.transaction.renewal.service.RenewalService;
 import com.duobei.core.user.user.dao.UserDao;
 import com.duobei.core.user.user.domain.vo.UserAndIdCardVo;
+import com.duobei.dic.ZD;
+import com.duobei.utils.AmountUtil;
 import com.pgy.data.handler.PgyDataHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -175,5 +180,22 @@ public class RenewalServiceImpl implements RenewalService {
 
         }
         return vo;
+    }
+
+    @Override
+    public List<BorrowCashRenewalReportVo> getReportList(FinanceReportCriteria criteria) {
+        List<BorrowCashRenewalReportVo> data = renewalDao.getReportList(criteria);
+        //获取其他数据，处理金额信息
+        for (BorrowCashRenewalReportVo borrowCashRenewalReportVo : data){
+            //所属产品
+            borrowCashRenewalReportVo.setProductName(criteria.getProduct().getProductName());
+            //借款状态信息
+            borrowCashRenewalReportVo.setRenwalStateName(DictUtil.getDictLabel(ZD.renewalState,borrowCashRenewalReportVo.getState().toString()));
+            //金额数据转换
+            borrowCashRenewalReportVo.setCapitalAmountDecimal(AmountUtil.getBigDecimal(borrowCashRenewalReportVo.getCapitalAmount()));
+            borrowCashRenewalReportVo.setRebateAmountDecimal(AmountUtil.getBigDecimal(borrowCashRenewalReportVo.getRebateAmount()));
+            borrowCashRenewalReportVo.setActualAmountDecimal(AmountUtil.getBigDecimal(borrowCashRenewalReportVo.getActualAmount()));
+        }
+        return data;
     }
 }

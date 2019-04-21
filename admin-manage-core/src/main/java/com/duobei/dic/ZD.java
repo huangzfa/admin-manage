@@ -776,7 +776,7 @@ public interface ZD {
 	/**
 	 *  报表类型-续借信息- 
 	 */
-    public int reportType_renwal = 3;
+    public int reportType_renewal = 3;
 	
 	/**
 	 *  用户优惠券状态-未使用-1 
@@ -829,7 +829,7 @@ public interface ZD {
     public int authState_fail = -1;
 	
 	/**
-	 *  认证状态-认证成功- 
+	 *  认证状态-已认证- 
 	 */
     public int authState_success = 1;
 	

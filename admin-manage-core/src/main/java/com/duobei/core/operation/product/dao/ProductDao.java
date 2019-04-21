@@ -4,10 +4,12 @@ package com.duobei.core.operation.product.dao;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
 import com.duobei.core.operation.product.domain.vo.ProductVo;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author huangzhongfa
@@ -77,4 +79,7 @@ public interface ProductDao {
      * @return
      */
     List<Product> getByAuthId(@Param("authId") Integer authId);
+
+    @MapKey("id")
+    Map<Integer,Product> getMapProduct();
 }

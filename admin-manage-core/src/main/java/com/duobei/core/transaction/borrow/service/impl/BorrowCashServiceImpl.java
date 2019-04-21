@@ -14,6 +14,7 @@ import com.duobei.core.transaction.borrow.domain.BorrowCash;
 import com.duobei.core.transaction.borrow.domain.BorrowCashExample;
 import com.duobei.core.transaction.borrow.domain.criteria.BorrowCashCriteria;
 import com.duobei.core.transaction.borrow.domain.vo.BorrowCashListVo;
+import com.duobei.core.transaction.borrow.domain.vo.BorrowCashReportVo;
 import com.duobei.core.transaction.borrow.service.BorrowCashService;
 import com.duobei.core.transaction.overdue.dao.OverdueDerateRecordDao;
 import com.duobei.core.transaction.overdue.domain.OverdueDerateRecord;
@@ -22,6 +23,7 @@ import com.duobei.core.user.user.domain.criteria.UserBorrowCriteria;
 import com.duobei.core.user.user.domain.vo.UserAndIdCardVo;
 import com.duobei.core.user.user.domain.vo.UserBorrowListVo;
 import com.duobei.dic.ZD;
+import com.duobei.utils.AmountUtil;
 import com.pgy.data.handler.PgyDataHandler;
 
 import java.math.BigDecimal;
@@ -215,8 +217,32 @@ public class BorrowCashServiceImpl implements BorrowCashService {
     }
 
     @Override
-    public List<BorrowCash> getReportList(FinanceReportCriteria criteria) {
-        return borrowCashDao.getReportList(criteria);
+    public List<BorrowCashReportVo> getReportList(FinanceReportCriteria criteria) {
+
+        List<BorrowCashReportVo> data = borrowCashDao.getReportList(criteria);
+        //获取其他数据，处理金额信息
+        for (BorrowCashReportVo borrowCashListVo : data){
+            //所属产品
+            borrowCashListVo.setProductName(criteria.getProduct().getProductName());
+            //借款状态信息
+            borrowCashListVo.setBorrowStateName(DictUtil.getDictLabel(ZD.borrowState,borrowCashListVo.getBorrowState().toString()));
+            //风控状态信息
+            borrowCashListVo.setRiskStateName(DictUtil.getDictLabel(ZD.riskState,borrowCashListVo.getRiskState().toString()));
+            //待还逾期费 = 逾期费 - 已还逾期费 - 减免金额
+            Long waitOverdueAmount = borrowCashListVo.getOverdueAmount() - borrowCashListVo.getSumOverdueAmount() - borrowCashListVo.getDerateOverdue();
+            borrowCashListVo.setWaitOverdueAmountDeciaml(AmountUtil.getBigDecimal(waitOverdueAmount));
+            //剩余待还金额 = 申请金额 + 利息 （手续费-消费金额） + 手续费 + 逾期费 -减免金额 - 已还金额
+            Long waitAmount = borrowCashListVo.getAmount() + borrowCashListVo.getPoundage()  - borrowCashListVo.getConsumeAmount() + borrowCashListVo.getOverdueAmount() - borrowCashListVo.getDerateOverdue() - borrowCashListVo.getRepayAmount();
+            borrowCashListVo.setWaitAmountDeciaml(AmountUtil.getBigDecimal(waitAmount));
+            //金额数据转换
+            borrowCashListVo.setAmountDeciaml(AmountUtil.getBigDecimal(borrowCashListVo.getAmount()));
+            borrowCashListVo.setActivityAmountDeciaml(AmountUtil.getBigDecimal(borrowCashListVo.getActivityAmount()));
+            borrowCashListVo.setArrivalAmountDeciaml(AmountUtil.getBigDecimal(borrowCashListVo.getArrivalAmount()));
+            borrowCashListVo.setPoundageDeciaml(AmountUtil.getBigDecimal(borrowCashListVo.getPoundage()));
+            borrowCashListVo.setRepayAmountDeciaml(AmountUtil.getBigDecimal(borrowCashListVo.getRepayAmount()));
+            borrowCashListVo.setSumOverdueAmountDeciaml(AmountUtil.getBigDecimal(borrowCashListVo.getSumOverdueAmount()));
+        }
+        return data;
     }
 
     @Override
@@ -239,10 +265,10 @@ public class BorrowCashServiceImpl implements BorrowCashService {
                 borrowListVo.setRiskStateName(DictUtil.getDictLabel(ZD.riskState,borrowListVo.getRiskState().toString()));
                 //待还逾期费 = 逾期费 - 已还逾期费 - 减免金额
                 Long waitOverdueAmount = borrowListVo.getOverdueAmount() - borrowListVo.getSumOverdueAmount() - borrowListVo.getDerateOverdue();
-                borrowListVo.setWaitOverdueAmount(new BigDecimal(waitOverdueAmount).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
-                //剩余待还金额 = 申请金额 + 利息 （手续费-消费金额） + 手续费 + 逾期费 -减免金额 - 已还金额
-                Long waitAmount = borrowListVo.getAmount() + (borrowListVo.getPoundage() * 2) - borrowListVo.getConsumeAmount() + borrowListVo.getOverdueAmount() - borrowListVo.getDerateOverdue() - borrowListVo.getRepayAmount();
-                borrowListVo.setWaitAmount(new BigDecimal(waitAmount).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
+                borrowListVo.setWaitOverdueAmount(AmountUtil.getBigDecimal(waitOverdueAmount));
+                //剩余待还金额 = 申请金额 + 利息 （手续费-消费金额）  + 逾期费 -减免金额 - 已还金额
+                Long waitAmount = borrowListVo.getAmount() + borrowListVo.getPoundage()  - borrowListVo.getConsumeAmount() + borrowListVo.getOverdueAmount() - borrowListVo.getDerateOverdue() - borrowListVo.getRepayAmount();
+                borrowListVo.setWaitAmount(AmountUtil.getBigDecimal(waitAmount));
             }
         }
 

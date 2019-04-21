@@ -1,6 +1,7 @@
 package com.duobei.core.operation.report.criteria;
 
 import com.duobei.common.util.Pagination;
+import com.duobei.core.operation.product.domain.Product;
 
 import java.util.Date;
 
@@ -10,6 +11,9 @@ import java.util.Date;
  * @date 2019/4/1
  */
 public class FinanceReportCriteria extends Pagination {
+
+    private  Integer productId;
+
     private Integer state;
 
     private Integer reportType;
@@ -17,6 +21,24 @@ public class FinanceReportCriteria extends Pagination {
     private Date startTime;
 
     private Date endTime;
+
+    private Product product;
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
 
     public Integer getState() {
         return state;

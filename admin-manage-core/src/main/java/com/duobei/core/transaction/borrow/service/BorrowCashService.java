@@ -7,6 +7,7 @@ import com.duobei.core.operation.report.criteria.FinanceReportCriteria;
 import com.duobei.core.transaction.borrow.domain.BorrowCash;
 import com.duobei.core.transaction.borrow.domain.criteria.BorrowCashCriteria;
 import com.duobei.core.transaction.borrow.domain.vo.BorrowCashListVo;
+import com.duobei.core.transaction.borrow.domain.vo.BorrowCashReportVo;
 import com.duobei.core.user.user.domain.criteria.UserBorrowCriteria;
 import com.duobei.core.user.user.domain.vo.UserBorrowListVo;
 
@@ -53,7 +54,7 @@ public interface BorrowCashService {
      * @param criteria
      * @return
      */
-    List<BorrowCash> getReportList(FinanceReportCriteria criteria);
+    List<BorrowCashReportVo> getReportList(FinanceReportCriteria criteria);
 
 
     ListVo<UserBorrowListVo> getStageBorrowByUserIdAndState(UserBorrowCriteria criteria);

@@ -4,6 +4,7 @@ import com.duobei.core.operation.report.criteria.FinanceReportCriteria;
 import com.duobei.core.transaction.borrow.domain.BorrowCash;
 import com.duobei.core.transaction.borrow.domain.criteria.BorrowCashCriteria;
 import com.duobei.core.transaction.borrow.domain.vo.BorrowCashListVo;
+import com.duobei.core.transaction.borrow.domain.vo.BorrowCashReportVo;
 import com.duobei.core.transaction.renewal.domain.vo.BorrowCashRenewalListVo;
 import com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentListVo;
 import com.duobei.core.user.user.domain.criteria.UserBorrowCriteria;
@@ -65,7 +66,7 @@ public interface BorrowCashDao {
 
     int overdueAmountDerate(BorrowCash borrowCash);
 
-    List<BorrowCash> getReportList(FinanceReportCriteria criteria);
+    List<BorrowCashReportVo> getReportList(FinanceReportCriteria criteria);
 
     List<UserBorrowListVo> getStageBorrowByUserIdAndState(UserBorrowCriteria criteria);
 }

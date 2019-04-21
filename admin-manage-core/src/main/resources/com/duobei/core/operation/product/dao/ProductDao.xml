@@ -168,4 +168,9 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <select id="getMapProduct" resultType="com.duobei.core.operation.product.domain.Product">
+        select *
+        FROM yy_product
+    </select>
 </mapper>

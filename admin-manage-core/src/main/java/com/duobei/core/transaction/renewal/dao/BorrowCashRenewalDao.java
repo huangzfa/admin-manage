@@ -1,8 +1,10 @@
 package com.duobei.core.transaction.renewal.dao;
 
+import com.duobei.core.operation.report.criteria.FinanceReportCriteria;
 import com.duobei.core.transaction.renewal.domain.BorrowCashRenewal;
 import com.duobei.core.transaction.renewal.domain.criteria.BorrowCashRenewalCriteria;
 import com.duobei.core.transaction.renewal.domain.vo.BorrowCashRenewalListVo;
+import com.duobei.core.transaction.renewal.domain.vo.BorrowCashRenewalReportVo;
 
 import java.util.List;
 
@@ -26,4 +28,6 @@ public interface BorrowCashRenewalDao {
      * @return
      */
     BorrowCashRenewal getById(Long id);
+
+    List<BorrowCashRenewalReportVo> getReportList(FinanceReportCriteria criteria);
 }

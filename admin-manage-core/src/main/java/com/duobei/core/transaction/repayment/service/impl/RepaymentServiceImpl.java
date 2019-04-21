@@ -1,8 +1,8 @@
 package com.duobei.core.transaction.repayment.service.impl;
 
-import com.duobei.common.exception.TqException;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
+import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.product.dao.ProductDao;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.report.criteria.FinanceReportCriteria;
@@ -14,16 +14,18 @@ import com.duobei.core.transaction.repayment.domain.BorrowCashRepayment;
 import com.duobei.core.transaction.repayment.domain.BorrowCashRepaymentExample;
 import com.duobei.core.transaction.repayment.domain.criteria.RepaymentCriteria;
 import com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentListVo;
+import com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentReportVo;
 import com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentVo;
 import com.duobei.core.transaction.repayment.service.RepaymentService;
 import com.duobei.core.user.user.dao.UserDao;
 import com.duobei.core.user.user.domain.vo.UserAndIdCardVo;
+import com.duobei.dic.ZD;
+import com.duobei.utils.AmountUtil;
 import com.pgy.data.handler.PgyDataHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -182,7 +184,23 @@ public class RepaymentServiceImpl implements RepaymentService {
     }
 
     @Override
-    public List<BorrowCashRepayment> getReportList(FinanceReportCriteria criteria) {
-        return null;
+    public List<BorrowCashRepaymentReportVo> getReportList(FinanceReportCriteria criteria) {
+        List<BorrowCashRepaymentReportVo> data = repaymentDao.getReportList(criteria);
+        //获取其他数据，处理金额信息
+        for (BorrowCashRepaymentReportVo borrowCashRepaymentReportVo : data){
+            //所属产品
+            borrowCashRepaymentReportVo.setProductName(criteria.getProduct().getProductName());
+            //借款状态信息
+            borrowCashRepaymentReportVo.setRepayStateName(DictUtil.getDictLabel(ZD.repayState,borrowCashRepaymentReportVo.getRepayState().toString()));
+            //风控状态信息
+            borrowCashRepaymentReportVo.setRepayTypeName(DictUtil.getDictLabel(ZD.repayType,borrowCashRepaymentReportVo.getRepayType().toString()));
+            //金额数据转换
+            borrowCashRepaymentReportVo.setCouponAmountDecimal(AmountUtil.getBigDecimal(borrowCashRepaymentReportVo.getCouponAmount()));
+            borrowCashRepaymentReportVo.setRebateAmountDecimal(AmountUtil.getBigDecimal(borrowCashRepaymentReportVo.getRebateAmount()));
+            borrowCashRepaymentReportVo.setUnpaidAmountDecimal(AmountUtil.getBigDecimal(borrowCashRepaymentReportVo.getUnpaidAmount()));
+            borrowCashRepaymentReportVo.setRepayActualAmountDecimal(AmountUtil.getBigDecimal(borrowCashRepaymentReportVo.getRepayActualAmount()));
+            borrowCashRepaymentReportVo.setRepayAmountDecimal(AmountUtil.getBigDecimal(borrowCashRepaymentReportVo.getRepayAmount()));
+        }
+        return data;
     }
 }

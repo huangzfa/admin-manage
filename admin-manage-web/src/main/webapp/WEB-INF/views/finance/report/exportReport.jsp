@@ -42,9 +42,9 @@
             for( var i = 0;i<repayStateList.length;i++){
                 $("#state").append("<option value='"+repayStateList[i].dicVal+"' stateType = '2' style='display: none'>"+repayStateList[i].dicCode+"</option>");
             }
-            var renwalStateList = eval("("+'${renwalStateList}'+")");
-            for( var i = 0;i<renwalStateList.length;i++){
-                $("#state").append("<option value='"+renwalStateList[i].dicVal+"' stateType = '3' style='display: none'>"+renwalStateList[i].dicCode+"</option>");
+            var renewalStateList = eval("("+'${renewalStateList}'+")");
+            for( var i = 0;i<renewalStateList.length;i++){
+                $("#state").append("<option value='"+renewalStateList[i].dicVal+"' stateType = '3' style='display: none'>"+renewalStateList[i].dicCode+"</option>");
             }
 			$("#startTime").val('${startTime}');
             $("#endTime").val('${endTime}');
@@ -75,7 +75,13 @@
                         'endTime':$("#endTime").val(),
                         'state':$("#stateQuery").val(),
                     }
-                    jQuery.post('${ctxA}/finance/report/export', data,
+                    var dataString = 'reportType=' + $('#reportType').val()+
+                        '&productId=' + $("#productId").val()+
+                        '&startTime=' + $("#startTime").val()+
+                        '&endTime=' + $("#endTime").val()+
+                        '&state=' + $("#state").val();
+                    window.open("${ctxA}/finance/report/export?"+dataString);
+                   /* jQuery.get('${ctxA}/finance/report/export', data,
                         function(data) {
                             debugger;
                             if (data.code ==1) {
@@ -84,7 +90,7 @@
                                 top.layer.alert(data.msg, {icon: 5});
                             }
 
-                        }, "json");
+                        }, "json");*/
                 }
             })
         }

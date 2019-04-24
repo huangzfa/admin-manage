@@ -128,6 +128,7 @@ public class ActivityController extends BaseController {
                     //活动奖品关联数据
                     List<ActivityPrizeRelVo> przieRelList = prizeRelService.getByActId(params);
                     model.addAttribute("przieRelList",JSON.toJSONString(przieRelList));
+                    //红包活动有额外奖励
                     if( activity.getAtCode().equals(ActivityTypeEnum.HONGBAO.getEnv())){
                         //额外奖品列表
                         List<ActivityHongbaoPrizeVo> prizeHongbaoList = hongbaoPrizeService.getByActId(params);
@@ -137,6 +138,7 @@ public class ActivityController extends BaseController {
                 model.addAttribute("activity", activity);
                 params.put("envirType",envioment);
                 params.put("type",activity.getAtCode());
+                //查询不同环境下，不同活动的h5访问地址
                 model.addAttribute("links",resourceService.getListByEnivr(params));
             }
         }

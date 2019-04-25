@@ -95,6 +95,18 @@
 		  <artifactId>dbunit</artifactId>
 		  <version>2.5.4</version>
 	  </dependency>
+
+	  <dependency>
+		  <groupId>org.apache.xmlbeans</groupId>
+		  <artifactId>xmlbeans</artifactId>
+		  <version>2.6.0</version>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>org.apache.poi</groupId>
+		  <artifactId>poi-scratchpad</artifactId>
+		  <version>3.8</version>
+	  </dependency>
 	</dependencies>
 
 	<build>

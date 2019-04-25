@@ -9,6 +9,7 @@
 	<!--  -->
 	<style type="text/css">
 	</style>
+	<script type="text/javascript" src="/static/plugin/uploadFile/ajaxfileupload.js"></script>
 	<script type="text/javascript">
         var pager;
         var pageSize=${cfg:getPageSize()};
@@ -17,6 +18,8 @@
         var state = [];
         $(function(){
             $("#myModal").hide();
+            $("#myModal1").hide();
+
             var productLists ='${productLists}';
             var productList = eval("("+productLists+")");
             var productId = '${productId}';
@@ -225,7 +228,11 @@
                 }
             })
         }
-
+        function openUrl(obj){
+			debugger;
+            var url=obj.value;
+            window.open(encodeURI(url));
+        }
         function exportCosumdebtOrder(){
             top.$.jBox.confirm("确定导出？",'系统提示',function(v,h,f) {
                 if (v == 'ok') {
@@ -263,30 +270,73 @@
 
         //上传文件路径
         function uploadFile(){
-            var src = "${ctxA}/order/consumdebt/upload";
+            var src = "${ctxA}/order/consumdebt/uploadFile";
             if($('#filePath').val()==''){
                 top.layer.alert("请选择上传文件", {icon: 5});
                 return false;
             }
-            var loading = layer.load(2);
+            var loading = top.layer.load(2);
             jQuery.ajaxFileUpload({
                 url:src, //需要链接到服务器地址
                 secureuri:false,
                 fileElementId:"filePath", //文件选择框的id属性
                 dataType: 'json',  //服务器返回的格式类型
                 success: function (data, status){
-                    layer.close(loading);
-                    if(data.success){
-                        $('#filePath').attr('data-value',data.url);
-                        top.layer.alert(data.msg, {icon: 6});
+
+                    var dataMap = eval("("+data+")");
+
+                    top.layer.close(loading);
+
+                    if(dataMap.success){
+                        $('#filePath').attr('data-value',dataMap.url);
+                        top.layer.alert(dataMap.msg, {icon: 6});
                     }else{
-                        top.layer.alert(data.msg, {icon: 5});
+                        top.layer.alert(dataMap.msg, {icon: 5});
                     }
                 },
                 error: function (data, status, e){
-                    top.layer.alert(data.msg, {icon: 5});
+                    var dataMap = eval("("+data+")");
+                    top.layer.alert(dataMap.msg, {icon: 5});
                 }
             })
+        }
+        //批量添加发货信息
+        function doBatchDelivery() {
+            var src = "${ctxA}/order/consumdebt/doBatchDelivery";
+            var txt = "filePath=" +  $("#filePath").attr('data-value');
+            if($("#filePath").attr('data-value')==''){
+                top.layer.alert('请选择上传文件', {icon: 5});
+                return false;
+            }
+            var loading = top.layer.load(2);
+            jQuery.ajax({
+                url:src,
+                data:"filePath="+$("#filePath").attr('data-value'),
+                dataType: 'json',
+                success: function (data, status){
+                    top.layer.close(loading);
+                    var dataMap = eval("("+data+")");
+                    if(dataMap.success){
+                        $('#successCount').attr('value',dataMap.successCount);
+                        $('#failCount').attr('value',dataMap.failCount);
+                        $('#failFilePath').val(dataMap.failCount);
+                        $('#failFilePath').attr('value',dataMap.failFilePath);
+                    }else{
+                        top.layer.alert(dataMap.msg, {icon: 5});
+                    }
+                    $('#page-selection-post').css('display','none');
+                    $("#batchOrderModal").modal("show");
+                },
+                error: function (data, status, e){
+                    var dataMap = eval("("+data+")");
+                    top.layer.close(loading);
+                    top.layer.alert("error" + dataMap.msg, {icon: 5});
+                }
+            })
+        }
+        function batchDelivery() {
+            $('#filePath').val('');
+            $('#page-selection-post').css('display','none');
         }
 	</script>
 </head>
@@ -341,7 +391,7 @@
 			<input id="export" class="btn btn-primary" type="submit" value="导出CSV格式报表" onclick="exportCosumdebtOrder()" />
 		</li>
 		<li class="btns">
-			<input id="batchDelivery" class="btn btn-primary"  data-toggle="modal" data-target="#myModal1"  type="submit" value="批量发货" />
+			<input id="batchDelivery" class="btn btn-primary"  data-toggle="modal" data-target="#myModal1"  type="submit" onclick="batchDelivery()" value="批量发货" />
 		</li>
 		<li class="clearfix"></li>
 	</ul>
@@ -425,7 +475,7 @@
 
 </div>
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content radius">
 			<div class="modal-header" style="height: 60px;">
@@ -436,10 +486,10 @@
 					<font color="#FF0000">批量发货需导入物流单号文件</font>
 				</div>
 				<div class="form-group">
-					<button class="btn btn-primary" type="button" onclick="">已上传直接导入</button>
+					<button class="btn btn-primary" type="button" onclick="doBatchDelivery()">已上传直接导入</button>
 				</div>
 				<div class="form-group">
-					<input name="file" data-value="$!{filePath}" id="filePath" type="file"/><br>
+					<input name="file" data-value="${filePath}" id="filePath" type="file"/><br>
 					<button class="btn btn-primary" type="button" onclick="uploadFile()">上传物流单号文件</button>
 				</div>
 			</div>
@@ -449,6 +499,30 @@
 
 		</div>
 	</div><!-- /.modal-content -->
+	<form class="form-horizontal" id="batchOrderForm" enctype="multipart/form-data" role="form">
+		<div id="batchOrderModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content radius">
+					<div class="modal-header" style="height: 60px;">
+						<h3 class="modal-title" style="float: left;">导入发货</h3>
+						<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();" style="float: right; width: 20px; height: 20px;">×</a>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label class="col-sm-1" style="width:100px">导入成功:</label><input type="text" value="$!{successCount}" id="successCount" name="successCount" disabled="true"/>条
+						</div>
+						<div class="form-group">
+							<label class="col-sm-1" style="width:100px">导入失败:</label><input type="text" value="$!{failCount}" id="failCount" name="failCount" disabled="true"/>条
+						</div>
+						<div class="form-group">
+							<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+							<button class="btn btn-primary" type="button" value="$!{failFilePath}" id="failFilePath" name="failFilePath" onclick="openUrl(this)">导出失败数据</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 </div><!-- /.modal -->
 </body>
 </html>

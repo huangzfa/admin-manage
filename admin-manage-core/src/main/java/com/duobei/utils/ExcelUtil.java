@@ -5,6 +5,10 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -170,9 +174,14 @@ public class ExcelUtil {
 
     public static List<Map<String, Object>> loadExcel(String filepath, int count) {
         // 创建Excel工作簿文件的引用
-        HSSFWorkbook wookbook = null;
+        Workbook workbook = null;
         try {
-            wookbook = new HSSFWorkbook(new FileInputStream(filepath));// 根据路劲创建引用
+            if(filepath.indexOf(".xlsx")>-1){
+                workbook = new XSSFWorkbook(new FileInputStream(filepath));
+            } else {
+                workbook = new HSSFWorkbook(new FileInputStream(filepath));// 根据路劲创建引用
+            }
+
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -181,24 +190,24 @@ public class ExcelUtil {
             e.printStackTrace();
         }
         // 在excel文档中，第一个工作表的缺省索引是0
-        HSSFSheet sheet = wookbook.getSheetAt(count);
+        Sheet sheet = workbook.getSheetAt(count);
         // 获取到excel文件中的所有行数
         int rows = sheet.getPhysicalNumberOfRows();
         List<Map<String, Object>> li = new ArrayList<Map<String, Object>>();
         // boolean boo = false;
         for (int i = 1; i < rows; i++) {
-            HSSFRow row = sheet.getRow(i);
+            Row row = sheet.getRow(i);
             if (row != null) {
                 // 获取文件中的所有列
                 int cells = row.getPhysicalNumberOfCells();
                 Map<String, Object> map = new HashMap<>();
                 // 遍历列
                 for (int j = 0; j < cells; j++) {
-                    HSSFCell cell = row.getCell(j);
+                    Cell cell = row.getCell(j);
                     if (cell != null) {
                         cell.setCellType(Cell.CELL_TYPE_STRING);
-                        HSSFRow title = sheet.getRow(0);
-                        HSSFCell titleCell = title.getCell(cell.getColumnIndex());
+                        Row title = sheet.getRow(0);
+                        Cell titleCell = title.getCell(cell.getColumnIndex());
                         map.put(titleCell.getStringCellValue(), cell.getStringCellValue());
                     }
                 }

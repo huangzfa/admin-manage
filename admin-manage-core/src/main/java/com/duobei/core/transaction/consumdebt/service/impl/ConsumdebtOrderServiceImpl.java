@@ -2,6 +2,7 @@ package com.duobei.core.transaction.consumdebt.service.impl;
 
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.lang.StringUtil;
+import com.duobei.common.vo.BatchDeliveryResultVo;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.dao.ProductDao;
 import com.duobei.core.operation.product.domain.Product;
@@ -12,10 +13,15 @@ import com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrderExample;
 import com.duobei.core.transaction.consumdebt.domain.criteria.ConsumdebtOrderCriteria;
 import com.duobei.core.transaction.consumdebt.domain.vo.ConsumdebtOrderListVo;
 import com.duobei.core.transaction.consumdebt.service.ConsumdebtOrderService;
+import com.duobei.utils.ExcelUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author litianxiong
@@ -23,6 +29,7 @@ import java.util.List;
  * @date 2019/3/13
  */
 @Service("consumdebtOrderService")
+@Slf4j
 public class ConsumdebtOrderServiceImpl implements ConsumdebtOrderService {
    @Resource
     ConsumdebtOrderDao consumdebtOrderDao;
@@ -32,6 +39,7 @@ public class ConsumdebtOrderServiceImpl implements ConsumdebtOrderService {
 
     @Resource
     ProductDao productDao;
+    private static ExecutorService executor = Executors.newFixedThreadPool(20);
     @Override
     public ConsumdebtOrder getByUserIdAndBorrowId(Long userId, Long borrowId) {
         return consumdebtOrderDao.getByUserIdAndBorrowId(userId,borrowId);
@@ -104,5 +112,107 @@ public class ConsumdebtOrderServiceImpl implements ConsumdebtOrderService {
     @Override
     public List<ConsumdebtOrder> getListByReportQuery(ConsumdebtOrderCriteria criteria) {
         return consumdebtOrderDao.getListByReportQuery(criteria);
+    }
+
+    @Override
+    public BatchDeliveryResultVo batchDeliveryConsumdebtOrder(String filePath) {
+        Long startTime = System.currentTimeMillis();
+        List<Map<String,Object>> excel = ExcelUtil.loadExcel(filePath, 0);
+        List<ConsumdebtOrder> list=new ArrayList<>();
+        BatchDeliveryResultVo result = new BatchDeliveryResultVo();
+        int[] argInt = new int[2];//定义成功失败
+        CountDownLatch latch = new CountDownLatch(excel.size());
+        for (Map<String, Object> map : excel) {
+            Long startTime1 = System.currentTimeMillis();
+            executor.execute(() -> new SimpleRunnAble(argInt,list,map,latch));
+             log.info("线程的运行时间{}",System.currentTimeMillis() - startTime1);
+        }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            log.error("线程异常",e);
+        }
+        //executor.shutdown();
+        String os = System.getProperty("os.name");
+        String path="/home/admin/project/file/";
+        if(os.toLowerCase().startsWith("win")){
+            path = "D:"+path;
+        }
+        int start = filePath.lastIndexOf("/");
+        int end = filePath.lastIndexOf(".");
+        String fileName=filePath.substring(start + 1, end)+"失败表单.xls";
+        Map<String, String> titleMap=getTitleMap();
+        ExcelUtil.excelExport(list, titleMap, fileName, path);
+        result.setSuccessCount(argInt[0]);
+        result.setFailCount(argInt[1]);
+        result.setFailFilePath(path+fileName);
+        result.setSuccess(true);
+        result.setMsg("操作成功");
+        log.info("运行时间{}",System.currentTimeMillis() - startTime);
+        return result;
+    }
+
+    private Map<String, String> getTitleMap() {
+
+        Map<String, String> titleMap=new TreeMap<String, String>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return 1;
+            }
+        });
+        titleMap.put("orderNo","订单号" );
+        titleMap.put("logisticsNo","运单号" );
+        titleMap.put("logisticsCompany","物流公司" );
+        titleMap.put("closedReason","失败原因" );
+        return titleMap;
+    }
+
+    class SimpleRunnAble implements Runnable {
+        private final Map<String, Object> map;
+        private final CountDownLatch latch;
+        private final List<ConsumdebtOrder> list;
+        private final int[] argInt;
+
+
+        SimpleRunnAble(int[] argInt,List<ConsumdebtOrder> list,Map<String, Object> map,CountDownLatch latch) {
+            this.map = map;
+            this.latch = latch;
+            this.list  = list;
+            this.argInt = argInt;
+            run();
+        }
+
+        @Override
+        public void run() {
+            Long startTime = System.currentTimeMillis();
+            ConsumdebtOrder consumdebtOrderDo = new ConsumdebtOrder();
+            for(Map.Entry<String, Object> entry : map.entrySet()){
+                if ("订单号".equals(entry.getKey())) {
+                    ConsumdebtOrder consumdebtOrder = consumdebtOrderDao.getByOrderNo((String) entry.getValue());
+                    if (consumdebtOrder != null) {
+                        consumdebtOrderDo.setId(consumdebtOrder.getId());
+                        consumdebtOrderDo.setOrderNo(consumdebtOrder.getOrderNo());
+                    } else{
+                        consumdebtOrderDo.setOrderNo((String) entry.getValue());
+                    }
+                } else if ("运单号".equals(entry.getKey())) {
+                    consumdebtOrderDo.setLogisticsNo((String) entry.getValue());
+                } else if ("快递公司".equals(entry.getKey())) {
+                    consumdebtOrderDo.setLogisticsCompany((String) entry.getValue());
+                } else if ("收件人手机".equals(entry.getKey())) {
+                    consumdebtOrderDo.setConsigneeMobile((String) entry.getValue());
+                }
+            }
+            int i = consumdebtOrderDo.getId() != null ? consumdebtOrderDao.deliveryConsumdebtOrder(consumdebtOrderDo) : 0;
+            if (i > 0) {
+                argInt[0] +=1; 	//successCount +=1;
+            }else {
+                argInt[1] +=1;
+                consumdebtOrderDo.setClosedReason("订单号不存在或已发货");
+                list.add(consumdebtOrderDo);
+            }
+            latch.countDown();
+            log.info("单个运行时间{}",System.currentTimeMillis() - startTime);
+        }
     }
 }

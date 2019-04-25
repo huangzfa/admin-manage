@@ -109,4 +109,27 @@
       and consumdebt_order.state = #{state}
     </if>
   </select>
+
+  <select id="getByOrderNo" parameterType="String"  resultType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM tt_consumdebt_order consumdebt_order
+    WHERE consumdebt_order.is_delete = 0 AND consumdebt_order.order_no=#{orderNo ,jdbcType=VARCHAR}
+    LIMIT 0,1
+  </select>
+
+  <update id="deliveryConsumdebtOrder"  parameterType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
+    UPDATE tt_consumdebt_order
+    <set>
+      modify_time = NOW(),state = 3,
+      <if test="logisticsCompany != null and logisticsCompany != '' ">
+        logistics_company = #{logisticsCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticsNo != null and logisticsNo != '' ">
+        logistics_no = #{logisticsNo,jdbcType=VARCHAR},
+      </if>
+      gmt_deliver = NOW()
+    </set>
+    WHERE is_delete = 0 AND state = 2 AND id = #{id ,jdbcType=BIGINT}
+  </update>
 </mapper>

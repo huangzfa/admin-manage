@@ -1,5 +1,6 @@
 package com.duobei.core.manage.sys.service.impl;
 
+import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
 import com.duobei.common.util.ConfigProperties;
@@ -19,6 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Service("commonService")
 public class CommonServiceImpl implements CommonService {
 	private static Logger log = LoggerFactory.getLogger(CommonServiceImpl.class);
+	private OSSClient ossClient;
+
+	private final static String OSS_URL_PREF ="oss.url.pre";
+
+	private final static String OSS_BUCKET ="oss.bucket.name";
 	@Override
 	public OssUploadResult uploadImageToOss(MultipartFile imageFile) {
 		OssUploadResult result = new OssUploadResult();
@@ -58,8 +64,8 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public OssUploadResult uploadImageToOss(InputStream is, String failFileName, int length) {
-		/*OssUploadResult result = new OssUploadResult();
+	public OssUploadResult uploadImageToOss(InputStream inputStream, String fileName, int fileSize) {
+		OssUploadResult result = new OssUploadResult();
 		try{
 			String path = ConfigProperties.get(OSSUtil.getStorePath()) + "/";
 			ObjectMetadata metadata = new ObjectMetadata();
@@ -76,14 +82,14 @@ public class CommonServiceImpl implements CommonService {
 			result.setSuccess(true);
 			result.setMsg("upload inputStream to oss succeed");
 			result.setFileMd5(pubResult.getETag());
-			String url = ConfigProperties.get(Constants.OSS_URL_PREF) + path + fileName;
+			String url = ConfigProperties.get(OSS_URL_PREF) + path + fileName;
 			result.setUrl(url);
 		}catch(Exception e){
 			log.error("upload inputStream to oss error", e);
 			result.setSuccess(false);
 			result.setMsg("upload inputStream to oss error, message is " + e.getMessage());
-		}*/
-		return null;
+		}
+		return result;
 	}
 
 	private OssUploadResult uploadFileToXls(MultipartFile file,String contextType, String path,String fileName) {

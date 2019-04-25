@@ -12,5 +12,5 @@ public interface CommonService {
 	public OssUploadResult uploadFileToOssWithPath(MultipartFile file,
 												   String path);
 
-	OssUploadResult uploadImageToOss(InputStream is, String failFileName, int length);
+	OssUploadResult uploadImageToOss(InputStream inputStream, String fileName, int fileSize);
 }

@@ -22,4 +22,13 @@ public interface ConsumdebtOrderDao {
     ConsumdebtOrder getById(Long id);
 
     List<ConsumdebtOrder> getListByReportQuery(ConsumdebtOrderCriteria criteria);
+
+    /**
+     * 根据订单号获取订单信息
+     * @param value
+     * @return
+     */
+    ConsumdebtOrder getByOrderNo(String value);
+
+    int deliveryConsumdebtOrder(ConsumdebtOrder consumdebtOrderDo);
 }

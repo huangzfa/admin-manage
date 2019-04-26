@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.product.dao.BusinessServiceDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.vo.BusinessServiceVo" extends="com.duobei.core.operation.product.dao.mapper.BusinessServiceMapper.BaseResultMap">
+    </resultMap>
+
+    <select id="getByBizCode" resultType="com.duobei.core.operation.product.domain.vo.BusinessServiceVo" parameterType="java.lang.String">
+        select a.*,b.service_name from yy_business_service a left join yy_service b on a.service_code=b.service_code where a.biz_code=#{bizCode}
+    </select>
+
+    <delete id="delByBizCode" parameterType="java.lang.String">
+        DELETE from yy_business_service where biz_code=#{bizCode}
+    </delete>
+
+    <insert id="save" parameterType="com.duobei.core.operation.product.domain.BusinessService">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into yy_business_service
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bizCode != null">
+                biz_code,
+            </if>
+            <if test="serviceCode != null">
+                service_code,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+            <if test="addOperatorId != null">
+                add_operator_id,
+            </if>
+            <if test="modifyOperatorId != null">
+                modify_operator_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bizCode != null">
+                #{bizCode,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceCode != null">
+                #{serviceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addOperatorId != null">
+                #{addOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="modifyOperatorId != null">
+                #{modifyOperatorId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+</mapper>

@@ -8,4 +8,9 @@
     <select id="getAll" resultType="com.duobei.core.operation.product.domain.vo.BusinessVo">
         select * from yy_business
     </select>
+
+    <select id="getPageList" resultType="com.duobei.core.operation.product.domain.vo.BusinessVo">
+        select a.*,GROUP_CONCAT(c.service_name) AS service_name  from yy_business a left join yy_business_service b on a.biz_code=b.biz_code left join yy_service c on b.service_code=c.service_code
+        group by a.biz_code
+    </select>
 </mapper>

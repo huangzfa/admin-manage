@@ -1,6 +1,9 @@
 package com.duobei.core.operation.product.service.impl;
 
+import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.dao.BusinessDao;
+import com.duobei.core.operation.product.domain.Business;
+import com.duobei.core.operation.product.domain.criteria.BusinessCriteria;
 import com.duobei.core.operation.product.domain.vo.BusinessVo;
 import com.duobei.core.operation.product.service.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +28,11 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public List<BusinessVo> getAll(){
         return businessDao.getAll();
+    }
+
+    @Override
+    public ListVo<BusinessVo> getPageList(){
+        List<BusinessVo> list = businessDao.getPageList();
+        return new ListVo<BusinessVo>(list.size(), list);
     }
 }

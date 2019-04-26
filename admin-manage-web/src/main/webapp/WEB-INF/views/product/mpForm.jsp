@@ -25,6 +25,8 @@
     <br/>
     <form:form id="productForm" modelAttribute="product"   action="${ctxA}/product/mpSave" method="post" class="form-horizontal">
         <input type="hidden" name="id" value="${not empty product.id?product.id:''}">
+        <input type="hidden" name="state" value="${not empty product.state?product.state:''}">
+        <input type="hidden" name="productCode" value="${not empty product.productCode?product.productCode:''}">
         <input type="hidden" name="bizCodes" id="bizCodes">
         <div class="control-group">
             <label class="control-label">产品名称：</label>

@@ -4,7 +4,6 @@ import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.encrypt.MD5Util;
 import com.duobei.common.util.lang.DateUtil;
-import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.dao.ProductBusinessDao;
 import com.duobei.core.operation.product.dao.ProductDao;
@@ -12,7 +11,9 @@ import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.ProductBusiness;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
 import com.duobei.core.operation.product.domain.vo.ProductVo;
+import com.duobei.core.operation.product.service.MerchantService;
 import com.duobei.core.operation.product.service.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import java.util.List;
  * @description
  * @date 2019/2/26
  */
+@Slf4j
 @Service("ProductService")
 public class ProductServiceImpl implements ProductService {
 
@@ -32,6 +34,9 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
     @Autowired
     private ProductBusinessDao productBusinessDao;
+    @Autowired
+    private MerchantService merchantService;
+
 
     /**
      * 分页查询
@@ -74,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
         if( productDao.update(productVo) < 1){
             throw new TqException("禁用失败");
         }
+        merchantService.noticeByProduct(productVo);
     }
 
     /**
@@ -106,6 +112,7 @@ public class ProductServiceImpl implements ProductService {
                 productBusinessDao.update(entity);
             }
         }
+        merchantService.noticeByProduct(productVo);
     }
 
     /**
@@ -137,6 +144,7 @@ public class ProductServiceImpl implements ProductService {
                 productBusinessDao.update(entity);
             }
         }
+        merchantService.noticeByProduct(productVo);
 
     }
     /**
@@ -145,9 +153,10 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public void update(ProductVo  product) throws TqException{
-        if( productDao.save(product) <1){
+        if( productDao.update(product) <1){
             throw new TqException("添加失败");
         }
+        merchantService.noticeByProduct(product);
     }
 
     /**
@@ -159,6 +168,7 @@ public class ProductServiceImpl implements ProductService {
         if( productDao.update(product) <1){
             throw new TqException("修改失败");
         }
+        merchantService.noticeByProduct(product);
     }
     /**
      * 查询所有产品
@@ -168,4 +178,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAll(){
         return productDao.getAll();
     }
+
+
+
 }

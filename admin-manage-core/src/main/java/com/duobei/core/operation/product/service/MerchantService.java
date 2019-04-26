@@ -3,6 +3,7 @@ package com.duobei.core.operation.product.service;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.domain.Merchant;
+import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.criteria.MerchantCriteria;
 
 import java.util.List;
@@ -52,4 +53,9 @@ public interface MerchantService {
      * @return
      */
     Merchant getById(Integer id);
+
+    void noticeByProduct(Product product);
+
+    void noticeByMerchant(Merchant merchant);
+
 }

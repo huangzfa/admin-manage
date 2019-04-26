@@ -9,24 +9,24 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/merchant/list">商户列表</a></li>
-    <li class="active">
-        <shiro:hasPermission name="merchant:list:edit">
-            <a href="javascript:void(0);">${not empty authConfig.id?'修改':'添加'}商户</a>
-        </shiro:hasPermission>
-    </li>
+    <li><a href="${ctxA}/business/list">业务列表</a></li>
 </ul>
 
 <div class="si-warp">
     <br/>
-    <form:form id="merchantForm" modelAttribute="merchant"   action="${ctxA}/merchant/save" method="post" class="form-horizontal">
-        <input type="hidden" name="id" value="${not empty merchant.id?merchant.id:''}">
-        <input type="hidden" name="merchantNo" value="${not empty merchant.merchantNo?merchant.merchantNo:''}">
-        <input type="hidden" name="state" value="${not empty merchant.state?merchant.state:''}">
+    <form:form id="businessForm" modelAttribute="business"   action="${ctxA}/business/save" method="post" class="form-horizontal">
+        <input type="hidden" name="bizCode" id="bizCode" value="${bizCode}">
+        <input type="hidden" name="serviceCodes" id="serviceCodes">
         <div class="control-group">
-            <label class="control-label">商户名称：</label>
+            <label class="control-label">服务类型：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写商户名称" type="text" name="merchantName" id="merchantName" maxlength="32" value="${merchant.merchantName}"></input>
+                <div class="form-group">
+                    <c:forEach items="${services}" var="data">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" ${data.checked} value="${data.serviceCode}" >${data.serviceName}
+                        </label>
+                    </c:forEach>
+                </div>
             </div>
         </div>
         <div class="form-actions">
@@ -56,8 +56,15 @@
         if( !bool ){
             return false;
         }
+        var serviceCode = new Array();
+        $("#businessForm  input[type=checkbox]").each(function(){
+            if($(this).prop("checked")){
+                serviceCode.push($(this).val());
+            }
+        })
+        $("#serviceCodes").val(serviceCode.join(","));
         $("#btnSubmit").attr("disabled",true);
-        var form=$("#merchantForm");
+        var form=$("#businessForm");
         var action = form[0].action;
         var data = form.serialize();
         jQuery.post(action,data, function(data) {
@@ -66,7 +73,7 @@
                 top.layer.alert("操作成功", {
                     icon: 6,
                     end: function(){
-                        window.location.href="${ctxA}/merchant/list";
+                        window.location.href="${ctxA}/business/list";
                     }
                 });
             } else {

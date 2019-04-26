@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.product.dao.mapper.ServiceMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.operation.product.domain.Service">
+    <id column="s_service_code" jdbcType="VARCHAR" property="serviceCode" />
+    <result column="s_service_name" jdbcType="VARCHAR" property="serviceName" />
+    <result column="s_merchant_datasyn_url" jdbcType="VARCHAR" property="merchantDatasynUrl" />
+    <result column="s_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="s_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="s_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="s_modify_operator_id" jdbcType="INTEGER" property="modifyOperatorId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    s.service_code as s_service_code, s.service_name as s_service_name, s.merchant_datasyn_url as s_merchant_datasyn_url, 
+    s.add_time as s_add_time, s.modify_time as s_modify_time, s.add_operator_id as s_add_operator_id, 
+    s.modify_operator_id as s_modify_operator_id
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.operation.product.domain.ServiceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from yy_service s
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yy_service s
+    where s.service_code = #{serviceCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from yy_service
+    where service_code = #{serviceCode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.operation.product.domain.ServiceExample">
+    delete from yy_service s
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.operation.product.domain.Service">
+    insert into yy_service (service_code, service_name, merchant_datasyn_url, 
+      add_time, modify_time, add_operator_id, 
+      modify_operator_id)
+    values (#{serviceCode,jdbcType=VARCHAR}, #{serviceName,jdbcType=VARCHAR}, #{merchantDatasynUrl,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, 
+      #{modifyOperatorId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.operation.product.domain.Service">
+    insert into yy_service
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serviceCode != null">
+        service_code,
+      </if>
+      <if test="serviceName != null">
+        service_name,
+      </if>
+      <if test="merchantDatasynUrl != null">
+        merchant_datasyn_url,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id,
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serviceCode != null">
+        #{serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceName != null">
+        #{serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantDatasynUrl != null">
+        #{merchantDatasynUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.operation.product.domain.ServiceExample" resultType="java.lang.Long">
+    select count(*) from yy_service s
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update yy_service s
+    <set>
+      <if test="record.serviceCode != null">
+        s.service_code = #{record.serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceName != null">
+        s.service_name = #{record.serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.merchantDatasynUrl != null">
+        s.merchant_datasyn_url = #{record.merchantDatasynUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null">
+        s.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        s.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addOperatorId != null">
+        s.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifyOperatorId != null">
+        s.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update yy_service s
+    set s.service_code = #{record.serviceCode,jdbcType=VARCHAR},
+      s.service_name = #{record.serviceName,jdbcType=VARCHAR},
+      s.merchant_datasyn_url = #{record.merchantDatasynUrl,jdbcType=VARCHAR},
+      s.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      s.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      s.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      s.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.product.domain.Service">
+    update yy_service
+    <set>
+      <if test="serviceName != null">
+        service_name = #{serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantDatasynUrl != null">
+        merchant_datasyn_url = #{merchantDatasynUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyOperatorId != null">
+        modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where service_code = #{serviceCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.product.domain.Service">
+    update yy_service
+    set service_name = #{serviceName,jdbcType=VARCHAR},
+      merchant_datasyn_url = #{merchantDatasynUrl,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      modify_operator_id = #{modifyOperatorId,jdbcType=INTEGER}
+    where service_code = #{serviceCode,jdbcType=VARCHAR}
+  </update>
+</mapper>

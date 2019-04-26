@@ -9,7 +9,7 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/merchant/list">产品列表</a></li>
+    <li><a href="${ctxA}/product/pList">产品列表</a></li>
     <li class="active">
         <shiro:hasPermission name="product:list:edit">
             <a href="javascript:void(0);">${not empty product.id?'修改':'添加'}产品</a>
@@ -21,22 +21,25 @@
     <br/>
     <form:form id="productForm" modelAttribute="product"   action="${ctxA}/product/save" method="post" class="form-horizontal">
         <input type="hidden" name="id" value="${not empty product.id?product.id:''}">
+        <input type="hidden" name="merchantId" value="${not empty product.merchantId?product.merchantId:''}">
+        <input type="hidden" name="state" value="${not empty product.state?product.state:''}">
+        <input type="hidden" name="productCode" value="${not empty product.productCode?product.productCode:''}">
         <div class="control-group">
             <label class="control-label">商户名称：</label>
             <div class="controls">
-                <input type="text" class="form-control" disabled type="text"  value="${mechantName}"></input>
+                <input type="text" class="form-control" readonly="readonly" type="text"  value="${mechantName}"></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">产品名称：</label>
             <div class="controls">
-                <input type="text" class="form-control" disabled type="text"  value="${product.productName}"></input>
+                <input type="text" class="form-control" name="productName" readonly="readonly" type="text"  value="${product.productName}"></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">产品域名：</label>
             <div class="controls">
-                <input type="text" class="form-control" disabled type="text"  value=""></input>
+                <input type="text" class="form-control" readonly="readonly" type="text"  value=""></input>
             </div>
         </div>
         <div class="form-actions">

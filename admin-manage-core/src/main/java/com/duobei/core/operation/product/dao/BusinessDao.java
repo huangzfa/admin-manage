@@ -12,4 +12,6 @@ import java.util.List;
 public interface BusinessDao {
 
     List<BusinessVo> getAll();
+
+    List<BusinessVo> getPageList();
 }

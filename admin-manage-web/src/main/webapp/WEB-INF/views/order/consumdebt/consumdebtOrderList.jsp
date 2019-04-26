@@ -231,7 +231,7 @@
         function openUrl(obj){
 			debugger;
             var url=obj.value;
-            window.open(encodeURI(url));
+          window.open("${ctxA}/order/consumdebt/downloadFail?url="+url);
         }
         function exportCosumdebtOrder(){
             top.$.jBox.confirm("确定导出？",'系统提示',function(v,h,f) {
@@ -516,6 +516,7 @@
 						</div>
 						<div class="form-group">
 							<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+<%--							<a id="failDownload" &lt;%&ndash; style="display:none;"&ndash;%&gt; href="D:/home/admin/project/file/123.xls" download="失败表单.xls">测试</a>--%>
 							<button class="btn btn-primary" type="button" value="$!{failFilePath}" id="failFilePath" name="failFilePath" onclick="openUrl(this)">导出失败数据</button>
 						</div>
 					</div>

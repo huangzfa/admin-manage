@@ -141,6 +141,7 @@ public class ConsumdebtOrderServiceImpl implements ConsumdebtOrderService {
         int start = filePath.lastIndexOf("/");
         int end = filePath.lastIndexOf(".");
         String fileName=filePath.substring(start + 1, end)+"失败表单.xls";
+        fileName = fileName.replaceAll(" ","");
         Map<String, String> titleMap=getTitleMap();
         ExcelUtil.excelExport(list, titleMap, fileName, path);
         result.setSuccessCount(argInt[0]);

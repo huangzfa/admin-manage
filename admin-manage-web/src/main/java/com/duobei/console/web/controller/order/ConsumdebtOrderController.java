@@ -7,6 +7,7 @@ import com.duobei.common.enums.ResourceResTypeSecEumn;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.OSSUtil;
 import com.duobei.common.util.lang.StringUtil;
+import com.duobei.common.vo.BatchDeliveryResultVo;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.core.base.SpecialDateEditor;
@@ -276,20 +277,27 @@ public class ConsumdebtOrderController extends BaseController {
                 .append("\"")
                 .toString();
     }
+
+    @RequiresPermissions(PERMISSIONPRE+"upload")
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     @ResponseBody
     public String uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+
+        String os = System.getProperty("os.name");
         String path="/home/admin/project/file/";
+        if(os.toLowerCase().startsWith("win")){
+           path = "D:"+path;
+        }
+
         OssUploadResult our = commonService.uploadFileToOssWithPath(file,path);
         return JSON.toJSONString(our);
     }
 
-/*
-    @RequestMapping(value="/batchDeliveryConsumdebtOrder",method=RequestMethod.GET,produces = "text/html;charset=UTF-8")
+    @RequestMapping(value="/doBatchDelivery",method=RequestMethod.GET,produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String batchDeliveryConsumdebtOrder(ModelMap model, String filePath){
         logger.info("===============filePath===========" + filePath);
-        BatchDeliveryResult result=null;
+        BatchDeliveryResultVo result=null;
         if (filePath!=null) {
             result=consumdebtOrderService.batchDeliveryConsumdebtOrder(filePath);
             if (result!=null) {
@@ -308,18 +316,18 @@ public class ConsumdebtOrderController extends BaseController {
                     result.setMsg("文件上传服务器失败");
                 }
             }else {
-                result=new BatchDeliveryResult();
+                result=new BatchDeliveryResultVo();
                 result.setSuccess(false);
                 result.setMsg("操作失败");
             }
         }else {
-            result=new BatchDeliveryResult();
+            result=new BatchDeliveryResultVo();
             result.setSuccess(false);
             result.setMsg("请上传物流单号文件");
         }
 
         return JSON.toJSONString(result);
     }
-*/
+
 
 }

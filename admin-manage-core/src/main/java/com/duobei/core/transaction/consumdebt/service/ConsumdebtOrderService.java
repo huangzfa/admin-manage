@@ -1,6 +1,7 @@
 package com.duobei.core.transaction.consumdebt.service;
 
 import com.duobei.common.exception.TqException;
+import com.duobei.common.vo.BatchDeliveryResultVo;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder;
 import com.duobei.core.transaction.consumdebt.domain.criteria.ConsumdebtOrderCriteria;
@@ -49,11 +50,13 @@ public interface ConsumdebtOrderService {
      * @return
      */
     List<ConsumdebtOrder> getListByReportQuery(ConsumdebtOrderCriteria criteria);
-
-   /* *//**
+    /**
      * 批量导入发货数据
      * @param filePath
      * @return
-     *//*
-    BatchDeliveryResult batchDeliveryConsumdebtOrder(String filePath);*/
+     */
+    BatchDeliveryResultVo batchDeliveryConsumdebtOrder(String filePath);
+
+
+
 }

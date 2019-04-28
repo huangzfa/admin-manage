@@ -27,6 +27,8 @@ import com.duobei.core.transaction.consumdebt.service.ConsumdebtOrderService;
 import com.duobei.dic.ZD;
 import com.duobei.utils.DateUtil;
 import com.duobei.utils.ExportUtil;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -44,6 +46,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -293,6 +296,7 @@ public class ConsumdebtOrderController extends BaseController {
         return JSON.toJSONString(our);
     }
 
+    @RequiresPermissions(PERMISSIONPRE+"upload")
     @RequestMapping(value="/doBatchDelivery",method=RequestMethod.GET,produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String batchDeliveryConsumdebtOrder(ModelMap model, String filePath){
@@ -329,5 +333,25 @@ public class ConsumdebtOrderController extends BaseController {
         return JSON.toJSONString(result);
     }
 
+    @RequiresPermissions(PERMISSIONPRE+"export")
+    @RequestMapping(value="/downloadFail",method=RequestMethod.GET)
+    public void downloadFail(@RequestParam("url")String url,HttpServletRequest request,HttpServletResponse response) {
+
+        String fileName = url.substring(url.lastIndexOf("/") + 1);
+     /*   String filepath = url.substring(0, url.lastIndexOf("/"));*/
+        try {
+            String encode = URLEncoder.encode(fileName, "UTF-8");
+            //把要下载的文件转成字节数组
+            byte[] byteArray = FileUtils.readFileToByteArray(new File(url));
+            //目的 让浏览器 以附件的形式 下载内容
+            response.setHeader("Content-Disposition", "attachment;filename=" + encode);
+            OutputStream outputStream = response.getOutputStream();
+            IOUtils.write(byteArray, outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

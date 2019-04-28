@@ -18,6 +18,7 @@ import com.duobei.core.operation.consume.service.ConsumeLoanRateDayConfigService
 import com.duobei.core.operation.consume.service.ConsumeLoanRenewalConfigService;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.ProductBusiness;
+import com.duobei.core.operation.product.domain.criteria.BusinessCriteria;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
 import com.duobei.core.operation.product.domain.vo.BusinessVo;
 import com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo;
@@ -143,8 +144,8 @@ public class ProductController extends BaseController {
         }
         model.addAttribute("merchants",merchantService.getAll());
         //查询所有业务类型，和产品关联的业务，已经关联的checked处理
-        List<BusinessVo> listBusin =  businessService.getAll();
-        for(BusinessVo vo : listBusin){
+        ListVo<BusinessVo> listBusin =  businessService.getPageList();
+        for(BusinessVo vo : listBusin.getRows()){
             for( ProductBusiness business : list){
                 if(vo.getBizCode().equals(business.getBizCode())){
                     vo.setChecked("checked");
@@ -152,7 +153,7 @@ public class ProductController extends BaseController {
                 }
             }
         }
-        model.addAttribute("listBusin",listBusin);
+        model.addAttribute("listBusin",listBusin.getRows());
         return "product/mpForm";
     }
 

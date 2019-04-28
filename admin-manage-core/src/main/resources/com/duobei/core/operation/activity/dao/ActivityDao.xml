@@ -19,12 +19,12 @@
     </select>
 
     <select id="countByCriteria" parameterType="com.duobei.core.operation.activity.domain.criteria.ActivityCriteria" resultType="java.lang.Integer">
-        select * from yy_activity
+        select count(*) from yy_activity
         where is_delete = 0
         <if test="productId != null ">
             and product_id =#{productId}
         </if>
-        order by id desc
+        order by act_id desc
     </select>
 
     <select id="getByCode" parameterType="java.lang.String" resultType="com.duobei.core.operation.activity.domain.Activity">
@@ -37,7 +37,7 @@
         <if test="couponId != null and couponId != '' ">
             and coupon_id = #{couponId,jdbcType=INTEGER}
         </if>
-        and prize_type in('other','bzj') order by create_time  desc
+        and prize_type in('other','bzj') order by add_time  desc
     </select>
     <!-- 查询优惠券奖品，jkq,hkq -->
     <select id="getCouponByActId" resultType="com.duobei.core.operation.activity.domain.ActivityPrize" parameterType="java.util.HashMap">
@@ -45,7 +45,7 @@
         <if test="couponId != null and couponId != '' ">
             and a.coupon_id = #{couponId,jdbcType=INTEGER}
         </if>
-        and ((c.expiry_type = 0) or ( c.expiry_type = 1 and c.gmt_end > NOW() and c.gmt_start &lt; NOW()))
-        order by a.create_time  desc
+        and ((c.expiry_type = 0) or ( c.expiry_type = 1 and c.end_time > NOW() and c.start_time &lt; NOW()))
+        order by a.add_time  desc
     </select>
 </mapper>

@@ -3,6 +3,7 @@
 <mapper namespace="com.duobei.core.operation.activity.dao.mapper.ActivityMapper">
   <resultMap id="BaseResultMap" type="com.duobei.core.operation.activity.domain.Activity">
     <id column="a_act_id" jdbcType="INTEGER" property="actId" />
+    <id column="a_product_id" jdbcType="INTEGER" property="productId" />
     <result column="a_at_code" jdbcType="VARCHAR" property="atCode" />
     <result column="a_act_name" jdbcType="VARCHAR" property="actName" />
     <result column="a_rule" jdbcType="VARCHAR" property="rule" />

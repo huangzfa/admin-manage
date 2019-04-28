@@ -13,10 +13,10 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/merchant/list">产品列表</a></li>
+    <li><a href="${ctxA}/product/mpList">产品列表</a></li>
     <li class="active">
         <shiro:hasPermission name="product:list:edit">
-            <a href="javascript:void(0);">${not empty product.id?'修改':'添加'}商户</a>
+            <a href="javascript:void(0);">${not empty product.id?'修改':'添加'}产品</a>
         </shiro:hasPermission>
     </li>
 </ul>
@@ -48,13 +48,23 @@
         <div class="control-group">
             <label class="control-label">业务类型：</label>
             <div class="controls">
-                <div class="form-group">
+                <table class="table table-hover" style="width: 40%">
+                    <thead>
+                        <th></th>
+                        <th>业务类型</th>
+                        <th>已关联服务</th>
+                    </thead>
+                    <tbody>
                     <c:forEach items="${listBusin}" var="data">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" ${data.checked} value="${data.bizCode}" >${data.bizName}
-                        </label>
+                        <tr>
+                            <td><input type="checkbox" ${data.checked} value="${data.bizCode}" ></td>
+                            <td>${data.bizName}</td>
+                            <td>${data.serviceName}</td>
+                        </tr>
                     </c:forEach>
-                </div>
+                    </tbody>
+                </table>
+
             </div>
         </div>
         <div class="form-actions">

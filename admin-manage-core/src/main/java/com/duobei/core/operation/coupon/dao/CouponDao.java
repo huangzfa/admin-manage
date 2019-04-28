@@ -15,4 +15,6 @@ import java.util.Map;
 public interface CouponDao {
     @MapKey("id")
     Map<Integer,Coupon> getMapByIds(@Param("ids") List<Integer> couponIds);
+
+    List<Coupon> getCouponList(@Param("couponType") String couponType);
 }

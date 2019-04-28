@@ -11,6 +11,7 @@
     <result column="a_link" jdbcType="VARCHAR" property="link" />
     <result column="a_is_jump" jdbcType="INTEGER" property="isJump" />
     <result column="a_is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="a_state" jdbcType="INTEGER" property="state" />
     <result column="a_add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="a_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="a_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />

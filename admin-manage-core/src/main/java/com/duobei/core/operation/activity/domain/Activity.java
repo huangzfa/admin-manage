@@ -12,6 +12,8 @@ public class Activity implements Serializable {
      */
     private Integer actId;
 
+    private Integer productId;
+
     /**
      * 活动类型编码
      */

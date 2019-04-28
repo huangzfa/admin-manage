@@ -17,7 +17,7 @@
             var productList ='${productList}';
             list = eval("("+productList+")");
             for( var i = 0;i<list.length;i++){
-                $("#productList").append("<option value='"+list[i].id+"'>"+list[i].productName+"</option>");
+                $("#productId").append("<option value='"+list[i].id+"'>"+list[i].productName+"</option>");
             }
             pager=$('#tt').datagrid('getPager');
             pager.pagination({
@@ -73,7 +73,7 @@
             var opStr='';
             var productId = $("#productId:selected").val(),
             <shiro:hasPermission name="activity:list:edit">
-            opStr+='<a class="si-option-a" href="${ctxA}/activity/form?code='+row.code+'&productId='+productId+'">修改</a>';
+            opStr = '<a class="si-option-a" href="${ctxA}/activity/form?code='+row.code+'&productId='+productId+'">修改</a>';
             </shiro:hasPermission>
             return opStr;
         }
@@ -82,11 +82,11 @@
             if( value == 'hongbao'){
                 return "红包模板";
             }else if( value == "zhuanpan"){
-                return "转盘模板"
+                return "转盘模板";
             }else if( value=="static"){
-                return "静态模板"
+                return "静态模板";
             }else if( value=="exchange"){
-                return "兑换模板"
+                return "兑换模板";
             }else{
                 return "未知";
             }
@@ -100,6 +100,7 @@
     <shiro:hasPermission name="product:list:edit">
         <li><a href="${ctxA}/product/mpForm">添加活动</a></li>
     </shiro:hasPermission>
+    <li><a href="${ctxA}/activity/prize/list">奖品池管理</a></li>
 </ul>
 <div class="breadcrumb form-search" style="margin-bottom:0;">
     <ul class="ul-form">

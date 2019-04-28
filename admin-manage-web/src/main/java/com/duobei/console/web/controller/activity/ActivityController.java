@@ -18,6 +18,7 @@ import com.duobei.core.operation.activity.domain.vo.ActivityExchangePrizeVo;
 import com.duobei.core.operation.activity.domain.vo.ActivityHongbaoPrizeVo;
 import com.duobei.core.operation.activity.domain.vo.ActivityPrizeRelVo;
 import com.duobei.core.operation.activity.service.*;
+import com.duobei.dic.ZD;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,11 +103,11 @@ public class ActivityController extends BaseController {
     @RequiresPermissions("activity:list:edit")
     @RequestMapping(value = "/form")
     public void form(Model model, String code) {
+        HashMap<String,Object> params = new HashMap<>();
         if(StringUtil.isNotEmpty(code)){
             Activity activity = activityService.getByCode(code);
             if( activity != null ){
                 model.addAttribute("activity",JSON.toJSONString(activity));
-                HashMap<String,Object> params = new HashMap<>();
                 //当前环境
                 String envioment = Global.getValAsString("environment");
                 //静态模板
@@ -143,8 +144,10 @@ public class ActivityController extends BaseController {
             }
         }
         //查询优惠券列表
-        //List<ActivityPrize> prize_list1 = prizeService.getByActId(params);//其他品类和不中奖奖品
-        //List<ActivityPrize> prize_list2 = prizeService.getCouponByActId(params);//优惠券和借款券
+        List<ActivityPrize> prize_list1 = prizeService.getByActId(params);//其他品类和不中奖奖品
+        List<ActivityPrize> prize_list2 = prizeService.getCouponByActId(params);//优惠券和借款券
+        model.addAttribute("prize_list1",prize_list1);
+        model.addAttribute("prize_list2",prize_list2);
     }
 
     @RequiresPermissions("activity:list:edit")

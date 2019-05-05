@@ -1,5 +1,6 @@
 package com.duobei.core.operation.activity.dao;
 
+import com.duobei.core.operation.activity.domain.ActivityHongbaoPrize;
 import com.duobei.core.operation.activity.domain.vo.ActivityHongbaoPrizeVo;
 
 import java.util.HashMap;
@@ -17,4 +18,11 @@ public interface ActivityHongbaoPrizeDao {
      * @return
      */
     List<ActivityHongbaoPrizeVo> getByActId(HashMap<String,Object> params);
+
+    /**
+     *删除奖品时候查询
+     * @param params
+     * @return
+     */
+    List<ActivityHongbaoPrize> getByPrizeId(HashMap<String,Object> params);
 }

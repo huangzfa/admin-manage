@@ -16,4 +16,15 @@
         </if>
         order by a.act_prize_id  asc
     </select>
+
+    <select id="getByPrizeId" resultType="com.duobei.core.operation.activity.domain.ActivityPrizeRel" parameterType="java.util.HashMap">
+        SELECT a.*   FROM yy_activity_prize_rel a where a.is_delete = 0
+        <if test="actId != null and actId != '' ">
+            and a.act_id = #{actId,jdbcType=INTEGER}
+        </if>
+        <if test="prizeId != null and prizeId != '' ">
+            and a.prize_id = #{prizeId,jdbcType=INTEGER}
+        </if>
+        order by a.act_prize_id  asc
+    </select>
 </mapper>

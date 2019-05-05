@@ -39,13 +39,12 @@
         function getData(){
             var data = {
                 'pageNum':pageNum,
-                'pageSize':pageSize,
-                'productId':$("#productId").val(),
+                'pageSize':pageSize
 
             }
             hjnUtils.ajax({
                 type:'post',
-                url:'${ctxA}/activity/getActivityData',
+                url:'${ctxA}/activity/prize/getPrizeData',
                 data:data,
                 dataType:'json',
                 success:function(data){
@@ -80,17 +79,43 @@
         }
 
         function typeformater(value,row,index) {
-            if( value == 'jkq'){
+            if( value == 'jk'){
                 return "借款券";
-            }else if( value == "hkq"){
+            }else if( value == "hk"){
                 return "还款券";
             }else if( value=="zypl"){
+                return "自由品类";
+            }else if( value=="bzj"){
                 return "自由品类";
             }else{
                 return "未知";
             }
         }
 
+        function editState(productCode,productState){
+            var title = "确定启用该产品吗";
+            if(productState == 0){
+                title = "确定禁用该产品吗";
+            }
+            top.$.jBox.confirm(title,'系统提示',function(v,h,f){
+                if(v=='ok'){
+                    jQuery.post("${ctxA}/product/editState", {'productCode':productCode,'productState':productState},
+                        function(data) {
+                            if (data.code ==1) {
+                                top.layer.alert("操作完成", {
+                                    icon: 6,
+                                    end: function(){
+                                        getData();
+                                    }
+                                });
+                            } else {
+                                top.layer.alert(data.msg, {icon: 5});
+                            }
+                            return;
+                        }, "json");
+                }
+            })
+        }
     </script>
 </head>
 <body>

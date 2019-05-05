@@ -23,7 +23,7 @@ public interface ActivityPrizeService {
     ListVo<ActivityPrize> getPageList(ActivityCriteria criteria);
 
     /**
-     * //其他品类和不中奖奖品
+     * //自由品类和不中奖奖品
      * @param params
      * @return
      */

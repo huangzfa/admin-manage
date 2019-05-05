@@ -28,4 +28,14 @@ public class CouponServiceImpl implements CouponService {
     public List<Coupon> getCouponList(String couponType){
         return couponDao.getCouponList(couponType);
     }
+
+    /**
+     *
+     * @param couponId
+     * @return
+     */
+    @Override
+    public Coupon getCouponById(Long couponId){
+        return couponDao.getCouponById(couponId);
+    }
 }

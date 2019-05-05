@@ -4,11 +4,8 @@
 <html>
 <head>
     <title></title>
-    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,select2,ocupload"/>
-    <!--  -->
-    <style type="text/css">
-        .upload_button{list-style:none}
-    </style>
+    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,select2,ajaxfileupload"/>
+
 </head>
 <body>
 <ul class="nav nav-tabs">
@@ -24,12 +21,12 @@
     <br/>
     <form:form id="prizeForm" modelAttribute="prize"   action="${ctxA}/activity/prize/save" method="post" class="form-horizontal">
         <input type="hidden" name="id" value="${not empty prize.id?prize.id:''}">
-        <input type="hidden" name="imgUrl" value="${prize.imgUrl}">
+        <input type="hidden" name="imgUrl" id="imgUrl" value="${prize.imgUrl}">
         <div class="control-group">
             <label class="control-label">奖品类型：</label>
             <div class="controls">
                 <label class="radio-inline">
-                    <input type="radio"  value="bzj" name="prizeType" ${not empty prize && prize.prizeType=='bzj'?"checked":''} ><span>谢谢参与</span>
+                    <input type="radio"  value="bzj" name="prizeType" ${empty prize || prize.prizeType=='bzj'?"checked":''} ><span>谢谢参与</span>
                 </label>
                 <label class="radio-inline">
                     <input type="radio"  value="zyjp" name="prizeType" ${prize.prizeType=='zyjp'?"checked":''}><span>自由品类</span>
@@ -42,13 +39,13 @@
                 </label>
             </div>
         </div>
-        <div class="form-group jp_name" id="jp_name" style="display: ${prize.prizeType=='jk' || prize.prizeType=='hk'?none:block}">
+        <div class="control-group jp_name" id="jp_name" style="display: ${prize.prizeType=='jk' || prize.prizeType=='hk'?none:block}">
             <label class="control-label">奖品名称:</label>
             <div class="controls">
-                <input type="text" name="prizeName" id="prizeName" class="form-control valid" descripe="请填写奖品名称"  placeholder="" value="$!{prize.prizeName}" maxlength="10">
+                <input type="text" name="prizeName" id="prizeName" class="form-control valid" descripe="请填写奖品名称"  placeholder="" value="${prize.prizeName}" maxlength="10">
             </div>
         </div>
-        <div class="form-group xz_prize" style="display: ${prize.prizeType=='jk' || prize.prizeType=='hk'?block:none}">
+        <div class="control-group xz_prize" style="display: ${prize.prizeType=='jk' || prize.prizeType=='hk'?block:none}">
             <label class="control-label">选择奖品:</label>
             <div class="controls">
                 <select id="couponId" name="couponId" class="selectpicker show-tick form-control" >
@@ -57,7 +54,7 @@
                 <small class="xz_prize" style="display: #if($!{prize.prizeType}=='other' || $!{prize.prizeType}=='bzj' || !${prize}) none #else block #end">* 仅支持添加<运营优惠券管理-优惠券管理>中已添加的优惠券</small>
             </div>
         </div>
-        <div class="form-group jp_name" style="display: ${prize.prizeType=='zypl'?none:block}">
+        <div class="control-group jp_name" style="display: ${prize.prizeType=='zypl'?none:block}">
             <label class="control-label">跳转链接:</label>
             <div class="controls">
                 <input type="text" value="${prize.link}" name="link" id="link" class="form-control" id="activityUrl" placeholder="选填"  ></input>
@@ -88,7 +85,7 @@
             <shiro:hasPermission name="merchant:list:edit">
                 <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;"/>&nbsp;
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/merchant/list'"/>
+            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/activity/prize/list'"/>
         </div>
     </form:form>
 
@@ -96,20 +93,21 @@
 </div>
 </body>
 <script>
+    var f = "#prizeForm";
     /***********如果表单编辑 类型是优惠券************/
     if("${prize.prizeType}"=='jk' || "${prize.prizeType}"=='hk'){
         getCouponList("${prize.couponId}","${prize.prizeType}");
     }
     /**************  按钮点击事件，切换显示 ******************/
     $(f+ " input[type='radio']").bind("click",function(){
-        var couponType = $(this).attr("couponType");
-        if($(this).val()=="jk" || $(this).val()=="hk"){//优惠券不显示
+        var couponType = $(this).val();
+        if(couponType == "jk" || couponType == "hk"){//优惠券不显示
             $(f+" .xz_prize").css("display","block");
             $(f+" .jp_name").css("display","none");//奖品名称不显示
             $(f+" #prizeName").attr("descripe","");//不需要必填
             $(f+" #link").val("");
             getCouponList(null,couponType);
-        }else if($(this).val()=="bzj"){
+        }else if(couponType == "bzj"){
             if("${prize}"!='' && "${prize.prizeType}"=='bzj'){//如果类型是不中奖
                 $(f+" #prizeName").val("${prize.prizeName}");
             }else{
@@ -132,9 +130,6 @@
             $(f+" .xz_prize").css("display","none");//选择奖品不显示
             $(f+" .jp_name").css("display","block");//奖品名称不显示
         }
-        if( $(this).val() == "${prize.prizeType}"){
-            $(f+" .upload_button img").attr("src","${prize.imgUrl}");
-        }
     })
 
 
@@ -145,16 +140,17 @@
             return false;
         }
         jQuery.ajaxFileUpload({
-            url:"${ctxA}/common/uploadIcon?ImgFileSize=100", //需要链接到服务器地址
+            url:"${ctxA}/activity/prize/uploadIcon?ImgFileSize=100", //需要链接到服务器地址
             secureuri:false,
             fileElementId:"iconUrl", //文件选择框的id属性
             dataType: 'json',  //服务器返回的格式类型
-            success: function (data, status){
+            success: function (result, status){
+                    var data = JSON.parse(result);
                     if(data.code == 1){
-                        $('#iconUrl').attr('data-value',data.url);
-                        $('#imgUrl').val(data.url);
+                        $('#iconUrl').attr('data-value',data.our.url);
+                        $('#imgUrl').val(data.our.url);
                         $('#uploadIcon').css('display', 'block');
-                        $('#uploadIcon').attr('src', data.url);
+                        $('#uploadIcon').attr('src', data.our.url);
                     }else{
                         top.layer.alert(data.msg, {icon: 5});
                     }
@@ -168,12 +164,14 @@
     /******* 查询优惠券，并赋值，couponType优惠券类型*******/
     function getCouponList(value,couponType){
         $(f+" #couponId").empty();
-        jQuery.post("/activity/prize/getCouponList", {'couponType':couponType},function(result) {
-            if( result.data ){
-                for( i in result.data){
-                    $(f+" #couponId").append("<option value='"+result.data[i].rid+"' name="+result.data[i].name+">"+result.data[i].name+"</option>");
+        jQuery.post("${ctxA}/activity/prize/getCouponList", {'couponType':couponType},function(result) {
+            if(result.code==1){
+                for( i in result.list){
+                    $(f+" #couponId").append("<option value='"+result.list[i].id+"' name="+result.list[i].couponName+">"+result.list[i].couponName+"</option>");
                 }
-                $(f+" #couponId").val(value);
+                if(value!=null){
+                    $(f+" #couponId").val(value);
+                }
             }
 
         },"json");
@@ -194,7 +192,7 @@
             return false;
         }
         $("#btnSubmit").attr("disabled",true);
-        var form=$("#merchantForm");
+        var form=$("#prizeForm");
         var action = form[0].action;
         var data = form.serialize();
         jQuery.post(action,data, function(data) {
@@ -203,7 +201,7 @@
                 top.layer.alert("操作成功", {
                     icon: 6,
                     end: function(){
-                        window.location.href="${ctxA}/merchant/list";
+                        window.location.href="${ctxA}/activity/prize/list";
                     }
                 });
             } else {

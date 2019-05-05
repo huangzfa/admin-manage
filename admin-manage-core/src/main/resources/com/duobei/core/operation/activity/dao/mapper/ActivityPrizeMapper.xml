@@ -6,7 +6,7 @@
     <result column="a_prize_name" jdbcType="VARCHAR" property="prizeName" />
     <result column="a_prize_type" jdbcType="VARCHAR" property="prizeType" />
     <result column="a_coupon_id" jdbcType="BIGINT" property="couponId" />
-    <result column="a_money" jdbcType="DECIMAL" property="money" />
+    <result column="a_money" jdbcType="INTEGER" property="money" />
     <result column="a_img_url" jdbcType="VARCHAR" property="imgUrl" />
     <result column="a_link" jdbcType="VARCHAR" property="link" />
     <result column="a_is_jump" jdbcType="INTEGER" property="isJump" />

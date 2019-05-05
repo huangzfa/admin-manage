@@ -1,5 +1,6 @@
 package com.duobei.core.operation.activity.service;
 
+import com.duobei.core.operation.activity.domain.ActivityPrizeRel;
 import com.duobei.core.operation.activity.domain.vo.ActivityPrizeRelVo;
 
 import java.util.HashMap;
@@ -17,4 +18,11 @@ public interface ActivityPrizeRelService {
      * @return
      */
     List<ActivityPrizeRelVo> getByActId(HashMap<String,Object> params);
+
+    /**
+     *删除奖品时查询
+     * @param params
+     * @return
+     */
+    List<ActivityPrizeRel> getByPrizeId(HashMap<String,Object> params);
 }

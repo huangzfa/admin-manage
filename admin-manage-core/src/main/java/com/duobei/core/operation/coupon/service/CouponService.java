@@ -16,4 +16,11 @@ public interface CouponService {
      * @return
      */
     List<Coupon> getCouponList(String couponType);
+
+    /**
+     *
+     * @param couponId
+     * @return
+     */
+    Coupon getCouponById(Long couponId);
 }

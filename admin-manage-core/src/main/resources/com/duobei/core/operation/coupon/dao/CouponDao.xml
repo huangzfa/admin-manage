@@ -24,12 +24,17 @@
   </select>
 
   <select id="getCouponList" resultType="com.duobei.core.operation.coupon.domain.Coupon" parameterType="java.lang.String">
-    SELECT * FROM yy_coupon c WHERE c.is_delete = 0 and c.quota > c.quota_send
+    SELECT * FROM yy_coupon c WHERE c.is_delete = 0 and ((c.quota > c.quota_send) or c.quota=-1)
     <if test="couponType!=''">
       and c.coupon_type = #{couponType,jdbcType=INTEGER}
     </if>
-    and ((c.expiry_type = 0) or ( c.expiry_type = 1 and c.gmt_end > NOW() and c.gmt_start &lt; NOW()))
+    and ((c.expiry_type = 0) or ( c.expiry_type = 1 and valid_days>0 and c.gmt_end > NOW() and c.gmt_start &lt; NOW()))
     order by c.id  desc
+  </select>
+
+  <select id="getCouponById" resultType="com.duobei.core.operation.coupon.domain.Coupon" parameterType="java.lang.Long">
+     SELECT * FROM yy_coupon where is_delete = 0 and id=#{couponId}
+
   </select>
 
 </mapper>

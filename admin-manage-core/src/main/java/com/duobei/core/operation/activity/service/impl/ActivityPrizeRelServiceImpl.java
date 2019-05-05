@@ -1,6 +1,7 @@
 package com.duobei.core.operation.activity.service.impl;
 
 import com.duobei.core.operation.activity.dao.ActivityPrizeRelDao;
+import com.duobei.core.operation.activity.domain.ActivityPrizeRel;
 import com.duobei.core.operation.activity.domain.vo.ActivityPrizeRelVo;
 import com.duobei.core.operation.activity.service.ActivityPrizeRelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,15 @@ public class ActivityPrizeRelServiceImpl implements ActivityPrizeRelService {
     @Override
     public List<ActivityPrizeRelVo> getByActId(HashMap<String,Object> params){
         return prizeRelDao.getByActId(params);
+    }
+
+    /**
+     *
+     * @param params
+     * @return
+     */
+    @Override
+    public List<ActivityPrizeRel> getByPrizeId(HashMap<String,Object> params){
+        return prizeRelDao.getByPrizeId(params);
     }
 }

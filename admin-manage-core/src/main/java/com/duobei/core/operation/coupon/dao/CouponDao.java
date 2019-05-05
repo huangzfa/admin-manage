@@ -17,4 +17,6 @@ public interface CouponDao {
     Map<Integer,Coupon> getMapByIds(@Param("ids") List<Integer> couponIds);
 
     List<Coupon> getCouponList(@Param("couponType") String couponType);
+
+    Coupon getCouponById(@Param("couponId") Long couponId);
 }

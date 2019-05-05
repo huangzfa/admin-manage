@@ -6,11 +6,7 @@
     </resultMap>
 
     <select id="getPageList" resultType="com.duobei.core.operation.activity.domain.ActivityPrize" parameterType="com.duobei.core.operation.activity.domain.criteria.ActivityPrizeCriteria">
-        SELECT * FROM yy_activity_prize where is_delete = 0
-        <if test="prizeName != null and prizeName != '' ">
-            and prize_name = #{prizeName,jdbcType=INTEGER}
-        </if>
-        order by add_time  desc
+        SELECT * FROM yy_activity_prize where is_delete = 0 order by add_time  desc
         <if test="pagesize != 0">
             LIMIT #{offset}, #{pagesize}
         </if>
@@ -18,9 +14,6 @@
 
     <select id="countByCriteria"  parameterType="com.duobei.core.operation.activity.domain.criteria.ActivityPrizeCriteria" resultType="java.lang.Integer">
         SELECT count(*) FROM yy_activity_prize where is_delete = 0
-        <if test="prizeName != null and prizeName != '' ">
-            and prize_name = #{prizeName,jdbcType=INTEGER}
-        </if>
         order by add_time  desc
 
     </select>
@@ -107,7 +100,7 @@
                 #{couponId,jdbcType=BIGINT},
             </if>
             <if test="money != null">
-                #{money,jdbcType=DECIMAL},
+                #{money,jdbcType=INTEGER},
             </if>
             <if test="imgUrl != null">
                 #{imgUrl,jdbcType=VARCHAR},

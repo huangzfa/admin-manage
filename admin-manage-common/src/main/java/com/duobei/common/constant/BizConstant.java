@@ -10,6 +10,7 @@ public interface BizConstant {
     String STRING_ONE = "1";
     Integer INT_ZERO = 0;
     Integer INT_ONE = 1;
+    Integer MINUS_ONE = -1;
 
     String BIZ_CODE_DESC = "code";//服务化统一返回code 字符
     Integer BIZ_SUCCESS_CODE = 1000;//服务化统一返回成功编码

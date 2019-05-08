@@ -1,18 +1,10 @@
 package com.duobei.console.web.controller.base;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.HtmlUtil;
+import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.product.domain.Product;
 import org.apache.commons.lang.StringUtils;
@@ -26,10 +18,17 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.duobei.common.util.HtmlUtil;
-import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BaseController {
 	protected static final Logger logger = LoggerFactory.getLogger(BaseController.class);
@@ -63,6 +62,21 @@ public class BaseController {
 		return myCredential;
 	}
 
+	/**
+	 * 获取某个产品的app应用
+	 * @param productId
+	 * @return
+	 */
+	protected List<App> getAppListByProductId(Integer productId){
+		List<App> list = getCredential().getAppList();
+		List<App> appList = new ArrayList<>();
+		for(App app :list){
+			if(app.getProductId().equals(productId)){
+				appList.add(app);
+			}
+		}
+		return appList;
+	}
 	protected String get404Page() {
 		return "error/404";
 	}

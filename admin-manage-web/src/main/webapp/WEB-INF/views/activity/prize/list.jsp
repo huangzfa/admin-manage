@@ -72,8 +72,10 @@
             var opStr='';
             var productId = $("#productId:selected").val(),
             <shiro:hasPermission name="activity:list:edit">
-                opStr='<a class="si-option-a" href="${ctxA}/activity/prize/form?code='+row.prizeId+'">编辑</a>';
-                opStr='<a class="si-option-a" href="${ctxA}/activity/prize/form?code='+row.prizeId+'">删除</a>';
+                opStr='<a class="si-option-a" href="${ctxA}/activity/prize/form?prizeId='+row.prizeId+'">编辑</a>';
+                if( row.prizeType == 'hk' || row.prizeType == 'jk'){
+                    opStr='<a class="si-option-a" href="${ctxA}/activity/prize/form?prizeId='+row.prizeId+'">删除</a>';
+                }
             </shiro:hasPermission>
             return opStr;
         }
@@ -92,14 +94,11 @@
             }
         }
 
-        function editState(productCode,productState){
-            var title = "确定启用该产品吗";
-            if(productState == 0){
-                title = "确定禁用该产品吗";
-            }
-            top.$.jBox.confirm(title,'系统提示',function(v,h,f){
+        function editState(prizeId){
+
+            top.$.jBox.confirm("确认删除此优惠券么？",'系统提示',function(v,h,f){
                 if(v=='ok'){
-                    jQuery.post("${ctxA}/product/editState", {'productCode':productCode,'productState':productState},
+                    jQuery.post("${ctxA}/activity/prize/delete", {'prizeId':prizeId},
                         function(data) {
                             if (data.code ==1) {
                                 top.layer.alert("操作完成", {

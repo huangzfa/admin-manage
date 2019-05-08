@@ -1,6 +1,7 @@
 package com.duobei.core.user.user.domain.vo;
 
 import com.duobei.core.user.user.domain.UserCoupon;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
  * @description
  * @date 2019/4/16
  */
+@Data
 public class UserCouponVo extends UserCoupon {
     /**
      * 优惠券名称
@@ -25,27 +27,10 @@ public class UserCouponVo extends UserCoupon {
      */
     private String couponTypeName;
 
-    public String getCouponTypeName() {
-        return couponTypeName;
-    }
+    /**
+     * 订单编号
+     */
+    private String borrowNo;
 
-    public void setCouponTypeName(String couponTypeName) {
-        this.couponTypeName = couponTypeName;
-    }
 
-    public String getCouponName() {
-        return couponName;
-    }
-
-    public void setCouponName(String couponName) {
-        this.couponName = couponName;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
 }

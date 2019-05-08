@@ -36,9 +36,7 @@
             <label class="control-label">轮播位置：</label>
             <div class="controls">
                 <select  name="bannerType" id="bannerType" class="selectpicker show-tick form-control valid" descripe="请选择轮播位置" style="width: 15%;">
-                    <c:forEach items="${bannerType}" var="type">
-                        <option value="${type.dicVal}" ${not empty banner && banner.bannerType==type.dicVal?"selected":''}>${type.dicCode}</option>
-                    </c:forEach>
+
                 </select>
             </div>
         </div>
@@ -150,7 +148,7 @@
         if( !bool ){
             return false;
         }
-        if( $("#sort").val()!='' && !checkNumber($("#sort").val())){
+        if( $("#sort").val()!='' && !isNumber($("#sort").val())){
             top.layer.alert("请输入正确数字", {icon: 5});
             return false;
         }
@@ -178,13 +176,6 @@
             }
         }, "json");
     }
-    function checkNumber(input) {
-        var re = /^[0-9]*]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
-        if (!re.test(input)) {
-            return false;
-        }else{
-            return true
-        }
-    }
+
 </script>
 </html>

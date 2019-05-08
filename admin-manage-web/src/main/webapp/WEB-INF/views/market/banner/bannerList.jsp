@@ -205,7 +205,7 @@
 	<ul class="ul-form _clearfix">
 		<li>
 			<label>选择应用：</label>
-			<select id="appId" name="appId" class="selectpicker show-tick form-control "onchange="getData()">
+			<select id="appId" name="appId" class="selectpicker show-tick form-control" onchange="getData()">
 			</select>
 		</li>
 		<li>

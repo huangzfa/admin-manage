@@ -18,7 +18,6 @@ import com.duobei.core.operation.consume.service.ConsumeLoanRateDayConfigService
 import com.duobei.core.operation.consume.service.ConsumeLoanRenewalConfigService;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.ProductBusiness;
-import com.duobei.core.operation.product.domain.criteria.BusinessCriteria;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
 import com.duobei.core.operation.product.domain.vo.BusinessVo;
 import com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo;
@@ -217,9 +216,9 @@ public class ProductController extends BaseController {
                 if( config == null ){
                     config = new ConsumeLoanConfig();
                 }
-                config.setDayAmountLimit(config.getDayAmountLimit()/100);
-                config.setShowMinAmount(config.getShowMinAmount()/100);
-                config.setShowMaxAmount(config.getShowMaxAmount()/100);
+                config.setDayAmountLimit(config.getDayAmountLimit()==null?null:config.getDayAmountLimit()/100);
+                config.setShowMinAmount(config.getDayAmountLimit()==null?null:config.getShowMinAmount()/100);
+                config.setShowMaxAmount(config.getShowMaxAmount()==null?null:config.getShowMaxAmount()/100);
                 config.setProductId(product.getId());
                 model.addAttribute("consumeLoanConfig",JSON.toJSONString(config));
                 //查询消费贷基础配置，关联的认证项

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.biz.dao.BizResourceLogDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.biz.domain.BizResourceLog" extends="com.duobei.core.operation.biz.dao.mapper.BizResourceLogMapper.BaseResultMap">
+    </resultMap>
+
+    <select id="getPage" resultType="com.duobei.core.operation.biz.domain.BizResourceLog" parameterType="com.duobei.core.operation.biz.domain.criteria.ResourceLogCriteria">
+        select * from yy_biz_resource_log
+        <if test="resType !=null and resType!=''">
+            where res_type LIKE CONCAT('%',#{resType},'%')
+        </if>
+        order by id desc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <select id="countByCriteria" resultType="java.lang.Integer" parameterType="com.duobei.core.operation.biz.domain.criteria.ResourceLogCriteria">
+        select count(*) from yy_biz_resource_log
+        <if test="resType !=null and resType!=''">
+            where res_type LIKE CONCAT('%',#{resType},'%')
+        </if>
+        order by id desc;
+    </select>
+    <insert id="save" parameterType="com.duobei.core.operation.biz.domain.BizResourceLog">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into yy_biz_resource_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="appId != null">
+                app_id,
+            </if>
+            <if test="resType != null">
+                res_type,
+            </if>
+            <if test="resTypeSec != null">
+                res_type_sec,
+            </if>
+            <if test="oldJson != null">
+                old_json,
+            </if>
+            <if test="modifyJson != null">
+                modify_json,
+            </if>
+            <if test="addOperatorId != null">
+                add_operator_id,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">
+                #{productId,jdbcType=INTEGER},
+            </if>
+            <if test="appId != null">
+                #{appId,jdbcType=INTEGER},
+            </if>
+            <if test="resType != null">
+                #{resType,jdbcType=VARCHAR},
+            </if>
+            <if test="resTypeSec != null">
+                #{resTypeSec,jdbcType=VARCHAR},
+            </if>
+            <if test="oldJson != null">
+                #{oldJson,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyJson != null">
+                #{modifyJson,jdbcType=VARCHAR},
+            </if>
+            <if test="addOperatorId != null">
+                #{addOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+</mapper>

@@ -1,7 +1,12 @@
 package com.duobei.core.operation.activity.service.impl;
 
+import com.duobei.core.operation.activity.dao.ActivityTypeDao;
+import com.duobei.core.operation.activity.domain.ActivityType;
 import com.duobei.core.operation.activity.service.ActivityTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author huangzhongfa
@@ -10,4 +15,12 @@ import org.springframework.stereotype.Service;
  */
 @Service("activityTypeService")
 public class ActivityTypeServiceImpl implements ActivityTypeService {
+
+    @Autowired
+    private ActivityTypeDao activityTypeDao;
+
+    @Override
+    public List<ActivityType> getAll(){
+        return activityTypeDao.getAll();
+    }
 }

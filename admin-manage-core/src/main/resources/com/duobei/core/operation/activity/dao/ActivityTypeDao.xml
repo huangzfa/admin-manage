@@ -4,4 +4,8 @@
 
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.activity.domain.ActivityType" extends="com.duobei.core.operation.activity.dao.mapper.ActivityTypeMapper.BaseResultMap">
     </resultMap>
+
+    <select id="getAll" resultType="com.duobei.core.operation.activity.domain.ActivityType">
+        SELECT * from yy_activity_type order by at_id desc;
+    </select>
 </mapper>

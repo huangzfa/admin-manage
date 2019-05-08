@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,4 +70,11 @@ public interface BorrowCashDao {
     List<BorrowCashReportVo> getReportList(FinanceReportCriteria criteria);
 
     List<UserBorrowListVo> getStageBorrowByUserIdAndState(UserBorrowCriteria criteria);
+
+    /**
+     * 根据优惠券id查询借款订单
+     * @param couponIds
+     * @return
+     */
+    List<BorrowCash> getByCouponIds(@Param("couponIds") List<HashMap<String,Object>> couponIds);
 }

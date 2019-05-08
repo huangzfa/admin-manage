@@ -1,4 +1,27 @@
-
+/**
+ * 判断是不是小数
+ * @param input
+ * @param s  保留几位小数
+ * @returns {boolean}
+ */
+function checkFloat(input,s) {
+    var p = input.split(".");
+    if( p .length <2 ){
+        return false;
+    }
+    var re = /^[0-9]*]*$/;
+    if( !re.test(p[0])){
+        return false;
+    }
+    re = /^[0-9]*]*$/;
+    if (!re.test(p[1])) {
+        return false;
+    }
+    if(p[1].length>s){
+        return false;
+    }
+    return true;
+}
 /**
  * 判断是不是正整数
  * @param val

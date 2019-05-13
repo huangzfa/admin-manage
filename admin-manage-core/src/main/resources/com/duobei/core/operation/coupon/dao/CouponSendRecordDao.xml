@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.coupon.dao.CouponSendRecordDao">
+
+    <select id="getPage" resultType="com.duobei.core.operation.coupon.domain.vo.CouponSendRecordVo" parameterType="com.duobei.core.operation.coupon.domain.criteria.CouponSendRecordCriteria">
+        SELECT   a.*,b.coupon_name FROM yy_coupon_send_record a left join yy_coupon b on a.coupon_id=b.id
+        where  a.product_id=#{productId}
+
+        <if test="couponName !=null and couponName!=''">
+            AND b.coupon_name LIKE CONCAT('%',#{couponName},'%')
+        </if>
+        <if test="state ==1 or state == 0">
+            and  a.state = #{state}
+        </if>
+        <if test="sendStartTime!=null and sendStartTime!=''">
+            and a.add_time&gt;=#{sendStartTime}
+        </if>
+        <if test="sendEndTime!=null and sendEndTime!=''">
+            and a.add_time&lt;=#{sendEndTime}
+        </if>
+
+        order by a.id desc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <select id="countByCriteria" parameterType="com.duobei.core.operation.coupon.domain.criteria.CouponSendRecordCriteria" resultType="java.lang.Integer">
+        SELECT   count(*) FROM yy_coupon_send_record a left join yy_coupon b on a.coupon_id=b.id
+        where  a.product_id=#{productId}
+
+        <if test="couponName !=null and couponName!=''">
+            AND b.coupon_name LIKE CONCAT('%',#{couponName},'%')
+        </if>
+        <if test="state ==1 or state == 0">
+            and  a.state = #{state}
+        </if>
+        <if test="sendStartTime!=null and sendStartTime!=''">
+            and a.add_time&gt;=#{sendStartTime}
+        </if>
+        <if test="sendEndTime!=null and sendEndTime!=''">
+            and a.add_time&lt;=#{sendEndTime}
+        </if>
+
+        order by a.id desc
+    </select>
+</mapper>

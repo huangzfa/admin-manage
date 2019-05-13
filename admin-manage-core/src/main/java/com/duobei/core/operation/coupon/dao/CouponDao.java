@@ -19,6 +19,8 @@ public interface CouponDao {
 
     List<Coupon> getCouponList(@Param("couponType") String couponType);
 
+    List<Coupon> getByProductId(@Param("productId") Integer productId);
+
     Coupon getCouponById(@Param("couponId") Long couponId);
 
     List<Coupon> getPage(CouponCriteria criteria);
@@ -27,5 +29,14 @@ public interface CouponDao {
 
     int update(Coupon record);
 
+    int updateSend(Coupon record);
+
     int save(Coupon record);
+
+    /**
+     * 根据id查询
+     * @param couponIds
+     * @return
+     */
+    List<Coupon> getByIds(@Param("ids") List<Integer> couponIds);
 }

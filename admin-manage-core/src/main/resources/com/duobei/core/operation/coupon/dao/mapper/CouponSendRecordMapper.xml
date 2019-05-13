@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.coupon.dao.mapper.CouponSendRecordMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.operation.coupon.domain.CouponSendRecord">
+    <id column="a_id" jdbcType="BIGINT" property="id" />
+    <result column="a_product_id" jdbcType="INTEGER" property="productId" />
+    <result column="a_send_type" jdbcType="TINYINT" property="sendType" />
+    <result column="a_user_val" jdbcType="VARCHAR" property="userVal" />
+    <result column="a_coupon_id" jdbcType="BIGINT" property="couponId" />
+    <result column="a_add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="a_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />
+    <result column="a_success_count" jdbcType="INTEGER" property="successCount" />
+    <result column="a_fail_count" jdbcType="INTEGER" property="failCount" />
+    <result column="a_state" jdbcType="BIGINT" property="state" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    a.id as a_id, a.product_id as a_product_id, a.send_type as a_send_type, a.user_val as a_user_val, 
+    a.coupon_id as a_coupon_id, a.add_time as a_add_time, a.add_operator_id as a_add_operator_id, 
+    a.success_count as a_success_count, a.fail_count as a_fail_count, a.state as a_state
+  </sql>
+  <select id="selectByExample" parameterType="com.duobei.core.operation.coupon.domain.CouponSendRecordExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from yy_coupon_send_record a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yy_coupon_send_record a
+    where a.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from yy_coupon_send_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.duobei.core.operation.coupon.domain.CouponSendRecordExample">
+    delete from yy_coupon_send_record a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.duobei.core.operation.coupon.domain.CouponSendRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into yy_coupon_send_record (product_id, send_type, user_val, 
+      coupon_id, add_time, add_operator_id, 
+      success_count, fail_count, state
+      )
+    values (#{productId,jdbcType=INTEGER}, #{sendType,jdbcType=TINYINT}, #{userVal,jdbcType=VARCHAR}, 
+      #{couponId,jdbcType=BIGINT}, #{addTime,jdbcType=TIMESTAMP}, #{addOperatorId,jdbcType=INTEGER}, 
+      #{successCount,jdbcType=INTEGER}, #{failCount,jdbcType=INTEGER}, #{state,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.duobei.core.operation.coupon.domain.CouponSendRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into yy_coupon_send_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="sendType != null">
+        send_type,
+      </if>
+      <if test="userVal != null">
+        user_val,
+      </if>
+      <if test="couponId != null">
+        coupon_id,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id,
+      </if>
+      <if test="successCount != null">
+        success_count,
+      </if>
+      <if test="failCount != null">
+        fail_count,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="sendType != null">
+        #{sendType,jdbcType=TINYINT},
+      </if>
+      <if test="userVal != null">
+        #{userVal,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null">
+        #{couponId,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="successCount != null">
+        #{successCount,jdbcType=INTEGER},
+      </if>
+      <if test="failCount != null">
+        #{failCount,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.duobei.core.operation.coupon.domain.CouponSendRecordExample" resultType="java.lang.Long">
+    select count(*) from yy_coupon_send_record a
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update yy_coupon_send_record a
+    <set>
+      <if test="record.id != null">
+        a.id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.productId != null">
+        a.product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sendType != null">
+        a.send_type = #{record.sendType,jdbcType=TINYINT},
+      </if>
+      <if test="record.userVal != null">
+        a.user_val = #{record.userVal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.couponId != null">
+        a.coupon_id = #{record.couponId,jdbcType=BIGINT},
+      </if>
+      <if test="record.addTime != null">
+        a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addOperatorId != null">
+        a.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.successCount != null">
+        a.success_count = #{record.successCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.failCount != null">
+        a.fail_count = #{record.failCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.state != null">
+        a.state = #{record.state,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update yy_coupon_send_record a
+    set a.id = #{record.id,jdbcType=BIGINT},
+      a.product_id = #{record.productId,jdbcType=INTEGER},
+      a.send_type = #{record.sendType,jdbcType=TINYINT},
+      a.user_val = #{record.userVal,jdbcType=VARCHAR},
+      a.coupon_id = #{record.couponId,jdbcType=BIGINT},
+      a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      a.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+      a.success_count = #{record.successCount,jdbcType=INTEGER},
+      a.fail_count = #{record.failCount,jdbcType=INTEGER},
+      a.state = #{record.state,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.operation.coupon.domain.CouponSendRecord">
+    update yy_coupon_send_record
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="sendType != null">
+        send_type = #{sendType,jdbcType=TINYINT},
+      </if>
+      <if test="userVal != null">
+        user_val = #{userVal,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null">
+        coupon_id = #{couponId,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addOperatorId != null">
+        add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="successCount != null">
+        success_count = #{successCount,jdbcType=INTEGER},
+      </if>
+      <if test="failCount != null">
+        fail_count = #{failCount,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.coupon.domain.CouponSendRecord">
+    update yy_coupon_send_record
+    set product_id = #{productId,jdbcType=INTEGER},
+      send_type = #{sendType,jdbcType=TINYINT},
+      user_val = #{userVal,jdbcType=VARCHAR},
+      coupon_id = #{couponId,jdbcType=BIGINT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      add_operator_id = #{addOperatorId,jdbcType=INTEGER},
+      success_count = #{successCount,jdbcType=INTEGER},
+      fail_count = #{failCount,jdbcType=INTEGER},
+      state = #{state,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

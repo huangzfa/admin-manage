@@ -77,4 +77,11 @@ public interface BorrowCashDao {
      * @return
      */
     List<BorrowCash> getByCouponIds(@Param("couponIds") List<HashMap<String,Object>> couponIds);
+
+    /**
+     *
+     * @param map{borrowNo:userId}
+     * @return
+     */
+    BorrowCash getByBorrowNoMap(HashMap<String,Object> map);
 }

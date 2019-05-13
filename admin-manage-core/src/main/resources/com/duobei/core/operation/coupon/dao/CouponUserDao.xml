@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duobei.core.operation.coupon.dao.CouponUserDao">
+
+  <select id="getByUserIdAndState" resultType="com.duobei.core.operation.coupon.domain.vo.CouponUserVo">
+    select a.*,b.coupon_name as ,b.amount from yy_coupon_user a left join yy_coupon b on a.coupon_id=b.id
+    where a.is_delete = 0 and a.user_id = #{userId} and a.state = #{state}
+    order by ${orderName} desc
+  </select>
+
+
+  <!-- 分页查询 -->
+  <select id="getPage" resultType="com.duobei.core.operation.coupon.domain.vo.CouponUserVo" parameterType="com.duobei.core.operation.coupon.domain.criteria.CouponUserCriteria">
+    select a.*,b.coupon_name,b.amount from yy_coupon_user a left join yy_coupon b on a.coupon_id=b.id  where a.is_delete = 0 and a.product_id=#{productId}
+    <if test="couponName != null and couponName!=''">
+      and b.coupon_name=#{couponName}
+    </if>
+    <if test="userId != null">
+      and a.user_id=#{userId}
+    </if>
+    <if test="useStartTime != null and useStartTime!=''">
+      and a.used_time &gt;=#{useStartTime}
+    </if>
+    <if test="useEndTime != null and useEndTime!=''">
+      and a.used_time &lt;=#{useEndTime}
+    </if>
+    <if test="receiveStartTime != null and receiveStartTime!=''">
+      and a.add_time &gt;=#{receiveStartTime}
+    </if>
+    <if test="receiveEndTime != null and receiveEndTime!=''">
+      and a.add_time &lt;=#{receiveEndTime}
+    </if>
+    <if test="couponIds != null and couponIds!=''">
+      and a.coupon_id in (#{couponIds})
+    </if>
+    <if test="state == 0">
+      and a.used_time is null and  a.end_time >now()
+    </if>
+    <if test="state != null and state == 1">
+      and a.used_time is not null
+    </if>
+    <if test="state != null and state == 3">
+      and a.used_time is  null and a.end_time &lt; now()
+    </if>
+    order by a.id desc
+    <if test="pagesize != 0">
+      LIMIT #{offset}, #{pagesize}
+    </if>
+  </select>
+
+  <select id="countByCriteria" parameterType="com.duobei.core.operation.coupon.domain.criteria.CouponUserCriteria" resultType="java.lang.Integer">
+    select count(*) from yy_coupon_user a left join yy_coupon b on a.coupon_id=b.id  where a.is_delete = 0 and a.product_id=#{productId}
+    <if test="couponName != null and couponName!=''">
+      and b.coupon_name=#{couponName}
+    </if>
+    <if test="userId != null">
+      and a.user_id=#{userId}
+    </if>
+    <if test="useStartTime != null and useStartTime!=''">
+      and a.used_time &gt;=#{useStartTime}
+    </if>
+    <if test="useEndTime != null and useEndTime!=''">
+      and a.used_time &lt;=#{useEndTime}
+    </if>
+    <if test="receiveStartTime != null and receiveStartTime!=''">
+      and a.add_time &gt;=#{receiveStartTime}
+    </if>
+    <if test="receiveEndTime != null and receiveEndTime!=''">
+      and a.add_time &lt;=#{receiveEndTime}
+    </if>
+    <if test="couponIds != null and couponIds!=''">
+      and a.coupon_id in (#{couponIds})
+    </if>
+    <if test="state == 0">
+      and a.used_time is null and  a.end_time >now()
+    </if>
+    <if test="state != null and state == 1">
+      and a.used_time is not null
+    </if>
+    <if test="state != null and state == 3">
+      and a.used_time is  null and a.end_time &lt; now()
+    </if>
+    order by a.id desc
+  </select>
+
+  <select id="countByUserId" resultType="java.lang.Integer">
+    SELECT count(*) from yy_coupon_user where user_id=#{userId,jdbcType=INTEGER} and coupon_id=#{couponId,jdbcType=INTEGER} and product_id=#{productId}
+  </select>
+
+  <!-- 查看用户领了这个优惠券次数 -->
+  <select id="getCountGroupUserId" resultType="java.util.Map">
+    select count(user_id) as count,user_id from yy_coupon_user  where  product_id=#{productId} and coupon_id=#{couponId,jdbcType=INTEGER} and
+    user_id in
+    <foreach collection="userIds" open="in(" close=")" item="userId" separator=",">
+      #{userId}
+    </foreach>
+    GROUP BY  user_id
+  </select>
+
+  <select id="batchSave" parameterType="java.util.ArrayList">
+    insert into yy_coupon_user (user_id,product_id,coupon_id,coupon_type,time_flag,start_time,end_time,from_type,from_ref) VALUES
+    <foreach collection="temp" item="item" index="index" separator=",">
+      (#{item.userId},#{item.productId},#{item.couponId},#{item.couponType},#{item.timeFlag},#{item.startTime},#{item.endTime},#{item.fromType},#{item.fromRef})
+    </foreach>
+  </select>
+
+  <insert id="save" parameterType="com.duobei.core.operation.coupon.domain.CouponUser">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into yy_coupon_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="couponId != null">
+        coupon_id,
+      </if>
+      <if test="couponType != null">
+        coupon_type,
+      </if>
+      <if test="state != null or state == 0">
+        state,
+      </if>
+      <if test="timeFlag != null or timeFlag == 0">
+        time_flag,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="usedTime != null">
+        used_time,
+      </if>
+      <if test="fromType != null">
+        from_type,
+      </if>
+      <if test="fromRef != null">
+        from_ref,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="couponId != null">
+        #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="couponType != null">
+        #{couponType,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null or state == 0">
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="timeFlag != null or timeFlag == 0">
+        #{timeFlag,jdbcType=BIT},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="usedTime != null">
+        #{usedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fromType != null">
+        #{fromType,jdbcType=VARCHAR},
+      </if>
+      <if test="fromRef != null">
+        #{fromRef,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

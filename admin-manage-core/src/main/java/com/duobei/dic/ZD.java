@@ -224,6 +224,11 @@ public interface ZD {
     public String authState = "authState";
 	
 	/**
+	 *  券来源
+	 */
+    public String fromType = "fromType";
+	
+	/**
 	 *  菜单类型-菜单- 
 	 */
     public String menuType_m = "m";
@@ -842,4 +847,19 @@ public interface ZD {
 	 *  认证状态-过期- 
 	 */
     public int authState_expire = 3;
+	
+	/**
+	 *  券来源-注册- 
+	 */
+    public String fromType_register = "1";
+	
+	/**
+	 *  券来源-抽奖- 
+	 */
+    public String fromType_draw = "2";
+	
+	/**
+	 *  券来源-平台- 
+	 */
+    public String fromType_sys = "3";
 }

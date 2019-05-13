@@ -27,6 +27,7 @@ import java.util.List;
  *@author 何鑫 2017年1月18日  12:51:33
  *@注意：本内容仅限于杭州蒲公英数据科技有限公司内部传阅，禁止外泄以及用于其他的商业目的
  */
+@Component("bizCacheUtil")
 public class BizCacheUtil {
     protected static Logger logger           = LoggerFactory.getLogger(BizCacheUtil.class);
 

@@ -91,4 +91,21 @@
     from pgy_user `user`
     where `user`.is_delete = 0 and `user`.id = #{id}
   </select>
+
+  <select id="getByUserNameEncrypt" parameterType="String" resultType="com.duobei.core.user.user.domain.User">
+    select * from pgy_user `user`
+    where `user`.is_delete = 0 and `user`.user_name_encrypt = #{userNameEncrypt}
+    <if test="productId!=null">
+      and product_id=#{productId}
+    </if>
+    limit 1;
+  </select>
+
+  <select id="getByIds" parameterType="java.util.List" resultType="com.duobei.core.user.user.domain.User">
+    select * from pgy_user
+    where is_delete = 0 and product_id=#{productId} and id
+    <foreach collection="userIds" open=" in(" close=")" separator="," item="id">
+      #{id}
+    </foreach>
+  </select>
 </mapper>

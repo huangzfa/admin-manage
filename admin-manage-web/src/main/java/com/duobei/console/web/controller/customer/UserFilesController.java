@@ -3,19 +3,17 @@ package com.duobei.console.web.controller.customer;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.duobei.common.exception.TqException;
-import com.duobei.common.util.Pagination;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.core.manage.sys.domain.Dict;
 import com.duobei.core.manage.sys.utils.DictUtil;
+import com.duobei.core.operation.coupon.domain.vo.CouponUserVo;
+import com.duobei.core.operation.coupon.service.CouponUserService;
 import com.duobei.core.operation.product.domain.Product;
-import com.duobei.core.transaction.borrow.domain.BorrowCash;
-import com.duobei.core.transaction.borrow.domain.vo.BorrowCashListVo;
 import com.duobei.core.transaction.borrow.service.BorrowCashService;
 import com.duobei.core.user.user.domain.UserAddress;
 import com.duobei.core.user.user.domain.UserBankcard;
-import com.duobei.core.user.user.domain.UserLoginLog;
 import com.duobei.core.user.user.domain.criteria.UserBorrowCriteria;
 import com.duobei.core.user.user.domain.criteria.UserCriteria;
 import com.duobei.core.user.user.domain.vo.*;
@@ -34,7 +32,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,7 +56,7 @@ public class UserFilesController extends BaseController {
     UserAuthService userAuthService;
 
     @Resource
-    UserCouponService userCouponService;
+    CouponUserService userCouponService;
 
     @Resource
     UserLoginLogService userLoginLogService;
@@ -153,7 +150,7 @@ public class UserFilesController extends BaseController {
             /**
              * 用户优惠券(默认已使用)
              */
-            List <UserCouponVo> userCouponList = userCouponService.getByUserIdAndState(userVo.getId(),ZD.couponState_used);
+            List <CouponUserVo> userCouponList = userCouponService.getByUserIdAndState(userVo.getId(),ZD.couponState_used);
              /**
              * 优惠券查询条件
              */
@@ -258,7 +255,7 @@ public class UserFilesController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/userCouponListQuery")
     public String userCouponListQuery(HttpServletRequest request ,Long userId,Integer state) {
-        List <UserCouponVo> list = userCouponService.getByUserIdAndState(userId,state);
+        List <CouponUserVo> list = userCouponService.getByUserIdAndState(userId,state);
         return JSONObject.toJSONString(list);
     }
 

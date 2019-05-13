@@ -287,7 +287,7 @@ public class ConsumdebtOrderController extends BaseController {
     public String uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
 
         String os = System.getProperty("os.name");
-        String path="/home/admin/project/file/";
+        String path="/home/admin/file/order";
         if(os.toLowerCase().startsWith("win")){
            path = "D:"+path;
         }

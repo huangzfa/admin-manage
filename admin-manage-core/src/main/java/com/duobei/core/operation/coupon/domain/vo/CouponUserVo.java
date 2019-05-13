@@ -1,6 +1,6 @@
-package com.duobei.core.user.user.domain.vo;
+package com.duobei.core.operation.coupon.domain.vo;
 
-import com.duobei.core.user.user.domain.UserCoupon;
+import com.duobei.core.operation.coupon.domain.CouponUser;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * @date 2019/4/16
  */
 @Data
-public class UserCouponVo extends UserCoupon {
+public class CouponUserVo extends CouponUser {
     /**
      * 优惠券名称
      */
@@ -30,7 +30,14 @@ public class UserCouponVo extends UserCoupon {
     /**
      * 订单编号
      */
-    private String borrowNo;
+    private String orderNo;
+
+    /**
+     * 用户手机号(加密后)
+     */
+    private String userNameEncrypt;
+
+    private Long borrowId;
 
 
 }

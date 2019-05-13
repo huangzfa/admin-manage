@@ -168,7 +168,9 @@
 		<!-- 必须设置，否则程序出现异常 JtaTransactionManager does not support custom isolation levels by default -->
 		<property name="allowCustomIsolationLevels" value="true"/>
 	</bean>
-
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="springTransactionManager" />
+	</bean>
 	<tx:advice id="txAdvice" transaction-manager="springTransactionManager">
 		<tx:attributes>
 			<tx:method name="get*"  propagation="REQUIRED"  read-only="true" />

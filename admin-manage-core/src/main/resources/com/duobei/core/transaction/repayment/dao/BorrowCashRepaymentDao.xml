@@ -65,4 +65,23 @@
       LIMIT #{offset}, #{pagesize}
     </if>
   </select>
+
+  <!-- 根据优惠券查询借款订单 -->
+  <select id="getByCouponIds" resultType="com.duobei.core.transaction.repayment.domain.BorrowCashRepayment" parameterType="java.util.List">
+    select repay_no,coupon_id,add_time,borrow_cash_id from tt_borrow_cash_repayment where is_delete = 0 and (user_id,coupon_id,product_id) IN
+    <foreach collection="couponIds" item="item" open="(" close=")" separator=",">
+      (#{item.userId},#{item.couponId},#{item.productId})
+    </foreach>
+  </select>
+
+  <select id="getByBorrowNoMap" resultType="com.duobei.core.transaction.repayment.domain.BorrowCashRepayment" parameterType="java.util.HashMap">
+    select repay_no,coupon_id,user_id from tt_borrow_cash_repayment where is_delete = 0 and repay_no =#{orderNo}
+    <if test="userId != null ">
+      and user_id=#{userId}
+    </if>
+    <if test="productId != null ">
+      and product_id=#{productId}
+    </if>
+    limit 1;
+  </select>
 </mapper>

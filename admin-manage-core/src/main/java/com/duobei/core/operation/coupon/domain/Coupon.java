@@ -1,12 +1,14 @@
 package com.duobei.core.operation.coupon.domain;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
+@Accessors(chain = true)
 public class Coupon implements Serializable {
     /**
      * 主键，自增id

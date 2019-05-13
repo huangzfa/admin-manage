@@ -189,7 +189,7 @@
     <if test="productId != null">
       product_id = #{productId,jdbcType=INTEGER},
     </if>
-    <if test="appId != null">
+    <if test="appId != null or appId == 0">
       app_id = #{appId,jdbcType=INTEGER},
     </if>
     <if test="name != null">

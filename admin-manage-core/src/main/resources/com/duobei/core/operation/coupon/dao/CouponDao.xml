@@ -85,8 +85,20 @@
       and  expiry_type =1 and gmt_end &lt; now()
     </if>
     order by id desc
+  </select>
 
+  <select id="getByProductId" resultType="com.duobei.core.operation.coupon.domain.Coupon" parameterType="java.lang.Integer">
+    SELECT * FROM yy_coupon where is_delete = 0 and product_id = #{productId}
+    order by id  desc
+  </select>
 
+  <!-- 优惠券id查询 -->
+  <select id="getByIds" resultType="com.duobei.core.operation.coupon.domain.Coupon" parameterType="java.util.ArrayList">
+    SELECT * FROM yy_coupon where is_delete = 0 and id
+    <foreach collection="ids" item="id" separator="," open=" in(" close=")">
+      #{id}
+    </foreach>
+    order by id  desc
   </select>
 
   <insert id="save" parameterType="com.duobei.core.operation.coupon.domain.Coupon">
@@ -322,4 +334,9 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <update id="updateSend" parameterType="com.duobei.core.operation.coupon.domain.Coupon">
+     update yy_coupon set quota_send=#{quotaSend} ,modify_time = now(),modify_operator_id = #{modifyOperatorId} where id= #{id}
+  </update>
+
 </mapper>

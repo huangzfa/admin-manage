@@ -1,5 +1,6 @@
 package com.duobei.core.operation.activity.service.impl;
 
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.activity.dao.ActivityPrizeDao;
@@ -32,7 +33,7 @@ public class ActivityPrizeServiceImpl implements ActivityPrizeService {
     public ListVo<ActivityPrize> getPageList(ActivityCriteria criteria){
         int total = activityPrizeDao.countByCriteria(criteria);
         List<ActivityPrize> list = null;
-        if (total > 0) {
+        if (total > BizConstant.INT_ZERO) {
             list = activityPrizeDao.getPageList(criteria);
         }
         return new ListVo<ActivityPrize>(total , list);

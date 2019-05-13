@@ -33,7 +33,7 @@
             <label class="control-label">选择应用：</label>
             <div class="controls">
                 <select  name="appId" id="couponType" class="selectpicker show-tick form-control valid" descripe="请选择优惠券类型"  style="width: 315px;">
-                    <option value="">全部</option>
+                    <option value="0">全部</option>
                     <c:forEach items="${appList}" var="app">
                         <option value="${app.id}" ${not empty coupon && coupon.appId==app.id?"selected":''}>${app.appName}</option>
                     </c:forEach>

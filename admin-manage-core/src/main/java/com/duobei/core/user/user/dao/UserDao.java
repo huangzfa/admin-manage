@@ -40,4 +40,12 @@ public interface UserDao {
     List<UserListVo> getListByQuery(UserCriteria criteria);
 
     User getById(Long id);
+
+    /**
+     *
+     * @return
+     */
+    User getByUserNameEncrypt(@Param("userNameEncrypt") String userNameEncrypt,@Param("productId") Integer productId);
+
+    List<User> getByIds(@Param("productId") Integer productId,@Param("userIds") List<Long> userIds);
 }

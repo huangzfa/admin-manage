@@ -90,6 +90,7 @@ public class CouponController extends BaseController {
         Coupon coupon = null;
         if ( id !=null ) {
             coupon = couponService.getCouponById(id);
+            coupon.setAmount(coupon.getAmount()/100);
             model.addAttribute("coupon", coupon);
             model.addAttribute("gmtEnd", DateUtil.formatWithDateTimeShort(coupon.getGmtEnd()));
             model.addAttribute("gmtStart", DateUtil.formatWithDateTimeShort(coupon.getGmtStart()));
@@ -125,7 +126,7 @@ public class CouponController extends BaseController {
                 }
                 entity.setValidDays(BizConstant.MINUS_ONE);
             }
-
+            entity.setAmount(entity.getAmount()*100);
             if (entity.getId() == null) {
                 entity.setAddOperatorId(credential.getOpId());
                 entity.setModifyOperatorId(credential.getOpId());
@@ -144,5 +145,16 @@ public class CouponController extends BaseController {
                 return failJsonResult("save优惠券异常");
             }
         }
+    }
+
+    /**
+     *
+     * @param productId
+     * @return
+     */
+    @RequestMapping(value = "/getByProductId")
+    @ResponseBody
+    public String getByProductId(Integer productId) {
+        return successJsonResult("success", "list", couponService.getByProductId(productId));
     }
 }

@@ -1,5 +1,6 @@
 package com.duobei.core.operation.coupon.service.impl;
 
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.coupon.dao.CouponDao;
@@ -27,7 +28,7 @@ public class CouponServiceImpl implements CouponService {
     public ListVo<Coupon> getPage(CouponCriteria criteria) {
         int total = couponDao.countByCriteria(criteria);
         List<Coupon> list = null;
-        if (total > 0) {
+        if (total > BizConstant.INT_ZERO) {
             list = couponDao.getPage(criteria);
         }
         return new ListVo<Coupon>(total, list);
@@ -43,6 +44,10 @@ public class CouponServiceImpl implements CouponService {
         return couponDao.getCouponList(couponType);
     }
 
+    @Override
+    public List<Coupon> getByProductId(Integer productId){
+        return couponDao.getByProductId(productId);
+    }
     /**
      *
      * @param couponId

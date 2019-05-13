@@ -30,6 +30,13 @@ public interface CouponService {
 
     /**
      *
+     * @param productId
+     * @return
+     */
+    List<Coupon> getByProductId(Integer productId);
+
+    /**
+     *
      * @param couponId
      * @return
      */

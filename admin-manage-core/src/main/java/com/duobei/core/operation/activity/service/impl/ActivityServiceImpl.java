@@ -1,5 +1,6 @@
 package com.duobei.core.operation.activity.service.impl;
 
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.activity.dao.ActivityDao;
 import com.duobei.core.operation.activity.domain.Activity;
@@ -28,7 +29,7 @@ public class ActivityServiceImpl implements ActivityService {
     public ListVo<Activity> getLists(ActivityCriteria criteria){
         int total = activityDao.countByCriteria(criteria);
         List<Activity> appPages = null;
-        if (total > 0) {
+        if (total > BizConstant.INT_ZERO) {
             appPages = activityDao.getPageList(criteria);
         }
         return new ListVo<Activity>(total , appPages);

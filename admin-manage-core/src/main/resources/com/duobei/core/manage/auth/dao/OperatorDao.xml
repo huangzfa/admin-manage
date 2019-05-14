@@ -86,4 +86,16 @@
 	    AND m.menu_type = #{menuTypeZd}
 	    AND m.state = #{menuStateZd}
   </select>
+
+	<select id="getByOpIds" resultType="com.duobei.core.manage.auth.domain.Operator" parameterType="java.util.ArrayList">
+		select * from aa_operator where is_delete = 0 AND op_id
+		<foreach collection="opIds" open=" in(" close=")" separator="," item="id">
+			#{id}
+		</foreach>
+	</select>
+	<!-- 通过真实姓名查询 -->
+	<select id="getByRealName" resultType="com.duobei.core.manage.auth.domain.Operator" parameterType="java.lang.String">
+		select op_id from aa_operator where is_delete = 0 AND real_name=#{realName} limit 1;
+
+	</select>
 </mapper>

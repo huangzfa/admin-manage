@@ -83,6 +83,9 @@ public class ActivityController extends BaseController {
             if (criteria == null) {
                 criteria = new ActivityCriteria();
             }
+            //验证数据权限
+            validAuthData(criteria.getProductId());
+            
             if (criteria.getPagesize() == 0) {
                 criteria.setPagesize(GlobalConfig.getPageSize());
             }

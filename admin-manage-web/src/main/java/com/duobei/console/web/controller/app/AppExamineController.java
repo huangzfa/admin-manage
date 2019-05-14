@@ -73,28 +73,17 @@ public class AppExamineController extends BaseController{
     @ResponseBody
     @RequestMapping(value = "/appExamList")
     public String appExamList(AppExamineCriteria appExamineCriteria) {
-        //验证数据权限
-        if( appExamineCriteria.getProductId() !=null ){
-            try {
-                if (appExamineCriteria.getAppId() == null){
-                    validAuthData(appExamineCriteria.getProductId());
-                }else{
-                    validAuthData(appExamineCriteria.getProductId(),appExamineCriteria.getAppId());
-                }
 
-            }catch (Exception e){
-                return failJsonResult(e.getMessage());
-            }
-
-        }else{
-            return failJsonResult("产品数据查询失败");
-
-        }
-        if (appExamineCriteria.getPagesize() == 0) {
-            appExamineCriteria.setPagesize(GlobalConfig.getPageSize());
-        }
         try {
-
+             //验证数据权限
+            if( appExamineCriteria.getProductId() !=null ){
+                validAuthData(appExamineCriteria.getProductId(),appExamineCriteria.getAppId());
+            }else{
+                return failJsonResult("产品数据查询失败");
+            }
+            if (appExamineCriteria.getPagesize() == 0) {
+                appExamineCriteria.setPagesize(GlobalConfig.getPageSize());
+            }
             Map<String,Object> dataMap = new HashMap<>();
             //应用查询条件
             List<App> appList = new ArrayList<>();

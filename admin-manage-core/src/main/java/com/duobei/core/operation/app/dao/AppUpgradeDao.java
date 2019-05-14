@@ -12,7 +12,9 @@ import java.util.List;
  * @date 2019/4/4
  */
 public interface AppUpgradeDao {
-    List<AppUpgradeVo> getListVoByQuery(AppUpgradeCriteria appUpgradeCriteria);
+    List<AppUpgradeVo> getPage(AppUpgradeCriteria appUpgradeCriteria);
+
+    int countByCriteria(AppUpgradeCriteria criteria);
 
     int delete(AppUpgrade appUpgrade);
 

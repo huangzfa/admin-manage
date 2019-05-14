@@ -6,9 +6,9 @@ import com.duobei.common.exception.TqException;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
+import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.manage.sys.utils.DictUtil;
-import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.app.domain.AppUpgrade;
 import com.duobei.core.operation.app.domain.criteria.AppUpgradeCriteria;
 import com.duobei.core.operation.app.domain.vo.AppUpgradeVo;
@@ -20,11 +20,13 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.duobei.console.web.controller.base.BaseController;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author litianxiong
@@ -48,70 +50,35 @@ public class AppUpgradeController extends BaseController {
     @RequiresPermissions(PERMISSIONPRE+"view")
     @RequestMapping(value = "/list")
     public String list(Integer productId , Model model) {
-        //获取用户产品列表
-        List<Product> productList = getCredential().getProductList();
-        if (productId == null && productList != null && productList.size() > 0){
-            //如果未传productId 则赋予初始值
-            productId = productList.get(0).getId();
-        }
-        model.addAttribute("productLists", JSON.toJSONString(productList));
-        model.addAttribute("productId",productId);
+        model.addAttribute("productList", JSON.toJSONString(getCredential().getProductList()));
+        model.addAttribute("appId",JSON.toJSONString(getCredential().getAppList()));
         return ADDRESSPRE+"list";
     }
 
     /**
      * 数据查询
-     * @param appUpgradeCriteria
+     * @param criteria
      * @return
      */
     @RequiresPermissions(PERMISSIONPRE+"view")
     @ResponseBody
     @RequestMapping(value = "/upgradeList")
-    public String upgradeList(AppUpgradeCriteria appUpgradeCriteria) {
-        //验证数据权限
-        if( appUpgradeCriteria.getProductId() !=null ){
+    public String upgradeList(AppUpgradeCriteria criteria) {
+        try {
+            //验证数据权限
             try {
-                if (appUpgradeCriteria.getAppId() == null){
-                    validAuthData(appUpgradeCriteria.getProductId());
-                }else{
-                    validAuthData(appUpgradeCriteria.getProductId(),appUpgradeCriteria.getAppId());
-                }
+                validAuthData(criteria.getProductId(),criteria.getAppId());
             }catch (Exception e){
                 return failJsonResult(e.getMessage());
             }
-        }else{
-            return failJsonResult("产品数据查询失败");
-
-        }
-        if (appUpgradeCriteria.getPagesize() == 0) {
-            appUpgradeCriteria.setPagesize(GlobalConfig.getPageSize());
-        }
-        try {
-            //应用查询条件
-            List<App> appList = new ArrayList<>();
-            List<Integer> appIds = new ArrayList<>();
-            Map<Integer,App> appMap = new HashMap<>();
-            Map<String,Object> dataMap = new HashMap<>();
-            for(App app : getCredential().getAppList()){
-                if (app.getProductId() == appUpgradeCriteria.getProductId()){
-                    appIds.add(app.getId());
-                    appList.add(app);
-                    appMap.put(app.getId(),app);
-                }
+            if (criteria == null) {
+                criteria = new AppUpgradeCriteria();
             }
-            dataMap.put("appList",appList);
-            //如果查询全部应用，则查询该用户目前拥有的应用操作权限的信息
-            if (appUpgradeCriteria.getAppId() == null){
-                appUpgradeCriteria.setAppIds(appIds);
+            if (criteria.getPagesize() == 0) {
+                criteria.setPagesize(GlobalConfig.getPageSize());
             }
-            //查询数据
-            ListVo<AppUpgradeVo> list = appUpgradeService.getListVoByQuery(appUpgradeCriteria);
-            for (AppUpgradeVo appExamineVo : list.getRows()){
-                //应用名称
-                appExamineVo.setAppName(appMap.get(appExamineVo.getAppId()).getAppName());
-            }
-            dataMap.put("list",list);
-            return successJsonResult(dataMap,"success");
+            ListVo<AppUpgradeVo> list = appUpgradeService.getPage(criteria);
+            return successJsonResult("success", "list", list);
         } catch (Exception e) {
             if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());

@@ -173,7 +173,6 @@
             </div>
         </div>
 
-
         <div class="form-actions">
             <shiro:hasPermission name="app:upgrade:edit">
                 <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;"/>&nbsp;

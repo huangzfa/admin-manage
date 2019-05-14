@@ -86,6 +86,17 @@
 
 	</bean>
 
+	<bean id="messageDataSource" parent="parentSource">
+		<property name="uniqueResourceName" value="five" />
+		<property name="xaProperties">
+			<props>
+				<prop key="url">jdbc:mysql://${db.host5}:${db.port5}/${db.database5}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true</prop>
+				<prop key="user">${db.user5}</prop>
+				<prop key="password">${db.password5}</prop>
+			</props>
+		</property>
+
+	</bean>
 	<!-- =============================数据源-结束========================================================= -->
 	
 	<!-- =============================jdbc模板-开始========================================================= -->
@@ -100,6 +111,9 @@
 	</bean>
 	<bean id="jdbcTemplate4" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="transactionDataSource"></property>
+	</bean>
+	<bean id="jdbcTemplate5" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="messageDataSource"></property>
 	</bean>
 	<!-- =============================jdbc模板-结束========================================================= -->
 	
@@ -147,6 +161,16 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.duobei.core.transaction.**.dao,com.duobei.core.transaction.**.dao.mapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory3" />
+	</bean>
+
+	<!--=========================================== 数据库 message============================-->
+	<bean id="sqlSessionFactory4" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="transactionDataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.duobei.core.message.**.dao,com.duobei.core.message.**.dao.mapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory4" />
 	</bean>
 
 	<!-- =============================SqlSessionFactory-结束========================================================= -->

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.operation.push.dao.QuartzInfoDao" >
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.operation.push.domain.QuartzInfo" extends="com.duobei.core.operation.push.dao.mapper.QuartzInfoMapper.BaseResultMap">
+    </resultMap>
+
+    <insert id="save" parameterType="com.duobei.core.operation.push.domain.QuartzInfo">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into yy_quartz_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="cycle != null">
+                cycle,
+            </if>
+            <if test="className != null">
+                class_name,
+            </if>
+            <if test="succeed != null">
+                succeed,
+            </if>
+            <if test="fail != null">
+                fail,
+            </if>
+            <if test="failTime != null">
+                fail_time,
+            </if>
+            <if test="failMsg != null">
+                fail_msg,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+            <if test="jobGroupName != null">
+                job_group_name,
+            </if>
+            <if test="triggerName != null">
+                trigger_name,
+            </if>
+            <if test="triggerGroupName != null">
+                trigger_group_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="cycle != null">
+                #{cycle,jdbcType=VARCHAR},
+            </if>
+            <if test="className != null">
+                #{className,jdbcType=VARCHAR},
+            </if>
+            <if test="succeed != null">
+                #{succeed,jdbcType=INTEGER},
+            </if>
+            <if test="fail != null">
+                #{fail,jdbcType=INTEGER},
+            </if>
+            <if test="failTime != null">
+                #{failTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="failMsg != null">
+                #{failMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=INTEGER},
+            </if>
+            <if test="jobGroupName != null">
+                #{jobGroupName,jdbcType=VARCHAR},
+            </if>
+            <if test="triggerName != null">
+                #{triggerName,jdbcType=VARCHAR},
+            </if>
+            <if test="triggerGroupName != null">
+                #{triggerGroupName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

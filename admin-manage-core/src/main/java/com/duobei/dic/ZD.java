@@ -229,6 +229,26 @@ public interface ZD {
     public String fromType = "fromType";
 	
 	/**
+	 *  推送通知类型
+	 */
+    public String noticeType = "noticeType";
+	
+	/**
+	 *  推送平台
+	 */
+    public String platform = "platform";
+	
+	/**
+	 *  推送方式
+	 */
+    public String pushWay = "pushWay";
+	
+	/**
+	 *  推送状态
+	 */
+    public String pushState = "pushState";
+	
+	/**
 	 *  菜单类型-菜单- 
 	 */
     public String menuType_m = "m";
@@ -862,4 +882,54 @@ public interface ZD {
 	 *  券来源-平台- 
 	 */
     public String fromType_sys = "3";
+	
+	/**
+	 *  推送通知类型-通知- 
+	 */
+    public int noticeType_notice = 1;
+	
+	/**
+	 *  推送通知类型-自定义- 
+	 */
+    public int noticeType_sys = 2;
+	
+	/**
+	 *  推送平台-android- 
+	 */
+    public String platform_android = "android";
+	
+	/**
+	 *  推送平台-ios- 
+	 */
+    public String platform_ios = "ios";
+	
+	/**
+	 *  推送平台-用户id- 
+	 */
+    public String platform_user_id = "user_id";
+	
+	/**
+	 *  推送方式-立即推送- 
+	 */
+    public int pushWay_now = 1;
+	
+	/**
+	 *  推送方式-定时推送- 
+	 */
+    public int pushWay_time = 2;
+	
+	/**
+	 *  推送状态-待推送- 
+	 */
+    public int pushState_wait = 0;
+	
+	/**
+	 *  推送状态-已推送- 
+	 */
+    public int pushState_success = 1;
+	
+	/**
+	 *  推送状态-推送失败- 
+	 */
+    public int pushState_fail = 2;
 }

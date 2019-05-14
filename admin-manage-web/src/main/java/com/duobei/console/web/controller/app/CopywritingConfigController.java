@@ -99,7 +99,7 @@ public class CopywritingConfigController extends BaseController {
     @RequiresPermissions({ PERMISSIONPRE+"edit" })
     @RequestMapping(value = "/save")
     @ResponseBody
-    public String save(CopywritingConfig entity) throws RuntimeException {
+    public String save(CopywritingConfig entity) {
         try {
             OperatorCredential credential = getCredential();
             if (credential == null) {

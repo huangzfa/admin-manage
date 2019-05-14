@@ -22,9 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author huangzhongfa
@@ -42,11 +40,8 @@ public class MerchantServiceImpl implements MerchantService {
     @Autowired
     private ProductDao productDao;
 
-    private final int TRY_TIMES = 3;//最多推送次数
-
-    private final int TIME_OUT = 5000;//延迟时间毫秒
-    private static ScheduledExecutorService service =
-            Executors.newScheduledThreadPool(2);
+    private static ExecutorService service =new ThreadPoolExecutor(0,Runtime.getRuntime().availableProcessors() + 1,60L, TimeUnit.SECONDS,
+            new SynchronousQueue<Runnable>());
     /**
      * 分页查询
      * @return
@@ -55,7 +50,7 @@ public class MerchantServiceImpl implements MerchantService {
     public ListVo<Merchant> getPageList(MerchantCriteria criteria){
         int total = merchantDao.countByCriteria(criteria);
         List<Merchant> list = null;
-        if (total > 0) {
+        if (total > BizConstant.INT_ZERO) {
             list = merchantDao.getPageList(criteria);
         }
         return new ListVo<Merchant>(total, list);
@@ -76,7 +71,7 @@ public class MerchantServiceImpl implements MerchantService {
      */
     @Override
     public void update(Merchant merchant) throws TqException{
-        if( merchantDao.update(merchant) <1){
+        if( merchantDao.update(merchant) <BizConstant.INT_ONE){
             throw new TqException("修改失败");
         }
         noticeByMerchant(merchant);
@@ -93,10 +88,10 @@ public class MerchantServiceImpl implements MerchantService {
             merchant.setMerchantNo(BizConstant.MERCHANT_NO);
         }else{
             //商户号加1
-            Integer nextNo = Integer.parseInt(one.getMerchantNo())+1;
+            Integer nextNo = Integer.parseInt(one.getMerchantNo())+BizConstant.INT_ONE;
             merchant.setMerchantNo(nextNo+"");
         }
-        if( merchantDao.save(merchant) <1){
+        if( merchantDao.save(merchant) <BizConstant.INT_ONE){
             throw new TqException("添加失败");
         }
         noticeByMerchant(merchant);
@@ -174,6 +169,10 @@ public class MerchantServiceImpl implements MerchantService {
         push(map);
     }
 
+    /**
+     *
+     * @param map
+     */
     public void push(HashMap<String,Object> map){
 
         List<ServiceVo> list = serviceDao.getAll();
@@ -185,7 +184,7 @@ public class MerchantServiceImpl implements MerchantService {
                     log.info(entity.getServiceName()+"推送结果："+result);
                 }
             };
-            service.schedule(runnable, 0, TimeUnit.SECONDS);
+            service.execute(runnable);
         }
     }
 }

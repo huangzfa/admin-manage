@@ -12,7 +12,7 @@ import com.duobei.core.operation.app.domain.vo.AppUpgradeVo;
  * @date 2019/4/4
  */
 public interface AppUpgradeService {
-    ListVo<AppUpgradeVo> getListVoByQuery(AppUpgradeCriteria appUpgradeCriteria);
+    ListVo<AppUpgradeVo> getPage(AppUpgradeCriteria appUpgradeCriteria);
 
     AppUpgrade getById(Integer id);
 

@@ -68,8 +68,11 @@ public class BaseController {
 	 * @return
 	 */
 	protected List<App> getAppListByProductId(Integer productId){
-		List<App> list = getCredential().getAppList();
 		List<App> appList = new ArrayList<>();
+		if( productId == null){
+			return appList;
+		}
+		List<App> list = getCredential().getAppList();
 		for(App app :list){
 			if(app.getProductId().equals(productId)){
 				appList.add(app);

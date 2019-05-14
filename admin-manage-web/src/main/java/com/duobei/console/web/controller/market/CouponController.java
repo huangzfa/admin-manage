@@ -59,6 +59,8 @@ public class CouponController extends BaseController {
     @ResponseBody
     public String getProductData(CouponCriteria criteria){
         try {
+            //验证数据权限
+            validAuthData(criteria.getProductId());
             if( criteria == null ){
                 criteria = new CouponCriteria();
             }

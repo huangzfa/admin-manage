@@ -1,5 +1,6 @@
 package com.duobei.core.operation.app.service.impl;
 
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.app.dao.AppUpgradeDao;
@@ -27,26 +28,14 @@ public class AppUpgradeServiceImpl implements AppUpgradeService {
     @Resource
     AppUpgradeMapper appUpgradeMapper;
     @Override
-    public ListVo<AppUpgradeVo> getListVoByQuery(AppUpgradeCriteria appUpgradeCriteria) {
-        AppUpgradeExample example = new AppUpgradeExample();
-        AppUpgradeExample.Criteria criteria = example.createCriteria();
-        criteria.andIsDeleteEqualTo(0);
-        if (appUpgradeCriteria.getAppId() != null){
-            criteria.andAppIdEqualTo(appUpgradeCriteria.getAppId());
-        }else{
-            criteria.andAppIdIn(appUpgradeCriteria.getAppIds());
-        }
-        if (appUpgradeCriteria.getVersionNumber() != null){
-            criteria.andVersionNumberEqualTo(appUpgradeCriteria.getVersionNumber());
-        }
-
-        Long total = appUpgradeMapper.countByExample(example);
+    public ListVo<AppUpgradeVo> getPage(AppUpgradeCriteria appUpgradeCriteria) {
+        int total = appUpgradeDao.countByCriteria(appUpgradeCriteria);
         List<AppUpgradeVo> appUpgradeVos = null;
-        if (total > 0) {
-            appUpgradeVos = appUpgradeDao.getListVoByQuery(appUpgradeCriteria);
+        if (total > BizConstant.INT_ZERO) {
+            appUpgradeVos = appUpgradeDao.getPage(appUpgradeCriteria);
         }
 
-        return new ListVo<AppUpgradeVo>(total.intValue(),appUpgradeVos);
+        return new ListVo<AppUpgradeVo>(total,appUpgradeVos);
     }
 
     @Override

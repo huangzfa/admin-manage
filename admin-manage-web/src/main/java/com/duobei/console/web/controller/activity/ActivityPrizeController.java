@@ -85,6 +85,8 @@ public class ActivityPrizeController extends BaseController {
     @ResponseBody
     public String getProductData(ActivityCriteria criteria) {
         try {
+            //验证数据权限
+            validAuthData(criteria.getProductId());
             if (criteria == null) {
                 criteria = new ActivityCriteria();
             }

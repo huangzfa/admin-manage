@@ -1,6 +1,7 @@
 package com.duobei.console.web.controller.market;
 
 import com.alibaba.fastjson.JSON;
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
@@ -50,10 +51,12 @@ public class CouponUserController extends BaseController {
     @ResponseBody
     public String getProductData(CouponUserCriteria criteria){
         try {
+            //验证数据权限
+            validAuthData(criteria.getProductId());
             if( criteria == null ){
                 criteria = new CouponUserCriteria();
             }
-            if (criteria.getPagesize()==0) {
+            if (criteria.getPagesize()== BizConstant.INT_ZERO) {
                 criteria.setPagesize(GlobalConfig.getPageSize());
             }
             ListVo<CouponUserVo> list = couponUserService.getPage(criteria);

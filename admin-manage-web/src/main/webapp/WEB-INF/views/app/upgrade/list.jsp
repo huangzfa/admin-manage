@@ -10,20 +10,19 @@
 	var pageSize=${cfg:getPageSize()};
 	var pageList=[pageSize,30,50];
 	var pageNum =1;
+    var productList = [];
+    var appList = [];
 	$(function(){
-        var productLists ='${productLists}';
+        var productLists ='${productList}';
         var productList = eval("("+productLists+")");
-        var productId = '${productId}';
         for( var i = 0;i<productList.length;i++){
             $("#productId").append("<option value='"+productList[i].id+"'>"+productList[i].productName+"</option>");
         }
-        if( productId!=''){
-            $("#productId").val(productId);
-        }else{
-            $("#productId").val(productList[0].id);
-        }
-
-
+        if( productList.length > 0){
+            var appIds = '${appId}';
+            appList = eval("("+appIds+")");
+            getAppListByProductId(productList[0].id);
+		}
         pager=$('#tt').datagrid('getPager');
         pager.pagination({
             onSelectPage:function(number, size){
@@ -32,9 +31,8 @@
                 getData();
             }
         });
-        $('.datagrid-pager .pagination-num').hide();
-        //加载第一页数据
         getData();
+        $('.datagrid-pager .pagination-num').hide();
         $('#search').click(function(){
             pageNum = 1;
             getData();
@@ -45,17 +43,30 @@
 			$("#appId").val(null);
 		});
 	});
+
+	function getAppListByProductId(productId){
+	    $("#appId").html("");
+	    var apps = [];
+		for( var j = 0;j<appList.length;j++){
+			if(productId == appList[j].productId){
+			    apps.push(appList[j]);
+			    break;
+			}
+		}
+        $("#appId").append("<option value=''>全部</option>");
+		for(var i = 0;i<apps.length;i++){
+		    $("#appId").append("<option value='"+apps[i].id+"'>"+apps[i].appName+"</option>");
+		}
+	}
+
 	function getData(){
-	    var appId = $("#appId").val()
         var data = {
             'productId':$('#productId').val(),
-            'appId':appId,
+            'appId':$("#appId").val(),
             'versionNumber':$('#versionNumber').val(),
             'channelName':$("#channelName").val(),
             'page':pageNum,
-            'pagesize':pageSize,
-            /*      'startDate':$('#startDate').val(),
-                  'endDate':$('#endDate').val()*/
+            'pagesize':pageSize
 
         }
 		  hjnUtils.ajax({
@@ -75,16 +86,6 @@
 						  displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
 						  afterPageText: ' 共 {pages} 页'
 					  })
-
-                      $("#appId").html("");
-                      $("#appId").append("<option value=''>全部</option>");
-					  var appList = data.appList;
-                      for( var i = 0;i<appList.length;i++){
-                          $("#appId").append("<option value='"+appList[i].id+"'>"+appList[i].appName+"</option>");
-                      }
-                      if( appId!=''){
-                          $("#appId").val(appId);
-                      }
 
 				  }else{
 					  top.$.jBox.tip(data.msg);
@@ -201,9 +202,7 @@
         })
 
     }
-    function flush() {
-        window.location.href="${ctxA}/app/upgrade/list?productId="+$("#productId").val();
-    }
+
 </script>
 </head>
 <body>
@@ -218,7 +217,7 @@
 	<ul class="ul-form">
 		<li>
 			<label>选择产品：</label>
-			<select id="productId" name="productId" class="selectpicker show-tick form-control " onchange="flush()">
+			<select id="productId" name="productId" class="selectpicker show-tick form-control " onchange="getData()">
 			</select>
 		</li>
 		<li>

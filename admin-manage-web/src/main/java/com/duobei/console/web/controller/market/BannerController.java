@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
+import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.app.domain.App;
@@ -29,7 +30,7 @@ import java.util.Date;
  */
 @Controller
 @RequestMapping(value = "${authzPath}/market/banner")
-public class BannerController extends com.duobei.console.web.controller.base.BaseController {
+public class BannerController extends BaseController {
 
     private final static Logger log = LoggerFactory.getLogger(BannerController.class);
 
@@ -62,22 +63,10 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
     @RequestMapping(value = "/bannerList")
     @ResponseBody
     public String getBannerList(BannerCriteria criteria ){
-        OperatorCredential credential = getCredential();
         //验证用户权限
         try {
-            if( credential == null){
-                return failJsonResult("登录过期，请重新登录");
-            }
             //验证数据权限
-            if( criteria.getAppId() !=null ){
-                try {
-                    validAuthData(null,criteria.getAppId());
-                }catch (Exception e){
-                    return failJsonResult(e.getMessage());
-                }
-            }else{
-                return failJsonResult("应用数据查询失败");
-            }
+            validAuthData(null,criteria.getAppId());
             if (criteria.getPagesize()==0) {
                 criteria.setPagesize(GlobalConfig.getPageSize());
             }
@@ -139,12 +128,7 @@ public class BannerController extends com.duobei.console.web.controller.base.Bas
                 throw new TqException("登录过期，请重新登录");
             }
             //验证数据权限
-            if( entity.getAppId() !=null ){
-                validAuthData(null,entity.getAppId());
-            }else{
-                throw new TqException("数据操作权限不足");
-            }
-
+            validAuthData(null,entity.getAppId());
             if( entity.getRedirectType().equals(ZD.redirectType_no)){
                 entity.setRedirectUrl("");
             }

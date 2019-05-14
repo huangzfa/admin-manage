@@ -13,8 +13,8 @@ public enum ManageExceptionCode {
 
 
     // SERVICE 9999
-    SYSTEM_ERROR("SYSTEM_ERROR", 9999, "system error", "服务器操作错误");
-
+    SYSTEM_ERROR("SYSTEM_ERROR", 9999, "system error", "服务器操作错误"),
+    SUCCESS("SUCCESS", 1000, "success", "成功");
     /**
      * 错误码
      */

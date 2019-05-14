@@ -14,8 +14,24 @@
     app_upgrade.add_operator_id as add_operator_id, app_upgrade.modify_operator_id as modify_operator_id,
     app_upgrade.is_delete as is_delete,app_upgrade.version_remark as version_remark
   </sql>
-    <select id="getListVoByQuery" resultType="com.duobei.core.operation.app.domain.vo.AppUpgradeVo" parameterType="com.duobei.core.operation.app.domain.criteria.AppUpgradeCriteria">
-        select <include refid="Base_Column_List"/>
+    <select id="getPage" resultType="com.duobei.core.operation.app.domain.vo.AppUpgradeVo" parameterType="com.duobei.core.operation.app.domain.criteria.AppUpgradeCriteria">
+        select app_upgrade.*,b.app_name
+        from yy_app_upgrade app_upgrade  left join yy_app b on app_upgrade.app_id= b.id
+        where app_upgrade.is_delete = 0 and app_upgrade.product_id=#{productId}
+        <if test="appId != null">
+            and app_upgrade.app_id = #{appId}
+        </if>
+        <if test="versionNumber != null and versionNumber != ''">
+            and app_upgrade.version_number = #{versionNumber}
+        </if>
+        order by app_upgrade.add_time desc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <select id="countByCriteria" resultType="java.lang.Integer" parameterType="com.duobei.core.operation.app.domain.criteria.AppUpgradeCriteria">
+        select count(*)
         from yy_app_upgrade app_upgrade
         where app_upgrade.is_delete = 0
         <if test="appId != null">
@@ -24,16 +40,8 @@
         <if test="versionNumber != null and versionNumber != ''">
             and app_upgrade.version_number = #{versionNumber}
         </if>
-        <if test="appIds != null ">
-            and app_upgrade.app_id
-            <foreach collection="appIds" item="id" separator="," open=" in(" close=")">
-                #{id}
-            </foreach>
-        </if>
         order by app_upgrade.add_time desc
-        <if test="pagesize != 0">
-            LIMIT #{offset}, #{pagesize}
-        </if>
+
     </select>
 
     <insert id="save" parameterType="com.duobei.core.operation.app.domain.AppUpgrade">

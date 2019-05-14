@@ -227,11 +227,7 @@ public class ZfbAccountController extends BaseController {
                 throw new TqException("登录过期，请重新登录");
             }
             //验证数据权限
-            if( zfbAccount.getProductId() !=null ){
-                validAuthData(zfbAccount.getProductId());
-            }else{
-                throw new TqException("数据操作权限不足");
-            }
+            validAuthData(zfbAccount.getProductId());
             zfbAccount.setModifyOperatorId(credential.getOpId());
             zfbAccount.setModifyTime(new Date());
             zfbAccountService.updateStatus(zfbAccount);

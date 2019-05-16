@@ -38,8 +38,8 @@
         });
         function getData(){
             var data = {
-                'pageNum':pageNum,
-                'pageSize':pageSize
+                'page':pageNum,
+                'pagesize':pageSize
 
             }
             hjnUtils.ajax({

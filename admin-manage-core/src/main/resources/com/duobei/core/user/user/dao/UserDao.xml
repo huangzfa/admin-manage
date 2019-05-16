@@ -108,4 +108,20 @@
       #{id}
     </foreach>
   </select>
+
+  <select id="getByAppId" parameterType="java.util.HashMap" resultType="com.duobei.core.user.user.domain.User">
+    select * from pgy_user where is_delete = 0 and product_id=#{productId} and app_id=#{appId}
+    <if test="userList!=null">
+      and id
+      <foreach collection="userList" open=" in(" close=")" separator="," item="id">
+        #{id}
+      </foreach>
+    </if>
+    order by id desc;
+  </select>
+
+  <select id="countByAppId" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+    select count(*) from pgy_user where is_delete = 0 and product_id=#{productId} and app_id=#{appId}
+    order by id desc;
+  </select>
 </mapper>

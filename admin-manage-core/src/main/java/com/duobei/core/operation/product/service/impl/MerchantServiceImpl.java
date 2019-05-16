@@ -121,7 +121,7 @@ public class MerchantServiceImpl implements MerchantService {
      * 根据产品推送
      */
     @Override
-    public  void noticeByProduct(Product product){
+    public  void noticeByProduct(Product product) throws TqException{
         Merchant merchant = merchantDao.getById(product.getMerchantId());
         if( merchant == null ){
             return;
@@ -147,7 +147,7 @@ public class MerchantServiceImpl implements MerchantService {
      * @param merchant
      */
     @Override
-    public void noticeByMerchant(Merchant merchant){
+    public void noticeByMerchant(Merchant merchant) throws TqException{
         HashMap<String,Object> map = new HashMap<>();
         map.put("merchant_id",merchant.getId());
         map.put("merchant_no",merchant.getMerchantNo());
@@ -173,7 +173,7 @@ public class MerchantServiceImpl implements MerchantService {
      *
      * @param map
      */
-    public void push(HashMap<String,Object> map){
+    public void push(HashMap<String,Object> map) throws TqException{
 
         List<ServiceVo> list = serviceDao.getAll();
         for(ServiceVo entity:list){
@@ -184,7 +184,12 @@ public class MerchantServiceImpl implements MerchantService {
                     log.info(entity.getServiceName()+"推送结果："+result);
                 }
             };
-            service.execute(runnable);
+            try {
+                service.execute(runnable);
+            }catch (RejectedExecutionException e){
+                log.error("请勿频繁操作",e);
+                throw new TqException("请勿频繁操作");
+            }
         }
     }
 }

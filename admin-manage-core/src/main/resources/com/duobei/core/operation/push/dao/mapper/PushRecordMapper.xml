@@ -13,6 +13,7 @@
     <result column="a_push_time" jdbcType="TIMESTAMP" property="pushTime" />
     <result column="a_push_way" jdbcType="TINYINT" property="pushWay" />
     <result column="a_push_count" jdbcType="INTEGER" property="pushCount" />
+    <result column="a_success_count" jdbcType="INTEGER" property="successCount" />
     <result column="a_state" jdbcType="TINYINT" property="state" />
     <result column="a_push_start_time" jdbcType="TIMESTAMP" property="pushStartTime" />
     <result column="a_push_end_time" jdbcType="TIMESTAMP" property="pushEndTime" />

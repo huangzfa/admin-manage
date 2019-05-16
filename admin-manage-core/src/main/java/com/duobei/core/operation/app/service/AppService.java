@@ -2,6 +2,7 @@ package com.duobei.core.operation.app.service;
 
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
+import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.app.domain.AppPageConfig;
 import com.duobei.core.operation.app.domain.criteria.AppCriteria;
@@ -47,12 +48,12 @@ public interface AppService {
      * @param app
      * @return
      */
-    void save(App app) throws TqException;
+    void save(App app,OperatorCredential credential) throws TqException;
 
     /**
      *
      * @param app
      * @return
      */
-    void update(App app) throws TqException;
+    void update(App app,OperatorCredential credential) throws TqException;
 }

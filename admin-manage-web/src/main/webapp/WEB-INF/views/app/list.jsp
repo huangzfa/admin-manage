@@ -147,7 +147,7 @@
             <th data-options="field:'appName',width:180,align:'center',halign:'center',fixed:true">应用名称</th>
             <th data-options="field:'productName',width:180,align:'center',halign:'center',fixed:true">所属产品</th>
             <th data-options="field:'merchantName',width:180,align:'center',halign:'center',fixed:true">所属商户</th>
-            <th data-options="field:'appKey',width:200,align:'center',halign:'center',fixed:true">应用唯一ke</th>
+            <th data-options="field:'appKey',width:200,align:'center',halign:'center',fixed:true">应用唯一key</th>
             <th data-options="field:'state',width:200,align:'center',halign:'center',fixed:true,formatter:stateformater">状态</th>
             <th data-options="field:'option',width:180,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
         </tr>

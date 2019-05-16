@@ -62,7 +62,7 @@
         <div class="control-group">
             <label class="control-label">ios渠道下载链接：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" id="iosUrl" name="iosUrl" descripe="请填写安卓渠道下载链接" type="text"  value="${app.iosUrl}"></input>
+                <input type="text" class="form-control" id="iosUrl" name="iosUrl" descripe="请填写安卓渠道下载链接" type="text"  value="${app.iosUrl}"></input>
             </div>
         </div>
         <div class="form-actions">

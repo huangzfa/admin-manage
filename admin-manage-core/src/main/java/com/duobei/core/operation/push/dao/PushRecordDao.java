@@ -19,4 +19,6 @@ public interface PushRecordDao {
     int save(PushRecord record);
 
     int update(PushRecord record);
+
+    PushRecord getById(Long id);
 }

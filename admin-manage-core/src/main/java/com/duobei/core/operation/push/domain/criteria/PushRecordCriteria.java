@@ -31,4 +31,6 @@ public class PushRecordCriteria extends Pagination {
      *
      */
     private String addOperatorName;
+
+    private Integer pushType;
 }

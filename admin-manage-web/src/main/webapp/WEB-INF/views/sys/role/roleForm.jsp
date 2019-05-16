@@ -134,7 +134,7 @@ $(function(){
 		<div class="control-group">
 			<label class="control-label">角色名称：</label>
 			<div class="controls">
-				<form:input path="roleName" htmlEscape="false" maxlength="50" class="input-xlarge"/>
+				<form:input path="roleName" htmlEscape="false" maxlength="10" class="input-xlarge"/>
 				<span class="help-inline"><font color="red">*</font></span>
 			</div>
 		</div>

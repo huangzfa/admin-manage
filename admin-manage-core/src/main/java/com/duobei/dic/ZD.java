@@ -249,6 +249,11 @@ public interface ZD {
     public String pushState = "pushState";
 	
 	/**
+	 *  推送类型
+	 */
+    public String pushType = "pushType";
+	
+	/**
 	 *  菜单类型-菜单- 
 	 */
     public String menuType_m = "m";
@@ -932,4 +937,14 @@ public interface ZD {
 	 *  推送状态-推送失败- 
 	 */
     public int pushState_fail = 2;
+	
+	/**
+	 *  推送类型-极光推送- 
+	 */
+    public int pushType_jg = 1;
+	
+	/**
+	 *  推送类型-短信推送- 
+	 */
+    public int pushType_sms = 2;
 }

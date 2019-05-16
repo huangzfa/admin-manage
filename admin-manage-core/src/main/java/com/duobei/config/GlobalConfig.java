@@ -75,4 +75,13 @@ public class GlobalConfig {
 	public static boolean isProdEnvironment() {
 		return "prod".equals(Global.getValAsString("environment"));
 	}
+
+	/**
+	 * 获取推送地址
+	 *
+	 * @return
+	 */
+	public static String getMessageUrl() {
+		return Global.getValAsString("pgy.message.url");
+	}
 }

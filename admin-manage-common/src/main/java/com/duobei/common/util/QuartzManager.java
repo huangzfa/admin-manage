@@ -22,7 +22,6 @@ public class QuartzManager {
 
     private static SchedulerFactory gSchedulerFactory = new StdSchedulerFactory();
 
-    // private static SchedulerFactory gSchedulerFactory = new StdSchedulerFactory();
     private static String    JOB_GROUP_NAME     = "EXTJWEB_JOBGROUP_NAME";
     private static String    TRIGGER_GROUP_NAME = "EXTJWEB_TRIGGERGROUP_NAME";
     
@@ -33,10 +32,9 @@ public class QuartzManager {
      * @param time 时间设置，参考quartz说明文档
      */
     @SuppressWarnings("unchecked")
-    public static void addJob(String jobName, Map<String, Object> paramMap, Class cls, String time) {
+    public static void addJob(String jobName,  Class cls, String time) {
         try {
             JobDetail jobDetail = newJob(cls).withIdentity(jobName,JOB_GROUP_NAME)
-                    .usingJobData("code", paramMap.get("code").toString())
                     .build(); // 任务名，任务组，任务执行类
             //构造任务触发器
             Trigger trigger = newTrigger()
@@ -81,6 +79,10 @@ public class QuartzManager {
             // 调度容器设置JobDetail和Trigger
             Scheduler sched = gSchedulerFactory.getScheduler();
             sched.scheduleJob(jobDetail, trigger);
+            // 启动
+            if (!sched.isShutdown()) {
+                sched.start();
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -203,4 +205,5 @@ public class QuartzManager {
             throw new RuntimeException(e);
         }
     }
+
 }

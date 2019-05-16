@@ -6,7 +6,30 @@
     </resultMap>
 
     <select id="getPage" resultType="com.duobei.core.operation.push.domain.vo.PushRecordVo" parameterType="com.duobei.core.operation.push.domain.criteria.PushRecordCriteria">
-          SELECT a.*,b.product_name from yy_push_record a left join yy_product b on a._product_id=b.id where a.is_delete = 0 and a.product_id=#{productId}
+        SELECT a.*,b.product_name from yy_push_record a left join yy_product b on a.product_id=b.id where a.is_delete = 0 and a.product_id=#{productId}
+        <if test="pushType != null">
+           and a.push_type = #{pushType}
+        </if>
+        <if test="pushStartTime!=null and pushStartTime!=''">
+            and a.push_time &gt;=#{pushStartTime}
+        </if>
+        <if test="pushEndTime!=null and pushEndTime!=''">
+            and a.push_time &lt;=#{pushEndTime}
+        </if>
+        <if test="addOperatorId!=null">
+            and a.add_operator_id =#{addOperatorId}
+        </if>
+        order by a.id desc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <select id="countByCriteria" resultType="java.lang.Integer" parameterType="com.duobei.core.operation.push.domain.criteria.PushRecordCriteria">
+        SELECT count(*) from yy_push_record a left join yy_product b on a.product_id=b.id where a.is_delete = 0 and a.product_id=#{productId}
+        <if test="pushType != null">
+            and a.push_type = #{pushType,jdbcType=TINYINT}
+        </if>
         <if test="pushStartTime!=null and pushStartTime!=''">
             and a.push_time &gt;=#{pushStartTime}
         </if>
@@ -19,18 +42,8 @@
         order by a.id desc;
     </select>
 
-    <select id="countByCriteria" resultType="java.lang.Integer" parameterType="com.duobei.core.operation.push.domain.criteria.PushRecordCriteria">
-        SELECT count(*) from yy_push_record a left join yy_product b on a._product_id=b.id where a.is_delete = 0 and a.product_id=#{productId}
-        <if test="pushStartTime!=null and pushStartTime!=''">
-            and a.push_time &gt;=#{pushStartTime}
-        </if>
-        <if test="pushEndTime!=null and pushEndTime!=''">
-            and a.push_time &lt;=#{pushEndTime}
-        </if>
-        <if test="addOperatorId!=null">
-            and a.add_operator_id =#{addOperatorId}
-        </if>
-        order by a.id desc;
+    <select id="getById" resultType="com.duobei.core.operation.push.domain.PushRecord" parameterType="java.lang.Long">
+        SELECT * FROM yy_push_record WHERE is_delete =0 and id=#{id} limit 1;
     </select>
 
     <insert id="save" parameterType="com.duobei.core.operation.push.domain.PushRecord">
@@ -68,6 +81,12 @@
             </if>
             <if test="pushCount != null">
                 push_count,
+            </if>
+            <if test="successCount != null">
+                success_count,
+            </if>
+            <if test="path != null">
+                path,
             </if>
             <if test="state != null">
                 state,
@@ -124,6 +143,12 @@
             </if>
             <if test="pushCount != null">
                 #{pushCount,jdbcType=INTEGER},
+            </if>
+            <if test="successCount != null">
+                #{successCount,jdbcType=INTEGER},
+            </if>
+            <if test="path != null">
+                #{path,jdbcType=VARCHAR},
             </if>
             <if test="state != null">
                 #{state,jdbcType=TINYINT},
@@ -184,6 +209,12 @@
             </if>
             <if test="pushCount != null">
                 push_count=#{pushCount,jdbcType=INTEGER},
+            </if>
+            <if test="successCount != null">
+                success_count=#{successCount,jdbcType=INTEGER},
+            </if>
+            <if test="path != null">
+                path=#{path,jdbcType=VARCHAR},
             </if>
             <if test="state != null">
                 state = #{state,jdbcType=TINYINT},

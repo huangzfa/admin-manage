@@ -54,8 +54,8 @@ public interface MerchantService {
      */
     Merchant getById(Integer id);
 
-    void noticeByProduct(Product product);
+    void noticeByProduct(Product product) throws TqException;
 
-    void noticeByMerchant(Merchant merchant);
+    void noticeByMerchant(Merchant merchant) throws TqException;
 
 }

@@ -4,4 +4,16 @@
 
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.push.domain.PushFailUser" extends="com.duobei.core.operation.push.dao.mapper.PushFailUserMapper.BaseResultMap">
     </resultMap>
+
+    <select id="getListByPushId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.push.domain.PushFailUser">
+        select * from yy_push_fail_user where push_id=#{pushId} order by id  desc;
+    </select>
+
+
+    <insert id="batchInsert" parameterType="java.util.HashMap">
+        INSERT INTO yy_push_fail_user(push_id,product_id,app_id,user_id,reason)VALUES
+        <foreach collection="failUser" item="user" index="index" separator=",">
+            (#{pushId},#{productId},#{appId},#{user.userId},#{user.reason})
+        </foreach>
+    </insert>
 </mapper>

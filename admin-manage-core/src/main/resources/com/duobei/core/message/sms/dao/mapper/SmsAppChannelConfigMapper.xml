@@ -1,8 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.duobei.core.message.push.dao.mapper.PushConfigMapper">
-  <resultMap id="BaseResultMap" type="com.duobei.core.message.push.domain.PushConfig">
+<mapper namespace="com.duobei.core.message.sms.dao.mapper.SmsAppChannelConfigMapper">
+  <resultMap id="BaseResultMap" type="com.duobei.core.message.sms.domain.SmsAppChannelConfig">
     <id column="a_id" jdbcType="BIGINT" property="id" />
     <result column="a_app_key" jdbcType="VARCHAR" property="appKey" />
+    <result column="a_business_code" jdbcType="VARCHAR" property="businessCode" />
+    <result column="a_channel_code" jdbcType="VARCHAR" property="channelCode" />
+    <result column="a_channel_name" jdbcType="VARCHAR" property="channelName" />
+    <result column="a_sms_sign" jdbcType="VARCHAR" property="smsSign" />
+    <result column="a_api_url" jdbcType="VARCHAR" property="apiUrl" />
     <result column="a_api_account" jdbcType="VARCHAR" property="apiAccount" />
     <result column="a_api_pwd" jdbcType="VARCHAR" property="apiPwd" />
     <result column="a_state" jdbcType="TINYINT" property="state" />
@@ -10,6 +16,7 @@
     <result column="a_create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="a_create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="a_update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="a_is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="a_update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -71,17 +78,18 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    a.id as a_id, a.app_key as a_app_key, a.api_account as a_api_account, a.api_pwd as a_api_pwd, 
-    a.state as a_state, a.remark as a_remark, a.create_user as a_create_user, a.create_time as a_create_time, 
-    a.update_user as a_update_user, a.update_time as a_update_time
+    a.id as a_id, a.app_key as a_app_key, a.business_code as a_business_code, a.channel_code as a_channel_code, 
+    a.sms_sign as a_sms_sign, a.api_url as a_api_url, a.api_account as a_api_account, 
+    a.api_pwd as a_api_pwd, a.state as a_state, a.remark as a_remark, a.create_user as a_create_user, 
+    a.create_time as a_create_time, a.update_user as a_update_user, a.update_time as a_update_time
   </sql>
-  <select id="selectByExample" parameterType="com.duobei.core.message.push.domain.PushConfigExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.duobei.core.message.sms.domain.SmsAppChannelConfigExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from pub_push_config a
+    from pub_sms_channel_config a
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,40 +100,54 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from pub_push_config a
+    from pub_sms_channel_config a
     where a.id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from pub_push_config
+    delete from pub_sms_channel_config
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.duobei.core.message.push.domain.PushConfigExample">
-    delete from pub_push_config a
+  <delete id="deleteByExample" parameterType="com.duobei.core.message.sms.domain.SmsAppChannelConfigExample">
+    delete from pub_sms_channel_config a
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.duobei.core.message.push.domain.PushConfig">
+  <insert id="insert" parameterType="com.duobei.core.message.sms.domain.SmsAppChannelConfig">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into pub_push_config (app_key, api_account, api_pwd, 
-      state, remark, create_user, 
-      create_time, update_user, update_time
-      )
-    values (#{appKey,jdbcType=VARCHAR}, #{apiAccount,jdbcType=VARCHAR}, #{apiPwd,jdbcType=VARCHAR}, 
-      #{state,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+    insert into pub_sms_channel_config (app_key, business_code, channel_code, 
+      sms_sign, api_url, api_account, 
+      api_pwd, state, remark, 
+      create_user, create_time, update_user, 
+      update_time)
+    values (#{appKey,jdbcType=VARCHAR}, #{businessCode,jdbcType=VARCHAR}, #{channelCode,jdbcType=VARCHAR}, 
+      #{smsSign,jdbcType=VARCHAR}, #{apiUrl,jdbcType=VARCHAR}, #{apiAccount,jdbcType=VARCHAR}, 
+      #{apiPwd,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.duobei.core.message.push.domain.PushConfig">
+  <insert id="insertSelective" parameterType="com.duobei.core.message.sms.domain.SmsAppChannelConfig">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into pub_push_config
+    insert into pub_sms_channel_config
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="appKey != null">
         app_key,
+      </if>
+      <if test="businessCode != null">
+        business_code,
+      </if>
+      <if test="channelCode != null">
+        channel_code,
+      </if>
+      <if test="smsSign != null">
+        sms_sign,
+      </if>
+      <if test="apiUrl != null">
+        api_url,
       </if>
       <if test="apiAccount != null">
         api_account,
@@ -156,6 +178,18 @@
       <if test="appKey != null">
         #{appKey,jdbcType=VARCHAR},
       </if>
+      <if test="businessCode != null">
+        #{businessCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelCode != null">
+        #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="smsSign != null">
+        #{smsSign,jdbcType=VARCHAR},
+      </if>
+      <if test="apiUrl != null">
+        #{apiUrl,jdbcType=VARCHAR},
+      </if>
       <if test="apiAccount != null">
         #{apiAccount,jdbcType=VARCHAR},
       </if>
@@ -182,20 +216,32 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.duobei.core.message.push.domain.PushConfigExample" resultType="java.lang.Long">
-    select count(*) from pub_push_config a
+  <select id="countByExample" parameterType="com.duobei.core.message.sms.domain.SmsAppChannelConfigExample" resultType="java.lang.Long">
+    select count(*) from pub_sms_channel_config a
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update pub_push_config a
+    update pub_sms_channel_config a
     <set>
       <if test="record.id != null">
         a.id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.appKey != null">
         a.app_key = #{record.appKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessCode != null">
+        a.business_code = #{record.businessCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelCode != null">
+        a.channel_code = #{record.channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smsSign != null">
+        a.sms_sign = #{record.smsSign,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apiUrl != null">
+        a.api_url = #{record.apiUrl,jdbcType=VARCHAR},
       </if>
       <if test="record.apiAccount != null">
         a.api_account = #{record.apiAccount,jdbcType=VARCHAR},
@@ -227,9 +273,13 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update pub_push_config a
+    update pub_sms_channel_config a
     set a.id = #{record.id,jdbcType=BIGINT},
       a.app_key = #{record.appKey,jdbcType=VARCHAR},
+      a.business_code = #{record.businessCode,jdbcType=VARCHAR},
+      a.channel_code = #{record.channelCode,jdbcType=VARCHAR},
+      a.sms_sign = #{record.smsSign,jdbcType=VARCHAR},
+      a.api_url = #{record.apiUrl,jdbcType=VARCHAR},
       a.api_account = #{record.apiAccount,jdbcType=VARCHAR},
       a.api_pwd = #{record.apiPwd,jdbcType=VARCHAR},
       a.state = #{record.state,jdbcType=TINYINT},
@@ -242,11 +292,23 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.message.push.domain.PushConfig">
-    update pub_push_config
+  <update id="updateByPrimaryKeySelective" parameterType="com.duobei.core.message.sms.domain.SmsAppChannelConfig">
+    update pub_sms_channel_config
     <set>
       <if test="appKey != null">
         app_key = #{appKey,jdbcType=VARCHAR},
+      </if>
+      <if test="businessCode != null">
+        business_code = #{businessCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelCode != null">
+        channel_code = #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="smsSign != null">
+        sms_sign = #{smsSign,jdbcType=VARCHAR},
+      </if>
+      <if test="apiUrl != null">
+        api_url = #{apiUrl,jdbcType=VARCHAR},
       </if>
       <if test="apiAccount != null">
         api_account = #{apiAccount,jdbcType=VARCHAR},
@@ -275,9 +337,13 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.duobei.core.message.push.domain.PushConfig">
-    update pub_push_config
+  <update id="updateByPrimaryKey" parameterType="com.duobei.core.message.sms.domain.SmsAppChannelConfig">
+    update pub_sms_channel_config
     set app_key = #{appKey,jdbcType=VARCHAR},
+      business_code = #{businessCode,jdbcType=VARCHAR},
+      channel_code = #{channelCode,jdbcType=VARCHAR},
+      sms_sign = #{smsSign,jdbcType=VARCHAR},
+      api_url = #{apiUrl,jdbcType=VARCHAR},
       api_account = #{apiAccount,jdbcType=VARCHAR},
       api_pwd = #{apiPwd,jdbcType=VARCHAR},
       state = #{state,jdbcType=TINYINT},

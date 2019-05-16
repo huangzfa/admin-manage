@@ -100,11 +100,11 @@ public class AppController  extends BaseController {
             }
             if( app.getId() == null ){
                 app.setAddOperatorId(credential.getOpId());
-                appService.save(app);
+                appService.save(app,credential);
             }else{
                 app.setModifyTime(new Date());
                 app.setModifyOperatorId(credential.getOpId());
-                appService.update(app);
+                appService.update(app,credential);
             }
             return simpleSuccessJsonResult("success");
         } catch (Exception e) {
@@ -128,7 +128,7 @@ public class AppController  extends BaseController {
             }
             app.setModifyTime(new Date());
             app.setModifyOperatorId(credential.getOpId());
-            appService.update(app);
+            appService.update(app,credential);
             return simpleSuccessJsonResult("success");
         } catch (Exception e) {
             if (e instanceof TqException) {

@@ -119,17 +119,17 @@
 	
 	<!-- =============================SqlSessionFactory-开始========================================================= -->
 	<!--=========================================== 数据库 manage============================-->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory1" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="manageDataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.duobei.core.manage.**.dao,com.duobei.core.manage.**.dao.mapper" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory1" />
 	</bean>
 
 	<!--=========================================== 数据库 operation============================-->
-	<bean id="sqlSessionFactory1" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory2" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="operateDataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 	</bean>
@@ -139,38 +139,38 @@
 		<property name="annotationClass" value="com.duobei.common.annotation.DataSourceSwitch"/>
 -->
 		<property name="basePackage" value="com.duobei.core.operation.**.dao,com.duobei.core.operation.**.dao.mapper" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory1" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory2" />
 	</bean>
 
 	<!--=========================================== 数据库 user============================-->
-	<bean id="sqlSessionFactory2" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory3" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="userDataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 
 		<property name="basePackage" value="com.duobei.core.user.**.dao,com.duobei.core.user.**.dao.mapper" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory2" />
-	</bean>
-
-	<!--=========================================== 数据库 transaction============================-->
-	<bean id="sqlSessionFactory3" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="transactionDataSource" />
-		<property name="configLocation" value="classpath:mybatis-config.xml"/>
-	</bean>
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.duobei.core.transaction.**.dao,com.duobei.core.transaction.**.dao.mapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory3" />
 	</bean>
 
-	<!--=========================================== 数据库 message============================-->
+	<!--=========================================== 数据库 transaction============================-->
 	<bean id="sqlSessionFactory4" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="transactionDataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.duobei.core.message.**.dao,com.duobei.core.message.**.dao.mapper" />
+		<property name="basePackage" value="com.duobei.core.transaction.**.dao,com.duobei.core.transaction.**.dao.mapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory4" />
+	</bean>
+
+	<!--=========================================== 数据库 message============================-->
+	<bean id="sqlSessionFactory5" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="messageDataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.duobei.core.message.**.dao,com.duobei.core.message.**.dao.mapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory5" />
 	</bean>
 
 	<!-- =============================SqlSessionFactory-结束========================================================= -->
@@ -211,6 +211,7 @@
 		<aop:advisor pointcut="(execution(public * com.duobei.core.operation.*.*.* (..)))" advice-ref="txAdvice" />
 		<aop:advisor pointcut="(execution(public * com.duobei.core.user.*.*.* (..)))" advice-ref="txAdvice" />
 		<aop:advisor pointcut="(execution(public * com.duobei.core.transaction.*.*.* (..)))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="(execution(public * com.duobei.core.message.*.*.* (..)))" advice-ref="txAdvice" />
 	</aop:config>
 	<tx:annotation-driven/>
 
@@ -227,19 +228,14 @@
 	</bean>
 	<!--  =============================ossUtil 结束============================= -->
 
-	<!--  =============================jpushUtil 开始============================= -->
-	<bean id="messageUtil" class="com.duobei.utils.MessageUtil" init-method="initUtil" >
-		<property name="url" value="${pgy.message.url}"></property>
-		<property name="systemCode" value="${pgy.message.platform}"></property>
-	</bean>
 	<!--  =============================jpushUtil 结束============================= -->
 
 	<!--  =============================riskUtil 开始============================= -->
-	<bean id="riskUtil" class="com.duobei.utils.RiskUtil">
+	<!--<bean id="riskUtil" class="com.duobei.utils.RiskUtil">
 		<property name="url" value="${pgy.risk.url}"></property>
 		<property name="merId" value="${pgy.risk.merId}"></property>
 		<property name="appId" value="${pgy.risk.appId}"></property>
-	</bean>
+	</bean>-->
 
 
 </beans>

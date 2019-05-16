@@ -8,6 +8,8 @@ import com.duobei.core.user.user.domain.UserExample;
 import com.duobei.core.user.user.domain.criteria.UserCriteria;
 import com.duobei.core.user.user.domain.vo.UserAndIdCardVo;
 import com.duobei.core.user.user.domain.vo.UserInfoVo;
+
+import java.util.HashMap;
 import java.util.List;
 
 import com.duobei.core.user.user.domain.vo.UserListVo;
@@ -47,5 +49,27 @@ public interface UserDao {
      */
     User getByUserNameEncrypt(@Param("userNameEncrypt") String userNameEncrypt,@Param("productId") Integer productId);
 
+    /**
+     * 发送优惠券查看优惠券名单
+     * @param productId
+     * @param userIds
+     * @return
+     */
     List<User> getByIds(@Param("productId") Integer productId,@Param("userIds") List<Long> userIds);
+
+    /**
+     * 消息推送查询推送名单
+     * @param param
+     * @return
+     */
+    List<User> getByAppId(HashMap<String,Object> param);
+
+    /**
+     * 消息推送人数统计
+     * @param param
+     * @return
+     */
+    int countByAppId(HashMap<String,Object> param);
+
+
 }

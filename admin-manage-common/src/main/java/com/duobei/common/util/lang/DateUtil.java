@@ -805,6 +805,21 @@ public class DateUtil {
 		return new SimpleDateFormat(format).format(date);
 	}
 
+	/**
+	 * 定时器任务规则
+	 * @param startTime
+	 * @return
+	 */
+	public static String getQuarzRule(String startTime){
+		String ss = startTime.substring(17,19);
+		String ff = startTime.substring(14,16);
+		String hh = startTime.substring(11,13);
+		String dd = startTime.substring(8,10);
+		String mm = startTime.substring(5,7);
+		String yy = startTime.substring(0,4);
+		return ss + " " + ff + " " + hh + " " + dd + " " + mm + " ? " +yy;
+	}
+
 	public static void main(String[] args) {
 		System.out.println(DateUtil.getFM_BySec(100));
 	}

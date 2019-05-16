@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.duobei.core.operation.push.domain.PushFailUser">
     <id column="f_id" jdbcType="INTEGER" property="id" />
     <result column="f_push_id" jdbcType="INTEGER" property="pushId" />
-    <result column="f_user_id" jdbcType="INTEGER" property="userId" />
+    <result column="f_user_id" jdbcType="VARCHAR" property="userId" />
     <result column="f_product_id" jdbcType="INTEGER" property="productId" />
     <result column="f_app_id" jdbcType="INTEGER" property="appId" />
     <result column="f_reason" jdbcType="VARCHAR" property="reason" />
@@ -109,7 +109,7 @@
     insert into yy_push_fail_user (push_id, user_id, product_id, 
       app_id, reason, add_time
       )
-    values (#{pushId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
+    values (#{pushId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{productId,jdbcType=INTEGER},
       #{appId,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -143,7 +143,7 @@
         #{pushId,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+        #{userId,jdbcType=VARCHAR},
       </if>
       <if test="productId != null">
         #{productId,jdbcType=INTEGER},
@@ -175,7 +175,7 @@
         f.push_id = #{record.pushId,jdbcType=INTEGER},
       </if>
       <if test="record.userId != null">
-        f.user_id = #{record.userId,jdbcType=INTEGER},
+        f.user_id = #{record.userId,jdbcType=VARCHAR},
       </if>
       <if test="record.productId != null">
         f.product_id = #{record.productId,jdbcType=INTEGER},
@@ -198,7 +198,7 @@
     update yy_push_fail_user f
     set f.id = #{record.id,jdbcType=INTEGER},
       f.push_id = #{record.pushId,jdbcType=INTEGER},
-      f.user_id = #{record.userId,jdbcType=INTEGER},
+      f.user_id = #{record.userId,jdbcType=VARCHAR},
       f.product_id = #{record.productId,jdbcType=INTEGER},
       f.app_id = #{record.appId,jdbcType=INTEGER},
       f.reason = #{record.reason,jdbcType=VARCHAR},
@@ -214,7 +214,7 @@
         push_id = #{pushId,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=VARCHAR},
       </if>
       <if test="productId != null">
         product_id = #{productId,jdbcType=INTEGER},
@@ -234,7 +234,7 @@
   <update id="updateByPrimaryKey" parameterType="com.duobei.core.operation.push.domain.PushFailUser">
     update yy_push_fail_user
     set push_id = #{pushId,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
       product_id = #{productId,jdbcType=INTEGER},
       app_id = #{appId,jdbcType=INTEGER},
       reason = #{reason,jdbcType=VARCHAR},

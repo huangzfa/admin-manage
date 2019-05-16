@@ -3,6 +3,7 @@ package com.duobei.core.operation.app.service.impl;
 import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
+import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.operation.app.dao.AppDao;
 import com.duobei.core.operation.app.dao.mapper.AppMapper;
 import com.duobei.core.operation.app.domain.App;
@@ -83,13 +84,14 @@ public class AppServiceImpl implements AppService{
      * @return
      */
     @Override
-    public void save(App app) throws TqException{
+    public void save(App app,OperatorCredential credential) throws TqException{
         if( appDao.countByAppKey(app) >BizConstant.INT_ZERO){
             throw new TqException("appKey已存在");
         }
         if(appDao.save(app) <1){
             throw new TqException("添加失败");
         }
+        credential.setAppList(getByProductIds(credential.getProductList()));
     }
 
     /**
@@ -98,12 +100,13 @@ public class AppServiceImpl implements AppService{
      * @return
      */
     @Override
-    public void update(App app) throws TqException{
+    public void update(App app,OperatorCredential credential) throws TqException{
         if( appDao.countByAppKey(app) > BizConstant.INT_ZERO){
             throw new TqException("appKey已存在");
         }
         if(appDao.update(app) <1){
             throw new TqException("修改失败");
         }
+        credential.setAppList(getByProductIds(credential.getProductList()));
     }
 }

@@ -9,7 +9,6 @@ import com.duobei.common.constant.BizConstant;
 import com.duobei.common.util.Constants;
 import com.duobei.common.vo.SmsVo;
 import com.duobei.core.manage.sys.handler.VerifyCodeFailHandler;
-import com.duobei.utils.MessageUtil;
 import com.pgy.data.handler.service.PgyDataHandlerService;
 import com.pgy.data.handler.service.impl.PgyDataHandlerServiceImpl;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -34,8 +33,6 @@ public class VerifyCodeDBServiceImpl implements VerifyCodeService {
 	private SmsVerifyCodeMapper smsVerifyCodeMapper;
 	@Autowired
 	private SmsVerifyCodeDao smsVerifyCodeDao;
-	@Autowired
-	private MessageUtil messageUtil;
 	@Autowired
 	private VerifyCodeFailHandler verifyCodeFailHandler;
 	
@@ -107,7 +104,7 @@ public class VerifyCodeDBServiceImpl implements VerifyCodeService {
 				}*/
 				smsVo.setSmsTemptCode(null);
 				smsVo.setSystemCode(BizConstant.PLATFORM);
-				messageUtil.sendSms(smsVo);
+				//messageUtil.sendSms(smsVo);
 			}
 
 		} catch (Exception e) {

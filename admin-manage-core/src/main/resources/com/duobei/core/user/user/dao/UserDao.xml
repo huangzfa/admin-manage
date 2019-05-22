@@ -101,14 +101,16 @@
     limit 1;
   </select>
 
+  <!-- 发送优惠券查看优惠券名单 -->
   <select id="getByIds" parameterType="java.util.List" resultType="com.duobei.core.user.user.domain.User">
-    select * from pgy_user
+    select app_id,user_name_encrypt,product_id from pgy_user
     where is_delete = 0 and product_id=#{productId} and id
     <foreach collection="userIds" open=" in(" close=")" separator="," item="id">
       #{id}
     </foreach>
   </select>
 
+  <!-- 消息推送人员名单查询 -->
   <select id="getByAppId" parameterType="java.util.HashMap" resultType="com.duobei.core.user.user.domain.User">
     select * from pgy_user where is_delete = 0 and product_id=#{productId} and app_id=#{appId}
     <if test="userList!=null">
@@ -120,8 +122,20 @@
     order by id desc;
   </select>
 
+  <!-- 消息推送人员名单统计 -->
   <select id="countByAppId" parameterType="java.util.HashMap" resultType="java.lang.Integer">
     select count(*) from pgy_user where is_delete = 0 and product_id=#{productId} and app_id=#{appId}
     order by id desc;
   </select>
+
+  <!-- 逾期短信提醒人员名单查询 -->
+  <select id="getByListId" parameterType="java.util.List" resultType="com.duobei.core.user.user.domain.User">
+    select id,app_id,user_name_encrypt,product_id from pgy_user
+    where is_delete = 0 and  id
+    <foreach collection="userIdList" open=" in(" close=")" separator="," item="id">
+      #{id}
+    </foreach>
+    order by id desc;
+  </select>
+
 </mapper>

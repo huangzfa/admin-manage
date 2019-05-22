@@ -24,6 +24,7 @@ import com.duobei.core.user.user.domain.vo.UserLoginLastLogVo;
 import com.duobei.core.user.user.service.UserLoginLogService;
 import com.duobei.core.user.user.service.UserService;
 import com.pgy.data.handler.PgyDataHandler;
+import org.apache.regexp.RE;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -156,5 +157,14 @@ public class UserServiceImpl implements UserService {
         return new ListVo(total.intValue(),data);
     }
 
+    /**
+     * 逾期短信推送名单
+     * @param userIdList
+     * @return
+     */
+    @Override
+    public List<User> getByListId(List<Long> userIdList){
+        return userDao.getByListId(userIdList);
+    }
 
 }

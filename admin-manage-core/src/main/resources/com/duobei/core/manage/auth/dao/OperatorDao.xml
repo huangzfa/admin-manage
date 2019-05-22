@@ -96,6 +96,10 @@
 	<!-- 通过真实姓名查询 -->
 	<select id="getByRealName" resultType="com.duobei.core.manage.auth.domain.Operator" parameterType="java.lang.String">
 		select op_id from aa_operator where is_delete = 0 AND real_name=#{realName} limit 1;
+	</select>
 
+
+	<select id="getById" resultType="com.duobei.core.manage.auth.domain.Operator" parameterType="java.lang.Integer">
+		select * from aa_operator where is_delete = 0 AND op_id=#{id} limit 1;
 	</select>
 </mapper>

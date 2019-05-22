@@ -3,13 +3,20 @@ package com.duobei.context;
 
 import javax.servlet.ServletContext;
 
+import com.duobei.common.util.QuartzManager;
+import com.duobei.core.operation.push.domain.QuartzInfo;
+import com.duobei.core.operation.push.service.QuartzInfoService;
+import org.quartz.JobDataMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ContextLoader;
+
+import java.util.List;
 
 @Component("ApiCoreAppContext")
 public class AppContext implements ApplicationContextAware {
@@ -17,13 +24,20 @@ public class AppContext implements ApplicationContextAware {
 
 	private static ApplicationContext context;
 
+
 	@Override
 	public void setApplicationContext(ApplicationContext ctx) throws BeansException {
 		context = ctx;
 		log.info("ApiCoreAppContext injection completed.");
 		log.info("初始化发号器-开始");
 		log.info("初始化发号器-结束");
+
+
+
 	}
+
+
+
 
 	public static ApplicationContext getAppContext() {
 		return context;

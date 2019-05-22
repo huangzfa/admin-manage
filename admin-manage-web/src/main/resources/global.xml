@@ -6,5 +6,8 @@
 	<item key="pageSize" val="10" title="" desc="分页每页个数"></item>
 	<item key="loginFailCount" val="3" title="" desc="登录失败几次就需要验证码"></item>
 	<item key="environment" val="${environment}" title="" desc="环境-开发-测试-生产"></item>
+	<item key="pgy.message.url" val="${pgy.message.url}" title="" desc="消息服务地址"></item>
+	<item key="pgy.business.url" val="${pgy.business.url}" title="" desc="业务服务地址"></item>
+	<item key="pgy.collection.url" val="${pgy.collection.url}" title="" desc="催收服务地址"></item>
 </items>
 

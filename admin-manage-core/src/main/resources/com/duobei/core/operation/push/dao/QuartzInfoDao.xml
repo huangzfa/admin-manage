@@ -7,18 +7,23 @@
 
     <select id="getByCode" resultType="com.duobei.core.operation.push.domain.QuartzInfo" parameterType="java.lang.String">
         select * from yy_quartz_info where is_delete = 0 and code = #{code} limit 1;
-
     </select>
 
     <select id="getPage" resultType="com.duobei.core.operation.push.domain.QuartzInfo" parameterType="com.duobei.core.operation.push.domain.criteria.QuartzInfoCriteria">
-        select * from yy_quartz_info where is_delete = 0 order by id  desc
+        select * from yy_quartz_info where is_delete = 0 and code not like '%push_%' order by id  desc
         <if test="pagesize != 0">
             LIMIT #{offset}, #{pagesize}
         </if>
     </select>
 
+    <!-- 非信息推送定时任务 -->
+    <select id="getStart" resultType="com.duobei.core.operation.push.domain.QuartzInfo" >
+        select * from yy_quartz_info where is_delete = 0 and code not like '%push_%' order by id  desc
+
+    </select>
+
     <select id="countByCriteria" resultType="java.lang.Integer" parameterType="com.duobei.core.operation.push.domain.criteria.QuartzInfoCriteria">
-        select count(*) from yy_quartz_info where is_delete = 0
+        select count(*) from yy_quartz_info where is_delete = 0 and code not like '%push_%'
     </select>
 
     <insert id="save" parameterType="com.duobei.core.operation.push.domain.QuartzInfo">

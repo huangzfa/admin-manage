@@ -23,4 +23,6 @@ public interface OperatorDao {
 	List<Operator> getByOpIds(@Param("opIds") List<Integer> opIds);
 
 	Operator getByRealName(@Param("realName") String realName);
+
+	Operator getById(@Param("id") Integer id);
 }

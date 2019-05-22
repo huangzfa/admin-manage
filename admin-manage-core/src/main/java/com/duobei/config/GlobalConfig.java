@@ -84,4 +84,12 @@ public class GlobalConfig {
 	public static String getMessageUrl() {
 		return Global.getValAsString("pgy.message.url");
 	}
+
+	public static String getBusinessUrl() {
+		return Global.getValAsString("pgy.business.url");
+	}
+
+	public static String getCollectionUrl() {
+		return Global.getValAsString("pgy.collection.url");
+	}
 }

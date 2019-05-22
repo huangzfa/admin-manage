@@ -24,4 +24,6 @@ public interface QuartzInfoDao {
     QuartzInfo getByCode(@Param("code") String code);
 
     int update(QuartzInfo record);
+
+    List<QuartzInfo> getStart();
 }

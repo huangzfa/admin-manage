@@ -30,6 +30,16 @@ public interface PushRecordService {
     void save(PushRecord record,List<List<Object>> listob) throws TqException;
 
     /**
+     *
+     * @param record
+     * @throws TqException
+     */
+    void update(PushRecord record) throws TqException;
+
+
+    void delete(PushRecord record) throws Exception;
+
+    /**
      * 定时推送
      * @param record
      * @return
@@ -54,5 +64,5 @@ public interface PushRecordService {
 
     PushRecord getById(Long id);
 
-    void update(PushRecord record) throws TqException;
+
 }

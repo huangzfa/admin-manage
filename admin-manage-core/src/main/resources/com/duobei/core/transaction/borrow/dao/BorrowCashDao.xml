@@ -164,4 +164,33 @@
     limit 1;
   </select>
 
+  <!-- 查询即将逾期订单 -->
+  <select id="getBeginOverdue" resultType="com.duobei.core.transaction.borrow.domain.BorrowCash" parameterType="java.util.HashMap">
+
+    select  user_id,product_id,amount from tt_borrow_cash where is_delete = 0 and  borrow_state=#{borrowState}
+    <!--#即将逾期前一天，0<还款时间-当前时间 <=1440,(单位 分钟) -->
+    <if test="code=='ORDER_OVERDUE_ADVAN_ONE_DAY'">
+       and TIMESTAMPDIFF(MINUTE,SYSDATE(),gmt_plan_repayment)>0 and TIMESTAMPDIFF(MINUTE,SYSDATE(),gmt_plan_repayment) &lt;=1440
+    </if>
+    <!--#即将逾期前两天，1440<还款时间-当前时间 <=2880,(单位 分钟) -->
+    <if test="code=='ORDER_OVERDUE_ADVAN_TWO_DAY'">
+      and TIMESTAMPDIFF(MINUTE,SYSDATE(),gmt_plan_repayment)>1440 and TIMESTAMPDIFF(MINUTE,SYSDATE(),gmt_plan_repayment) &lt;=2880
+    </if>
+    <!--#即将逾期前三天，2880<还款时间-当前时间 <=4320,(单位 分钟) -->
+    <if test="code=='ORDER_OVERDUE_ADVAN_THREE_DAY'">
+      and TIMESTAMPDIFF(MINUTE,SYSDATE(),gmt_plan_repayment)>2880 and TIMESTAMPDIFF(MINUTE,SYSDATE(),gmt_plan_repayment) &lt;=4320
+    </if>
+    order by id desc
+  </select>
+
+  <select id="getByCriteria" resultType="com.duobei.core.transaction.borrow.domain.BorrowCash" parameterType="com.duobei.core.transaction.borrow.domain.criteria.BorrowCashCriteria">
+
+    SELECT user_id,product_id,amount,current_overdue_state,real_overdue_amount,sum_overdue_amount,renewal_num,add_time from tt_borrow_cash where is_delete =0
+    <if test="borrowState!=null">
+      and  borrow_state=#{borrowState}
+    </if>
+    <if test="productId!=null">
+      and  product_id=#{productId}
+    </if>
+  </select>
 </mapper>

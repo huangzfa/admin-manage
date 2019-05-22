@@ -146,4 +146,8 @@ public class ZfbAccountServiceImpl implements ZfbAccountService {
         }
     }
 
+    @Override
+    public ZfbAccount getByAccount(String account){
+        return zfbAccountDao.getByAccount(account);
+    }
 }

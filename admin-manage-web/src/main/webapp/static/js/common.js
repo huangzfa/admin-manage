@@ -6,7 +6,7 @@
  */
 function checkFloat(input,s) {
     var p = input.split(".");
-    if( p .length <2 ){
+    if( p.length >2 ){
         return false;
     }
     var re = /^[0-9]*]*$/;
@@ -14,14 +14,15 @@ function checkFloat(input,s) {
         return false;
     }
     re = /^[0-9]*]*$/;
-    if (!re.test(p[1])) {
+    if (p.length>1 && !re.test(p[1])) {
         return false;
     }
-    if(p[1].length>s){
+    if(p.length>1 && p[1].length>s){
         return false;
     }
     return true;
 }
+
 /**
  * 判断是不是正整数
  * @param val
@@ -50,8 +51,9 @@ function is01(val) {
 
     if( val.indexOf("0") == 0 && val.indexOf("0.")<0 ){
         return false;
+    }else{
+        return true;
     }
-    return true;
 }
 (function(window){
 	function _package( _sPackage ){

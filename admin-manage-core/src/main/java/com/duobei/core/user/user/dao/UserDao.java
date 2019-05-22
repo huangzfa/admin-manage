@@ -4,7 +4,6 @@ import com.duobei.core.transaction.borrow.domain.vo.BorrowCashListVo;
 import com.duobei.core.transaction.renewal.domain.vo.BorrowCashRenewalListVo;
 import com.duobei.core.transaction.repayment.domain.vo.BorrowCashRepaymentListVo;
 import com.duobei.core.user.user.domain.User;
-import com.duobei.core.user.user.domain.UserExample;
 import com.duobei.core.user.user.domain.criteria.UserCriteria;
 import com.duobei.core.user.user.domain.vo.UserAndIdCardVo;
 import com.duobei.core.user.user.domain.vo.UserInfoVo;
@@ -70,6 +69,13 @@ public interface UserDao {
      * @return
      */
     int countByAppId(HashMap<String,Object> param);
+
+    /**
+     * 逾期短信推送名单
+     * @param userIdList
+     * @return
+     */
+    List<User> getByListId(@Param("userIdList") List<Long> userIdList);
 
 
 }

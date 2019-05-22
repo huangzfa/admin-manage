@@ -233,17 +233,14 @@ public class PushController extends BaseController {
             PushRecord entity = new PushRecord()
                     .setId(record.getId())
                     .setModifyOperatorId(credential.getOpId())
+                    .setIsDelete(record.getId())
                     .setModifyTime(new Date());
-            recordService.update(entity);
+            recordService.delete(entity);
             return simpleSuccessJsonResult("success");
 
         }catch (Exception e) {
-            if (e instanceof TqException) {
-                return failJsonResult(e.getMessage());
-            }else{
-                log.warn("操作失败", e);
-                return failJsonResult("操作失败");
-            }
+            log.warn("操作失败", e);
+            return failJsonResult(e.getMessage());
         }
     }
 
@@ -275,6 +272,9 @@ public class PushController extends BaseController {
             App app = appService.getAppById(record.getAppId());
             if( app == null ){
                 return failJsonResult("应用不存在");
+            }
+            if( record.getPushTime() == null ){
+                return failJsonResult("请填写推送时间");
             }
             record.setAddOperatorId(credential.getOpId());
             record.setModifyTime(new Date());

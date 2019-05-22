@@ -2,12 +2,14 @@ package com.duobei.core.operation.push.service.impl;
 
 import com.duobei.common.constant.BizConstant;
 import com.duobei.common.enums.IdWorker;
+import com.duobei.common.enums.SmsUserfulCodeEnums;
 import com.duobei.common.exception.ManageExceptionCode;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.GuidUtil;
 import com.duobei.common.util.ImportExcelUtil;
 import com.duobei.common.util.QuartzManager;
 import com.duobei.common.util.RegExpValidatorUtils;
+import com.duobei.common.util.lang.ArrayUtil;
 import com.duobei.common.util.lang.DateUtil;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
@@ -86,8 +88,30 @@ public class PushRecordServiceImpl implements PushRecordService {
         if( pushRecordDao.update(record) <BizConstant.INT_ONE){
             throw new TqException("操作失败");
         }
+
     }
 
+    @Override
+    @Transactional(value = "springTransactionManager",rollbackFor = Exception.class)
+    public void delete(PushRecord record) throws Exception{
+        if( pushRecordDao.update(record) <BizConstant.INT_ONE){
+            throw new Exception("删除失败");
+        }
+        QuartzInfo info = quartzInfoService.getByCode("push_"+record.getId());
+        if( info==null){
+            throw new Exception("定时任务不存在");
+        }
+        QuartzInfo entity = new QuartzInfo()
+                .setId(info.getId())
+                .setModifyTime(new Date())
+                .setModifyOperatorId(record.getModifyOperatorId())
+                .setJobGroupName(info.getJobGroupName())
+                .setTriggerName(info.getTriggerName())
+                .setCode(info.getCode())
+                .setTriggerGroupName(info.getTriggerGroupName())
+                .setIsDelete(info.getId());
+        quartzInfoService.delete(entity);
+    }
     /**
      * 分页查询
      * @param criteria
@@ -388,7 +412,7 @@ public class PushRecordServiceImpl implements PushRecordService {
             return paramsDo;
         }
         List<Object> userIds = getJgPushUser(record,listob);
-        List<List<Object>> list_list = averageAssign(userIds, 100);
+        List<List<Object>> list_list = ArrayUtil.averageAssign(userIds, 100);
         List<Future<Map<String, Object>>> resultList = new ArrayList<>();
         PushRecord entity = new PushRecord()
                 .setId(record.getId())
@@ -431,7 +455,7 @@ public class PushRecordServiceImpl implements PushRecordService {
             return paramsDo;
         }
         List<Object> userPhones = getSmsPushUser(record,listob);
-        List<List<Object>> list_list = averageAssign(userPhones, 100);
+        List<List<Object>> list_list = ArrayUtil.averageAssign(userPhones, 100);
         List<Future<Map<String, Object>>> resultList = new ArrayList<>();
         PushRecord entity = new PushRecord()
                 .setId(record.getId())
@@ -444,7 +468,8 @@ public class PushRecordServiceImpl implements PushRecordService {
                 thread = new PushSmsThread();
                 thread.setPhoneList(userPhones);
                 thread.setAppKey(app.getAppKey());
-                thread.setRecord(record);
+                thread.setBusinessCode(SmsUserfulCodeEnums.MARKETING.getCode());
+                thread.setContent(record.getPushContent());
                 //启动线程并返回执行结果
                 Future<Map<String, Object>> future = executorService.submit(thread);
                 resultList.add(future);
@@ -458,33 +483,4 @@ public class PushRecordServiceImpl implements PushRecordService {
         pushRecordDao.update(entity);
         return paramsDo;
     }
-
-
-    /**
-     * 将list 拆分List<list<>>
-     * @param source   要拆分的list
-     * @param n        每个list元素个数
-     * @return
-     */
-    public  List<List<Object>> averageAssign(List<Object> source,int n){
-        List<List<Object>> result=new ArrayList<>();
-        if( source.size()<= n){
-            result.add(source);
-        }else{
-            int index_1 = 0,index_2 = 0;
-            while( index_2< source.size() ){
-                List<Object> value=null;
-                index_2 = index_2 + n;
-                if( index_2 >= source.size()){
-                    index_2 = source.size();
-                }
-                value=source.subList(index_1 , index_2);
-                index_1 = index_2;
-                result.add(value);
-            }
-        }
-        return result;
-    }
-
-
 }

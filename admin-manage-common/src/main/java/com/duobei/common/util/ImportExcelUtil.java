@@ -75,7 +75,8 @@ public class ImportExcelUtil {
             }
 		}
         return list;  
-    }  
+    }
+
       
     /** 
      * 描述：根据文件后缀，自适应上传文件的版本  
@@ -83,18 +84,18 @@ public class ImportExcelUtil {
      * @return 
      * @throws Exception 
      */  
-    public static Workbook getWorkbook(InputStream inStr,String fileName) throws Exception{  
-        Workbook wb = null;  
-        String fileType = fileName.substring(fileName.lastIndexOf("."));  
-        if(excel2003L.equals(fileType)){  
-            wb = new HSSFWorkbook(inStr);  //2003-  
-        }else if(excel2007U.equals(fileType)){  
-            wb = new XSSFWorkbook(inStr);  //2007+  
+    public static Workbook getWorkbook(InputStream inStr,String fileName) throws Exception{
+        Workbook wb = null;
+        String fileType = fileName.substring(fileName.lastIndexOf("."));
+        if(excel2003L.equals(fileType)){
+            wb = new HSSFWorkbook(inStr);  //2003-
+        }else if(excel2007U.equals(fileType)){
+            wb = new XSSFWorkbook(inStr);  //2007+
         }else{  
             throw new Exception("解析的文件格式有误！");  
         }  
-        return wb;  
-    }  
+        return wb;
+    }
   
     /** 
      * 描述：对表格中数值进行格式化 

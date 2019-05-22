@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * @date 2019/2/26
  */
 @Slf4j
-@Service("AppService")
+@Service("appService")
 public class AppServiceImpl implements AppService{
 
     @Autowired

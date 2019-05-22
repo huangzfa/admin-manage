@@ -18,35 +18,15 @@ public class Constants {
     //支付宝 账务明细 数据导入  账号转账
     public static final Map<Integer,String> BILLING_DETAIL_IMPORT= new HashMap<Integer,String>(){
         {
-            put(0,"line");
-            put(1,"realRepayDate");
-            put(2,"tradNo");
-            put(3,"alipayOrderNo");
-            put(6,"repayAmount");
-            put(12,"userAlipayNo");
-            put(13,"userAlipayName");
-            put(16,"remark");
-        }
-    };
-    //支付宝 交易明细 数据导入 二维码付款
-    public static final Map<Integer,String> TRAD_DETAIL_IMPORT= new HashMap<Integer,String>(){
-        {
-            put(0,"line");
-            put(1,"realRepayDate");
-            put(3,"alipayOrderNo");
-            put(4,"tradNo");
-            put(5,"userAlipayNo");
-            put(6,"userAlipayName");
-            put(7,"repayAmount");
+            put(3,"zfbAccount");
+            put(4,"repayNo");
+            put(5,"repayCardNo");
+            put(7,"actualAmount");
+            put(10,"remark");
         }
     };
 
 
-    public static final int ZFB_REPAY_FAILED = -1;
-    public static final int ZFB_REPAY_SUCCESS = 1;
-    public static final int ZFB_REPAY_WAIT_FLAT = 0 ;
-
-    public static final String PRODUCT_DEFAULT_CHANNEL = "0";
 
 
 }

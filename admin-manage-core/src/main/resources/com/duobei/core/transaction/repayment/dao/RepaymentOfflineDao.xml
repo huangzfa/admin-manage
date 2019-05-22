@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.transaction.repayment.dao.RepaymentOfflineDao" >
+
+    <select id="getByBorrowId" resultType="com.duobei.core.transaction.repayment.domain.RepaymentOffline" parameterType="java.lang.Long">
+        SELECT * from tt_borrow_cash_repayment_offline where is_delete = 0 and borrow_cash_id=#{borrowId} order by id desc limit 1;
+    </select>
+
+    <select id="getPage" resultType="com.duobei.core.transaction.repayment.domain.vo.RepaymentOfflineVo" parameterType="com.duobei.core.transaction.repayment.domain.criteria.RepaymentOfflineCriteria">
+        SELECT a.*,b.amount,b.current_overdue_state,b.real_overdue_amount,b.sum_overdue_amount,b.renewal_num,b.repay_amount,b.add_time as borrow_time from tt_borrow_cash_repayment_offline a left join tt_borrow_cash b on a.borrow_cash_id = b.id
+        where a.is_delete = 0
+        <if test="state!=null or state == 0">
+            and  a.state=#{state}
+        </if>
+        <if test="userId!=null">
+            and  a.user_id=#{userId}
+        </if>
+        <if test="productId!=null">
+            and  a.product_id=#{productId}
+        </if>
+        order by a.id desc
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+
+    <select id="countByCriteria" resultType="java.lang.Integer" parameterType="com.duobei.core.transaction.repayment.domain.criteria.RepaymentOfflineCriteria">
+        SELECT count(*) from tt_borrow_cash_repayment_offline a left join tt_borrow_cash b on a.borrow_cash_id = b.id
+        where a.is_delete = 0
+        <if test="state!=null or state == 0">
+            and  a.state=#{state}
+        </if>
+        <if test="userId!=null">
+            and  a.user_id=#{userId}
+        </if>
+        <if test="productId!=null">
+            and  a.product_id=#{productId}
+        </if>
+        order by a.id desc
+    </select>
+
+    <select id="getById" resultType="com.duobei.core.transaction.repayment.domain.RepaymentOffline" parameterType="java.lang.Long">
+        SELECT * from tt_borrow_cash_repayment_offline where is_delete = 0 and id=#{id} order by id desc limit 1;
+    </select>
+</mapper>

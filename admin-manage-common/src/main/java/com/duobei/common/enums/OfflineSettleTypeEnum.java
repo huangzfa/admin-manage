@@ -5,9 +5,6 @@ package com.duobei.common.enums;
  */
 public enum OfflineSettleTypeEnum {
 
-    OFFLINE_SUBMIT_RONG360(1,"融360"),
-    OFFLINE_SUBMIT_DUOBEI(2,"多贝"),
-    OFFLINE_SUBMIT_COLLECTION(3,"催收"),
     OFFLINE_SETTLE_BATCH_FLAT(1,"批量平账"),
     OFFLINE_SETTLE_HUMAN(2,"人工平账")
     ;

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.message.sms.dao.SmsRecordDao" >
+
+    <select id="batchSave" parameterType="java.util.HashMap" >
+        INSERT  INTO  pub_sms_record (app_key,business_code,send_mobile,send_content) VALUE
+        <foreach collection="phoneList" item="phone" index="index" separator=",">
+            (#{appKey},#{businessCode},#{phone},#{content})
+        </foreach>
+    </select>
+
+    <insert id="save" parameterType="com.duobei.core.message.sms.domain.SmsRecord">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into pub_sms_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appKey != null">
+                app_key,
+            </if>
+            <if test="businessCode != null">
+                business_code,
+            </if>
+            <if test="templetCode != null">
+                templet_code,
+            </if>
+            <if test="sendMobile != null">
+                send_mobile,
+            </if>
+            <if test="sendContent != null">
+                send_content,
+            </if>
+            <if test="sendState != null">
+                send_state,
+            </if>
+            <if test="remake != null">
+                remake,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appKey != null">
+                #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="businessCode != null">
+                #{businessCode,jdbcType=VARCHAR},
+            </if>
+            <if test="templetCode != null">
+                #{templetCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sendMobile != null">
+                #{sendMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="sendContent != null">
+                #{sendContent,jdbcType=VARCHAR},
+            </if>
+            <if test="sendState != null">
+                #{sendState,jdbcType=BIT},
+            </if>
+            <if test="remake != null">
+                #{remake,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+</mapper>

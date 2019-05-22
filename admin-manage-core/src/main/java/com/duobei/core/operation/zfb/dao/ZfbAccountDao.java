@@ -26,4 +26,6 @@ public interface ZfbAccountDao {
     int update(ZfbAccountVo zfbAccountVo);
 
     int countByIsEnableAndProductId(@Param("productId") Integer productId, @Param("isEnable") int isEnable_yes);
+
+    ZfbAccount getByAccount(@Param("account")  String account);
 }

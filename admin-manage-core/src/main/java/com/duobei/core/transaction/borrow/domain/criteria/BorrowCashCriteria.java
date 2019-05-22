@@ -8,6 +8,7 @@ import lombok.Data;
  * @description
  * @date 2019/3/12
  */
+@Data
 public class BorrowCashCriteria extends Pagination {
 
     /**
@@ -30,35 +31,7 @@ public class BorrowCashCriteria extends Pagination {
      */
     private Long userId;
 
-    public String getBorrowNo() {
-        return borrowNo;
-    }
 
-    public void setBorrowNo(String borrowNo) {
-        this.borrowNo = borrowNo;
-    }
+    private Integer borrowState;
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 }

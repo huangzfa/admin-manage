@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.message.sms.dao.SmsAppChannelConfigDao">
+
+    <resultMap id="BaseResultMap" type="com.duobei.core.message.sms.domain.SmsAppChannelConfig" extends="com.duobei.core.message.sms.dao.mapper.SmsAppChannelConfigMapper.BaseResultMap">
+    </resultMap>
+
+    <select id="getPageList" resultType="com.duobei.core.message.sms.domain.vo.SmsAppChannelConfigVo" parameterType="com.duobei.core.message.sms.domain.criteria.SmsAppChannelConfigCriteria">
+        SELECT * from pub_sms_channel_config where is_delete = 0  order by id  DESC
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <select id="countByCriteria" resultType="java.lang.Integer" parameterType="com.duobei.core.message.sms.domain.criteria.SmsAppChannelConfigCriteria">
+        select count(*)  from pub_sms_channel_config where is_delete = 0 order by id  DESC
+    </select>
+
+    <select id="getByAppkey" resultType="com.duobei.core.message.sms.domain.SmsAppChannelConfig" parameterType="java.lang.String">
+        select * from pub_sms_channel_config where is_delete = 0 and app_key = #{appKey}
+    </select>
+
+    <select id="countByAppKey" resultType="java.lang.Integer" parameterType="com.duobei.core.message.sms.domain.SmsAppChannelConfig">
+        select count(*) from pub_sms_channel_config where is_delete = 0 and app_key = #{appKey}
+        <if test="state!=null or state == 0">
+            and state = #{state}
+        </if>
+        <if test="businessCode != null">
+            and business_code = #{businessCode}
+        </if>
+        <if test="id != null">
+            and id &lt;&gt; #{id,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getByRecord" resultType="com.duobei.core.message.sms.domain.SmsAppChannelConfig" parameterType="com.duobei.core.message.sms.domain.SmsAppChannelConfig">
+        select * from pub_sms_channel_config where is_delete = 0 and app_key = #{appKey}
+        <if test="state!=null or state == 0">
+            and state = #{state}
+        </if>
+        <if test="businessCode != null">
+            and business_code = #{businessCode}
+        </if>
+        <if test="id != null">
+            and id &lt;&gt; #{id,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="com.duobei.core.message.sms.domain.SmsAppChannelConfig">
+        select * from pub_sms_channel_config where is_delete = 0 and id=#{id} limit 1;
+    </select>
+
+    <insert id="save" parameterType="com.duobei.core.message.sms.domain.SmsAppChannelConfig">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into pub_sms_channel_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appKey != null">
+                app_key,
+            </if>
+            <if test="businessCode != null">
+                business_code,
+            </if>
+            <if test="channelName != null">
+                channel_name,
+            </if>
+            <if test="channelCode != null">
+                channel_code,
+            </if>
+            <if test="smsSign != null">
+                sms_sign,
+            </if>
+            <if test="apiUrl != null">
+                api_url,
+            </if>
+            <if test="apiAccount != null">
+                api_account,
+            </if>
+            <if test="apiPwd != null">
+                api_pwd,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appKey != null">
+                #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="businessCode != null">
+                #{businessCode,jdbcType=VARCHAR},
+            </if>
+            <if test="channelName != null">
+                #{channelName,jdbcType=VARCHAR},
+            </if>
+            <if test="channelCode != null">
+                #{channelCode,jdbcType=VARCHAR},
+            </if>
+
+            <if test="smsSign != null">
+                #{smsSign,jdbcType=VARCHAR},
+            </if>
+            <if test="apiUrl != null">
+                #{apiUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="apiAccount != null">
+                #{apiAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="apiPwd != null">
+                #{apiPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.duobei.core.message.sms.domain.SmsAppChannelConfig">
+        update pub_sms_channel_config
+        <set>
+            <if test="appKey != null">
+                app_key = #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="businessCode != null">
+                business_code = #{businessCode,jdbcType=VARCHAR},
+            </if>
+            <if test="channelName != null">
+                channel_name = #{channelName,jdbcType=VARCHAR},
+            </if>
+            <if test="channelCode != null">
+                channel_code = #{channelCode,jdbcType=VARCHAR},
+            </if>
+
+            <if test="smsSign != null">
+                sms_sign = #{smsSign,jdbcType=VARCHAR},
+            </if>
+            <if test="apiUrl != null">
+                api_url = #{apiUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="apiAccount != null">
+                api_account = #{apiAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="apiPwd != null">
+                api_pwd = #{apiPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null or state == 0">
+                state = #{state,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="delByKey" parameterType="java.lang.String">
+        update pub_sms_channel_config set is_delete = 1 where app_key = #{appKey,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,8 +1,12 @@
 package com.duobei.core.transaction.borrow.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
+import com.duobei.common.http.OkHttpUtil;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
+import com.duobei.config.GlobalConfig;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.product.dao.ProductDao;
@@ -12,12 +16,14 @@ import com.duobei.core.transaction.borrow.dao.BorrowCashDao;
 import com.duobei.core.transaction.borrow.dao.mapper.BorrowCashMapper;
 import com.duobei.core.transaction.borrow.domain.BorrowCash;
 import com.duobei.core.transaction.borrow.domain.BorrowCashExample;
+import com.duobei.core.transaction.borrow.domain.bo.OverdueDerateBo;
 import com.duobei.core.transaction.borrow.domain.criteria.BorrowCashCriteria;
 import com.duobei.core.transaction.borrow.domain.vo.BorrowCashListVo;
 import com.duobei.core.transaction.borrow.domain.vo.BorrowCashReportVo;
 import com.duobei.core.transaction.borrow.service.BorrowCashService;
 import com.duobei.core.transaction.overdue.dao.OverdueDerateRecordDao;
 import com.duobei.core.transaction.overdue.domain.OverdueDerateRecord;
+import com.duobei.core.transaction.repayment.dao.RepaymentOfflineDao;
 import com.duobei.core.user.user.dao.UserDao;
 import com.duobei.core.user.user.domain.criteria.UserBorrowCriteria;
 import com.duobei.core.user.user.domain.vo.UserAndIdCardVo;
@@ -28,8 +34,13 @@ import com.pgy.data.handler.PgyDataHandler;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -40,21 +51,19 @@ import java.util.Map;
  * @date 2019/3/12
  */
 @Service("borrowCashService")
+@Slf4j
 public class BorrowCashServiceImpl implements BorrowCashService {
     @Resource
     ProductDao productDao;
-
     @Resource
     BorrowCashDao borrowCashDao;
-
     @Resource
     BorrowCashMapper borrowCashMapper;
-
     @Resource
     UserDao userDao;
-
     @Resource
     OverdueDerateRecordDao overdueDerateRecordDao;
+
 
     @Override
     public ListVo<BorrowCashListVo> getListByQuery(BorrowCashCriteria borrowCashCriteria) {
@@ -183,6 +192,7 @@ public class BorrowCashServiceImpl implements BorrowCashService {
     }
 
     @Override
+    @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
     public void overdueDerate(BorrowCash borrowCash, BigDecimal derateAmount, OperatorCredential credential) throws TqException {
         //逾期减免
         Long derateAmountLongVal = derateAmount.multiply(new BigDecimal(100)).longValue();
@@ -211,6 +221,17 @@ public class BorrowCashServiceImpl implements BorrowCashService {
             //生成记录
             overdueDerateRecordDao.save(overdueDerateRecord);
             //TODO 同步催收
+
+            OverdueDerateBo bo = new OverdueDerateBo()
+                    .setBorrowNo(borrowCash.getBorrowNo())
+                    .setDerateAmount(derateAmountLongVal)
+                    .setProductId(borrowCash.getProductId())
+                    .setMerchantId(1)//随便写
+                    .setSign("1231")//随便写
+                    .setTimestamp(System.currentTimeMillis()+"");
+            String result = OkHttpUtil.okHttpPostJson(GlobalConfig.getCollectionUrl()+"/biz/sync/overdue/derate", JSON.toJSONString(bo));
+            log.info("同步催收:"+ result);
+
         }else{
             throw new TqException("逾期费减免失败");
         }
@@ -275,5 +296,14 @@ public class BorrowCashServiceImpl implements BorrowCashService {
         return new ListVo(total.intValue(),data);
     }
 
+    /**
+     * 即将逾期订单
+     * @param map
+     * @return
+     */
+    @Override
+    public List<BorrowCash> getBeginOverdue(HashMap<String,Object> map){
+        return borrowCashDao.getBeginOverdue(map);
+    }
 
 }

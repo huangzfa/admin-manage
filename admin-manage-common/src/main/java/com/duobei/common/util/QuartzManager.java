@@ -15,7 +15,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
  * 
  *@类描述：任务管理
  *@author 何鑫 2017年1月18日  12:51:33
- *@注意：本内容仅限于杭州霖梓网络科技股份有限公司内部传阅，禁止外泄以及用于其他的商业目的
+ *@注意：项目重新启动任务会丢失
  */
 @SuppressWarnings({ "rawtypes" })
 public class QuartzManager {

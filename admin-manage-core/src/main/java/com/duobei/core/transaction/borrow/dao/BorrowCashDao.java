@@ -84,4 +84,14 @@ public interface BorrowCashDao {
      * @return
      */
     BorrowCash getByBorrowNoMap(HashMap<String,Object> map);
+
+    /**
+     * 即将逾期订单
+     * @param map
+     * @return
+     */
+    List<BorrowCash> getBeginOverdue(HashMap<String,Object> map);
+
+
+    List<BorrowCashListVo> getByCriteria(BorrowCashCriteria borrowCashCriteria);
 }

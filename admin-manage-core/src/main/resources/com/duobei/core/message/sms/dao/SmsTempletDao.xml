@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.message.sms.dao.SmsTempletDao" >
+
+    <select id="getPageList" resultType="com.duobei.core.message.sms.domain.vo.SmsTempletVo" parameterType="com.duobei.core.message.sms.domain.criteria.SmsTempletCriteria">
+        select * from pub_sms_templet where deleted = 0 and app_key
+        <foreach collection="appList" open=" in(" close=")" separator="," item="app">
+            #{app.appKey}
+        </foreach>
+        <if test="pagesize != 0">
+            LIMIT #{offset}, #{pagesize}
+        </if>
+    </select>
+
+    <select id="countByCriteria" resultType="java.lang.Integer" parameterType="com.duobei.core.message.sms.domain.criteria.SmsTempletCriteria">
+        select count(*) from pub_sms_templet where deleted = 0 and app_key
+        <foreach collection="appList" open=" in(" close=")" separator="," item="app">
+            #{app.appKey}
+        </foreach>
+
+        order by id desc
+    </select>
+
+    <select id="countByType" resultType="java.lang.Integer" parameterType="com.duobei.core.message.sms.domain.SmsTemplet">
+        select count(*) from pub_sms_templet where deleted = 0 and app_key=#{appKey} and code=#{code}
+        <if test="id!=null">
+            and id &lt;&gt; #{id,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="com.duobei.core.message.sms.domain.SmsTemplet">
+        select * from pub_sms_templet where deleted = 0 and  id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getByCode" parameterType="java.lang.String" resultType="com.duobei.core.message.sms.domain.SmsTemplet">
+        select * from pub_sms_templet where deleted = 0 and  code = #{code,jdbcType=INTEGER} limit 1;
+    </select>
+
+    <insert id="save" parameterType="com.duobei.core.message.sms.domain.SmsTemplet">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into pub_sms_templet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appKey != null">
+                app_key,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appKey != null">
+                #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=BIT},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=BIT},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.duobei.core.message.sms.domain.SmsTemplet">
+        update pub_sms_templet
+        <set>
+            <if test="appKey != null">
+                app_key = #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=BIT},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=BIT},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

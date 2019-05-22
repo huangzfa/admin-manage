@@ -12,6 +12,7 @@ import com.duobei.core.user.user.domain.criteria.UserBorrowCriteria;
 import com.duobei.core.user.user.domain.vo.UserBorrowListVo;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -58,4 +59,12 @@ public interface BorrowCashService {
 
 
     ListVo<UserBorrowListVo> getStageBorrowByUserIdAndState(UserBorrowCriteria criteria);
+
+    /**
+     * 查询即将逾期订单
+     * @param map
+     * @return
+     */
+    List<BorrowCash> getBeginOverdue(HashMap<String,Object> map);
+
 }

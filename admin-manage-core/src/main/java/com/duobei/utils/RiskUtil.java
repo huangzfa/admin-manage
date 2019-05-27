@@ -23,9 +23,6 @@ public class RiskUtil {
 
     private static String url;
 
-    private static String appId;
-
-    private static String merId;
 
     public static String getUrl() {
         return url;
@@ -35,32 +32,19 @@ public class RiskUtil {
         RiskUtil.url = url;
     }
 
-    public static String getAppId() {
-        return appId;
-    }
-
-    public static void setAppId(String appId) {
-        RiskUtil.appId = appId;
-    }
-
-    public static String getMerId() {
-        return merId;
-    }
-
-    public static void setMerId(String merId) {
-        RiskUtil.merId = merId;
-    }
 
     /**
      * 判断场景id是否存在
-     * @param sceneCode 场景id
+     * @param sceneCode  场景code
+     * @param productId  产品id
+     * @param merId     商户id
      * @return
-     * @throws Exception
+     * @throws TqException
      */
-    public String SceneCodeHad(String sceneCode) throws TqException{
+    public String SceneCodeHad(String sceneCode,Integer productId,Integer merId) throws TqException{
         HashMap<String,String> paramsMap = new HashMap<>();
-        paramsMap.put("appId", appId);
-        paramsMap.put("merId", merId);
+        paramsMap.put("productCode", productId+"");
+        paramsMap.put("merchantNo", merId+"");
         paramsMap.put("sceneCode", sceneCode);
         String result = OkHttpUtil.okHttpPostForm(url+"/tianqing/api/exist/scene.htm", paramsMap);
         logger.info("场景id校验 result:{}",result);
@@ -85,7 +69,7 @@ public class RiskUtil {
      * @return
      * @throws Exception
      */
-    public void pushOverdueForRisk(List<Map<String,Object>> list, String merOrderNo) {
+   /* public void pushOverdueForRisk(List<Map<String,Object>> list, String merOrderNo) {
 
         HashMap<String,String> paramsMap = new HashMap<>();
         try{
@@ -104,13 +88,13 @@ public class RiskUtil {
         }
 
     }
-    /**
+    *//**
      * 推送还款信息到风控
      * @param map
      * @param merOrderNo
      * @return
      * @throws Exception
-     */
+     *//*
     public void pushRepaymentForRisk(Long userId,String borrowNo, String merOrderNo,Map<String,Object> map) {
 
         HashMap<String,String> paramsMap = new HashMap<>();
@@ -131,6 +115,6 @@ public class RiskUtil {
             logger.info("推送还款信息到风控发生异常!paramsMap{}",merOrderNo,paramsMap);
         }
 
-    }
+    }*/
 
 }

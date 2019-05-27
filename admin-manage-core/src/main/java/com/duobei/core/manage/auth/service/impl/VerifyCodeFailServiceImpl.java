@@ -7,7 +7,6 @@ import com.duobei.core.manage.auth.service.VerifyCodeFailService;
 import com.duobei.common.exception.TqException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 
@@ -30,18 +29,16 @@ public class VerifyCodeFailServiceImpl implements VerifyCodeFailService {
     }
 
     @Override
-    @Transactional(rollbackFor = TqException.class)
     public void save(VerifyCodeFail record) throws TqException {
         if(verifyCodeFailMapper.insert(record)!=1){
-            throw new RuntimeException("系统异常");
+            throw new TqException("系统异常");
         }
     }
 
     @Override
-    @Transactional(rollbackFor = TqException.class)
     public void update(VerifyCodeFail record) throws TqException{
         if(verifyCodeFailMapper.updateByPrimaryKeySelective(record)!=1){
-            throw new RuntimeException("系统异常");
+            throw new TqException("系统异常");
         }
     }
 }

@@ -44,7 +44,7 @@ $(function(){
 		hjnUtils.ajax({  
 	        type:'post',      
 	        url:'${ctxA}/sys/user/userList',  
-	        data:'selectOrganId='+selectOrganId+'&loginName='+$('#loginName').val()+'&realName='+$('#realName').val()+'&page='+pageNum+'&pagesize='+pageSize,
+	        data:'roleName='+$("#roleName").val()+'&selectOrganId='+selectOrganId+'&loginName='+$('#loginName').val()+'&realName='+$('#realName').val()+'&page='+pageNum+'&pagesize='+pageSize,
 	        dataType:'json',  
 	        success:function(data){
 	        	$('#tt').datagrid('loaded');
@@ -113,6 +113,10 @@ function optionformater(value,row,index){
 		<li>
 			<label>姓名：</label>
 			<input id="realName" placeholder="请输入姓名" class="input-large" type="text" value="" maxlength="50" />
+		</li>
+		<li>
+			<label>角色名称：</label>
+			<input id="roleName" placeholder="请输入角色" class="input-large" type="text" value="" maxlength="50" />
 		</li>
 		<li class="btns">
 			<input id="search" class="btn btn-primary" type="submit" value="查询" />

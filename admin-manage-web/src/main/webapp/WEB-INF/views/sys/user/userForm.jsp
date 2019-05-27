@@ -88,7 +88,7 @@ $(function(){
 			<label class="control-label">账号：</label>
 			<div class="controls">
 				<c:if test="${empty operator.opId}">
-				<form:input path="loginName" htmlEscape="false" class="input-xlarge"/>
+				<form:input path="loginName" maxlength="11" htmlEscape="false" class="input-xlarge" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'/>
 				</c:if>
 				<c:if test="${not empty operator.opId}">
 				<form:input path="loginName" htmlEscape="false" readonly="true" class="input-xlarge"/>
@@ -100,7 +100,7 @@ $(function(){
 		<div class="control-group">
 	        <label class="control-label">姓名：</label>
 	        <div class="controls">
-	        	<form:input path="realName" htmlEscape="false" maxlength="50" class="input-xlarge"/>
+	        	<form:input path="realName" htmlEscape="false" maxlength="10" class="input-xlarge"/>
 	        </div>
 	    </div>
 	    <div class="control-group">

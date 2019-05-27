@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.duobei.common.constant.BizConstant;
 import com.duobei.common.util.Constants;
 import com.duobei.common.vo.SmsVo;
+import com.duobei.core.manage.auth.domain.VerifyCodeFail;
 import com.duobei.core.manage.sys.handler.VerifyCodeFailHandler;
 import com.pgy.data.handler.service.PgyDataHandlerService;
 import com.pgy.data.handler.service.impl.PgyDataHandlerServiceImpl;
@@ -54,6 +55,10 @@ public class VerifyCodeDBServiceImpl implements VerifyCodeService {
 				|| System.currentTimeMillis() > smsVerifyCode.getInvalidTime().getTime()) {
 			verifyCodeFailHandler.updateVerifyCodeFail(mobile, smsBizType);
 			throw new TqException("无效的验证码");
+		}
+		VerifyCodeFail verifyCodeFail = verifyCodeFailHandler.getByParam(mobile,smsBizType);
+		if( verifyCodeFail!=null && verifyCodeFail.getFailCount() >= 5){
+			throw new TqException("验证码错误次数超限，请联系管理员");
 		}
 	}
 	

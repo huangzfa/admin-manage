@@ -25,8 +25,4 @@ public class ProductConsumdebtGoodsVo extends ProductConsumdebtGoods{
      */
     private Integer isDelete;
 
-    /**
-     *
-     */
-    private Integer sort;
 }

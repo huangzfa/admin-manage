@@ -29,14 +29,11 @@ public class VerifyCodeFailHandler {
      */
     public void updateVerifyCodeFail(String loginName,int smsBizType) throws TqException{
 
-        HashMap<String,Object> params = new HashMap<>();
-        Integer gmtTime = Integer.parseInt(DateUtil.format_yyyyMMdd(new Date()));
-        params.put("loginName",loginName);
-        params.put("gmtTime", gmtTime);
-        VerifyCodeFail fail = verifyCodeFailService.getByParam(params);
+
+        VerifyCodeFail fail = getByParam(loginName,smsBizType);
         if( fail ==null ){
             fail = new VerifyCodeFail();
-            fail.setGmtTime(gmtTime);
+            fail.setGmtTime(Integer.parseInt(DateUtil.format_yyyyMMdd(new Date())));
             fail.setLoginName(loginName);
             fail.setFailCount(1);
             fail.setSmsBizType(smsBizType);
@@ -48,5 +45,19 @@ public class VerifyCodeFailHandler {
             fail.setFailCount(fail.getFailCount()+1);
             verifyCodeFailService.update(fail);
         }
+    }
+
+    /**
+     *
+     * @param loginName
+     * @param smsBizType
+     * @return
+     */
+    public VerifyCodeFail getByParam(String loginName,int smsBizType){
+        HashMap<String,Object> params = new HashMap<>();
+        Integer gmtTime = Integer.parseInt(DateUtil.format_yyyyMMdd(new Date()));
+        params.put("loginName",loginName);
+        params.put("gmtTime", gmtTime);
+        return verifyCodeFailService.getByParam(params);
     }
 }

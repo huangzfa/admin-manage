@@ -231,11 +231,9 @@
 	<!--  =============================jpushUtil 结束============================= -->
 
 	<!--  =============================riskUtil 开始============================= -->
-	<!--<bean id="riskUtil" class="com.duobei.utils.RiskUtil">
+	<bean id="riskUtil" class="com.duobei.utils.RiskUtil">
 		<property name="url" value="${pgy.risk.url}"></property>
-		<property name="merId" value="${pgy.risk.merId}"></property>
-		<property name="appId" value="${pgy.risk.appId}"></property>
-	</bean>-->
+	</bean>
 
 
 </beans>

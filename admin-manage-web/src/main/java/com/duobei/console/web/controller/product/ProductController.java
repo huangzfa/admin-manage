@@ -523,13 +523,17 @@ public class ProductController extends BaseController {
     @RequiresPermissions("product:list:edit")
     @RequestMapping(value = "/validSceneCode")
     @ResponseBody
-    public String validSceneCode(String code) throws TqException {
+    public String validSceneCode(String code,Integer productId) throws TqException {
         if (StringUtil.isBlank(code)) {
             return failJsonResult("请填写场景id");
         }
-        String result = riskUtil.SceneCodeHad(code);
+        Product product = productService.getById(productId);
+        if( product == null ){
+            return failJsonResult("产品不存在");
+        }
+        String result = riskUtil.SceneCodeHad(code,productId,product.getMerchantId());
         if ( !result.equals("success")) {
-            return simpleSuccessJsonResult("校验失败，原因：" + result);
+            return failJsonResult("校验失败，原因：" + result);
         } else {
             return simpleSuccessJsonResult(result);
         }

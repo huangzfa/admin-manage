@@ -126,6 +126,9 @@ public class LoginController extends BaseController {
 			if (operator == null) {
 				return failJsonResult("账号或手机号不存在");
 			}
+			if(!operator.getOperatorState().equals(ZD.state_open)){
+				return failJsonResult("账号已被停用");
+			}
 			// 特殊处理，开发时便捷登录
 			if (StringUtils.isNotEmpty(password)) {
 				//校验登录密码是否正确

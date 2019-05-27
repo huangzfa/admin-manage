@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.core.manage.auth.helper.UserHelper;
 import com.duobei.core.manage.auth.service.RoleDataAuthService;
@@ -70,7 +71,7 @@ public class RoleServiceImpl implements RoleService {
 			criteria.andRoleStateEqualTo(roleCriteria.getRoleStateZd());
 		}
 		if (StringUtils.isNotBlank(roleCriteria.getRoleName())) {
-			criteria.andRoleNameLike("%" + roleCriteria.getRoleName() + "%");
+			criteria.andRoleNameLike(roleCriteria.getRoleName());
 		}
 		int total = roleMapper.countByExample(example);
 		List<RoleVo> roles = null;
@@ -113,6 +114,9 @@ public class RoleServiceImpl implements RoleService {
 		}
 		if (role.getRoleId() == null) {
 			throw new TqException("角色入库失败");
+		}
+		if( role.getMenuIdList() == null || role.getMenuIdList().size() < BizConstant.INT_ONE){
+			throw new TqException("请勾选菜单");
 		}
 		Integer roleId = role.getRoleId();
 		// 如果选择了权限，则添加
@@ -161,6 +165,9 @@ public class RoleServiceImpl implements RoleService {
 		}
 		if (1 != roleMapper.updateByPrimaryKeySelective(role)) {
 			throw new TqException("更新数据库失败");
+		}
+		if( role.getMenuIdList() == null || role.getMenuIdList().size() < BizConstant.INT_ONE){
+			throw new TqException("请勾选菜单");
 		}
 		Integer roleId = role.getRoleId();
 		// 如果选择了权限，则添加

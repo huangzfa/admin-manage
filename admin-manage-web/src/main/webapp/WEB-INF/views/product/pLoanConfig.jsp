@@ -14,6 +14,7 @@
 <div ng-app="loanFormApp" ng-controller="loanFormCtrl">
     <form  class="form-horizontal" id="loanForm" >
         <input type="hidden" value="loan.id">
+        <input type="hidden" value="loan.productId" id="productId">
         <div class="control-group">
             <label class="control-label"><h5>借贷产品</h5></label>
         </div>
@@ -34,7 +35,7 @@
                     <tr ng-repeat="x in goods">
                         <td>{{x.goodsNo}}</td>
                         <td>{{x.goodsName}}</td>
-                        <td>{{x.sort}}</td>
+                        <td><input type="text" ng-model="x.sort" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></td>
                         <td>{{x.state==0?'下架':'上架'}}</td>
                         <td><input id="deleteGoods" class="btn btn-warning" ng-click="deleteGoods('{{x.id}}')"  value="删除" style="width: 50px;"/></td>
                     </tr>
@@ -137,7 +138,7 @@
         });
 
         function validSceneId(sceneCodeId){
-            jQuery.post("${ctxA}/product/validSceneCode", {'code':$("#"+sceneCodeId).val()},function(result) {
+            jQuery.post("${ctxA}/product/validSceneCode", {'code':$("#"+sceneCodeId).val(),'productId':$("#productId").val()},function(result) {
                 if (result.code == 1) {
                     top.layer.alert("校验成功", {
                         icon: 6,

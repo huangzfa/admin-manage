@@ -41,15 +41,20 @@
   	SELECT
 	  COUNT(*)
 	FROM aa_organ org,
-	  aa_operator o
+	  aa_operator o,aa_operator_role b,aa_role c
 	WHERE org.path LIKE CONCAT('%',#{pathLike},'%')
 	    AND org.organ_id = o.organ_id
+	    and o.op_id=b.op_id
+	    and b.role_id=c.role_id
 	    AND o.is_delete = 0
 	    <if test="loginName != null and loginName != ''">
-	    AND o.login_name LIKE CONCAT('%',#{loginName},'%')
+	      AND o.login_name =#{loginName}
 	    </if>
 	    <if test="realName != null and realName != ''">
-	    AND o.real_name LIKE CONCAT('%',#{realName},'%')
+	      AND o.real_name LIKE CONCAT('%',#{realName},'%')
+	    </if>
+	    <if test="roleName != null and roleName != ''">
+		  AND c.role_name =#{roleName}
 	    </if>
   </select>
   
@@ -58,15 +63,20 @@
 	  <include refid="Base_Column_List" />,
 	  org.organ_name AS organName
 	FROM aa_organ org,
-	  aa_operator o
+	  aa_operator o,aa_operator_role b,aa_role c
 	WHERE org.path LIKE CONCAT('%',#{pathLike},'%')
 	      AND org.organ_id = o.organ_id
+	      and o.op_id=b.op_id
+	      and b.role_id=c.role_id
 	      AND o.is_delete = 0
 	      <if test="loginName != null and loginName != ''">
-	      AND o.login_name LIKE CONCAT('%',#{loginName},'%')
+	        AND o.login_name =#{loginName}
 	      </if>
 	      <if test="realName != null and realName != ''">
-		  AND o.real_name LIKE CONCAT('%',#{realName},'%')
+		     AND o.real_name LIKE CONCAT('%',#{realName},'%')
+		  </if>
+		  <if test="roleName != null and roleName != ''">
+			  AND c.role_name =#{roleName}
 		  </if>
 	ORDER BY o.add_time
 	<if test="pagesize != 0">

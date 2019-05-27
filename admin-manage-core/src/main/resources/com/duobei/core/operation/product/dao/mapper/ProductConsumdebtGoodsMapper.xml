@@ -5,6 +5,7 @@
     <id column="m_id" jdbcType="INTEGER" property="id" />
     <result column="m_product_id" jdbcType="INTEGER" property="productId" />
     <result column="m_goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="m_sort" jdbcType="INTEGER" property="sort" />
     <result column="m_add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="m_modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="m_add_operator_id" jdbcType="INTEGER" property="addOperatorId" />

@@ -16,5 +16,6 @@ public class UserCriteria extends Pagination {
 	private Integer opId;//操作员id
 	private String menuTypeZd;//菜单类型
 	private String menuStateZd;//菜单状态
+	private String roleName;//角色名称
 	
 }

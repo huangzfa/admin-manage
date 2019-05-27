@@ -47,4 +47,9 @@ public class ProductConsumdebtGoods implements Serializable {
      */
     private Integer isDelete;
 
+    /**
+     *
+     */
+    private Integer sort;
+
 }

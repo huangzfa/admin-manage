@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.duobei.common.util.Constants;
+import com.duobei.common.util.RegExpValidatorUtils;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.core.manage.auth.domain.vo.OperatorRoleVo;
 import org.apache.commons.lang3.StringUtils;
@@ -217,6 +218,9 @@ public class OperatorServiceImpl implements OperatorService {
 		}
 		if (StringUtils.isBlank(operator.getLoginName())) {
 			throw new TqException("账号不能为空");
+		}
+		if (!RegExpValidatorUtils.isMobile(operator.getLoginName())) {
+			throw new TqException("非法手机号");
 		}
 		if (StringUtils.isBlank(operator.getRealName())) {
 			throw new TqException("姓名不能为空");

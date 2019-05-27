@@ -12,6 +12,8 @@ import com.duobei.core.operation.consume.domain.ConsumeLoanRenewalConfig;
 import com.duobei.core.operation.consume.service.ConsumeLoanConfigService;
 import com.duobei.core.operation.product.dao.ProductAuthConfigDao;
 import com.duobei.core.operation.product.dao.ProductConsumdebtGoodsDao;
+import com.duobei.core.operation.product.dao.ProductDao;
+import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo;
 import com.duobei.core.operation.product.domain.vo.ProductConsumdebtGoodsVo;
 import com.duobei.utils.RiskUtil;
@@ -43,8 +45,8 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
     private ConsumeLoanRateDayConfigDao rateDayConfigDao;
     @Autowired
     private RiskUtil riskUtil;
-    @Resource
-    private ConsumeLoanConfigMapper consumeLoanConfigMapper;
+    @Autowired
+    private ProductDao productDao;
     /**
      * 根据产品id查询消费贷配置
      * @param productId
@@ -103,18 +105,22 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
     @Override
     @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
     public void saveLoan(ConsumeLoanConfig record,List<ProductConsumdebtGoodsVo> goodsList) throws TqException{
-/*        String result = riskUtil.SceneCodeHad(record.getQuotaSceneCode());
+        Product product = productDao.getById(record.getProductId());
+        if( product == null ){
+            throw new TqException("产品不存在");
+        }
+        String result = riskUtil.SceneCodeHad(record.getQuotaSceneCode(),product.getId(),product.getMerchantId());
         if ( !result.equals("success")) {
             throw new TqException("额度风控场景编码，原因：" + result);
         }
-        result = riskUtil.SceneCodeHad(record.getBorrowSceneCode());
+        result = riskUtil.SceneCodeHad(record.getBorrowSceneCode(),product.getId(),product.getMerchantId());
         if ( !result.equals("success")) {
             throw new TqException("借款风控场景编码-非首次老用户，原因：" + result);
         }
-        result = riskUtil.SceneCodeHad(record.getBorrowSceneCodeFirst());
+        result = riskUtil.SceneCodeHad(record.getBorrowSceneCodeFirst(),product.getId(),product.getMerchantId());
         if ( !result.equals("success")) {
             throw new TqException("借款风控场景编码-首次新用户校验失败，原因：" + result);
-        }*/
+        }
         if( record.getId() == null ){
             if( consumeLoanConfigDao.save(record) <1 ){
                 throw new TqException("添加失败");

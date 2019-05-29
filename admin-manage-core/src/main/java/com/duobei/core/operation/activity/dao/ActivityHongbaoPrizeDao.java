@@ -2,6 +2,7 @@ package com.duobei.core.operation.activity.dao;
 
 import com.duobei.core.operation.activity.domain.ActivityHongbaoPrize;
 import com.duobei.core.operation.activity.domain.vo.ActivityHongbaoPrizeVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,4 +26,11 @@ public interface ActivityHongbaoPrizeDao {
      * @return
      */
     List<ActivityHongbaoPrize> getByPrizeId(HashMap<String,Object> params);
+
+    int insert(ActivityHongbaoPrize record);
+
+    int update(ActivityHongbaoPrize record);
+
+    int batchDelete(@Param("actId") Integer actId);
+
 }

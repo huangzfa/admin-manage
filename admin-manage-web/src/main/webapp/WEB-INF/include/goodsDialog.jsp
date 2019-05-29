@@ -10,7 +10,7 @@
     <div class="modal-dialog">
         <div class="modal-content radius">
             <div class="modal-header" style="height: 30px;">
-                <h4 class="modal-title text-muted" style="float: left;">添加补充认证</h4>
+                <h4 class="modal-title text-muted" style="float: left;">添加借贷产品</h4>
             </div>
             <form class="bs-example bs-example-form modalGoodsForm" role="form" action="${ctxA}/goods/getList">
                 <input type="hidden" name="productId" id="productId" value="">
@@ -67,7 +67,7 @@
                     disabled = "disabled";
                 }
                 $("#modalGoodsDialog #rows").append("<tr>"
-                    +"<td><input type='checkbox' state="+goods.state+" "+goods.checked+" "+disabled+" goodsId='"+goods.id+"' goodsName='"+goods.goodsName+"' goodsNo='"+goods.goodsNo+"' sort='"+goods.sort+"'  ></td>"
+                    +"<td><input type='checkbox' state="+goods.state+" "+goods.checked+" "+disabled+" goodsId="+goods.id+" goodsName="+goods.goodsName+" goodsNo="+goods.goodsNo+"' sort='"+goods.sort+"  ></td>"
                     +"<td width='30%'>"+goods.goodsNo+"</td>"
                     +"<td width='30%'>"+goods.goodsName+"</td>"
                     +"<td><img src='"+goods.thumbnailIcon+"' style='height: 33px'></td>"
@@ -86,8 +86,8 @@
                     goodsId:$(this).attr("goodsId"),
                     goodsName:$(this).attr("goodsName"),
                     goodsNo:$(this).attr("goodsNo"),
-                    state:$(this).attr("goodsName"),
-                    sort:$(this).attr("sort"),
+                    state:$(this).attr("state"),
+                    sort:1,
                     productId:$("#modalGoodsDialog #productId").val()
                 }
                 list.push(object);

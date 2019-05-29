@@ -9,4 +9,8 @@ import com.duobei.core.operation.activity.domain.ActivityStatic;
  */
 public interface ActivityStaticDao {
     ActivityStatic getById(Integer id);
+
+    int update(ActivityStatic activityStatic);
+
+    int insert(ActivityStatic activityStatic);
 }

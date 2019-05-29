@@ -24,7 +24,7 @@
         <div class="control-group">
             <label class="control-label">所属商户：</label>
             <div class="controls">
-                <select  name="merchantId" id="merchantId" class="selectpicker show-tick form-control valid" descripe="请选择商户">
+                <select  name="merchantId" id="merchantId" class="selectpicker show-tick form-control valid" descripe="请选择商户" onchange="merchanChange(this)">
                     <c:forEach items="${merchantList}" var="merchant">
                         <option value="${merchant.id}" ${app.merchantId==merchant.id?"selected":''}>${merchant.merchantName}</option>
                     </c:forEach>
@@ -35,6 +35,7 @@
             <label class="control-label">所属产品：</label>
             <div class="controls">
                 <select  name="productId" id="productId" class="selectpicker show-tick form-control valid" descripe="请选择产品">
+                    <option value="">请选择产品</option>
                     <c:forEach items="${productList}" var="product">
                         <option value="${product.id}" ${app.productId==product.id?"selected":''}>${product.productName}</option>
                     </c:forEach>
@@ -77,6 +78,21 @@
 </div>
 </body>
 <script>
+    /*
+     * 商户下拉事件
+     * */
+    function merchanChange(obj) {
+        $("#productId").html('');
+        jQuery.post("${ctxA}/app/getProductByMerchantId", {'merchantId':$(obj).val()},function(result) {
+            $("#productId").append("<option value=''>请选择产品</option>");
+            for(j = 0,len=result.list.length; j < len; j++) {
+                var data = result.list[j];
+                $("#productId").append("<option value="+ data.id +">"+ data.productName +"</option>")
+            }
+            return;
+        },"json");
+    }
+
     function save(){
         var bool = true;
         /*******  验证表单必填项目   ****************/

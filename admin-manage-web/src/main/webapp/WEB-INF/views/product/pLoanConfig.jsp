@@ -5,7 +5,7 @@
 <html>
 <head>
     <title></title>
-    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui"/>
+    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,common"/>
     <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
     <!--  -->
 </head>
@@ -13,13 +13,12 @@
 <jsp:include page="/WEB-INF/include/goodsDialog.jsp"/>
 <div ng-app="loanFormApp" ng-controller="loanFormCtrl">
     <form  class="form-horizontal" id="loanForm" >
-        <input type="hidden" value="loan.id">
-        <input type="hidden" value="loan.productId" id="productId">
+        <input type="hidden" ng-model="loan.id">
         <div class="control-group">
             <label class="control-label"><h5>借贷产品</h5></label>
         </div>
         <div class="control-group">
-            <label class="control-label"><a href="javascript:selectGoods()" class="btn btn-primary">选择产品</a></label>
+            <label class="control-label"><a href="javascript:void(0)" ng-click="selectGoods()" class="btn btn-primary">选择产品</a></label>
         </div>
         <div class="control-group">
             <div class="controls">
@@ -35,9 +34,9 @@
                     <tr ng-repeat="x in goods">
                         <td>{{x.goodsNo}}</td>
                         <td>{{x.goodsName}}</td>
-                        <td><input type="text" ng-model="x.sort" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></td>
+                        <td><input type="text" descripe="排序只能输入正整数" ng-model="x.sort" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></td>
                         <td>{{x.state==0?'下架':'上架'}}</td>
-                        <td><input id="deleteGoods" class="btn btn-warning" ng-click="deleteGoods('{{x.id}}')"  value="删除" style="width: 50px;"/></td>
+                        <td><button id="deleteGoods" class="btn btn-warning"  ng-click="deleteGoods('{{x.id}}')" >删除</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -49,18 +48,18 @@
             </div>
             <div class="control-group">
                 <label class="control-label col-sm-1">额度风控场景编码：</label>
-                <input type="text" class="form-control valid" descripe="请填写额度风控场景编码" id="quotaSceneCode" ng-model="loan.quotaSceneCode"  maxlength="32" value="" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
-                <a href="javascript:validSceneId('quotaSceneCode')">校验场景id</a>
+                <input type="text" class="form-control valid" descripe="请填写额度风控场景编码" id="quotaSceneCode" ng-model="loan.quotaSceneCode"  maxlength="32" value="" ></input>
+                <a href="javascript:void(0)" ng-click="validSceneId('quotaSceneCode')">校验场景id</a>
             </div>
             <div class="control-group">
                 <label class="control-label col-sm-1">借款风控场景编码-首次新用户：</label>
-                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-首次新用户" id="borrowSceneCodeFirst" ng-model="loan.borrowSceneCodeFirst" maxlength="32" value="" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
-                <a href="javascript:validSceneId('borrowSceneCodeFirst')">校验场景id</a>
+                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-首次新用户" id="borrowSceneCodeFirst" ng-model="loan.borrowSceneCodeFirst" maxlength="32" value="" ></input>
+                <a href="javascript:void(0)" ng-click="validSceneId('borrowSceneCodeFirst')">校验场景id</a>
             </div>
             <div class="control-group">
                 <label class="control-label col-sm-1">借款风控场景编码-非首次老用户：</label>
-                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-非首次老用户" id="borrowSceneCode" ng-model="loan.borrowSceneCode"maxlength="32" value="" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
-                <a href="javascript:validSceneId('borrowSceneCode')">校验场景id</a>
+                <input type="text" class="form-control valid" descripe="请填写借款风控场景编码-非首次老用户" id="borrowSceneCode" ng-model="loan.borrowSceneCode"maxlength="32" value="" ></input>
+                <a href="javascript:void(0)" ng-click="validSceneId('borrowSceneCode')">校验场景id</a>
             </div>
 
         </form>
@@ -106,6 +105,14 @@
                         return false;
                     }
                 })
+                $("table input[type='text']").each(function() {
+                    var descripe  = $(this).attr("descripe");
+                    if( !isNumber($(this).val())){
+                        top.layer.alert(descripe, {icon: 5});
+                        bool = false;
+                        return false;
+                    }
+                })
                 if( bool){
                     $scope.btnState = true;
                     $http({
@@ -134,53 +141,60 @@
                         }
                     })
                 }
+            };
+            $scope.validSceneId = function (code) {
+                $http({
+                    method:'post',
+                    url:"validSceneCode",
+                    data:{'productId':$scope.loan.productId,'code':code},
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for (var p in obj) {
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        }
+                        return str.join("&");
+                    }
+                }).success(function(result){
+                    $scope.btnState = false;
+                    if (result.code == 1) {
+                        top.layer.alert("验证成功", {
+                            icon: 6,
+                            end: function(){
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        top.layer.alert(result.msg, {icon: 5});
+                    }
+                })
+            };
+            $scope.selectGoods = function () {
+                modalGoods.open({
+                    productId: $scope.loan.productId,
+                    callback: function (data) {
+                        for( var  i = 0; i < data.list.length ; i++){
+                            if( getIndex(data.list[i].goodsId,$scope) ==-1){
+                                //$apply()用于传播模型的变化。在外部改变了作用域，如果想显示改变后的值，必须调用$apply。
+                                $scope.goods.push(data.list[i]);
+                            }
+                        }
+                        $("#modalGoodsDialog").modal("hide");
+                    }
+                });
             }
         });
 
-        function validSceneId(sceneCodeId){
-            jQuery.post("${ctxA}/product/validSceneCode", {'code':$("#"+sceneCodeId).val(),'productId':$("#productId").val()},function(result) {
-                if (result.code == 1) {
-                    top.layer.alert("校验成功", {
-                        icon: 6,
-                        end: function(){
-
-                        }
-                    });
-                } else {
-                    top.layer.alert(result.msg, {icon: 5});
-                }
-            },"json")
-        }
-
-
-        //选商品控件调用
-        function selectGoods(productId) {
-            modalGoods.open({
-                productId: productId,
-                callback: function (data) {
-                    var controllerScope = $('div[ng-controller="loanFormCtrl"]').scope();  // Get controller's scope
-                    for( var  i = 0; i < data.list.length ; i++){
-                        if( getIndex(data.list[i].goodsId,controllerScope) ==-1){
-                            //$apply()用于传播模型的变化。在外部改变了作用域，如果想显示改变后的值，必须调用$apply。
-                            controllerScope.$apply(function(){
-                                controllerScope.goods.push(data.list[i]);
-                            })
-                        }
-                    }
-
-                    $("#modalGoodsDialog").modal("hide");
-                }
-            });
-        }
-
         //判断是否已经存在了该配置项
         function getIndex(goodsId,scope) {
+            var index = -1;
             for(var i=0;i<scope.goods.length;i++){
                 if(scope.goods[i].goodsId==goodsId){
-                    return i;
+                    index = i;
+                    return false;
                 }
             }
-            return -1;
+            return index;
         }
 </script>
 </html>

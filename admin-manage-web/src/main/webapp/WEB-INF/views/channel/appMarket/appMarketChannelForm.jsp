@@ -39,7 +39,7 @@
         <div class="control-group">
             <label class="control-label">渠道编码：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请输入编码" placeholder="编码，必填（限定32字）" type="text" name="channelCode" id="channelCode" maxlength="32" value="${promotionChannel.channelCode}" />
+                <input type="text" class="form-control valid" descripe="请输入编码" placeholder="编码，必填（限定32字）" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" type="text" name="channelCode" id="channelCode" maxlength="32" value="${promotionChannel.channelCode}" />
             </div>
         </div>
         <div class="control-group">
@@ -68,7 +68,7 @@
         <div class="form-actions">
             <input id="btnCancel" class="btn" type="button" value="取 消" onclick="window.location.href='${ctxA}/channel/appMarket/list?id=${object.id}'"/>
             <shiro:hasPermission name="channel:appMarket:edit">
-                <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="提 交"/>&nbsp;
+                <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="提 交" style="width:3%;"/>&nbsp;
             </shiro:hasPermission>
         </div>
     </form:form>

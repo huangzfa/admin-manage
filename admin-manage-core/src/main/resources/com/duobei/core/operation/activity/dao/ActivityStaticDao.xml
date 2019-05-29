@@ -4,4 +4,131 @@
 
     <resultMap id="BaseResultMap" type="com.duobei.core.operation.activity.domain.ActivityStatic" extends="com.duobei.core.operation.activity.dao.mapper.ActivityStaticMapper.BaseResultMap">
     </resultMap>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.activity.domain.ActivityStatic">
+        select * from yy_activity_static where act_id=#{actId} limit 1;
+    </select>
+
+    <insert id="insert" parameterType="com.duobei.core.operation.activity.domain.ActivityStatic">
+        insert into yy_activity_static
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="actId != null">
+                act_id,
+            </if>
+            <if test="btnType != null">
+                btn_type,
+            </if>
+            <if test="btnText != null">
+                btn_text,
+            </if>
+            <if test="btnColour != null">
+                btn_colour,
+            </if>
+            <if test="btnImg != null">
+                btn_img,
+            </if>
+            <if test="jumpType != null">
+                jump_type,
+            </if>
+            <if test="jumpLink != null">
+                jump_link,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+            <if test="addOperatorId != null">
+                add_operator_id,
+            </if>
+            <if test="modifyOperatorId != null">
+                modify_operator_id,
+            </if>
+            <if test="ruleEnable != null">
+                rule_enable,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="actId != null">
+                #{actId,jdbcType=INTEGER},
+            </if>
+            <if test="btnType != null">
+                #{btnType,jdbcType=VARCHAR},
+            </if>
+            <if test="btnText != null">
+                #{btnText,jdbcType=VARCHAR},
+            </if>
+            <if test="btnColour != null">
+                #{btnColour,jdbcType=VARCHAR},
+            </if>
+            <if test="btnImg != null">
+                #{btnImg,jdbcType=VARCHAR},
+            </if>
+            <if test="jumpType != null">
+                #{jumpType,jdbcType=VARCHAR},
+            </if>
+            <if test="jumpLink != null">
+                #{jumpLink,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addOperatorId != null">
+                #{addOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="modifyOperatorId != null">
+                #{modifyOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="ruleEnable != null">
+                #{ruleEnable,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.duobei.core.operation.activity.domain.ActivityStatic">
+        update yy_activity_static a
+        <set>
+            <if test="record.actId != null">
+                a.act_id = #{record.actId,jdbcType=INTEGER},
+            </if>
+            <if test="record.btnType != null">
+                a.btn_type = #{record.btnType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.btnText != null">
+                a.btn_text = #{record.btnText,jdbcType=VARCHAR},
+            </if>
+            <if test="record.btnColour != null">
+                a.btn_colour = #{record.btnColour,jdbcType=VARCHAR},
+            </if>
+            <if test="record.btnImg != null">
+                a.btn_img = #{record.btnImg,jdbcType=VARCHAR},
+            </if>
+            <if test="record.jumpType != null">
+                a.jump_type = #{record.jumpType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.jumpLink != null">
+                a.jump_link = #{record.jumpLink,jdbcType=VARCHAR},
+            </if>
+            <if test="record.addTime != null">
+                a.add_time = #{record.addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyTime != null">
+                a.modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.addOperatorId != null">
+                a.add_operator_id = #{record.addOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="record.modifyOperatorId != null">
+                a.modify_operator_id = #{record.modifyOperatorId,jdbcType=INTEGER},
+            </if>
+            <if test="record.ruleEnable != null">
+                a.rule_enable = #{record.ruleEnable,jdbcType=TINYINT},
+            </if>
+        </set>
+        where act_id=#{actId}
+    </update>
 </mapper>

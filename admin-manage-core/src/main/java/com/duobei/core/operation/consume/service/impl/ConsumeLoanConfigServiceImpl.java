@@ -2,6 +2,7 @@ package com.duobei.core.operation.consume.service.impl;
 
 import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.RegExpValidatorUtils;
 import com.duobei.core.operation.consume.dao.ConsumeLoanConfigDao;
 import com.duobei.core.operation.consume.dao.ConsumeLoanRateDayConfigDao;
 import com.duobei.core.operation.consume.dao.ConsumeLoanRenewalConfigDao;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -109,7 +111,7 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
         if( product == null ){
             throw new TqException("产品不存在");
         }
-        String result = riskUtil.SceneCodeHad(record.getQuotaSceneCode(),product.getId(),product.getMerchantId());
+       /* String result = riskUtil.SceneCodeHad(record.getQuotaSceneCode(),product.getId(),product.getMerchantId());
         if ( !result.equals("success")) {
             throw new TqException("额度风控场景编码，原因：" + result);
         }
@@ -120,7 +122,7 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
         result = riskUtil.SceneCodeHad(record.getBorrowSceneCodeFirst(),product.getId(),product.getMerchantId());
         if ( !result.equals("success")) {
             throw new TqException("借款风控场景编码-首次新用户校验失败，原因：" + result);
-        }
+        }*/
         if( record.getId() == null ){
             if( consumeLoanConfigDao.save(record) <1 ){
                 throw new TqException("添加失败");
@@ -171,6 +173,14 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
         for( ConsumeLoanRateDayConfig config :rateDayList){
             config.setConsumeLoanConfigId(record.getId());
         }
+        for(ConsumeLoanRateDayConfig config : rateDayList){
+            String[] days = config.getBorrowDays().split(",");
+            for(String day : days){
+                if(!RegExpValidatorUtils.IsIntNumber(day)){
+                    throw new TqException("利率天数只能输入正整数");
+                }
+            }
+        }
         //第一个id == 0，执行插入操作，否则修改
         if( rateDayList.get(BizConstant.INT_ZERO).getId().equals(BizConstant.INT_ZERO)){
             if( rateDayConfigDao.batchSave(rateDayList) < 1){
@@ -182,6 +192,9 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
             }
         }
         for(ConsumeLoanRenewalConfig config :renewalsList){
+            if( config.getRenewalCapitalRate().compareTo(new BigDecimal(BizConstant.INT_ONE)) == BizConstant.INT_ONE){
+                throw new TqException("逾期本金比例不能大于1");
+            }
             config.setConsumeLoanConfigId(record.getId());
             if( config.getId().equals(BizConstant.INT_ZERO)){
                 if( renewalConfigDao.save(config) < 1){

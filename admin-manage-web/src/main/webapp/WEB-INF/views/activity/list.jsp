@@ -98,7 +98,7 @@
 <ul class="nav nav-tabs" style="margin-bottom: 5px;">
     <li class="active"><a href="javascript:void(0);">活动列表</a></li>
     <shiro:hasPermission name="product:list:edit">
-        <li><a href="${ctxA}/product/mpForm">添加活动</a></li>
+        <li><a href="${ctxA}/activity/form">添加活动</a></li>
     </shiro:hasPermission>
     <li><a href="${ctxA}/activity/prize/list">奖品池管理</a></li>
 </ul>

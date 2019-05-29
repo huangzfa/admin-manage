@@ -147,6 +147,7 @@ public class PromotionChannelController extends BaseController {
                 //修改
                 promotionChannelService.updatePromotionChannel(promotionChannel);
             }
+            return simpleSuccessJsonResult("success");
         } catch (Exception e) {
             if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());
@@ -154,9 +155,7 @@ public class PromotionChannelController extends BaseController {
                 log.error("save" + DESC + "异常", e);
                 return failJsonResult("系统异常");
             }
-
         }
-        return simpleSuccessJsonResult("success");
     }
 
     private void checkParam(PromotionChannel promotionChannel) throws TqException {

@@ -27,7 +27,7 @@
 	上面的表示此缓存最多可以存活3分钟，如果期间超过2分钟未访问 那么此缓存失效！
 	-->
 	
-	<diskStore path="/www/cache/duobei-console" />
+	<diskStore path="/www/cache/pgy_manage" />
 	<defaultCache overflowToDisk="true" eternal="false" memoryStoreEvictionPolicy="LRU" maxElementsInMemory="10000" timeToIdleSeconds="300" timeToLiveSeconds="300" diskPersistent="false"/>
 	<!-- 
 	<cache name="BIZ_CACHE" overflowToDisk="true" eternal="false"

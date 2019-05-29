@@ -70,11 +70,10 @@
         }
         function optionformater(value,row,index){
             var opStr='';
-            var productId = $("#productId:selected").val(),
             <shiro:hasPermission name="activity:list:edit">
-                opStr='<a class="si-option-a" href="${ctxA}/activity/prize/form?prizeId='+row.prizeId+'">编辑</a>';
+                opStr+='<a class="si-option-a" href="javascript:del('+row.prizeId+')">删除</a>';
                 if( row.prizeType == 'hk' || row.prizeType == 'jk'){
-                    opStr='<a class="si-option-a" href="${ctxA}/activity/prize/form?prizeId='+row.prizeId+'">删除</a>';
+                    opStr+='<a class="si-option-a" href="${ctxA}/activity/prize/form?prizeId='+row.prizeId+'">编辑</a>';
                 }
             </shiro:hasPermission>
             return opStr;
@@ -85,16 +84,25 @@
                 return "借款券";
             }else if( value == "hk"){
                 return "还款券";
-            }else if( value=="zypl"){
+            }else if( value=="zyjp"){
                 return "自由品类";
             }else if( value=="bzj"){
-                return "自由品类";
+                return "谢谢参与";
             }else{
                 return "未知";
             }
         }
 
-        function editState(prizeId){
+        function stateformater(value,row,index){
+            if( value == 1){
+                return "有效";
+            }else if( value == 0){
+                return "无效";
+            }
+            return "未知";
+        }
+
+        function del(prizeId){
 
             top.$.jBox.confirm("确认删除此优惠券么？",'系统提示',function(v,h,f){
                 if(v=='ok'){
@@ -134,7 +142,7 @@
             <th data-options="field:'imgUrl',width:180,align:'center',halign:'center',fixed:true">奖品图片</th>
             <th data-options="field:'prizeType',width:180,align:'center',halign:'center',fixed:true,formatter:typeformater">奖品类型</th>
             <th data-options="field:'link',width:200,align:'center',halign:'center',fixed:true">奖品链接</th>
-            <th data-options="field:'updateBy',width:160,align:'center',halign:'center',fixed:true">是否有效</th>
+            <th data-options="field:'state',width:160,align:'center',halign:'center',fixed:true,formatter:stateformater">是否有效</th>
             <th data-options="field:'addTime',width:200,align:'center',halign:'center',fixed:true">创建时间</th>
             <th data-options="field:'option',width:180,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
         </tr>

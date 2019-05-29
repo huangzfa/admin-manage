@@ -17,4 +17,8 @@ public interface ActivityDao {
     int countByCriteria(ActivityCriteria criteria);
 
     Activity getByCode(@Param("code") String code);
+
+    int insert(Activity activity);
+
+    int update(Activity activity);
 }

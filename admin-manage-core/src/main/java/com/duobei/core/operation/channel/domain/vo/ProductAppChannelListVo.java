@@ -2,7 +2,6 @@ package com.duobei.core.operation.channel.domain.vo;
 
 import com.duobei.core.operation.channel.domain.ProductAppChannel;
 import com.duobei.core.operation.channel.domain.PromotionChannel;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * @author litianxiong

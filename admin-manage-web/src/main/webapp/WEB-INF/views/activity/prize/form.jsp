@@ -12,7 +12,7 @@
     <li><a href="${ctxA}/activity/prize/list">奖品列表</a></li>
     <li class="active">
         <shiro:hasPermission name="activity:list:edit">
-            <a href="javascript:void(0);">${not empty prize.id?'修改':'添加'}奖品</a>
+            <a href="javascript:void(0);">${not empty prize.prizeId?'修改':'添加'}奖品</a>
         </shiro:hasPermission>
     </li>
 </ul>
@@ -20,7 +20,7 @@
 <div class="si-warp">
     <br/>
     <form:form id="prizeForm" modelAttribute="prize"   action="${ctxA}/activity/prize/save" method="post" class="form-horizontal">
-        <input type="hidden" name="id" value="${not empty prize.id?prize.id:''}">
+        <input type="hidden" name="prizeId" name="prizeId" value="${not empty prize.prizeId?prize.prizeId:''}">
         <input type="hidden" name="imgUrl" id="imgUrl" value="${prize.imgUrl}">
         <div class="control-group">
             <label class="control-label">奖品类型：</label>
@@ -39,13 +39,13 @@
                 </label>
             </div>
         </div>
-        <div class="control-group jp_name" id="jp_name" style="display: ${prize.prizeType=='jk' || prize.prizeType=='hk'?none:block}">
+        <div class="control-group jp_name" id="jp_name" style="display: ${prize.prizeType=='jk' || prize.prizeType=='hk'?'none':'block'}">
             <label class="control-label">奖品名称:</label>
             <div class="controls">
                 <input type="text" name="prizeName" id="prizeName" class="form-control valid" descripe="请填写奖品名称"  placeholder="" value="${prize.prizeName}" maxlength="10">
             </div>
         </div>
-        <div class="control-group xz_prize" style="display: ${prize.prizeType=='jk' || prize.prizeType=='hk'?block:none}">
+        <div class="control-group xz_prize" style="display: ${prize.prizeType=='jk' || prize.prizeType=='hk'?'block':'none'}">
             <label class="control-label">选择奖品:</label>
             <div class="controls">
                 <select id="couponId" name="couponId" class="selectpicker show-tick form-control" >
@@ -54,7 +54,7 @@
                 <small class="xz_prize" style="display: #if($!{prize.prizeType}=='other' || $!{prize.prizeType}=='bzj' || !${prize}) none #else block #end">* 仅支持添加<运营优惠券管理-优惠券管理>中已添加的优惠券</small>
             </div>
         </div>
-        <div class="control-group jp_name" style="display: ${prize.prizeType=='zypl'?none:block}">
+        <div class="control-group jp_name" style="display: ${prize.prizeType=='zypl'?'block':'none'}">
             <label class="control-label">跳转链接:</label>
             <div class="controls">
                 <input type="text" value="${prize.link}" name="link" id="link" class="form-control" id="activityUrl" placeholder="选填"  ></input>
@@ -79,6 +79,16 @@
                     <small class="help-block owner_ID">图片格式：PNG、JPG、JPEG、GIF</small>
                     <small class="help-block owner_ID">图片大小：100kb以内</small>
                 </ul>
+            </div>
+        </div>
+        <div class="control-group" >
+            <label class="control-label">是否有效:</label>
+            <div class="controls">
+                <select id="state" name="state" class="selectpicker show-tick form-control" >
+                    <option value="1">有效</option>
+                    <option value="0">无效</option>
+                </select>
+                </select>
             </div>
         </div>
         <div class="form-actions">

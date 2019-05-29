@@ -77,16 +77,16 @@
             var opStr='';
             <shiro:hasPermission name="product:list:edit">
             var productState = 0;
-            if( row.productState == 0) productState = 1;
+            if( row.state == 0) productState = 1;
             opStr+='<a class="si-option-a" href="${ctxA}/product/pForm?productCode='+row.productCode+'">修改</a>';
-            //opStr+="<a class='si-option-a' href='javascript:editState(\""+row.productCode+"\",\""+productState+"\")'>"+(row.productState==1?"禁用":"启用")+"</a>";
+            opStr+="<a class='si-option-a' href='javascript:editState(\""+row.productCode+"\",\""+productState+"\")'>"+(row.state==1?"禁用":"启用")+"</a>";
             opStr+='<a class="si-option-a" href="${ctxA}/product/pConfig?productCode='+row.productCode+'">配置产品</a>';
             </shiro:hasPermission>
             return opStr;
         }
 
         function editState(productCode,productState){
-            var title = "确定启用该产品吗";
+            var title = "确定启用用该产品吗";
             if(productState == 0){
                 title = "确定禁用该产品吗";
             }

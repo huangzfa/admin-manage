@@ -14,11 +14,7 @@
             </div>
             <form class="bs-example bs-example-form authConfigDialog" role="form" action="${ctxA}/authConfig/getList">
                 <div class="input-group" style="margin-left: 14px;margin-bottom: -24px;">
-                    <input type="hidden" name="productId" id="produAuthConfigControllerctId" value="">
-                    <input type="text" class="form-control" name="authName" id="authName" placeholder="请输入认证项名称" style="margin-top: 5px;">
-                    <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button" onclick="modalAuthConfig.getAuthConfigList()">查询</button>
-                            </span>
+                    <input type="hidden" name="productId" id="productId" value="">
                 </div>
             </form>
             <div class="modal-body duobei-product">
@@ -80,7 +76,7 @@
                     disabled = "disabled";
                 }
                 $("#modalAuthConfig #rows").append("<tr>"
-                    +"<td><input type='checkbox' isEnable="+auth.isEnable+" "+auth.checked+" "+disabled+" authName='"+auth.authName+"' authId='"+auth.id+"'   ></td>"
+                    +"<td><input type='checkbox' isEnable="+auth.isEnable+" "+auth.checked+" "+disabled+" authName="+auth.authName+" authId="+auth.id+"   ></td>"
                     +"<td width='30%'>"+auth.authName+"</td>"
                     +"<td>"+(auth.isEnable==1?"开启":"关闭")+"</td>"
                     +"</tr>")
@@ -98,6 +94,7 @@
                     authId:$(this).attr("authId"),
                     authName:$(this).attr("authName"),
                     isEnable:$(this).attr("isEnable"),
+                    authSort:1,
                     isRequired:1,
                     bizCode:'xjd',
                     productId:$("#modalAuthConfig .authConfigDialog #productId").val()

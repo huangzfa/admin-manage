@@ -33,11 +33,11 @@
         </div>
         <div class="control-group">
             <label class="control-label col-sm-1">最低续借金额（元）：</label>
-            <input type="text" class="form-control"   ng-model="loan.renewalAmount"  maxlength="4" value="" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
+            <input type="text" class="form-control valid" descripe="请填写续借最低续借金额"  ng-model="loan.renewalAmount"  maxlength="4" value="" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
         </div>
         <div class="control-group" ng-repeat="x in renewalConfig">
             <label class="control-label col-sm-1">{{x.configName}}：</label>
-            <input type="text" class="form-control valid renewalConfig" descripe="请填写续借最低本金比例"  ng-model="x.renewalCapitalRate"  maxlength="9" value="" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"></input>
+            <input type="text" class="form-control valid renewalConfig" descripe="请填写续借最低本金比例"  ng-model="x.renewalCapitalRate"  maxlength="4" value="" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"></input>
         </div>
     </form>
     <div class="form-actions">

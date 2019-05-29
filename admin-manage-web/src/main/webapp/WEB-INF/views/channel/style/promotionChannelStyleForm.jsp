@@ -106,7 +106,7 @@
         <div class="form-actions">
             <input id="btnCancel" class="btn" type="button" value="取 消" onclick="window.location.href='${ctxA}/channel/style/list?id=${object.id}'"/>
             <shiro:hasPermission name="channel:promotion:edit">
-                <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="提 交"/>&nbsp;
+                <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="提 交" style="width: 3%"/>&nbsp;
             </shiro:hasPermission>
         </div>
     </form:form>
@@ -142,8 +142,8 @@
     })
     function updateDownLoadPageConfig() {
         var downloadPageConfig = $("#downloadPageType").val();
-        $("#downloadPageUrl").val(null);
         if (downloadPageConfig == 1){
+            $("#downloadPageUrl").val(null);
             $("#downloadPageUrlDiv").hide();
         }else if (downloadPageConfig == 2) {
             $("#downloadPageUrlDiv").show();

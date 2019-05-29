@@ -33,20 +33,26 @@ public class ConsumeLoanRenewalConfigServiceImpl implements ConsumeLoanRenewalCo
     public List<ConsumeLoanRenewalConfigVo> getByConfigId(Integer configId){
         List<ConsumeLoanRenewalConfigVo> list = renewalConfigDao.getByConfigId(configId);
         //制造假数据
-        if( list.size() == 0){
-            for(int  i = 0 ;i < defaultRenewalConfig.length ;i++){
-                ConsumeLoanRenewalConfigVo config = new ConsumeLoanRenewalConfigVo();
+        for(int  i = 0 ;i < defaultRenewalConfig.length ;i++){
+            ConsumeLoanRenewalConfigVo config = new ConsumeLoanRenewalConfigVo();
+            for( ConsumeLoanRenewalConfigVo vo : list){
+                if(vo.getEndDay().equals(defaultRenewalConfig[i][BizConstant.INT_ONE])){
+                    config.setId(vo.getId());
+                    vo.setConfigName(configName[i]);
+                    break;
+                }
+            }
+            if( config.getId() == null ){
                 config.setId(BizConstant.INT_ZERO);
                 config.setConsumeLoanConfigId(BizConstant.INT_ZERO);
                 config.setStartDay(defaultRenewalConfig[i][BizConstant.INT_ZERO]);
                 config.setEndDay(defaultRenewalConfig[i][BizConstant.INT_ONE]);
                 config.setRenewalCapitalRate(new BigDecimal(BizConstant.INT_ZERO));
+                config.setConfigName(configName[i]);
                 list.add(config);
             }
         }
-        for(int  i = 0 ;i < list.size() ;i++){
-            list.get(i).setConfigName(configName[i]);
-        }
+        list.sort((a, b) -> a.getEndDay() - b.getEndDay());
         return list;
     }
 

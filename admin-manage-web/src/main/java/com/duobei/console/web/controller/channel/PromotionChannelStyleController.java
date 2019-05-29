@@ -1,6 +1,7 @@
 package com.duobei.console.web.controller.channel;
 
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.RegExpValidatorUtils;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
@@ -167,6 +168,7 @@ public class PromotionChannelStyleController extends BaseController {
                 //修改
                 promotionChannelStyleService.updateStyle(promotionChannelStyle);
             }
+            return simpleSuccessJsonResult("success");
         } catch (Exception e) {
             if (e instanceof TqException) {
                 return failJsonResult(e.getMessage());
@@ -175,7 +177,6 @@ public class PromotionChannelStyleController extends BaseController {
                 return failJsonResult("系统异常");
             }
         }
-        return simpleSuccessJsonResult("success");
     }
 
     private void checkParam(PromotionChannelStyle promotionChannelStyle) throws TqException {
@@ -203,6 +204,9 @@ public class PromotionChannelStyleController extends BaseController {
             if (StringUtil.isEmpty(promotionChannelStyle.getDownloadPageUrl())){
                 throw new TqException("请输入自定义链接");
                 }
+            }
+            if(RegExpValidatorUtils.IsUrl(promotionChannelStyle.getDownloadPageUrl())){
+                throw new TqException("请合法自定义链接");
             }
         }
     }

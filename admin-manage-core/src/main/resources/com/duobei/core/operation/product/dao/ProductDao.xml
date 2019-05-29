@@ -12,7 +12,7 @@
             and a.product_name like "%"#{productName,jdbcType=VARCHAR}"%"
         </if>
         <if test="productCode != null and productCode != '' ">
-            and a.product_code like "%"#{productCode,jdbcType=VARCHAR}"%"
+            and a.product_code =#{productCode,jdbcType=VARCHAR}
         </if>
         <if test="merchantId != null and merchantId != '' ">
             and a.merchant_id = #{merchantId,jdbcType=INTEGER}
@@ -32,6 +32,9 @@
         <if test="productName != null and productName != '' ">
             and a.product_name like "%"#{productName,jdbcType=VARCHAR}"%"
         </if>
+        <if test="productCode != null and productCode != '' ">
+            and a.product_code =#{productCode,jdbcType=VARCHAR}
+        </if>
         <if test="merchantId != null and merchantId != '' ">
             and a.merchant_id = #{merchantId,jdbcType=INTEGER}
         </if>
@@ -46,7 +49,7 @@
     </select>
 
     <select id="getByCode" parameterType="java.lang.String" resultType="com.duobei.core.operation.product.domain.Product">
-        SELECT * FROM yy_product  where state = 1 and  product_code = #{code,jdbcType=VARCHAR}
+        SELECT * FROM yy_product  where product_code = #{code,jdbcType=VARCHAR}
     </select>
 
     <select id="getAll" resultType="com.duobei.core.operation.product.domain.Product">

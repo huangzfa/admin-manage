@@ -7,7 +7,7 @@
 
     <select id="getByProductId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.product.domain.vo.ProductConsumdebtGoodsVo">
         select a.*,b.goods_name,b.goods_no,b.state from yy_product_consumdebt_goods a left join yy_consumdebt_goods b on a.goods_id =b.id
-        where a.product_id=#{productId,jdbcType=INTEGER} and a.is_delete=0 order by a.sort desc
+        where a.product_id=#{productId,jdbcType=INTEGER} and a.is_delete=0 and b.is_delete = 0 order by a.sort desc
     </select>
 
     <update id="updateDelete" parameterType="java.lang.Integer">

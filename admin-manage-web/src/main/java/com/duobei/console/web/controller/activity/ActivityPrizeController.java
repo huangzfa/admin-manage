@@ -192,9 +192,12 @@ public class ActivityPrizeController extends BaseController {
             if (hongbaoList.size() > BizConstant.INT_ZERO) {
                 throw new TqException("红包活动关联了此奖品，请先删除活动中的配置");
             }
-            prize.setModifyOperatorId(credential.getOpId());
-            prize.setModifyTime(new Date());
-            activityPrizeService.update(prize);
+            ActivityPrize entity = new ActivityPrize()
+                    .setPrizeId(prizeId)
+                    .setIsDelete(prize.getPrizeId())
+                    .setModifyOperatorId(credential.getOpId())
+                    .setModifyTime(new Date());
+            activityPrizeService.update(entity);
             return simpleSuccessJsonResult("success");
         }catch (Exception e){
             return failJsonResult(e.getMessage());

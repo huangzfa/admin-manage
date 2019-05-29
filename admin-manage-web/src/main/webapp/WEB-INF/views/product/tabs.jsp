@@ -10,7 +10,7 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-    <li class="active"><a href="${ctxA}/product/list">消费贷产品配置</a></li>
+    <li class="active"><a href="${ctxA}/product/pList">产品列表</a></li>
 </ul>
 ${show=='true'?'':'请关联消费贷业务'}
 <div class="si-warp" style="display: ${show=='true'?'block':'none'}">

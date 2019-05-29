@@ -1,5 +1,6 @@
 package com.duobei.console.web.controller.app;
 
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
@@ -9,6 +10,8 @@ import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.app.domain.criteria.AppCriteria;
 import com.duobei.core.operation.app.domain.vo.AppVo;
 import com.duobei.core.operation.app.service.AppService;
+import com.duobei.core.operation.product.domain.Merchant;
+import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
 import com.duobei.core.operation.product.service.MerchantService;
 import com.duobei.core.operation.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author huangzhongfa
@@ -56,8 +60,14 @@ public class AppController  extends BaseController {
         if( id!=null){
             model.addAttribute("app",appService.getAppById(id));
         }
-        model.addAttribute("productList",productService.getAll());
-        model.addAttribute("merchantList",merchantService.getAll());
+        List<Merchant> merchantList = merchantService.getAll();
+        if( merchantList.size() > BizConstant.INT_ZERO){
+            ProductCriteria criteria = new ProductCriteria();
+            criteria.setPagesize(100);
+            criteria.setMerchantId(merchantList.get(BizConstant.INT_ZERO).getId());
+            model.addAttribute("productList",productService.getLists(criteria).getRows());
+        }
+        model.addAttribute("merchantList",merchantList);
         return "app/form";
     }
 
@@ -138,5 +148,15 @@ public class AppController  extends BaseController {
                 return failJsonResult("状态修改异常");
             }
         }
+    }
+
+    @RequiresPermissions("app:list:edit")
+    @RequestMapping(value = "/getProductByMerchantId")
+    @ResponseBody
+    public String getProductByMerchantId(Integer merchantId) {
+        ProductCriteria criteria = new ProductCriteria();
+        criteria.setPagesize(100);
+        criteria.setMerchantId(merchantId);
+        return successJsonResult("success","list",productService.getLists(criteria).getRows());
     }
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.duobei.common.constant.BizConstant;
 import com.duobei.common.enums.BusinessEnum;
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.lang.NumberUtil;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
@@ -219,6 +220,8 @@ public class ProductController extends BaseController {
                 config.setDayAmountLimit(config.getDayAmountLimit()==null?null:config.getDayAmountLimit()/100);
                 config.setShowMinAmount(config.getDayAmountLimit()==null?null:config.getShowMinAmount()/100);
                 config.setShowMaxAmount(config.getShowMaxAmount()==null?null:config.getShowMaxAmount()/100);
+                config.setOverdueRate(config.getOverdueRate());
+                config.setPoundageRate(config.getPoundageRate());
                 config.setProductId(product.getId());
                 model.addAttribute("consumeLoanConfig",JSON.toJSONString(config));
                 //查询消费贷基础配置，关联的认证项
@@ -252,6 +255,7 @@ public class ProductController extends BaseController {
                     config.setBorrowSceneCode(record.getBorrowSceneCode());
                     config.setBorrowSceneCodeFirst(record.getBorrowSceneCodeFirst());
                     config.setDataVersion(record.getDataVersion());
+                    config.setProductId(record.getProductId());
                 }
                 model.addAttribute("consumeLoanConfig",JSON.toJSONString(config));
                 //返回消费贷关联的是商品
@@ -270,8 +274,6 @@ public class ProductController extends BaseController {
     @RequiresPermissions("product:list:edit")
     @RequestMapping(value = "/config/rateDay")
     public String rateDay(Model model, String productCode) {
-        List<ConsumeLoanRateDayConfig> rateDays = new ArrayList<>();
-        List<ConsumeLoanRenewalConfigVo> renewalConfigs = new ArrayList<>();
         ConsumeLoanConfig config = null;
         if (!StringUtil.isBlank(productCode)) {
             Product product = productService.getByCode(productCode);
@@ -521,7 +523,7 @@ public class ProductController extends BaseController {
      * @return
      */
     @RequiresPermissions("product:list:edit")
-    @RequestMapping(value = "/validSceneCode")
+    @RequestMapping(value = "/config/validSceneCode")
     @ResponseBody
     public String validSceneCode(String code,Integer productId) throws TqException {
         if (StringUtil.isBlank(code)) {
@@ -537,6 +539,47 @@ public class ProductController extends BaseController {
         } else {
             return simpleSuccessJsonResult(result);
         }
+    }
 
+    /**
+     * 产品删除
+     * @param productCode
+     * @param productState
+     * @return
+     * @throws TqException
+     */
+    @RequiresPermissions("product:list:edit")
+    @RequestMapping(value = "/editState")
+    @ResponseBody
+    public String editState(String productCode,Integer productState) throws TqException{
+        try {
+            OperatorCredential credential = getCredential();
+            if (credential == null) {
+                throw new TqException("登录过期，请重新登录");
+            }
+            if( StringUtil.isEmpty(productCode) || StringUtil.isEmpty(productState) ){
+                throw new TqException("参数为空");
+            }
+            Product product = productService.getByCode(productCode);
+            if( product == null){
+                throw new TqException("产品不存在");
+            }
+            ProductVo vo = new ProductVo();
+            vo.setId(product.getId());
+            vo.setState(productState.byteValue());
+            vo.setModifyTime(new Date());
+            vo.setModifyOperatorId(credential.getOpId());
+            productService.editState(vo);
+            return simpleSuccessJsonResult("success");
+
+        }catch (Exception e){
+            if (e instanceof TqException) {
+                return failJsonResult(e.getMessage());
+            }else{
+                log.warn("editState产品失败", e);
+                return failJsonResult("修改失败");
+            }
+
+        }
     }
 }

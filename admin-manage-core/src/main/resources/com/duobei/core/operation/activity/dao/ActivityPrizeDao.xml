@@ -35,8 +35,8 @@
         order by a.add_time  desc
     </select>
 
-    <select id="getByPrizeId"  resultType="com.duobei.core.operation.activity.domain.criteria.ActivityPrizeCriteria" parameterType="java.lang.Integer">
-        SELECT * FROM yy_activity_prize where is_delete =0 and prize_id=#{prizeId}
+    <select id="getByPrizeId"  resultType="com.duobei.core.operation.activity.domain.ActivityPrize" parameterType="java.lang.Integer">
+        SELECT * FROM yy_activity_prize where is_delete =0 and prize_id=#{prizeId} limit 1;
 
     </select>
 

@@ -41,13 +41,19 @@
                 <input type="text" class="form-control valid" descripe="请填写手续费率" ng-model="loan.poundageRate" maxlength="8"  onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')"></input>
             </div>
         </div>
+        <div class="control-group">
+            <label class="control-label">逾期手续费率（日）：</label>
+            <div class="controls">
+                <input type="text" class="form-control valid" descripe="请填写手续费率" ng-model="loan.overdueRate" maxlength="8"  onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')"></input>
+            </div>
+        </div>
     </form>
     <form  class="form-horizontal" id="basicAuthForm">
         <div class="control-group">
             <label class="control-label"><h5>认证项配置</h5></label>
         </div>
         <div class="control-group">
-            <label class="control-label"><a href="javascript:selectAuthConfig()" class="btn btn-primary">添加认证</a></label>
+            <label class="control-label"><a href="javascript:void(0)" ng-click="selectAuthConfig()" class="btn btn-primary">添加认证</a></label>
         </div>
         <div class="control-group">
             <div class="controls">
@@ -66,8 +72,8 @@
                                 <td>
                                     <input type="checkbox" ng-model="x.isRequired" ng-checked="{{x.isRequired==1}}" ng-disabled="{{x.isEnable ==0}}"  ng-true-value="1" ng-false-value="0"/>
                                 </td>
-                                <td><input type="text" ng-model="x.validVal" ng-disabled="{{x.isEnable ==0}}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'>{{x.validUnit==0?'小时':'天'}}</td>
-                                <td><input type="text" style="background-color:${auth.authState==0?'#e5e5e5':''}" ng-model="x.authSort" ng-disabled="{{x.isEnable ==0}}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></td>
+                                <td><input type="text" descripe="有效期只能为正整数" ng-model="x.validVal" ng-disabled="{{x.isEnable ==0}}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'>{{x.validUnit==0?'小时':'天'}}</td>
+                                <td><input type="text" descripe="排序只能为正整数" style="background-color:${auth.authState==0?'#e5e5e5':''}" ng-model="x.authSort" ng-disabled="{{x.isEnable ==0}}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></td>
                             </tr>
                     </tbody>
                 </table>
@@ -108,6 +114,14 @@
                     return false;
                 }
             })
+            $("table input[type='text']").each(function() {
+                var descripe  = $(this).attr("descripe");
+                if( !isNumber($(this).val())){
+                    top.layer.alert(descripe, {icon: 5});
+                    bool = false;
+                    return false;
+                }
+            })
             if( bool){
                 if( !isNumber($scope.loan.dayAmountLimit)){
                     top.layer.alert("请填写正确放款金额", {icon: 5});
@@ -122,7 +136,11 @@
                     return false;
                 }
                 if( !is01($scope.loan.poundageRate)){
-                    top.layer.alert("请填写手续费率", {icon: 5});
+                    top.layer.alert("请填写正确手续费率", {icon: 5});
+                    return false;
+                }
+                if( !is01($scope.loan.overdueRate)){
+                    top.layer.alert("请填写正确逾期手续费率", {icon: 5});
                     return false;
                 }
                 $("#btnSubmit").attr("disabled",true);
@@ -152,39 +170,35 @@
                     }
                 })
             }
+        };
+        $scope.selectAuthConfig = function () {
+            modalAuthConfig.open({
+                productId: $scope.loan.productId,
+                callback: function (data) {
+                    for( var  i = 0; i < data.list.length ; i++){
+                        if( getIndex(data.list[i].authId,$scope.auths) ==-1){
+                            $scope.auths.push(data.list[i]);
+                            $scope.$apply();//刷新数据
+                        }
+                    }
+
+                    $("#modalAuthConfig").modal("hide");
+                }
+            });
         }
     });
 
 
-
-    //选认证项控件调用
-    function selectAuthConfig(productId) {
-        modalAuthConfig.open({
-            productId: productId,
-            callback: function (data) {
-                var controllerScope = $('div[ng-controller="formCtrl"]').scope();  // Get controller's scope
-                for( var  i = 0; i < data.list.length ; i++){
-                    if( getIndex(data.list[i].authId,controllerScope) ==-1){
-                        //$apply()用于传播模型的变化。在外部改变了作用域，如果想显示改变后的值，必须调用$apply。
-                        controllerScope.$apply(function(){
-                            controllerScope.auths.push(data.list[i]);
-                        })
-                    }
-                }
-
-                $("#modalAuthConfig").modal("hide");
-            }
-        });
-    }
-
     //判断是否已经存在了该配置项
-    function getIndex(authId,scope) {
-        for(var i=0;i<scope.auths.length;i++){
-            if(scope.auths[i].authId==authId){
-                return i;
+    function getIndex(authId,auths) {
+        var index = -1;
+        for(var i=0;i<auths.length;i++){
+            if(auths[i].authId==authId){
+                index =  i;
+                return false;
             }
         }
-        return -1;
+        return index;
     }
 </script>
 

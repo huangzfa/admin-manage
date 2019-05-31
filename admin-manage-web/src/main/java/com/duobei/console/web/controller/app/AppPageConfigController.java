@@ -3,6 +3,7 @@ package com.duobei.console.web.controller.app;
 import com.alibaba.fastjson.JSON;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.encrypt.MD5Util;
+import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
@@ -161,7 +162,9 @@ public class AppPageConfigController extends  BaseController{
 			}else{
 				throw  new TqException("应用数据查询失败");
 			}
-
+			if(StringUtil.isEmpty(appPageConfig.getIconUrl()) || StringUtil.isEmpty(appPageConfig.getSelectIconUrl())){
+				throw  new TqException("请上传icon图片");
+			}
 			appPageConfig.setModifyOperatorId(credential.getOpId());
 			appPageConfig.setModifyTime(new Date());
 			if (appPageConfig.getId() == null) {
@@ -243,34 +246,37 @@ public class AppPageConfigController extends  BaseController{
 		return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list?appId="+appId;
 	}
 
-	/**
-	 * 删除（禁用）
-	 * @param id
-	 * @param redirectAttributes
-	 * @return
-	 */
 	@RequiresPermissions({ PERMISSIONPRE+"edit" })
-	//@RequestMapping(value = "/delete")
-	public String delete(Integer id, RedirectAttributes redirectAttributes) {
-		OperatorCredential credential = getCredential();
+	@RequestMapping(value = "/delete")
+	@ResponseBody
+	public String delete(Integer id) throws TqException {
 		try {
-			AppPageConfig appPageConfig = new AppPageConfig();
-			appPageConfig.setId(id);
-			appPageConfig.setModifyTime(new Date());
-			appPageConfig.setModifyOperatorId(credential.getOpId());
-			appPageConfigService.deleteAppPageConfig(appPageConfig);
+			OperatorCredential credential = getCredential();
+			if (credential == null) {
+				throw new TqException("登录过期，请重新登录");
+			}
+			if( id == null){
+				throw new TqException("参数错误");
+			}
+			AppPageConfig config = appPageConfigService.getById(id);
+			if( config == null ){
+				throw new TqException("改菜单不存在");
+			}
+			AppPageConfig record = new AppPageConfig();
+			record.setId(config.getId());
+			record.setIsDelete(config.getId().intValue());
+			record.setModifyOperatorId(credential.getOpId());
+			record.setModifyTime(new Date());
+			appPageConfigService.deleteAppPageConfig(record);
+			return simpleSuccessJsonResult("success");
 		} catch (Exception e) {
 			if (e instanceof TqException) {
-				addFaildMessage(redirectAttributes, e.getMessage());
-			} else {
-				log.error("delete"+DESC+"异常", e);
-				addFaildMessage(redirectAttributes, "删除"+DESC+"异常，请查看错误日志");
+				return failJsonResult(e.getMessage());
+			}else{
+				log.warn("delete菜单异常", e);
+				return failJsonResult("delete菜单异常");
 			}
-			return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list";
 		}
-		addMessage(redirectAttributes, "删除"+DESC+"成功");
-		return "redirect:" + this.authzPath + "/" +ADDRESSPRE+"list";
 	}
-
 }
 

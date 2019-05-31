@@ -68,7 +68,7 @@
 
     <select id="getListByQuery" resultType="com.duobei.core.operation.app.domain.AppPageConfig" parameterType="com.duobei.core.operation.app.domain.criteria.AppPageConfigCriteria">
         select <include refid="Base_Column_List"/> from cf_app_page_config apppageconfig where apppageconfig.is_delete = 0 and apppageconfig.app_id = #{appId}
-        ORDER BY apppageconfig.menu_sort asc
+        ORDER BY apppageconfig.menu_sort asc,apppageconfig.add_time desc
         <if test="pagesize != 0">
             LIMIT #{offset}, #{pagesize}
         </if>

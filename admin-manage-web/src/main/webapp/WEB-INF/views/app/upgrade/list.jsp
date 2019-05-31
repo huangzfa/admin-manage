@@ -18,11 +18,8 @@
         for( var i = 0;i<productList.length;i++){
             $("#productId").append("<option value='"+productList[i].id+"'>"+productList[i].productName+"</option>");
         }
-        if( productList.length > 0){
-            var appIds = '${appId}';
-            appList = eval("("+appIds+")");
-            getAppListByProductId(productList[0].id);
-		}
+        var appLists = '${appList}';
+        appList = eval("("+appLists+")");
         pager=$('#tt').datagrid('getPager');
         pager.pagination({
             onSelectPage:function(number, size){
@@ -50,7 +47,6 @@
 		for( var j = 0;j<appList.length;j++){
 			if(productId == appList[j].productId){
 			    apps.push(appList[j]);
-			    break;
 			}
 		}
         $("#appId").append("<option value=''>全部</option>");
@@ -60,6 +56,7 @@
 	}
 
 	function getData(){
+        getAppListByProductId($('#productId').val());
         var data = {
             'productId':$('#productId').val(),
             'appId':$("#appId").val(),
@@ -111,6 +108,8 @@
  		    return '关闭状态'
 		}else if (value == '1'){
  		    return '开启状态'
+		}else if( value == '2'){
+		    return '新建'
 		}
 		return '未知';
     }
@@ -139,6 +138,14 @@
         return '未知';
     }
 
+    function appOsTypeformatter(value,row,index){
+        if (value == 'ios'){
+            return 'IOS'
+        }else if (value == 'android'){
+            return '安卓'
+        }
+        return '未知';
+    }
     function optionformatter(value,row,index){
             var opStr='';
             <shiro:hasPermission name="app:upgrade:edit">
@@ -147,7 +154,7 @@
 			var isEnable = 0;
         	if( row.state == 0) {isEnable = 1;}
 
-        opStr+="<a class='si-option-a' href='javascript:editState(\""+isEnable+"\" ,\""+row.id+"\"   )'>"+(row.state==0?"禁用":"启用")+"</a>";
+        opStr+="<a class='si-option-a' href='javascript:editState(\""+isEnable+"\" ,\""+row.id+"\"   )'>"+(row.state==0?"启用":"禁用")+"</a>";
             </shiro:hasPermission>
             return opStr;
 	}
@@ -222,7 +229,7 @@
 		</li>
 		<li>
 			<label>应用：</label>
-			<select id="appId" name="appId" class="selectpicker show-tick form-control">
+			<select id="appId" name="appId" class="selectpicker show-tick form-control" onchange="getData()">
 			</select>
 		</li>
 
@@ -249,11 +256,12 @@
 			<th style="width: 10%" data-options="field:'appName',width:216,align:'center',halign:'center',fixed:true">应用</th>
 			<th style="width: 10%" data-options="field:'versionNumber',width:216,align:'center',halign:'center',fixed:true">版本号</th>
 			<th style="width: 10%" data-options="field:'versionName',width:216,align:'center',halign:'center',fixed:true">版本名</th>
-			<th style="width: 5%" data-options="field:'state',width:216,align:'center',halign:'center',fixed:true,formatter:stateformatter">系统</th>
+			<th style="width: 5%" data-options="field:'state',width:216,align:'center',halign:'center',fixed:true,formatter:stateformatter">状态</th>
 			<th style="width: 30%" data-options="field:'versionRemark',width:216,align:'center',halign:'center',fixed:true">版本描述</th>
 			<th style="width: 5%" data-options="field:'upgradeRange',width:216,align:'center',halign:'center',fixed:true,formatter:upgradeRangeformatter">升级范围</th>
 			<th style="width: 5%" data-options="field:'isForce',width:216,align:'center',halign:'center',fixed:true,formatter:isForceformatter">升级范围</th>
 			<th style="width: 5%" data-options="field:'isSilence',width:216,align:'center',halign:'center',fixed:true,formatter:isSilenceformatter">升级范围</th>
+			<th style="width: 5%" data-options="field:'appOsType',width:216,align:'center',halign:'center',fixed:true,formatter:appOsTypeformatter">系统</th>
 			<th style="width: 20%" data-options="field:'option',width:216,align:'center',halign:'center',fixed:true,formatter:optionformatter">操作</th>
 		</tr>
 		</thead>

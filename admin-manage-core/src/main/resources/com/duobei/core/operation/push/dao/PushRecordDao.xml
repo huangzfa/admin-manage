@@ -6,7 +6,8 @@
     </resultMap>
 
     <select id="getPage" resultType="com.duobei.core.operation.push.domain.vo.PushRecordVo" parameterType="com.duobei.core.operation.push.domain.criteria.PushRecordCriteria">
-        SELECT a.*,b.product_name from yy_push_record a left join yy_product b on a.product_id=b.id where a.is_delete = 0 and a.product_id=#{productId}
+        SELECT a.*,b.product_name,c.app_name from yy_push_record a left join yy_product b on a.product_id=b.id
+        left join yy_app c on a.app_id=c.id where a.is_delete = 0 and a.product_id=#{productId}
         <if test="pushType != null">
            and a.push_type = #{pushType}
         </if>

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author huangzhongfa
@@ -123,7 +124,7 @@ public class CouponController extends BaseController {
                 throw new TqException("产品id不能为空");
             }
             if( entity.getExpiryType().equals(BizConstant.INT_ONE)){
-                if(DateUtil.compareTime(entity.getGmtStart(),entity.getGmtEnd(), Calendar.SECOND) > BizConstant.INT_ZERO){
+                if(entity.getGmtStart().getTime() > entity.getGmtEnd().getTime()){
                     throw new TqException("开始时间不能大于结束时间");
                 }
                 entity.setValidDays(BizConstant.MINUS_ONE);
@@ -149,6 +150,39 @@ public class CouponController extends BaseController {
         }
     }
 
+    @RequiresPermissions({ "market:coupon:edit" })
+    @RequestMapping(value = "/delete")
+    @ResponseBody
+    public String delete(Integer id) throws TqException {
+        try {
+            OperatorCredential credential = getCredential();
+            if (credential == null) {
+                throw new TqException("登录过期，请重新登录");
+            }
+            if( id == null){
+                throw new TqException("参数错误");
+            }
+            Coupon coupon = couponService.getCouponById(id.longValue());
+            if( coupon == null ){
+                throw new TqException("优惠券不存在");
+            }
+            Coupon record = new Coupon();
+            record.setId(coupon.getId());
+            record.setIsDelete(coupon.getId().intValue());
+            record.setModifyOperatorId(credential.getOpId());
+            record.setModifyTime(new Date());
+            couponService.update(record);
+            return simpleSuccessJsonResult("success");
+        } catch (Exception e) {
+            if (e instanceof TqException) {
+                return failJsonResult(e.getMessage());
+            }else{
+                log.warn("delete优惠券异常", e);
+                return failJsonResult("delete优惠券异常");
+            }
+        }
+    }
+
     /**
      *
      * @param productId
@@ -157,6 +191,19 @@ public class CouponController extends BaseController {
     @RequestMapping(value = "/getByProductId")
     @ResponseBody
     public String getByProductId(Integer productId) {
+        List<Coupon> list = couponService.getByProductId(productId);
         return successJsonResult("success", "list", couponService.getByProductId(productId));
+    }
+
+
+    /**
+     *查询有效的优惠券
+     * @param productId
+     * @return
+     */
+    @RequestMapping(value = "/getValidCoupon")
+    @ResponseBody
+    public String getValidCoupon(Integer productId) {
+        return successJsonResult("success", "list", couponService.getValidCoupon(productId));
     }
 }

@@ -1,5 +1,6 @@
 package com.duobei.core.operation.consumdebt.service.impl;
 
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.GuidUtil;
 import com.duobei.common.util.lang.StringUtil;
@@ -125,6 +126,12 @@ public class ConsumdebtGoodsServiceImpl implements ConsumdebtGoodsService {
      */
     @Override
     public void delete(ConsumdebtGoodsVo entity) throws TqException{
+        //若果是商品下架
+        if( entity.getState().equals(BizConstant.INT_ZERO)){
+            if( consumdebtGoodsDao.validCount() == BizConstant.INT_ONE){
+                throw new TqException("至少有一个在售商品");
+            }
+        }
         if( consumdebtGoodsDao.update(entity) < 1){
             throw new TqException("删除失败");
         }
@@ -136,6 +143,12 @@ public class ConsumdebtGoodsServiceImpl implements ConsumdebtGoodsService {
      */
     @Override
     public void editState(ConsumdebtGoodsVo entity) throws TqException{
+        //若果是商品下架
+        if( entity.getState().equals(BizConstant.INT_ZERO)){
+            if( consumdebtGoodsDao.validCount() == BizConstant.INT_ONE){
+                throw new TqException("至少有一个在售商品");
+            }
+        }
         if( consumdebtGoodsDao.update(entity) < 1){
             throw new TqException("操作失败");
         }

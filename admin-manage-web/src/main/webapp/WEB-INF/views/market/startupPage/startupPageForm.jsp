@@ -95,10 +95,7 @@
         window.location.href="${ctxA}/market/startupPage/form?appId="+$("#appId").val();
     }
     function save(){
-        if($("#redirectUrl").val() == null || $("#redirectUrl").val() == '' || $("#redirectUrl").val().length <= 0){
-            top.layer.alert("请输入广告url", {icon: 5});
-            return false
-        }
+
         if($("#imgUrl").val() == null || $("#imgUrl").val() == '' || $("#imgUrl").val().length <= 0){
             top.layer.alert("请上传广告图片", {icon: 5});
             return false

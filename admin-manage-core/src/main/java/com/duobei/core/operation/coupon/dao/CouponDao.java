@@ -21,6 +21,8 @@ public interface CouponDao {
 
     List<Coupon> getByProductId(@Param("productId") Integer productId);
 
+    List<Coupon> getValidCoupon(@Param("productId") Integer productId);
+
     Coupon getCouponById(@Param("couponId") Long couponId);
 
     List<Coupon> getPage(CouponCriteria criteria);

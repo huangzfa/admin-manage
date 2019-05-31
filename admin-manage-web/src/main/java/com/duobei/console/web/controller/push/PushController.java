@@ -12,6 +12,8 @@ import com.duobei.common.vo.ReturnParamsVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.sys.domain.OssUploadResult;
+import com.duobei.core.manage.sys.service.CommonService;
 import com.duobei.core.message.push.domain.PushConfig;
 import com.duobei.core.message.push.service.PushConfigService;
 import com.duobei.core.message.sms.domain.SmsAppChannelConfig;
@@ -73,6 +75,8 @@ public class PushController extends BaseController {
     private ProductService productService;
     @Autowired
     private AppService appService;
+    @Autowired
+    private CommonService commonService;
 
     /**
      * 极光推送列表页
@@ -139,7 +143,7 @@ public class PushController extends BaseController {
     public String smsForm( Model model,Integer productId) {
         model.addAttribute("productId", productId);
         model.addAttribute("appList", getAppListByProductId(productId));
-        return "push/sms/form";
+        return "push/sys/form";
     }
 
     /**
@@ -273,8 +277,13 @@ public class PushController extends BaseController {
             if( app == null ){
                 return failJsonResult("应用不存在");
             }
-            if( record.getPushTime() == null ){
-                return failJsonResult("请填写推送时间");
+            if( record.getPushWay().equals(ZD.pushWay_time) ){
+                if( record.getPushTime() == null){
+                    return failJsonResult("请填写推送时间");
+                }
+                if( record.getPushTime().getTime() < System.currentTimeMillis()){
+                    return failJsonResult("推送时间不能小于系统时间");
+                }
             }
             record.setAddOperatorId(credential.getOpId());
             record.setModifyTime(new Date());
@@ -297,14 +306,16 @@ public class PushController extends BaseController {
                 }
                 record.setNoticeType(SmsChannelCodeEnum.findEnvType(entity.getChannelCode()));
             }
-            String curProjectPath = "/home/admin/file/push";
-            String fileName = curProjectPath + System.currentTimeMillis()+orgname.substring(orgname.lastIndexOf("."),orgname.length());
-            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(fileName));
             InputStream in =file.getInputStream();
             //待推送id名单
             List<List<Object>> listob = ImportExcelUtil.getBankListByExcel(in,file.getOriginalFilename());
             in.close();
-            record.setPath(fileName);
+            //上传文件到oss
+            OssUploadResult uploadResult = commonService.uploadFile(file);
+            if( !uploadResult.isSuccess()){
+                return failJsonResult(uploadResult.getMsg());
+            }
+            record.setPath(uploadResult.getUrl());
             if( record.getPushWay().equals(ZD.pushWay_now)){
                 record.setPushTime(new Date());
                 recordService.save(record,listob);

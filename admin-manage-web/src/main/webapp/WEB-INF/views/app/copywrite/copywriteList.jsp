@@ -101,13 +101,16 @@
 
         function getConfig(id){
             $("#positionName").val("");
-            $("#copywriting1").html("");
+            $("#myModal").find("input").val("");
             $("#id").val(id);
             jQuery.post('${ctxA}/app/copywrite/form',{'id':$("#id").val()},
                 function(data) {
                     if (data.code ==1) {
                         $("#positionName").html(data.copywriteConfig.positionName);
                         $("#copywriting1").val(data.copywriteConfig.copywriting1);
+                        $("#copywriting2").val(data.copywriteConfig.copywriting2);
+                        $("#copywriting3").val(data.copywriteConfig.copywriting3);
+
                     } else {
                         top.layer.alert("系统异常", {icon: 5});
                     }
@@ -118,12 +121,13 @@
         function update(){
             var id =  $("#id").val();
             var copywriting1 = $("#copywriting1").val();
-
             if (copywriting1 == "" || copywriting1 == null){
                 top.layer.alert("文案不能为空", {icon: 5});
                 return false;
             }
-            jQuery.post('${ctxA}/app/copywrite/save', {'id':id,"copywriting1":copywriting1},
+            var copywriting2 = $("#copywriting2").val();
+            var copywriting3 = $("#copywriting3").val();
+            jQuery.post('${ctxA}/app/copywrite/save', {'id':id,"copywriting1":copywriting1,"copywriting2":copywriting2,"copywriting3":copywriting3},
                 function(data) {
                     if (data.code ==1) {
                         top.layer.alert("修改成功", {
@@ -184,7 +188,19 @@
 				<div class="control-group" style="border-bottom: none">
 					<label class="control-label" style="width: 30%;text-align: center">文案内容：</label>
 					<div class="controls" style="display: inline-block">
-						<input class="control-label" id="copywriting1" maxlength="40"/>
+						<textarea class="control-label" id="copywriting1" maxlength="40"></textarea>
+					</div>
+				</div>
+				<div class="control-group" style="border-bottom: none;">
+					<label class="control-label" style="width: 30%;text-align: center">文案内容：</label>
+					<div class="controls" style="display: inline-block">
+						<textarea class="control-label" id="copywriting2" maxlength="40"></textarea>
+					</div>
+				</div>
+				<div class="control-group" style="border-bottom: none">
+					<label class="control-label" style="width: 30%;text-align: center">文案内容：</label>
+					<div class="controls" style="display: inline-block">
+						<textarea class="control-label" id="copywriting3" maxlength="40"></textarea>
 					</div>
 				</div>
 			</div>

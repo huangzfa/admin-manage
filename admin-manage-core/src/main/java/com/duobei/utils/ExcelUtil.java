@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -176,10 +177,12 @@ public class ExcelUtil {
         // 创建Excel工作簿文件的引用
         Workbook workbook = null;
         try {
+            URL url = new URL(filepath);//把远程文件地址转换成URL格式
+            InputStream in = url.openStream();
             if(filepath.indexOf(".xlsx")>-1){
-                workbook = new XSSFWorkbook(new FileInputStream(filepath));
+                workbook = new XSSFWorkbook(in);
             } else {
-                workbook = new HSSFWorkbook(new FileInputStream(filepath));// 根据路劲创建引用
+                workbook = new HSSFWorkbook(in);// 根据路劲创建引用
             }
 
         } catch (FileNotFoundException e) {
@@ -254,7 +257,7 @@ public class ExcelUtil {
             response.reset();
             response.setHeader("Content-disposition", "attachment; filename="+ URLEncoder.encode(fileName, "UTF-8") +".xls");
             response.setContentType("application/msexcel");
-             out = response.getOutputStream();
+            out = response.getOutputStream();
             workbook.write(out);
         } catch (Exception e) {
             e.printStackTrace();

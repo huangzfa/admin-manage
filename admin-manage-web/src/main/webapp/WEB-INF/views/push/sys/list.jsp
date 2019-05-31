@@ -14,6 +14,8 @@
         var pageList=[pageSize,30,50];
         var pageNum =1;
         $(function(){
+            $("#pushStartTime").val(getNowFormatDate()+" 00:00:00");
+            $("#pushEndTime").val(getNowFormatDate()+" 23:59:59");
             var productLists ='${productList}';
             var productList = eval("("+productLists+")");
             for( var i = 0;i<productList.length;i++){
@@ -79,7 +81,21 @@
             }else if( value ==2){
                 return "自定义消息";
             }
+        }
 
+        function platformformater(value,row,index) {
+            var platform = "";
+            if( value.indexOf("ios") !=-1){
+                platform = "ios";
+            }
+            if( value.indexOf("ios") !=-1){
+                if( platform!=""){
+                    platform += ",安卓";
+                }else{
+                    platform = "安卓";
+                }
+            }
+            return platform;
         }
 
         function countformater(value,row,index) {
@@ -130,6 +146,23 @@
         function exportFial(id) {
             window.location.href="${ctxA}/push/export?pushId="+id;
         }
+
+        //获取当前时间，格式YYYY-MM-DD
+        function getNowFormatDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = year + seperator1 + month + seperator1 + strDate;
+            return currentdate;
+        }
     </script>
 </head>
 <body>
@@ -170,9 +203,10 @@
             <th data-options="field:'id',width:100,align:'center',halign:'center',fixed:true">推送id</th>
             <th data-options="field:'pushTime',width:180,align:'center',halign:'center',fixed:true">启动时间</th>
             <th data-options="field:'noticeType',width:100,align:'center',halign:'center',fixed:true,formatter:typeformater">通知类型</th>
-            <th data-options="field:'productName',width:100,align:'center',halign:'center',fixed:true">推送产品</th>
-            <th data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">推送标题</th>
-            <th data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">推送内容</th>
+            <th data-options="field:'appName',width:100,align:'center',halign:'center',fixed:true">推送应用</th>
+            <th data-options="field:'pushTitle',width:160,align:'center',halign:'center',fixed:true">推送标题</th>
+            <th data-options="field:'pushContent',width:160,align:'center',halign:'center',fixed:true">推送内容</th>
+            <th data-options="field:'platform',width:80,align:'center',halign:'center',fixed:true,platformformater">推送系统</th>
             <th data-options="field:'pushCount',width:80,align:'center',halign:'center',fixed:true">推送数量</th>
             <th data-options="field:'successCount',width:80,align:'center',halign:'center',fixed:true,formatter:countformater">成功数量</th>
             <th data-options="field:'addOperatorName',width:80,align:'center',halign:'center',fixed:true">操作人员</th>

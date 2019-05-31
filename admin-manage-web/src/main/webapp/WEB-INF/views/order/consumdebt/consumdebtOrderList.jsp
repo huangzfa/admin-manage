@@ -229,9 +229,7 @@
             })
         }
         function openUrl(obj){
-			debugger;
-            var url=obj.value;
-          window.open("${ctxA}/order/consumdebt/downloadFail?url="+url);
+          window.location.href="${ctxA}/order/consumdebt/downloadFail?url="+$(this).attr("value");
         }
         function exportCosumdebtOrder(){
             top.$.jBox.confirm("确定导出？",'系统提示',function(v,h,f) {
@@ -317,15 +315,26 @@
                     top.layer.close(loading);
                     var dataMap = eval("("+data+")");
                     if(dataMap.success){
-                        $('#successCount').attr('value',dataMap.successCount);
-                        $('#failCount').attr('value',dataMap.failCount);
-                        $('#failFilePath').val(dataMap.failCount);
-                        $('#failFilePath').attr('value',dataMap.failFilePath);
+                        if( dataMap.failCount == 0){
+                            var msg = "操作完成！本次发货成功 "+dataMap.successCount+"条";
+                            top.layer.alert(msg, {
+                                icon: 6,
+                                end: function(){
+                                }
+                            });
+                        }else{
+                            var msg ="操作完成！本次发货成功 "+dataMap.successCount+"条,发货失败"+dataMap.failCount+"条";
+                            var index = top.layer.confirm(msg, {
+                                btn: ['确定','导出失败数据'] //按钮
+                            }, function(){
+                                top.layer.close(index)
+                            }, function(){
+                                window.location.href="${ctxA}/order/consumdebt/downloadFail";
+                            });
+                        }
                     }else{
                         top.layer.alert(dataMap.msg, {icon: 5});
                     }
-                    $('#page-selection-post').css('display','none');
-                    $("#batchOrderModal").modal("show");
                 },
                 error: function (data, status, e){
                     var dataMap = eval("("+data+")");
@@ -335,7 +344,7 @@
             })
         }
         function batchDelivery() {
-            $('#filePath').val('');
+            $('#filePath').attr('data-value','');
             $('#page-selection-post').css('display','none');
         }
 	</script>
@@ -391,7 +400,7 @@
 			<input id="export" class="btn btn-primary" type="submit" value="导出CSV格式报表" onclick="exportCosumdebtOrder()" />
 		</li>
 		<li class="btns">
-			<input id="batchDelivery" class="btn btn-primary"  data-toggle="modal" data-target="#myModal1"  type="submit" onclick="batchDelivery()" value="批量发货" />
+			<input id="batchDelivery" class="btn btn-primary"  data-toggle="modal"  data-target="#myModal1"  type="submit" onclick="batchDelivery()" value="批量发货" />
 		</li>
 		<li class="clearfix"></li>
 	</ul>
@@ -422,7 +431,7 @@
 </div>
 
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content" >
 			<div class="modal-body">
@@ -475,7 +484,7 @@
 
 </div>
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal1" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content radius">
 			<div class="modal-header" style="height: 60px;">
@@ -516,7 +525,6 @@
 						</div>
 						<div class="form-group">
 							<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-<%--							<a id="failDownload" &lt;%&ndash; style="display:none;"&ndash;%&gt; href="D:/home/admin/project/file/123.xls" download="失败表单.xls">测试</a>--%>
 							<button class="btn btn-primary" type="button" value="$!{failFilePath}" id="failFilePath" name="failFilePath" onclick="openUrl(this)">导出失败数据</button>
 						</div>
 					</div>

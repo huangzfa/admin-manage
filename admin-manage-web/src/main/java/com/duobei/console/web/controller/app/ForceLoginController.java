@@ -68,7 +68,6 @@ public class ForceLoginController extends BaseController {
             return failJsonResult("请选择应用");
         }else {
             try {
-                validAuthData(null,functionSwitchCriteria.getAppId());
             }catch (Exception e){
                 log.error("用户{}，应用id:{}，强制登录查询失败",credential,functionSwitchCriteria.getAppId());
                 return failJsonResult(e.getMessage());

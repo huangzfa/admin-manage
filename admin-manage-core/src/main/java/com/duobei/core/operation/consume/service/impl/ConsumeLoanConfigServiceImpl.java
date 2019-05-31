@@ -78,23 +78,17 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
             }
         }
         //认证项保存
+        //先删除所有记录
+        productAuthConfigDao.deleteByProductId(record.getProductId());
         for(ProductAuthConfigVo vo : auth){
             if( vo.getValidVal() == null){
                 throw  new TqException("请填写认证有效期");
             }
-            if(vo.getId() == null ){
-                vo.setAddOperatorId(record.getModifyOperatorId());
-                vo.setIsEnable(BizConstant.INT_ONE);
-                vo.setProductId(record.getProductId());
-                if( productAuthConfigDao.save(vo) <1){
-                    throw  new TqException("认证项保存失败");
-                }
-            }else{
-                vo.setModifyOperatorId(record.getModifyOperatorId());
-                vo.setModifyTime(new Date());
-                if( productAuthConfigDao.update(vo) <1){
-                    throw  new TqException("认证项修改失败");
-                }
+            vo.setAddOperatorId(record.getModifyOperatorId());
+            vo.setIsEnable(BizConstant.INT_ONE);
+            vo.setProductId(record.getProductId());
+            if( productAuthConfigDao.save(vo) <1){
+                throw  new TqException("认证项保存失败");
             }
         }
     }
@@ -216,7 +210,7 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
     @Override
     public void updateBorrowShowById(ConsumeLoanConfig consumeLoanConfig) throws TqException {
         int count = consumeLoanConfigDao.updateBorrowShowById(consumeLoanConfig);
-        if (count != -1){
+        if (count <BizConstant.INT_ONE){
             throw new TqException("借钱默认页修改失败");
         }
     }
@@ -229,7 +223,7 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
     @Override
     public void saveBorrowShow(ConsumeLoanConfig consumeLoanConfig) throws TqException {
         int count = consumeLoanConfigDao.saveBorrowShow(consumeLoanConfig);
-        if (count != -1){
+        if (count <BizConstant.INT_ONE){
             throw new TqException("借钱默认页保存失败");
         }
     }

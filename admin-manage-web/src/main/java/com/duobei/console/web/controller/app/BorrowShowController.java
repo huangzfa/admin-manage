@@ -2,6 +2,7 @@ package com.duobei.console.web.controller.app;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.BeanUtil;
 import com.duobei.console.web.controller.base.BaseController;
@@ -74,10 +75,10 @@ public class BorrowShowController extends BaseController {
         }else{
             BeanUtils.copyProperties(consumeLoanConfig,borrowShowConfigVo);
             List<Integer> dayList = JSON.parseArray(consumeLoanConfig.getShowBorrowDays(),Integer.class);
-           if (dayList != null){
+           if (dayList != null && dayList.size() > BizConstant.INT_ZERO){
                borrowShowConfigVo.setDay1(dayList.get(0));
-               borrowShowConfigVo.setDay2(dayList.get(1));
-               borrowShowConfigVo.setDay3(dayList.get(2));
+               borrowShowConfigVo.setDay2(dayList.size()>1?dayList.get(1):null);
+               borrowShowConfigVo.setDay3(dayList.size()>2?dayList.get(2):null);
            }else{
                borrowShowConfigVo.setDay1(null);
                borrowShowConfigVo.setDay2(null);

@@ -1,5 +1,6 @@
 package com.duobei.core.operation.zfb.service.impl;
 
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.BeanUtil;
 import com.duobei.common.vo.ListVo;
@@ -15,6 +16,7 @@ import com.duobei.core.operation.zfb.service.ZfbAccountService;
 import com.duobei.dic.ZD;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -59,15 +61,12 @@ public class ZfbAccountServiceImpl implements ZfbAccountService {
     }
 
     @Override
+    @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
     public void save(ZfbAccountVo zfbAccountVo) throws TqException {
         //先判断数据库中该产品启用的支付宝账号是否>0
-        int count = zfbAccountDao.countByIsEnableAndProductId(zfbAccountVo.getProductId(),ZD.isEnable_yes);
-        if (count < 1){
-            //初始第一个账号为开启
-            zfbAccountVo.setIsEnable(ZD.isEnable_yes);
-        }else{
-            //之后新增都为禁用
-            zfbAccountVo.setIsEnable(ZD.isEnable_no);
+        int count = zfbAccountDao.countByAccount(zfbAccountVo);
+        if (count > BizConstant.INT_ZERO){
+            throw new TqException("该支付宝账号已存在");
         }
         //先新增支付宝账号信息
         count = zfbAccountDao.save(zfbAccountVo);
@@ -109,11 +108,16 @@ public class ZfbAccountServiceImpl implements ZfbAccountService {
     }
 
     @Override
+    @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
     public void update(ZfbAccountVo zfbAccountVo) throws TqException {
+        //先判断数据库中该产品启用的支付宝账号是否>0
+        int count = zfbAccountDao.countByAccount(zfbAccountVo);
+        if (count > BizConstant.INT_ZERO){
+            throw new TqException("该支付宝账号已存在");
+        }
         //先修改支付宝账号信息
-        int count = zfbAccountDao.update(zfbAccountVo);
-        if (count != 1){
-            throw new TqException("新增失败");
+        if (zfbAccountDao.update(zfbAccountVo) != 1){
+            throw new TqException("修改失败");
         }
         addZfbAccountGuide(zfbAccountVo);
         //再修改支付宝教程图片信息
@@ -133,14 +137,14 @@ public class ZfbAccountServiceImpl implements ZfbAccountService {
     @Override
     public void updateStatus(ZfbAccount zfbAccount) throws TqException {
         //修改状态时，如果为禁用，则查询改产品目前启用的支付宝账号数量为多少
-        int count;
+/*        int count;
         if (ZD.isEnable_no == zfbAccount.getIsEnable()){
             count = zfbAccountDao.countByIsEnableAndProductId(zfbAccount.getProductId(),ZD.isEnable_yes);
             if (count <= 1){
                 throw new TqException("禁用失败，支付宝账号必须有一个为开启状态");
             }
-        }
-         count = zfbAccountDao.updateStatus(zfbAccount);
+        }*/
+        int count = zfbAccountDao.updateStatus(zfbAccount);
         if (count != 1){
             throw new TqException("修改状态失败") ;
         }

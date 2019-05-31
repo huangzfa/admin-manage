@@ -51,7 +51,7 @@ public class AppUpgradeController extends BaseController {
     @RequestMapping(value = "/list")
     public String list(Integer productId , Model model) {
         model.addAttribute("productList", JSON.toJSONString(getCredential().getProductList()));
-        model.addAttribute("appId",JSON.toJSONString(getCredential().getAppList()));
+        model.addAttribute("appList",JSON.toJSONString(getCredential().getAppList()));
         return ADDRESSPRE+"list";
     }
 
@@ -103,7 +103,7 @@ public class AppUpgradeController extends BaseController {
         //产品下拉框
         model.addAttribute("productList",getCredential().getProductList());
         //应用下拉框
-        model.addAttribute("appList",getCredential().getAppList());
+        model.addAttribute("appList",JSON.toJSONString(getCredential().getAppList()));
         //系统下拉框
         model.addAttribute("osList",DictUtil.getDictList(ZD.osTypeString));
         //app升级状态
@@ -117,7 +117,8 @@ public class AppUpgradeController extends BaseController {
 
         if ( id !=null ) {
             //查询app升级详情
-            model.addAttribute("upgrade", appUpgradeService.getById(id));
+            AppUpgrade upgrade = appUpgradeService.getById(id);
+            model.addAttribute("upgrade", upgrade);
         }else{
             model.addAttribute("upgrade", new AppUpgrade());
         }

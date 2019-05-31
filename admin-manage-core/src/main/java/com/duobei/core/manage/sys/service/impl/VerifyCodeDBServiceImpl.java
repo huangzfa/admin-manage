@@ -108,7 +108,7 @@ public class VerifyCodeDBServiceImpl implements VerifyCodeService {
 					throw new RuntimeException("短信模板不存在");
 				}*/
 				smsVo.setSmsTemptCode(null);
-				smsVo.setSystemCode(BizConstant.PLATFORM);
+				//smsVo.setSystemCode(BizConstant.PLATFORM);
 				//messageUtil.sendSms(smsVo);
 			}
 

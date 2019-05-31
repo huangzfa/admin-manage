@@ -74,9 +74,9 @@
                     </td>
                     <td>
 
-                        <input type="text" id="day1" value="${borrowShow.day1}" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" maxlength="10" />天&nbsp;&nbsp;&nbsp;
-                        <input type="text"  id="day2" value="${borrowShow.day2}"onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" maxlength="10" />天&nbsp;&nbsp;&nbsp;
-                        <input type="text" id="day3" value="${borrowShow.day3}" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" maxlength="10" />天&nbsp;&nbsp;&nbsp;
+                        <input type="text" style="width:10%;" id="day1" value="${borrowShow.day1}" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" maxlength="10" />天&nbsp;&nbsp;&nbsp;
+                        <input type="text" style="width:10%;" id="day2" value="${borrowShow.day2}"onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" maxlength="10" />天&nbsp;&nbsp;&nbsp;
+                        <input type="text" style="width:10%;" id="day3" value="${borrowShow.day3}" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" maxlength="10" />天&nbsp;&nbsp;&nbsp;
                     </td>
                 </tr>
             </tbody>

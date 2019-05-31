@@ -12,11 +12,13 @@ import com.duobei.common.util.lang.StringUtil;
 import com.duobei.console.shiro.UsernamePasswordCaptchaToken;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.Operator;
+import com.duobei.core.manage.auth.domain.VerifyCodeFail;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.manage.auth.helper.UserHelper;
 import com.duobei.core.manage.auth.service.OperatorLoginLogService;
 import com.duobei.core.manage.auth.service.OperatorService;
 import com.duobei.core.manage.auth.service.RoleDataAuthService;
+import com.duobei.core.manage.sys.handler.VerifyCodeFailHandler;
 import com.duobei.core.manage.sys.service.VerifyCodeService;
 import com.duobei.core.operation.app.service.AppService;
 import com.duobei.core.operation.product.service.ProductService;
@@ -69,6 +71,8 @@ public class LoginController extends BaseController {
 	private AppService appService;
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private VerifyCodeFailHandler verifyCodeFailHandler;
 
 
 	@InitBinder
@@ -80,6 +84,11 @@ public class LoginController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/login/send/sms")
 	public String loginCode(String mn, String ivc, HttpServletRequest req) throws RuntimeException {
+
+		VerifyCodeFail verifyCodeFail = verifyCodeFailHandler.getByParam(mn,ZD.notifyBizType_login);
+		if( verifyCodeFail!=null && verifyCodeFail.getFailCount() >= 5){
+			return failJsonResult("验证码错误次数超限，请联系管理员");
+		}
 		if (StringUtils.isBlank(mn)) {
 			return failJsonResult("手机号不能为空");
 		}

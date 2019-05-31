@@ -24,6 +24,7 @@ public class CouponUserCriteria extends Pagination {
 
     private String receiveEndTime;//领取结束时间
 
+
     private String useStartTime;//使用开始时间
 
     private String useEndTime;//使用结束时间

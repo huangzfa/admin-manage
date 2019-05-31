@@ -1,13 +1,10 @@
 package com.duobei.core.operation.push.service.impl;
 
 import com.duobei.common.constant.BizConstant;
-import com.duobei.common.enums.IdWorker;
 import com.duobei.common.enums.SmsUserfulCodeEnums;
 import com.duobei.common.exception.ManageExceptionCode;
 import com.duobei.common.exception.TqException;
-import com.duobei.common.util.GuidUtil;
 import com.duobei.common.util.ImportExcelUtil;
-import com.duobei.common.util.QuartzManager;
 import com.duobei.common.util.RegExpValidatorUtils;
 import com.duobei.common.util.lang.ArrayUtil;
 import com.duobei.common.util.lang.DateUtil;
@@ -20,7 +17,6 @@ import com.duobei.core.operation.app.dao.AppDao;
 import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.push.dao.PushFailUserDao;
 import com.duobei.core.operation.push.dao.PushRecordDao;
-import com.duobei.core.operation.push.dao.QuartzInfoDao;
 import com.duobei.core.operation.push.domain.PushRecord;
 import com.duobei.core.operation.push.domain.QuartzInfo;
 import com.duobei.core.operation.push.domain.criteria.PushRecordCriteria;
@@ -32,9 +28,6 @@ import com.duobei.core.user.user.domain.User;
 import com.duobei.dic.ZD;
 import com.pgy.data.handler.PgyDataHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
-import org.apache.poi.ss.formula.functions.T;
-import org.quartz.JobDataMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
@@ -43,11 +36,12 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 /**
@@ -74,8 +68,8 @@ public class PushRecordServiceImpl implements PushRecordService {
     @Resource
     private TransactionTemplate transactionTemplate;
 
-    private ExecutorService executorService = new ThreadPoolExecutor(0,Runtime.getRuntime().availableProcessors() + 1,60L, TimeUnit.SECONDS,
-            new SynchronousQueue<Runnable>());
+    private ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
+
 
 
     @Override
@@ -245,15 +239,14 @@ public class PushRecordServiceImpl implements PushRecordService {
         List<Object> userIds = new ArrayList<>();//待发送用户id
         if( record.getPlatform().equals(ZD.platform_user_id) ){//导入excel推送
             if( listob == null ){
-                File file = new File(record.getPath());
-                if(file.isFile() && file.exists()) {
-                    try {
-                        InputStream in = new FileInputStream(file);
-                        listob = ImportExcelUtil.getBankListByExcel(in,record.getPath());
-                    }catch (Exception e){
-                        log.error("xml解析异常",e);
-                    }
+                try {
+                    URL url = new URL(record.getPath());//把远程文件地址转换成URL格式
+                    InputStream in = url.openStream();
+                    listob = ImportExcelUtil.getBankListByExcel(in,record.getPath());
+                }catch (Exception e){
+                    log.error("xml解析异常",e);
                 }
+
             }
             for (int i = 1; i < listob.size(); i++) {
                 List<Object> lo = listob.get(i);
@@ -326,14 +319,12 @@ public class PushRecordServiceImpl implements PushRecordService {
         List<Object> userPhones = new ArrayList<>();//待发送用户手机号
         if( record.getPlatform().equals(ZD.platform_user_id) ){//导入excel推送
             if( listob == null ){
-                File file = new File(record.getPath());
-                if(file.isFile() && file.exists()) {
-                    try {
-                        InputStream in = new FileInputStream(file);
-                        listob = ImportExcelUtil.getBankListByExcel(in,record.getPath());
-                    }catch (Exception e){
-                        log.error("xml解析异常",e);
-                    }
+                try {
+                    URL url = new URL(record.getPath());//把远程文件地址转换成URL格式
+                    InputStream in = url.openStream();
+                    listob = ImportExcelUtil.getBankListByExcel(in,record.getPath());
+                }catch (Exception e){
+                    log.error("xml解析异常",e);
                 }
             }
             for (int i = 1; i < listob.size(); i++) {
@@ -419,6 +410,13 @@ public class PushRecordServiceImpl implements PushRecordService {
                 .setPushStartTime(new Date())
                 .setSuccessCount(userIds.size())
                 .setState(ZD.pushState_success);
+        String plateforms = "";
+        if(record.getPlatform().contains(ZD.platform_android)){
+            plateforms+=",1";
+        }
+        if(record.getPlatform().contains(ZD.platform_ios)){
+            plateforms+=",2";
+        }
         try {
             PushSysThread thread = null;
             for (List<Object> temp : list_list) {
@@ -426,6 +424,7 @@ public class PushRecordServiceImpl implements PushRecordService {
                 thread.setUserList(temp);
                 thread.setAppKey(app.getAppKey());
                 thread.setRecord(record);
+                thread.setPlateforms(plateforms.substring(1));
                 //启动线程并返回执行结果
                 Future<Map<String, Object>> future = executorService.submit(thread);
                 resultList.add(future);

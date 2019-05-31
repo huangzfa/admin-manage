@@ -48,6 +48,16 @@ public class CouponServiceImpl implements CouponService {
     public List<Coupon> getByProductId(Integer productId){
         return couponDao.getByProductId(productId);
     }
+
+    /**
+     * 查询有效期内优惠券
+     * @param productId
+     * @return
+     */
+    @Override
+    public List<Coupon> getValidCoupon(Integer productId){
+        return couponDao.getValidCoupon(productId);
+    }
     /**
      *
      * @param couponId

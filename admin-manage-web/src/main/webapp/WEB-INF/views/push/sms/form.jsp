@@ -37,20 +37,14 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">推送标题：</label>
+            <label class="control-label">短信内容：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写推送标题" type="text" name="pushTitle" id="pushTitle" maxlength="32" value="${push.pushTitle}"></input>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">推送内容：</label>
-            <div class="controls">
-                <textarea  class="form-control valid" descripe="请填写推送内容" type="text" name="pushContent" id="pushContent" maxlength="32" >${push.pushContent}</textarea>
+                <textarea  class="form-control valid" descripe="请填写短信内容" type="text" name="pushContent" id="pushContent" maxlength="32" >${push.pushContent}</textarea>
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label">推送平台：</label>
+            <label class="control-label">发送名单：</label>
             <div class="controls ">
                 <li class='sub_file_li' >
                     <a  class='btn  btn-primary' >user-id</a>

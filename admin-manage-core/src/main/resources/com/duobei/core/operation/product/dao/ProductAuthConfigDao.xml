@@ -17,6 +17,10 @@
          where  auth_id=#{authId,jdbcType=INTEGER}
     </update>
 
+    <select id="deleteByProductId" parameterType="java.lang.Integer" >
+        delete from yy_product_auth_config where product_id=#{productId};
+    </select>
+
     <insert id="save" parameterType="com.duobei.core.operation.product.domain.ProductAuthConfig">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
             SELECT LAST_INSERT_ID()

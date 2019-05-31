@@ -1,6 +1,5 @@
 package com.duobei.core.manage.sys.service.impl;
 
-import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
 import com.duobei.common.util.ConfigProperties;
@@ -14,13 +13,16 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service("commonService")
 public class CommonServiceImpl implements CommonService {
 	private static Logger log = LoggerFactory.getLogger(CommonServiceImpl.class);
-	private OSSClient ossClient;
+
+	@Autowired
+	private OSSUtil ossUtil;
 
 	private final static String OSS_URL_PREF ="oss.url.pre";
 
@@ -29,7 +31,7 @@ public class CommonServiceImpl implements CommonService {
 	public OssUploadResult uploadImageToOss(MultipartFile imageFile) {
 		OssUploadResult result = new OssUploadResult();
 		String fileName = imageFile.getOriginalFilename();
-		String contextType = this.getImageFileContentType(fileName);
+		String contextType = this.getFileContentType(fileName);
 		String path = OSSUtil.getStorePath();
 		String fileNameSuffix = UUID.randomUUID().toString();
 		if(StringUtils.isNotBlank(contextType)){
@@ -59,19 +61,19 @@ public class CommonServiceImpl implements CommonService {
 	@Override
 	public OssUploadResult uploadFileToOssWithPath(MultipartFile file, String path) {
 		String fileName=file.getOriginalFilename();
-		String contextType = this.getImageFileContentType(fileName);
+		String contextType = this.getFileContentType(fileName);
 		return this.uploadFileToXls(file, contextType, path, fileName);
 	}
 
 	@Override
-	public OssUploadResult uploadImageToOss(InputStream inputStream, String fileName, int fileSize) {
+	public OssUploadResult uploadToOss(InputStream inputStream, String fileName, Long fileSize) {
 		OssUploadResult result = new OssUploadResult();
 		try{
 			String path = ConfigProperties.get(OSSUtil.getStorePath()) + "/";
 			ObjectMetadata metadata = new ObjectMetadata();
 			metadata.setContentLength(fileSize);
-			metadata.setContentType(this.getImageFileContentType(fileName));
-			PutObjectResult pubResult = ossClient.putObject(ConfigProperties.get(OSS_BUCKET), path + fileName, inputStream,metadata);
+			metadata.setContentType(this.getFileContentType(fileName));
+			PutObjectResult pubResult = ossUtil.getOSSClient().putObject(ConfigProperties.get(OSS_BUCKET), path + fileName, inputStream,metadata);
 
 			if(pubResult == null || org.apache.commons.lang.StringUtils.isBlank(pubResult.getETag())){
 				log.error("upload to oss error, put object result is null or etag is empty,  fileName {}", fileName);
@@ -113,7 +115,7 @@ public class CommonServiceImpl implements CommonService {
 		}
 		return result;
 	}
-	private String getImageFileContentType(String fileName){
+	private String getFileContentType(String fileName){
 		if(org.apache.commons.lang.StringUtils.isBlank(fileName) || fileName.indexOf(".") < 0){
 			return "";
 		}
@@ -126,7 +128,48 @@ public class CommonServiceImpl implements CommonService {
 			return "image/gif";
 		}else if("apk".equals(fileSuffix)){
 			return "application/vnd.android.package-archive";
+		}else if( "xls".equals(fileSuffix) || "xlsx".equals(fileSuffix)) {
+			return "application/x-xls";
+		}else if("mp4".equals(fileSuffix)){
+			return "video/mpeg4";
+		}else if("mpt".equals(fileSuffix)){
+			return "application/vnd.ms-project";
+		}else if("txt".equals(fileSuffix)){
+			return "text/plain";
 		}
 		return "";
+	}
+
+	/**
+	 * OSS通用文件上传，不限制文件类型
+	 * @param imageFile
+	 * @return
+	 */
+	@Override
+	public  OssUploadResult uploadFile(MultipartFile imageFile) {
+		OssUploadResult result = new OssUploadResult();
+		String fileName = imageFile.getOriginalFilename();
+		String contextType = this.getFileContentType(fileName);
+		String path = OSSUtil.getStorePath();
+		String fileNameSuffix = UUID.randomUUID().toString();
+		if(StringUtils.isNotBlank(contextType)){
+			fileNameSuffix = fileNameSuffix + fileName.substring(fileName.lastIndexOf("."));
+		}
+		try {
+			PutObjectResult putObjectResult = OSSUtil.uploadFileToOss(imageFile, contextType, path, fileNameSuffix);
+			if(putObjectResult == null || StringUtils.isBlank(putObjectResult.getETag())){
+				result.setSuccess(false);
+				result.setMsg("upload to oss error, put object result is null or etag is empty");
+				return result;
+			}
+			result.setSuccess(true);
+			result.setMsg("upload to oss succeed");
+			result.setFileMd5(putObjectResult.getETag());
+			result.setUrl(OSSUtil.getUrlPre() + path + fileNameSuffix);
+		} catch (Exception e) {
+			result.setSuccess(false);
+			result.setMsg("upload to oss error, message is " + e.getMessage());
+		}
+		return result;
 	}
 }

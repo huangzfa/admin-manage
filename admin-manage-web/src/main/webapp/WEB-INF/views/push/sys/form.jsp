@@ -66,8 +66,13 @@
                 <li class='sub_file_li' >
                     <a value="ios" class='btn  ${push.platform=="IOS"?"btn-primary":"btn-default"}' onclick="switchPush(this)">IOS</a>
                 </li>
-                <li class='sub_file_li' >
-                    <a value="user_id" class='btn  ${push.platform=="user_id"?"btn-primary":"btn-default"}' onclick="switchPush(this)">user-id</a>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">推送人员：</label>
+            <div class="controls">
+                <li  >
+                    <a  class='btn btn-primary' onclick="switchPush(this)">user-id</a>
                 </li>
             </div>
         </div>
@@ -118,14 +123,13 @@
     })
 
     function switchPush(obj) {
-        if($(obj).attr("value") == "user_id"){
-            $(".import").css("display","block");
+        if($(obj).hasClass("btn-primary") ){
+            $(obj).removeClass("btn-primary");
+            $(obj).addClass("btn-default");
         }else{
-            $(".import").css("display","none");
+            $(obj).removeClass("btn-default");
+            $(obj).addClass("btn-primary");
         }
-        $("#pushForm .platform").find("a").removeClass("btn-primary");
-        $(obj).addClass("btn-primary");
-        $("#platform").val($(obj).attr("value"));
     }
 
     function save(){
@@ -142,12 +146,20 @@
         if( !bool ){
             return false;
         }
-        var platform = $("#platform").val();
-        if(typeof(platform) == "undefined" || platform == "" ){
+        var platform = "";
+        //获取推送平台，android,ios
+        $(".platform li").each(function(){
+            if($(this).find("a").hasClass("btn-primary")){
+                platform+=","+$(this).find("a").attr("value");
+            }
+        })
+        if(platform == "" ){
             top.layer.alert("请选择推送平台", {icon: 5});
             return false;
         }
+        $("#platform").val(platform.substring(1));
         top.layer.load();
+        //导入文件操作
         if( platform == "user_id"){
             uploadExcel()
         }else{
@@ -177,7 +189,7 @@
         var form=$("#pushForm");
         var data = form.serialize();
         $.ajaxFileUpload({
-            url: "${ctxA}/push/sys/import?"+data,
+            url: "${ctxA}/push/import?"+data,
             secureuri: false,
             fileElementId: "importexcel",
             dataType: "json",
@@ -186,7 +198,7 @@
                 $("#btnSubmit").attr("disabled",false);
                 var data = eval("("+f+")");
                 if(data.code == 1){
-                    window.location.href="${ctxA}/push/list";
+                    window.location.href="${ctxA}/push/sys/list";
                 }else{
                     top.layer.alert(data.msg,{icon: 5});
                 }

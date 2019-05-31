@@ -20,7 +20,7 @@ public class DictUtil {
 	public static List<Dict> getDictList(String dictType) {
 		DictService dictService = AppContext.getBean(DictService.class);
 		List<Dict> dictList = cache.get(dictType);
-		if (dictList == null || dictList.size() == 0) {
+		if (dictList != null || dictList.size() == 0) {
 			dictList = dictService.queryDictByDictType(dictType);
 			if (dictList == null) {
 				dictList = new ArrayList<Dict>();

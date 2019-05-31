@@ -4,7 +4,7 @@
 <html>
 <head>
     <title></title>
-    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,ocupload"/>
+    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,ocupload,common"/>
     <!--  -->
     <style type="text/css">
         .upload_button{list-style:none}
@@ -36,7 +36,10 @@
             <label class="control-label">轮播位置：</label>
             <div class="controls">
                 <select  name="bannerType" id="bannerType" class="selectpicker show-tick form-control valid" descripe="请选择轮播位置" style="width: 15%;">
-
+                    <option value="">请选择</option>
+                    <c:forEach items="${bannerType}" var="type">
+                        <option value="${type.dicVal}" ${not empty banner && banner.bannerType==type.dicVal?"selected":''}>${type.dicCode}</option>
+                    </c:forEach>
                 </select>
             </div>
         </div>
@@ -90,20 +93,20 @@
         <div class="control-group">
             <label class="control-label">轮播描述：</label>
             <div class="controls">
-                <input type="text" class="form-control"  type="text" name="remark" id="remark" maxlength="100" value="${banner.remark}" ></input>
+                <input type="text" class="form-control"  type="text" name="remark" id="remark" maxlength="100" style="width:50%" value="${banner.remark}" ></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">序号：</label>
             <div class="controls">
-                <input type="text" class="form-control" type="text" placeholder="不填默认为0" name="sort" id="sort" maxlength="6" value="${banner.sort}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' ></input>
+                <input type="text" class="form-control" type="text"  name="sort" id="sort" maxlength="6" value="${banner.sort}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' ></input>
             </div>
         </div>
         <div class="form-actions">
             <shiro:hasPermission name="market:banner:edit">
-                <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;"/>&nbsp;
+                <a id="btnSubmit" class="btn btn-primary" onclick="save()" >保存</a>
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/market/banner/list?appId=${banner.appId}'"/>
+            <a id="btnCancel" class="btn" type="button"  onclick="window.location.href='${ctxA}/market/banner/list?appId=${banner.appId}'">返回</a>
         </div>
     </form:form>
 
@@ -149,7 +152,7 @@
             return false;
         }
         if( $("#sort").val()!='' && !isNumber($("#sort").val())){
-            top.layer.alert("请输入正确数字", {icon: 5});
+            top.layer.alert("序号为大于0的自然数", {icon: 5});
             return false;
         }
         var redirectType = $('input[name="redirectType"]:checked').val();

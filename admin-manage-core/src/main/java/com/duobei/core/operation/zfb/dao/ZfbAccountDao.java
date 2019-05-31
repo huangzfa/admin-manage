@@ -25,7 +25,11 @@ public interface ZfbAccountDao {
 
     int update(ZfbAccountVo zfbAccountVo);
 
-    int countByIsEnableAndProductId(@Param("productId") Integer productId, @Param("isEnable") int isEnable_yes);
+    /**
+     * 同产品是否有相同的支付宝账号
+     * @return
+     */
+    int countByAccount(ZfbAccount zfbAccount);
 
     ZfbAccount getByAccount(@Param("account")  String account);
 }

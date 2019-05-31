@@ -13,5 +13,7 @@ public class PushRecordVo extends PushRecord{
 
     private String productName;
 
+    private String appName;
+
     private String addOperatorName;
 }

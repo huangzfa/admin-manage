@@ -36,6 +36,13 @@ public interface CouponService {
     List<Coupon> getByProductId(Integer productId);
 
     /**
+     * 查询有效期内优惠券
+     * @param productId
+     * @return
+     */
+    List<Coupon> getValidCoupon(Integer productId);
+
+    /**
      *
      * @param couponId
      * @return

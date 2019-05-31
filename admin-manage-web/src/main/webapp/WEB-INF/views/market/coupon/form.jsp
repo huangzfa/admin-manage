@@ -24,7 +24,7 @@
         <div class="control-group">
             <label class="control-label">优惠券名称：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写优惠券名称" type="text" name="couponName" id="couponName" maxlength="10" value="${coupon.couponName}" style="width: 300px;"></input>
+                <input type="text" class="form-control valid" descripe="请填写优惠券名称" type="text" name="couponName" id="couponName" maxlength="16" value="${coupon.couponName}" style="width: 300px;"></input>
             </div>
         </div>
         <div class="control-group">
@@ -100,7 +100,7 @@
         <div class="control-group">
             <label class="control-label">使用说明：</label>
             <div class="controls">
-                <input type="text" class="form-control" type="text" name="useExplain" id="useExplain" maxlength="20" value="${coupon.useExplain}" style="width: 300px;">
+                <input type="text" class="form-control" type="text" name="useExplain" id="useExplain" maxlength="100" value="${coupon.useExplain}" style="width: 600px;">
             </div>
         </div>
         <div class="form-actions">

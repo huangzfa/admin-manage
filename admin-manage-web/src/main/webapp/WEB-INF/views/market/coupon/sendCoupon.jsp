@@ -89,7 +89,7 @@
 
     function productChange() {
         $("#couponId").children().remove();
-        jQuery.post("${ctxA}/market/coupon/getByProductId",{'productId':$("#productId").val()}, function(data) {
+        jQuery.post("${ctxA}/market/coupon/getValidCoupon",{'productId':$("#productId").val()}, function(data) {
             for(var i = 0 ;i< data.list.length;i++){
                 $("#couponId").append("<option value='"+data.list[i].id+"'>"+data.list[i].couponName+"</option>");
             }

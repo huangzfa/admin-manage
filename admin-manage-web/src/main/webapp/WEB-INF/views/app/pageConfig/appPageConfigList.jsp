@@ -38,7 +38,6 @@
             }else{
                 $("#appId").val(list[0].id);
             }
-            $('#menuOperation').attr("href","${ctxA}/app/pageConfig/form?appId="+ $("#appId").val());
             pager=$('#tt').datagrid('getPager');
             pager.pagination({
                 onSelectPage:function(number, size){
@@ -70,7 +69,13 @@
                 dataType:'json',
                 success:function(data){
                     if(data.code==1){
-                        $('#menuOperation').attr("href","${ctxA}/app/pageConfig/form?appId="+ $("#appId").val());
+                        if( data.list.total >4){
+                            $('#menuOperation').attr("href","javascript:void(0)");
+                            $('#menuOperation').css("color","grey");
+						}else{
+                            $('#menuOperation').attr("href","${ctxA}/app/pageConfig/form?appId="+ $("#appId").val());
+                            $('#menuOperation').css("color","#2FA4E7");
+						}
                         $('#tt').datagrid('loadData', data.list);
                         pager.pagination({
                             pageSize: pageSize,//每页显示的记录条数，默认为10
@@ -108,8 +113,30 @@
            }else{
               opStr+='<a class="si-option-a" href="${ctxA}/app/pageConfig/updateStatus?id='+row.id+'&appId='+ $('#appId').val()+'&isEnable='+1+'">启用</a>';
           }
-
+          opStr+="<a class='si-option-a' href='javascript:del(\""+row.id+"\")'>删除</a>";
           return opStr;
+        }
+
+        function del(id){
+            top.$.jBox.confirm("确定删除该菜单吗吗？",'系统提示',function(v,h,f){
+                if(v=='ok'){
+                    jQuery.post("${ctxA}/app/pageConfig/delete", {'id':id},
+                        function(data) {
+                            if (data.code ==1) {
+                                top.layer.alert("操作完成", {
+                                    icon: 6,
+                                    end: function(){
+                                        pageNum = 1;
+                                        getData();
+                                    }
+                                });
+                            } else {
+                                top.layer.alert(data.msg, {icon: 5});
+                            }
+                            return;
+                        }, "json");
+                }
+            })
         }
 	</script>
 </head>

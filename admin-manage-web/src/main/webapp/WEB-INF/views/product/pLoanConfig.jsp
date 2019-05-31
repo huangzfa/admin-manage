@@ -146,7 +146,7 @@
                 $http({
                     method:'post',
                     url:"validSceneCode",
-                    data:{'productId':$scope.loan.productId,'code':code},
+                    data:{'productId':$scope.loan.productId,'code':$("#"+code).val()},
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     transformRequest: function(obj) {
                         var str = [];
@@ -177,6 +177,7 @@
                             if( getIndex(data.list[i].goodsId,$scope) ==-1){
                                 //$apply()用于传播模型的变化。在外部改变了作用域，如果想显示改变后的值，必须调用$apply。
                                 $scope.goods.push(data.list[i]);
+                                $scope.$apply();//刷新数据
                             }
                         }
                         $("#modalGoodsDialog").modal("hide");

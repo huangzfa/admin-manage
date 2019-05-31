@@ -64,6 +64,7 @@
     <br/>
     <form:form id="upgradeForm" modelAttribute="upgrade"  action="${ctxA}/app/upgrade/save" method="post" class="form-horizontal">
         <input type="hidden" name="id" id="id" value="${not empty upgrade.id?upgrade.id:''}">
+        <input type="hidden" id="appselectId" value="${upgrade.appId}">
         <div class="control-group">
             <label class="control-label">产品：</label>
             <div class="controls">
@@ -78,11 +79,8 @@
         <div class="control-group">
             <label class="control-label">应用：</label>
             <div class="controls">
-                <select  name="appId" id="appId" class="selectpicker show-tick form-control valid" descripe="应用未选择，请全部配置完成后保存" style="width: 15%;" onchange="appChange()">
-                    <option value="" pid = "">请选择应用</option>
-                    <c:forEach items="${appList}" var="app">
-                        <option value="${app.id}" pid = "${app.productId}" ${not empty upgrade && upgrade.appId==app.id?"selected":''}>${app.appName}</option>
-                    </c:forEach>
+                <select  name="appId" id="appId" class="selectpicker show-tick form-control valid" descripe="应用未选择，请全部配置完成后保存" style="width: 15%;" >
+
                 </select>
             </div>
         </div>
@@ -185,6 +183,12 @@
 </div>
 </body>
 <script>
+    var appList = [];
+    $(function () {
+        var appLists = '${appList}';
+        appList = eval("("+appLists+")");
+        productChange();
+    })
     function save(){
         var bool = true;
         /*******  验证表单必填项目   ****************/
@@ -232,35 +236,18 @@
             }
         }, "json");
     }
+
     function  productChange() {
-        selectChange();
-        $("#appId").val("");
-    }
-    function selectChange(){
-        var productNow = $("#productId").val()
-        if (productNow == ''){
-            $("#appId option").each(function() {
-                $(this).show();
-            })
-        } else{
-            $("#appId option").each(function() {
-                var pid = $(this).attr("pid")
-                if (pid != '') {
-                    if (productNow != pid) {
-                        $(this).hide();
-                    } else {
-                        $(this).show();
-                    }
-                }
-            })
+        $("#appId").html("");
+        var productId = $("#productId").val();
+        $("#appId").append("<option value=''>请选择应用</option>");
+        for(var i = 0;i <appList.length ;i++){
+            if(appList[i].productId == productId || productId == ""){
+                $("#appId").append("<option value='"+appList[i].id+"'>"+appList[i].appName+"</option>");
+            }
         }
+        $("#appId").val($("#appselectId").val());
     }
-    function appChange() {
-        var pid = $("#appId option:selected").attr("pid");
-        if (pid != '') {
-            $("#productId").val(pid);
-        }
-        selectChange();
-    }
+
 </script>
 </html>

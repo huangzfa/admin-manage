@@ -103,7 +103,7 @@
 
   <!-- 发送优惠券查看优惠券名单 -->
   <select id="getByIds" parameterType="java.util.List" resultType="com.duobei.core.user.user.domain.User">
-    select app_id,user_name_encrypt,product_id from pgy_user
+    select id,app_id,user_name_encrypt,product_id from pgy_user
     where is_delete = 0 and product_id=#{productId} and id
     <foreach collection="userIds" open=" in(" close=")" separator="," item="id">
       #{id}

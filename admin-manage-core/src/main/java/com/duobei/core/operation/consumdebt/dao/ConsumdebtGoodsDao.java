@@ -49,4 +49,10 @@ public interface ConsumdebtGoodsDao {
     int update (ConsumdebtGoodsVo update);
 
     List<ConsumdebtGoodsVo> getAll();
+
+    /**
+     * 查询有效商品数量
+     * @return
+     */
+    int validCount();
 }

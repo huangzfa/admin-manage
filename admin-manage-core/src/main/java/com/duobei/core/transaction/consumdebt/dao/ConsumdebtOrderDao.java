@@ -31,4 +31,18 @@ public interface ConsumdebtOrderDao {
     ConsumdebtOrder getByOrderNo(String value);
 
     int deliveryConsumdebtOrder(ConsumdebtOrder consumdebtOrderDo);
+
+    /**
+     * 根据订单号查询
+     * @param orderNos
+     * @return
+     */
+    List<ConsumdebtOrder> getByOrderNos(@Param("list") List<String> orderNos);
+
+    /**
+     * 批量发货
+     * @param orderNos
+     * @return
+     */
+    int batchDeliver(@Param("list") List<String> orderNos);
 }

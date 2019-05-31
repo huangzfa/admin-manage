@@ -172,6 +172,28 @@
 		return productName;
 	}
 
+    function del(id){
+        top.$.jBox.confirm("确定删除该优惠券吗？",'系统提示',function(v,h,f){
+            if(v=='ok'){
+                jQuery.post("${ctxA}/market/coupon/delete", {'id':id},
+                    function(data) {
+                        if (data.code ==1) {
+                            top.layer.alert("操作完成", {
+                                icon: 6,
+                                end: function(){
+                                    pageNum = 1;
+                                    getData();
+                                }
+                            });
+                        } else {
+                            top.layer.alert(data.msg, {icon: 5});
+                        }
+                        return;
+                    }, "json");
+            }
+        })
+    }
+
 	function add() {
         var productId = $("#productId").val();
 		window.location.href="${ctxA}/market/coupon/form?productId="+productId;
@@ -223,6 +245,7 @@
 		   data-options="idField:'id',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
 		<thead>
 		<tr>
+			<th data-options="field:'id',width:100,align:'center',halign:'center',fixed:true">优惠券ID</th>
 			<th data-options="field:'couponName',width:140,align:'center',halign:'center',fixed:true">优惠券名称</th>
 			<th data-options="field:'productId',width:140,align:'center',halign:'center',fixed:true,formatter:productFormater">所属产品</th>
 			<th data-options="field:'couponType',width:100,align:'center',halign:'center',fixed:true,formatter:typeFormater">优惠券类型</th>

@@ -132,4 +132,19 @@
     </set>
     WHERE is_delete = 0 AND state = 2 AND id = #{id ,jdbcType=BIGINT}
   </update>
+
+
+  <select id="getByOrderNos" parameterType="java.util.List" resultType="com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder">
+     select id,state,order_no,borrow_cash_id,logistics_company,logistics_no,pay_state from tt_consumdebt_order where is_delete = 0 and order_no
+    <foreach collection="list" open=" in(" close=")" separator="," item="orderNo">
+      #{orderNo}
+    </foreach>
+  </select>
+
+  <select id="batchDeliver" parameterType="java.util.List" resultType="java.lang.Integer">
+    update  tt_consumdebt_order set state = 3 where is_delete = 0 and order_no
+    <foreach collection="list" open=" in(" close=")" separator="," item="orderNo">
+      #{orderNo}
+    </foreach>
+  </select>
 </mapper>

@@ -37,7 +37,8 @@
   </select>
 
   <select id="getPage" resultType="com.duobei.core.operation.coupon.domain.Coupon" parameterType="com.duobei.core.operation.coupon.domain.criteria.CouponCriteria">
-    SELECT   * FROM yy_coupon
+    SELECT   id, product_id , coupon_name, coupon_type,limit_amount, use_explain,  quota,  quota_send,
+     person_limit_count,  expiry_type, valid_days,gmt_start,gmt_end,amount/100 as amount FROM yy_coupon
     where is_delete = 0 and product_id=#{productId}
     <if test="couponType != null and couponType!=''">
       AND coupon_type = #{couponType,jdbcType=VARCHAR}
@@ -89,6 +90,11 @@
 
   <select id="getByProductId" resultType="com.duobei.core.operation.coupon.domain.Coupon" parameterType="java.lang.Integer">
     SELECT * FROM yy_coupon where is_delete = 0 and product_id = #{productId}
+    order by id  desc
+  </select>
+
+  <select id="getValidCoupon" resultType="com.duobei.core.operation.coupon.domain.Coupon" parameterType="java.lang.Integer">
+    SELECT * FROM yy_coupon where is_delete = 0 and product_id = #{productId} and  ((expiry_type =1 and gmt_start > now()) or (((expiry_type = 0) or ( expiry_type = 1 and gmt_end > NOW() and gmt_start &lt; NOW()))))
     order by id  desc
   </select>
 

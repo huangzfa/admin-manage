@@ -249,12 +249,14 @@
 </body>
 <script>
   var picData = []
-  let chooseData = $("#imgUrls").val()
+  let chooseData = $("#imgUrls").val();
+  var imgLength = 0;
   if(chooseData){
-    chooseData = chooseData.split(',')
+      chooseData = chooseData.split(',');
+      imgLength = chooseData.length
   }
-  var imgLength = 0
-  if (chooseData.length > 0) {
+
+  if ( imgLength > 0) {
     for (let i = 0; i < chooseData.length; i++) {
       let data = {
         url: chooseData[i]
@@ -387,6 +389,10 @@
           }
       })
       if( !bool ){
+          return false;
+      }
+      if (imgLength > 15) {
+          top.layer.alert("教程最多只能上传十五张图片", {icon: 5});
           return false;
       }
       $("#btnSubmit").attr("disabled",true);

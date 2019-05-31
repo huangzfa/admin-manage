@@ -1,6 +1,7 @@
 package com.duobei.console.web.controller.market;
 
 import com.alibaba.fastjson.JSON;
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
@@ -144,7 +145,7 @@ public class BannerController extends BaseController {
                 App app = appService.getAppById(entity.getAppId());
                 entity.setProductId(app.getProductId());
                 //默认禁用
-                entity.setIsEnable(0);
+                entity.setIsEnable(BizConstant.INT_ZERO);
                 entity.setAddOperatorId(credential.getOpId());
                 entity.setAddTime(entity.getModifyTime());
                 //新增

@@ -29,11 +29,7 @@ public class PushSmsThread implements Callable<Map<String,Object>> {
 
         //营销短信发送
         HashMap<String, Object> map = new HashMap<>();
-        map.put("appKey", appKey);
-        map.put("mobile", Joiner.on(",").join(phoneList));
-        map.put("content",content);
-        map.put("title",title);
-        map.put("businessCode",businessCode);
+        message_local.set(map);
         SmsRecordService smsRecordService = (SmsRecordService) BeanUtil.getBean("smsRecordService");
         try {
             message_local.get().put("appKey", appKey);
@@ -46,6 +42,10 @@ public class PushSmsThread implements Callable<Map<String,Object>> {
             log.error("批量入smsRecord失败:"+e.getMessage());
         }
         if( GlobalConfig.isProdEnvironment()){
+            message_local.get().put("appKey", appKey);
+            message_local.get().put("mobile", Joiner.on(",").join(phoneList));
+            message_local.get().put("content",content);
+            message_local.get().put("businessCode",businessCode);
             String result = OkHttpUtil.okHttpPostJson(GlobalConfig.getMessageUrl(), JSON.toJSONString(map));
             log.info("推送结果："+result);
         }
@@ -56,8 +56,6 @@ public class PushSmsThread implements Callable<Map<String,Object>> {
     private List<Object> phoneList;
 
     private String content;
-
-    private String title;
 
     private String appKey;
 

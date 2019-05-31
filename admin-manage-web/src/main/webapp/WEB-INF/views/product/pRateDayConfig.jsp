@@ -18,7 +18,7 @@
         </div>
         <div class="control-group" ng-repeat="x in rateDay">
             <label class="control-label col-sm-1">利率{{x.dayRate}}：</label>
-            <input type="text" class="form-control valid checkTerm" descripe="请填写借款利率对应天数配置"  ng-model="x.borrowDays"  maxlength="12" value="" onkeyup='this.value=this.value.replace(/[^0-9,]/g,\"\")'></input>
+            <input type="text" class="form-control valid checkTerm" descripe="请填写借款利率对应天数配置"  ng-model="x.borrowDays"  maxlength="12" value="" onkeyup=this.value=this.value.replace(/[^\d\,]/g,'')></input>
         </div>
         <div class="control-group">
             <label class="control-label"><h5>续借配置</h5></label>

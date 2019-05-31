@@ -38,47 +38,35 @@
   </select>
   
   <select id="countByCriteria" parameterType="com.duobei.core.manage.auth.domain.criteria.UserCriteria" resultType="java.lang.Integer">
-  	SELECT
-	  COUNT(*)
-	FROM aa_organ org,
-	  aa_operator o,aa_operator_role b,aa_role c
-	WHERE org.path LIKE CONCAT('%',#{pathLike},'%')
-	    AND org.organ_id = o.organ_id
-	    and o.op_id=b.op_id
-	    and b.role_id=c.role_id
-	    AND o.is_delete = 0
-	    <if test="loginName != null and loginName != ''">
-	      AND o.login_name =#{loginName}
-	    </if>
-	    <if test="realName != null and realName != ''">
-	      AND o.real_name LIKE CONCAT('%',#{realName},'%')
-	    </if>
-	    <if test="roleName != null and roleName != ''">
+	  select count(*) from (select  count(*) from aa_operator o left join aa_organ org on o.organ_id=org.organ_id
+	  left join aa_operator_role b on o.op_id=b.op_id left join aa_role c on b.role_id=c.role_id
+	  where o.is_delete = 0
+	  <if test="loginName != null and loginName != ''">
+		  AND o.login_name =#{loginName}
+	  </if>
+	  <if test="realName != null and realName != ''">
+		  AND o.real_name=#{realName}
+	  </if>
+	  <if test="roleName != null and roleName != ''">
 		  AND c.role_name =#{roleName}
-	    </if>
+	  </if>
+	  GROUP BY o.op_id ORDER BY o.add_time) as a
   </select>
   
   <select id="queryOperatorList" parameterType="com.duobei.core.manage.auth.domain.criteria.UserCriteria" resultMap="OperatorVoResultMap">
-	SELECT
-	  <include refid="Base_Column_List" />,
-	  org.organ_name AS organName
-	FROM aa_organ org,
-	  aa_operator o,aa_operator_role b,aa_role c
-	WHERE org.path LIKE CONCAT('%',#{pathLike},'%')
-	      AND org.organ_id = o.organ_id
-	      and o.op_id=b.op_id
-	      and b.role_id=c.role_id
-	      AND o.is_delete = 0
-	      <if test="loginName != null and loginName != ''">
-	        AND o.login_name =#{loginName}
-	      </if>
-	      <if test="realName != null and realName != ''">
-		     AND o.real_name LIKE CONCAT('%',#{realName},'%')
-		  </if>
-		  <if test="roleName != null and roleName != ''">
-			  AND c.role_name =#{roleName}
-		  </if>
-	ORDER BY o.add_time
+	  select  o.*,org.organ_name AS organName from aa_operator o left join aa_organ org on o.organ_id=org.organ_id
+	  left join aa_operator_role b on o.op_id=b.op_id left join aa_role c on b.role_id=c.role_id
+	  where o.is_delete = 0
+	  <if test="loginName != null and loginName != ''">
+		  AND o.login_name =#{loginName}
+	  </if>
+	  <if test="realName != null and realName != ''">
+		  AND o.real_name=#{realName}
+	  </if>
+	  <if test="roleName != null and roleName != ''">
+		  AND c.role_name =#{roleName}
+	  </if>
+	  GROUP BY o.op_id ORDER BY o.add_time
 	<if test="pagesize != 0">
 		LIMIT #{offset}, #{pagesize}
 	</if>

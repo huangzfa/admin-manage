@@ -9,6 +9,8 @@ import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.sys.domain.OssUploadResult;
+import com.duobei.core.manage.sys.service.CommonService;
 import com.duobei.core.operation.zfb.domain.ZfbAccount;
 import com.duobei.core.operation.zfb.domain.criteria.ZfbAccountCriteria;
 import com.duobei.core.operation.zfb.service.ZfbAccountService;
@@ -56,6 +58,8 @@ public class RepaymentOfflineController extends BaseController{
     private ZfbAccountService zfbAccountService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CommonService commonService;
 
 
     @RequiresPermissions("repayment:offline:view")
@@ -189,12 +193,14 @@ public class RepaymentOfflineController extends BaseController{
             if( file.getSize()>1048576){
                 throw new TqException("文件太大,请分批导入");
             }
-            String curProjectPath = "/home/admin/file/offline";
-            String fileName = curProjectPath + System.currentTimeMillis()+orgname.substring(orgname.lastIndexOf("."),orgname.length());
-            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(fileName));
             InputStream in = file.getInputStream();
             List<RepaymentOfflineBo> list = ImportExcelUtil.covertExcelToClass(in, orgname,
                     Constants.BILLING_DETAIL_IMPORT, RepaymentOfflineBo.class, 3, 1);
+            //上传文件到oss
+           /* OssUploadResult uploadResult = commonService.uploadFile(file);
+            if( !uploadResult.isSuccess()){
+                return failJsonResult(uploadResult.getMsg());
+            }*/
             String afbAccount = ImportExcelUtil.getAlipayNo(file.getInputStream(),orgname);
             ZfbAccount account = zfbAccountService.getByAccount(afbAccount);
             if( account == null ){

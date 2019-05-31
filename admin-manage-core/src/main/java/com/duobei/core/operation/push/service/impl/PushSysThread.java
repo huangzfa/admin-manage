@@ -28,7 +28,7 @@ public class PushSysThread implements Callable<Map<String,Object>> {
         pushMap.put("isNotice",true);//通知
         pushMap.put("isPushAll",false);//推送所有人
         pushMap.put("title",record.getPushTitle());//推送标题
-        pushMap.put("plateforms","1,2");//推送平台
+        pushMap.put("plateforms",plateforms);//推送平台
         pushMap.put("alias", Joiner.on(",").join(userList));
         log.info("========================="+ JSON.toJSONString(pushMap));
         if(GlobalConfig.isProdEnvironment()){
@@ -43,4 +43,6 @@ public class PushSysThread implements Callable<Map<String,Object>> {
     private PushRecord record;
 
     private String appKey;
+
+    private String plateforms;
 }

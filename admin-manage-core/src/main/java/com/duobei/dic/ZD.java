@@ -321,17 +321,17 @@ public interface ZD {
 	/**
 	 *  连接类型-URL- 
 	 */
-    public String redirectType_url = "url";
+    public String redirectType_url = "1";
 	
 	/**
 	 *  连接类型-商品- 
 	 */
-    public String redirectType_shop = "shop";
+    public String redirectType_shop = "2";
 	
 	/**
 	 *  连接类型-无连接- 
 	 */
-    public String redirectType_no = "no";
+    public String redirectType_no = "0";
 	
 	/**
 	 *  商品图片类型-轮播图- 

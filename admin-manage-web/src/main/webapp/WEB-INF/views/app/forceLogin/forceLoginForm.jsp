@@ -4,7 +4,7 @@
 <html>
 <head>
     <title></title>
-    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui,ajaxfileupload"/>
+    <sys:jscss jscss="jquery1.11.3,webfont,bootstrap,si,css,easyui"/>
     <!--  -->
     <style type="text/css">
 
@@ -36,6 +36,10 @@
 <style>
 </style>
 <script>
+    var pager;
+    var pageSize=${cfg:getPageSize()};
+    var pageList=[pageSize,30,50];
+    var pageNum =1;
     $(function(){
         var appLists ='${appLists}';
         var appList = eval("("+appLists+")");
@@ -48,6 +52,14 @@
         }else{
             $("#appId").val(appList[0].id);
         }
+        pager=$('#tt').datagrid('getPager');
+        pager.pagination({
+            onSelectPage:function(number, size){
+                pageSize = size;
+                pageNum = number;
+                getData();
+            }
+        });
         //加载第一页数据
         getData();
         $('#search').click(function(){

@@ -29,12 +29,12 @@
                 <input type="text" class="form-control valid" descripe="请填写借款额度范围" ng-model="loan.showMaxAmount" maxlength="8"  onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></input>
             </div>
         </div>
-        <div class="control-group">
+        <%--<div class="control-group">
             <label class="control-label">央行基准年化利率：</label>
             <div class="controls">
                 <input type="text" class="form-control valid" descripe="请填写央行基准年化利率" ng-model="loan.baseBankRate" maxlength="8"  onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')"></input>
             </div>
-        </div>
+        </div>--%>
         <div class="control-group">
             <label class="control-label">手续费率（日）：</label>
             <div class="controls">
@@ -74,6 +74,8 @@
                                 </td>
                                 <td><input type="text" descripe="有效期只能为正整数" ng-model="x.validVal" ng-disabled="{{x.isEnable ==0}}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'>{{x.validUnit==0?'小时':'天'}}</td>
                                 <td><input type="text" descripe="排序只能为正整数" style="background-color:${auth.authState==0?'#e5e5e5':''}" ng-model="x.authSort" ng-disabled="{{x.isEnable ==0}}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></td>
+                                <td><button id="deleteGoods" class="btn btn-warning"  ng-click="deleteGoods('{{x.id}}')" >删除</button></td>
+
                             </tr>
                     </tbody>
                 </table>
@@ -103,6 +105,10 @@
     formApp.controller('formCtrl', function($scope, $http) {
         $scope.loan = loan;
         $scope.auths = auths;
+        $scope.deleteGoods = function(id) {
+            //删除此条记录
+            $scope.auths.splice($.inArray(id, $scope.auths), 1);
+        };
         $scope.save = function() {
             var bool = true;
             /*******  验证表单必填项目   ****************/

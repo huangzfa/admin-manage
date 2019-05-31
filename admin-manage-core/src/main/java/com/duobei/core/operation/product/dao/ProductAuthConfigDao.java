@@ -19,4 +19,6 @@ public interface ProductAuthConfigDao {
     int save(ProductAuthConfig record);
 
     List<ProductAuthConfigVo> getByProductId(@Param("productId") Integer productId);
+
+    void deleteByProductId(@Param("productId") Integer productId);
 }

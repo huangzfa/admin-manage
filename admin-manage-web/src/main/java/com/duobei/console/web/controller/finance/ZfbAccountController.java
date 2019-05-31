@@ -1,6 +1,7 @@
 package com.duobei.console.web.controller.finance;
 
 import com.alibaba.fastjson.JSON;
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
@@ -201,6 +202,13 @@ public class ZfbAccountController extends BaseController {
                 validAuthData(zfbAccount.getProductId());
             }else{
                 throw new TqException("数据操作权限不足");
+            }
+            ZfbAccount record = zfbAccountService.queryZfbAccountById(zfbAccount.getId());
+            if( record == null ){
+                throw new TqException("账号不存在");
+            }
+            if( record.getIsEnable().equals(BizConstant.INT_ONE)){
+                throw new TqException("账号启用中，无法删除");
             }
             zfbAccount.setModifyOperatorId(credential.getOpId());
             zfbAccount.setModifyTime(new Date());

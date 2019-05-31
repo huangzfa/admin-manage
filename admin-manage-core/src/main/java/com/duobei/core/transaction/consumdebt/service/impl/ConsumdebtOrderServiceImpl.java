@@ -1,6 +1,8 @@
 package com.duobei.core.transaction.consumdebt.service.impl;
 
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.ImportExcelUtil;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.BatchDeliveryResultVo;
 import com.duobei.common.vo.ListVo;
@@ -13,15 +15,21 @@ import com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrderExample;
 import com.duobei.core.transaction.consumdebt.domain.criteria.ConsumdebtOrderCriteria;
 import com.duobei.core.transaction.consumdebt.domain.vo.ConsumdebtOrderListVo;
 import com.duobei.core.transaction.consumdebt.service.ConsumdebtOrderService;
-import com.duobei.utils.ExcelUtil;
+import com.duobei.utils.BizCacheUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
-import java.util.concurrent.CountDownLatch;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author litianxiong
@@ -31,15 +39,20 @@ import java.util.concurrent.Executors;
 @Service("consumdebtOrderService")
 @Slf4j
 public class ConsumdebtOrderServiceImpl implements ConsumdebtOrderService {
-   @Resource
+    @Resource
     ConsumdebtOrderDao consumdebtOrderDao;
 
-   @Resource
+    @Resource
     ConsumdebtOrderMapper consumdebtOrderMapper;
+    @Resource
+    private BizCacheUtil bizCacheUtil;
 
     @Resource
     ProductDao productDao;
-    private static ExecutorService executor = Executors.newFixedThreadPool(20);
+
+    //创建线程池
+    private static ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
+
     @Override
     public ConsumdebtOrder getByUserIdAndBorrowId(Long userId, Long borrowId) {
         return consumdebtOrderDao.getByUserIdAndBorrowId(userId,borrowId);
@@ -52,7 +65,7 @@ public class ConsumdebtOrderServiceImpl implements ConsumdebtOrderService {
         Long total = queryCount(consumdebtOrderCriteria);
         //如果数量>0则查询列表
         List<ConsumdebtOrderListVo> data = null;
-        if (total > 0 ){
+        if (total > BizConstant.INT_ZERO ){
             data = consumdebtOrderDao.getListByQuery(consumdebtOrderCriteria);
             for (ConsumdebtOrderListVo vo : data){
                 vo.setProductName(product.getProductName());
@@ -114,61 +127,116 @@ public class ConsumdebtOrderServiceImpl implements ConsumdebtOrderService {
         return consumdebtOrderDao.getListByReportQuery(criteria);
     }
 
+
+    /**
+     * 根据订单号批量查询
+     * @param orderNos
+     * @return
+     */
+    @Override
+    public List<ConsumdebtOrder> getByOrderNos(List<String> orderNos){
+        return consumdebtOrderDao.getByOrderNos(orderNos);
+    }
+
+    /**
+     * 批量发货
+     * @param orderNos
+     */
+    @Override
+    public void batchDeliver(List<String> orderNos){
+        consumdebtOrderDao.batchDeliver(orderNos);
+    }
+
+    /**
+     * 导入订单号，批量发货
+     * @param filePath
+     * @return
+     */
     @Override
     public BatchDeliveryResultVo batchDeliveryConsumdebtOrder(String filePath) {
-        Long startTime = System.currentTimeMillis();
-        List<Map<String,Object>> excel = ExcelUtil.loadExcel(filePath, 0);
-        List<ConsumdebtOrder> list=new ArrayList<>();
         BatchDeliveryResultVo result = new BatchDeliveryResultVo();
-        int[] argInt = new int[2];//定义成功失败
-        CountDownLatch latch = new CountDownLatch(excel.size());
-        for (Map<String, Object> map : excel) {
-            Long startTime1 = System.currentTimeMillis();
-            executor.execute(() -> new SimpleRunnAble(argInt,list,map,latch));
-             log.info("线程的运行时间{}",System.currentTimeMillis() - startTime1);
-        }
         try {
-            latch.await();
-        } catch (InterruptedException e) {
-            log.error("线程异常",e);
+            URL url = new URL(filePath);//把远程文件地址转换成URL格式
+            InputStream in = url.openStream();
+            List<List<Object>> listob = ImportExcelUtil.getBankListByExcel(in,filePath);
+            if( listob.size() >1000){
+                result.setSuccess(false);
+                result.setMsg("订单数量最大限制为1000，请分批导入");
+            }
+            in.close();
+            List<Map<String, String>> failOrderNo = new ArrayList<>();//发送失败
+            // 第一遍筛选
+            List<String> orderNos = new ArrayList<>();
+            for (int i = 0; i < listob.size(); i++) {
+                List<Object> lo = listob.get(i); //第行数据
+                //删除空列
+                if( lo.size() == BizConstant.INT_ZERO ){
+                    continue;
+                }
+                String orderNo = String.valueOf(lo.get(0)).replace(" ", "");//第一列
+                //删除空格
+                if( StringUtil.isBlank(orderNo) ){
+                    Map<String, String> map = new HashMap<>();
+                    map.put("orderNo", "");
+                    map.put("msg","订单号为空" );
+                    failOrderNo.add(map);
+                }
+                orderNos.add(orderNo);
+            }
+            List<List<String>> list_list = averageAssign(orderNos, 100);
+            List<Future<List<Map<String, String>>>> resultList = new ArrayList<>();
+            //线程执行类
+            DeliverOrderThread thread = null;
+            for (List<String> temp : list_list){
+                thread = new DeliverOrderThread();
+                thread.setTemp(temp);
+                //启动线程并返回执行结果
+                Future<List<Map<String, String>>> future = executor.submit(thread);
+                resultList.add(future);
+            }
+            //关闭线程
+            //executor.shutdown();
+            for (Future<List<Map<String, String>>> failList : resultList) {
+                try {
+                    failOrderNo.addAll(failList.get());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+            result.setSuccess(true);
+            result.setFailCount(failOrderNo.size());
+            bizCacheUtil.saveObjectList("failOrderNo",failOrderNo);
+            result.setSuccessCount(listob.size() - failOrderNo.size());
+            result.setMsg("操作成功");
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setMsg("excle解析失败");
         }
-        //executor.shutdown();
-        String os = System.getProperty("os.name");
-        String path="/home/admin/project/file/";
-        if(os.toLowerCase().startsWith("win")){
-            path = "D:"+path;
+        return result;
+    }
+    public static List<List<String>> averageAssign(List<String> source, int n){
+        List<List<String>> result=new ArrayList<>();
+        if( source.size()<= n){
+            result.add(source);
+        }else{
+            int index_1 = 0,index_2 = 0;
+            while( index_2< source.size() ){
+                List<String> value=null;
+                index_2 = index_2 + n;
+                if( index_2 >= source.size()){
+                    index_2 = source.size();
+                }
+                value=source.subList(index_1 , index_2);
+                index_1 = index_2;
+                result.add(value);
+            }
         }
-        int start = filePath.lastIndexOf("/");
-        int end = filePath.lastIndexOf(".");
-        String fileName=filePath.substring(start + 1, end)+"失败表单.xls";
-        fileName = fileName.replaceAll(" ","");
-        Map<String, String> titleMap=getTitleMap();
-        ExcelUtil.excelExport(list, titleMap, fileName, path);
-        result.setSuccessCount(argInt[0]);
-        result.setFailCount(argInt[1]);
-        result.setFailFilePath(path+fileName);
-        result.setSuccess(true);
-        result.setMsg("操作成功");
-        log.info("运行时间{}",System.currentTimeMillis() - startTime);
         return result;
     }
 
-    private Map<String, String> getTitleMap() {
-
-        Map<String, String> titleMap=new TreeMap<String, String>(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return 1;
-            }
-        });
-        titleMap.put("orderNo","订单号" );
-        titleMap.put("logisticsNo","运单号" );
-        titleMap.put("logisticsCompany","物流公司" );
-        titleMap.put("closedReason","失败原因" );
-        return titleMap;
-    }
-
-    class SimpleRunnAble implements Runnable {
+   /* class SimpleRunnAble implements Runnable {
         private final Map<String, Object> map;
         private final CountDownLatch latch;
         private final List<ConsumdebtOrder> list;
@@ -215,5 +283,5 @@ public class ConsumdebtOrderServiceImpl implements ConsumdebtOrderService {
             latch.countDown();
             log.info("单个运行时间{}",System.currentTimeMillis() - startTime);
         }
-    }
+    }*/
 }

@@ -5,7 +5,6 @@ import com.duobei.common.enums.ConsumdebtOrderStateEumn;
 import com.duobei.common.enums.ResourceResTypeEumn;
 import com.duobei.common.enums.ResourceResTypeSecEumn;
 import com.duobei.common.exception.TqException;
-import com.duobei.common.util.OSSUtil;
 import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.BatchDeliveryResultVo;
 import com.duobei.common.vo.ListVo;
@@ -18,19 +17,22 @@ import com.duobei.core.manage.sys.service.CommonService;
 import com.duobei.core.manage.sys.utils.DictUtil;
 import com.duobei.core.operation.biz.domain.BizResource;
 import com.duobei.core.operation.biz.service.BizResourceService;
-import com.duobei.core.operation.consume.service.ConsumeLoanConfigService;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.transaction.consumdebt.domain.ConsumdebtOrder;
 import com.duobei.core.transaction.consumdebt.domain.criteria.ConsumdebtOrderCriteria;
 import com.duobei.core.transaction.consumdebt.domain.vo.ConsumdebtOrderListVo;
 import com.duobei.core.transaction.consumdebt.service.ConsumdebtOrderService;
 import com.duobei.dic.ZD;
+import com.duobei.utils.BizCacheUtil;
 import com.duobei.utils.DateUtil;
+import com.duobei.utils.ExcelUtil;
 import com.duobei.utils.ExportUtil;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,11 +44,11 @@ import org.springframework.web.bind.annotation.*;
 import com.duobei.console.web.controller.base.BaseController;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -70,6 +72,9 @@ public class ConsumdebtOrderController extends BaseController {
 
     @Resource
     CommonService commonService;
+
+    @Resource
+    private BizCacheUtil bizCacheUtil;
 
     @InitBinder
     private void initBinder(WebDataBinder b) {
@@ -286,13 +291,7 @@ public class ConsumdebtOrderController extends BaseController {
     @ResponseBody
     public String uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
 
-        String os = System.getProperty("os.name");
-        String path="/home/admin/file/order";
-        if(os.toLowerCase().startsWith("win")){
-           path = "D:"+path;
-        }
-
-        OssUploadResult our = commonService.uploadFileToOssWithPath(file,path);
+        OssUploadResult our = commonService.uploadFile(file);
         return JSON.toJSONString(our);
     }
 
@@ -301,31 +300,27 @@ public class ConsumdebtOrderController extends BaseController {
     @ResponseBody
     public String batchDeliveryConsumdebtOrder(ModelMap model, String filePath){
         logger.info("===============filePath===========" + filePath);
-        BatchDeliveryResultVo result=null;
+        BatchDeliveryResultVo result = new BatchDeliveryResultVo();
         if (filePath!=null) {
             result=consumdebtOrderService.batchDeliveryConsumdebtOrder(filePath);
-            if (result!=null) {
+            /*if (result!=null) {
                 logger.info("batchDelivery ConsumdebtOrder  error with lsdConsumdebtOrderService=" + result);
-                File file=new File(result.getFailFilePath());
-                String failFileName=file.getName();
-                InputStream is;
                 try {
-                    is = new FileInputStream(file);
-                    OssUploadResult uploadFileToOss = commonService.uploadImageToOss(is, failFileName, (int)file.length());
-                    if ("upload inputStream to oss succeed".equals(uploadFileToOss.getMsg())) {
-                        result.setFailFilePath(uploadFileToOss.getUrl());
-                    }
+                    File file=new File(result.getFailFilePath());
+                    FileInputStream fileInputStream = new FileInputStream(file);
+                    OssUploadResult uploadFileToOss = commonService.uploadToOss(fileInputStream,result.getFailFilePath(),file.length());
+                    result.setSuccess(uploadFileToOss.isSuccess());
+                    result.setMsg(uploadFileToOss.getMsg());
                 } catch (FileNotFoundException e) {
                     logger.info("StatisticsAssetDataJob error", e);
                     result.setMsg("文件上传服务器失败");
                 }
             }else {
-                result=new BatchDeliveryResultVo();
                 result.setSuccess(false);
                 result.setMsg("操作失败");
-            }
+            }*/
+
         }else {
-            result=new BatchDeliveryResultVo();
             result.setSuccess(false);
             result.setMsg("请上传物流单号文件");
         }
@@ -335,23 +330,51 @@ public class ConsumdebtOrderController extends BaseController {
 
     @RequiresPermissions(PERMISSIONPRE+"export")
     @RequestMapping(value="/downloadFail",method=RequestMethod.GET)
-    public void downloadFail(@RequestParam("url")String url,HttpServletRequest request,HttpServletResponse response) {
+    public void downloadFail(HttpServletResponse response,String filePath) {
+        Object object = bizCacheUtil.getObjectList("failOrderNo");//获取缓存失败用户
+        if( object == null ){
+            return;
+        }
+        List<Map<String, String>> maps = (List<Map<String, String>>)object;
+        Workbook wb = new HSSFWorkbook();
+        Sheet sheet = wb.createSheet("sheet1");
+        sheet.setColumnWidth((short) 0, (short) 4600);// 设置列宽
+        sheet.setColumnWidth((short) 1, (short) 4600);
 
-        String fileName = url.substring(url.lastIndexOf("/") + 1);
-     /*   String filepath = url.substring(0, url.lastIndexOf("/"));*/
-        try {
-            String encode = URLEncoder.encode(fileName, "UTF-8");
-            //把要下载的文件转成字节数组
-            byte[] byteArray = FileUtils.readFileToByteArray(new File(url));
-            //目的 让浏览器 以附件的形式 下载内容
-            response.setHeader("Content-Disposition", "attachment;filename=" + encode);
-            OutputStream outputStream = response.getOutputStream();
-            IOUtils.write(byteArray, outputStream);
-            outputStream.flush();
-            outputStream.close();
-        } catch (IOException e) {
+        Row row = sheet.createRow((int) 0);
+        row.setHeightInPoints(20);
+        CellStyle style = wb.createCellStyle();
+        Font font=wb.createFont();
+        font.setColor(HSSFColor.RED.index);//HSSFColor.VIOLET.index //字体颜色
+        style.setFont(font);
+        style.setAlignment(HSSFCellStyle.ALIGN_LEFT);//居左
+        Cell cell = row.createCell((short) 0);
+        cell.setCellValue("订单号");
+        cell = row.createCell((short) 1);
+        cell.setCellValue("失败原因");
+        style = wb.createCellStyle();
+        // 第五步，写入到excel
+        for(int i=0;i<maps.size();i++){
+            row = sheet.createRow((int) i + 1);
+            row.setHeightInPoints(20);
+            Map<String,String> map = maps.get(i);
+            // 第四步，创建单元格，并设置值
+            row.createCell((short) 0).setCellValue(map.get("orderNo"));
+            row.createCell((short) 1).setCellValue(map.get("msg"));
+        }
+        try
+        {  	//输出Excel文件
+            OutputStream output=response.getOutputStream();
+            response.reset();
+            response.setHeader("Content-disposition", "attachment; filename=failData.xls");
+            response.setContentType("application/msexcel");
+            wb.write(output);
+            output.close();
+            wb.close();
+        }catch (Exception e)  {
             e.printStackTrace();
         }
+        bizCacheUtil.delCache("failOrder");//清除缓存
     }
 
 }

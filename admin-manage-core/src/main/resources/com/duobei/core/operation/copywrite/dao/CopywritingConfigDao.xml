@@ -33,6 +33,12 @@
     <if test="copywriting1 != null and copywriting1 != ''">
       ,copywriting1 = #{copywriting1}
     </if>
+    <if test="copywriting2 != null">
+      ,copywriting2 = #{copywriting2}
+    </if>
+    <if test="copywriting3 != null">
+      ,copywriting3 = #{copywriting3}
+    </if>
     where is_delete = 0 and id = #{id}
   </update>
 </mapper>

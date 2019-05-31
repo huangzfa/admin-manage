@@ -88,12 +88,12 @@ $(function(){
 			<label class="control-label">账号：</label>
 			<div class="controls">
 				<c:if test="${empty operator.opId}">
-				<form:input path="loginName" maxlength="11" htmlEscape="false" class="input-xlarge" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'/>
+				<form:input path="loginName" maxlength="11" htmlEscape="false" class="input-xlarge" onkeyup='this.value=this.value.replace(/[^0-9]/g,\'\')'/>
 				</c:if>
 				<c:if test="${not empty operator.opId}">
 				<form:input path="loginName" htmlEscape="false" readonly="true" class="input-xlarge"/>
 				</c:if>
-				<span class="help-inline"><font color="red">*</font> 登录账号，只能包括英文字母和数字</span>
+				<span class="help-inline"><font color="red">*</font> 登录账号，只能输入数字</span>
 			</div>
 		</div>
 

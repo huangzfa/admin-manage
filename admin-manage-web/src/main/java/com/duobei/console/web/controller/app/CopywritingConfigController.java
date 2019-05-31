@@ -124,7 +124,6 @@ public class CopywritingConfigController extends BaseController {
             }
 
         }
-
     }
 
     private void validParam(CopywritingConfig entity) throws TqException {
@@ -137,8 +136,6 @@ public class CopywritingConfigController extends BaseController {
         //清除开头空格 结尾空格 换行符
         String copyWrite = entity.getCopywriting1();
         StringUtil.trim(copyWrite);
-        copyWrite.replace("\\n","");
-        copyWrite.replace("\\r","");
         entity.setCopywriting1(copyWrite);
     }
 }

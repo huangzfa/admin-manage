@@ -176,7 +176,7 @@
 	</ul>
 </div>
 
-<div class="si-warp" style="top:95px;">
+<div class="si-warp" style="top:150px;">
 	<sys:message content="${message}" isShowBox="false" />
 	<table id="tt" class="easyui-datagrid"
 		   data-options="idField:'appExamId',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">

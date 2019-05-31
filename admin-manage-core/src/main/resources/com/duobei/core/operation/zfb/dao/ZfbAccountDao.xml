@@ -63,10 +63,11 @@
     where is_delete = 0 and id = #{id}
   </update>
 
-    <select id="countByIsEnableAndProductId" resultType="Integer">
-    select count(id)
-    from yy_zfb_account
-    where is_delete = 0 and product_id = #{productId} and is_enable = #{isEnable}
+    <select id="countByAccount" resultType="Integer" parameterType="com.duobei.core.operation.zfb.domain.ZfbAccount">
+    select count(id) from yy_zfb_account where is_delete = 0 and product_id = #{productId} and account = #{account}
+    <if test="id!=null">
+       and id  not in(#{id})
+    </if>
   </select>
 
   <select id="getByAccount" resultType="com.duobei.core.operation.zfb.domain.ZfbAccount" parameterType="java.lang.String">

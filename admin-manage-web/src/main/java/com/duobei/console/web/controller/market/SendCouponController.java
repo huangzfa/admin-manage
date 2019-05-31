@@ -9,6 +9,8 @@ import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
 import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
+import com.duobei.core.manage.sys.domain.OssUploadResult;
+import com.duobei.core.manage.sys.service.CommonService;
 import com.duobei.core.operation.coupon.domain.CouponSendRecord;
 import com.duobei.core.operation.coupon.domain.criteria.CouponCriteria;
 import com.duobei.core.operation.coupon.domain.criteria.CouponSendRecordCriteria;
@@ -55,6 +57,8 @@ public class SendCouponController extends BaseController {
     private BizCacheUtil bizCacheUtil;
     @Autowired
     private CouponSendRecordService recordService;
+    @Autowired
+    private CommonService commonService;
 
 
     @RequiresPermissions("market:sendCoupon:view")
@@ -119,13 +123,15 @@ public class SendCouponController extends BaseController {
             if( file.getSize()>1048576){
                 throw new TqException("文件太大,请分批导入");
             }
-            String curProjectPath = "/home/admin/file/coupon";
-            String fileName = curProjectPath + System.currentTimeMillis()+orgname.substring(orgname.lastIndexOf("."),orgname.length());
-            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(fileName));
             InputStream in =file.getInputStream();
             List<List<Object>> listob = ImportExcelUtil.getBankListByExcel(in,file.getOriginalFilename());
             in.close();
-            HashMap<String,Object> map = recordService.batchSendCoupon(curProjectPath+fileName,listob,couponId,credential);
+            //上传文件到oss
+            OssUploadResult uploadResult = commonService.uploadFile(file);
+            if( !uploadResult.isSuccess()){
+                return failJsonResult(uploadResult.getMsg());
+            }
+            HashMap<String,Object> map = recordService.batchSendCoupon(uploadResult.getUrl(),listob,couponId,credential);
             Object msg = map.get("msg");
             if( msg != null){
                 return failJsonResult(msg.toString());

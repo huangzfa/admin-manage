@@ -57,6 +57,18 @@ public interface ConsumdebtOrderService {
      */
     BatchDeliveryResultVo batchDeliveryConsumdebtOrder(String filePath);
 
+    /**
+     * 根据订单号批量查询
+     * @param orderNos
+     * @return
+     */
+    List<ConsumdebtOrder> getByOrderNos(List<String> orderNos);
+
+    /**
+     * 批量发货
+     * @param orderNos
+     */
+    void batchDeliver(List<String> orderNos);
 
 
 }

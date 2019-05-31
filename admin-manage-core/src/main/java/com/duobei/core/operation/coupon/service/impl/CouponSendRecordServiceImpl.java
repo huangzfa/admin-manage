@@ -59,8 +59,7 @@ public class CouponSendRecordServiceImpl implements CouponSendRecordService {
     @Autowired
     private CouponSendRecordDao sendRecordDao;
 
-    private ExecutorService executorService = new ThreadPoolExecutor(0,Runtime.getRuntime().availableProcessors() + 1,60L, TimeUnit.SECONDS,
-            new SynchronousQueue<Runnable>());
+    private ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
 
     private PgyDataHandlerService pgyDataHandlerService = new PgyDataHandlerServiceImpl();
     /**

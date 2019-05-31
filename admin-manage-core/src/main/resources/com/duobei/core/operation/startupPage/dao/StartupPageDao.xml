@@ -23,7 +23,7 @@
   <update id="updateById" parameterType="com.duobei.core.operation.startupPage.domain.StartupPage">
     update yy_startup_page
     set modify_time = #{modifyTime} ,modify_operator_id = #{modifyOperatorId}
-    <if test="redirectUrl != null and redirectUrl !=''">
+    <if test="redirectUrl != null">
      ,redirect_url  = #{redirectUrl}
     </if>
     <if test="imgUrl != null and imgUrl !=''">

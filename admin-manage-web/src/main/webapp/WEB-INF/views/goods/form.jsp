@@ -108,7 +108,7 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/goods/list">产品列表</a></li>
+    <li><a href="${ctxA}/goods/list">商品列表</a></li>
     <li class="active">
         <shiro:hasPermission name="goods:list:edit">
             <a href="javascript:void(0);">${not empty goods.id?'修改':'添加'}商户</a>
@@ -134,13 +134,13 @@
         <div class="control-group">
             <label class="control-label">商品名称：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写商品名称" type="text" name="goodsName" id="goodsName" maxlength="64" value="${goods.goodsName}" style="width: 300px;"></input>
+                <input type="text" class="form-control valid" descripe="请填写商品名称" type="text" name="goodsName" id="goodsName" maxlength="30" value="${goods.goodsName}" style="width: 300px;"></input>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">产品图标：</label>
             <div class="controls">
-                <form:hidden path="goodsIcon" htmlEscape="false"/>
+                <input type="hidden" id="goodsIcon" name="goodsIcon" value="${goods.goodsIcon}" class="valid" descripe="请填写产品图标">
                 <div class="thumbImgBox">
                     <img id="imgPic1" class="imgPic1"
                          src="${not empty goods.goodsIcon?goods.goodsIcon:'/static/img/dftimage.png'}" >
@@ -160,7 +160,7 @@
         <div class="control-group">
             <label class="control-label">缩略图：</label>
             <div class="controls">
-                <form:hidden path="thumbnailIcon" htmlEscape="false"/>
+                <input type="hidden" id="thumbnailIcon" name="thumbnailIcon" value="${goods.thumbnailIcon}" class="valid" descripe="请填写缩略图">
                 <div class="thumbImgBox">
                     <img id="imgPic2" class="imgPic2"
                          src="${not empty goods.thumbnailIcon?goods.thumbnailIcon:'/static/img/dftimage.png'}" >
@@ -180,7 +180,7 @@
         <div class="control-group">
             <label class="control-label">商品轮播图：</label>
             <div class="controls">
-                <input type="hidden" id="bannerUrls" name="bannerUrls" value="${bannerUrls}">
+                <input type="hidden" id="bannerUrls" name="bannerUrls" value="${bannerUrls}" class="valid" descripe="请上传轮播图">
                 <div class="img-box" id="imgboxid1">
                 </div>
                 <li class="addPic">
@@ -193,7 +193,7 @@
         <div class="control-group">
             <label class="control-label">商品详情图：</label>
             <div class="controls">
-                <input type="hidden" id="detailUrls" name="detailUrls" value="${detailUrls}">
+                <input type="hidden" id="detailUrls" name="detailUrls" value="${detailUrls}" class="valid" descripe="请上传详情图">
                 <div class="img-box" id="imgboxid2">
                 </div>
                 <li class="addPic">
@@ -230,7 +230,7 @@
         <div class="control-group">
             <label class="control-label">备注：</label>
             <div class="controls">
-                <input type="text" class="form-control"  type="text" name="remark" id="remark" maxlength="250" value="${goods.remark}" ></input>
+                <textarea type="text" class="form-control"  type="text" name="remark" id="remark" maxlength="200"rows="7" cols="20" >${goods.remark}</textarea>
             </div>
         </div>
 
@@ -247,12 +247,14 @@
 
     var enableFileTypes = 'png,jpg,jpeg';
     var bannerArr = [],detailArr = [];//分别定义详情图和轮播图数组
-    let bannerData = $("#bannerUrls").val();
-    if(bannerData){
-        bannerData = bannerData.split(',');
-    }
+    var bannerUrls = '${bannerUrls}';
     var bannerLength = 0;
-    if (bannerData.length > 0) {
+    var detailLength = 0
+    if(bannerUrls !=''){
+        bannerData = bannerUrls.split(',');
+        bannerLength = bannerData.length;
+    }
+    if ( bannerLength > 0) {
         for (let i = 0; i < bannerData.length; i++) {
             let data = {
                 url: bannerData[i]
@@ -261,12 +263,12 @@
         }
         proMiss(bannerArr,'banner',1)
     }
-    let detailData = $("#detailUrls").val();
-    if(detailData){
-        detailData = detailData.split(',')
+    var detailUrls = '${detailUrls}';
+    if(detailUrls!=''){
+        detailData = detailUrls.split(',');
+        detailLength = detailData.length;
     }
-    var detailLength = 0
-    if (detailData.length > 0) {
+    if ( detailLength > 0) {
         for (let i = 0; i < detailData.length; i++) {
             let data = {
                 url: detailData[i]
@@ -317,14 +319,19 @@
         var fl = obj.files.length;
         var type = $(obj).attr("data-type");
         var dataUrl = $(obj).attr("data-url");
-        if (detailLength > 11 || bannerLength > 11) {
-            top.layer.alert("最多只能上传十一张图片", {icon: 5});
-            $("."+dataUrl).val("");
-            return ;
-        }
         if( type == "banner"){
+            if( bannerLength > 4){
+                top.layer.alert("最多只能上传5张图片", {icon: 5});
+                $("."+dataUrl).val("");
+                return ;
+            }
             bannerLength = bannerLength+fl;
         }else{
+            if (detailLength > 29 ) {
+                top.layer.alert("最多只能上传30张图片", {icon: 5});
+                $("."+dataUrl).val("");
+                return ;
+            }
             detailLength = detailLength+fl;
         }
         for (var i = 0; i < fl; i++) {
@@ -448,7 +455,14 @@
             top.layer.alert("请填写正确金额", {icon: 5});
             return false;
         }
-
+        if( bannerLength > 5){
+            top.layer.alert("轮播图最多只能上传5张图片", {icon: 5});
+            return ;
+        }
+        if (detailLength > 30 ) {
+            top.layer.alert("详情图最多只能上传30张图片", {icon: 5});
+            return ;
+        }
         $("#btnSubmit").attr("disabled",true);
         var form=$("#goodsForm");
         var action = form[0].action;

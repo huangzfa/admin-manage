@@ -245,7 +245,7 @@ if(window != top){
 								}else{
 									$sendSmsBtn.removeClass('t');
 									layer.msg(data.msg);
-									resetImgVCode();
+									//resetImgVCode();
 								}
 							},
 							error:function(XMLHttpRequest, textStatus, errorThrown){

@@ -215,13 +215,13 @@
 		<li>
 			<label>轮播位置：</label>
 			<select  name="bannerType" id="bannerType" class="selectpicker show-tick form-control" >
-				<option value="">请选择轮播位置</option>
+				<option value="">全部</option>
 			</select>
 		</li>
 		<li>
 			<label>状态：</label>
 			<select  name="isEnable" id="isEnable" class="selectpicker show-tick form-control" >
-					<option value="">状态</option>
+					<option value="">全部</option>
 					<option value="1">已启用</option>
 					<option value="0">已禁用</option>
 			</select>

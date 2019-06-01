@@ -298,14 +298,13 @@
 
     let url = '${ctxA}/common/uploadImage?maxFileSize=200&enableFileTypes=' + enableFileTypes;
     var fl = obj.files.length;
-    imgLength = imgLength+fl
     if (imgLength > 15) {
-      imgLength = imgLength -fl;
       top.layer.alert("最多只能上传十五张图片", {icon: 5});
       $("#xdaTanFileImg").val("");
       return ;
     }
-    for (var i = 0; i < fl; i++) {
+      imgLength = imgLength+fl
+      for (var i = 0; i < fl; i++) {
       var file = obj.files[i];
       let data = new FormData();
       data.append("file", file);
@@ -388,11 +387,11 @@
               return false;
           }
       })
-      if( !bool ){
-          return false;
-      }
-      if (imgLength > 15) {
+      if (imgLength > 5) {
           top.layer.alert("教程最多只能上传十五张图片", {icon: 5});
+          return fal;
+      }
+      if( !bool ){
           return false;
       }
       $("#btnSubmit").attr("disabled",true);

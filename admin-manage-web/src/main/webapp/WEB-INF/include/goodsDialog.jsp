@@ -63,7 +63,7 @@
             for(j = 0,len=result.list.length; j < len; j++) {
                 var goods = result.list[j];
                 var disabled = "";
-                if(goods.state == 0 || goods.checked=="checked"){
+                if(goods.checked=="checked"){
                     disabled = "disabled";
                 }
                 $("#modalGoodsDialog #rows").append("<tr>"

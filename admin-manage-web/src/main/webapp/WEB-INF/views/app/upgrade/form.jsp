@@ -161,13 +161,13 @@
         <div class="control-group">
             <label class="control-label">部分升级所需的最小版本：</label>
             <div class="controls">
-                <input type="text" class="form-control" type="text" placeholder="必填"  maxlength="11" descripe="部分升级所需的最小版本未填,请全部配置完成后保存"  name="minVersionNumber" id="minVersionNumber" value="${upgrade.minVersionNumber}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' />
+                <input type="text" class="form-control" type="text"   maxlength="11" descripe="部分升级所需的最小版本未填,请全部配置完成后保存"  name="minVersionNumber" id="minVersionNumber" value="${upgrade.minVersionNumber}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' />
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">部分升级所需的最大版本：</label>
             <div class="controls">
-                <input type="text" class="form-control" type="text" placeholder="必填"  maxlength="11" descripe="部分升级所需的最大版本未填,请全部配置完成后保存"  name="maxVersionNumber" id="maxVersionNumber" value="${upgrade.maxVersionNumber}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' />
+                <input type="text" class="form-control" type="text" maxlength="11" descripe="部分升级所需的最大版本未填,请全部配置完成后保存"  name="maxVersionNumber" id="maxVersionNumber" value="${upgrade.maxVersionNumber}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")' />
             </div>
         </div>
 

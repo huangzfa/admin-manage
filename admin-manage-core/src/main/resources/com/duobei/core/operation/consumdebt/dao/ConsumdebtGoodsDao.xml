@@ -25,11 +25,17 @@
 
 
     <select id="getAll" resultType="com.duobei.core.operation.consumdebt.domain.vo.ConsumdebtGoodsVo">
-          SELECT * FROM yy_consumdebt_goods where is_delete = 0 and state = 1 order by sort desc,id desc;
+          SELECT * FROM yy_consumdebt_goods where is_delete = 0 order by sort desc,id desc;
     </select>
 
     <select id="validCount" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM yy_consumdebt_goods where is_delete = 0  and state = 1;
+        SELECT COUNT(*) FROM yy_consumdebt_goods where is_delete = 0  and state = 1
+        <if test="list!=null">
+            and id
+            <foreach collection="list" open=" in(" close=")" separator="," item="id">
+                #{id}
+            </foreach>
+        </if>
     </select>
 
     <insert id="save" parameterType="com.duobei.core.operation.consumdebt.domain.vo.ConsumdebtGoodsVo">

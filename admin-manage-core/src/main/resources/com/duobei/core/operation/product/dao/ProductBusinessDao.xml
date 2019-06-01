@@ -9,8 +9,22 @@
         select * from yy_product_business where product_id=#{productId,jdbcType=INTEGER} and state=1;
     </select>
 
+    <select id="getByProductIds" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.product.domain.vo.ProductBusinessVo">
+        select  a.*,b.biz_name from yy_product_business a left join yy_business b on a.biz_code=b.biz_code
+        where 1=1 and product_id
+        <foreach collection="ids" open=" in(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
     <select id="getByBizCode" parameterType="com.duobei.core.operation.product.domain.ProductBusiness" resultType="com.duobei.core.operation.product.domain.ProductBusiness">
         select * from yy_product_business where product_id=#{productId,jdbcType=INTEGER} and biz_code=#{bizCode,jdbcType=VARCHAR} order by id  desc limit 1;
+    </select>
+
+    <select id="getByBizCodes" parameterType="java.lang.Integer"  resultType="com.duobei.core.operation.product.domain.ProductBusiness">
+        select * from yy_product_business where 1=1 and biz_code
+        <foreach collection="bizCodes" open=" in(" close=")" separator="," item="code">
+            #{code}
+        </foreach>
     </select>
 
     <update id="updateState">

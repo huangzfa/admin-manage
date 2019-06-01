@@ -20,6 +20,12 @@
         <if test="merchantName != null and merchantName != '' ">
             and b.merchant_name = #{merchantName,jdbcType=INTEGER}
         </if>
+        <if test="productList != null">
+           and a.id
+            <foreach collection="productList" open=" in(" close=")" separator="," item="id">
+                #{id}
+            </foreach>
+        </if>
         order by a.id desc
         <if test="pagesize != 0">
             LIMIT #{offset}, #{pagesize}
@@ -41,11 +47,21 @@
         <if test="merchantName != null and merchantName != '' ">
             and b.merchant_name = #{merchantName,jdbcType=INTEGER}
         </if>
+        <if test="productList != null">
+            and a.id
+            <foreach collection="productList" open=" in(" close=")" separator="," item="id">
+                #{id}
+            </foreach>
+        </if>
         order by a.id desc
     </select>
 
     <select id="getById" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.product.domain.Product">
-        SELECT * FROM yy_product  where state = 1 and  id = #{id,jdbcType=INTEGER}
+        SELECT * FROM yy_product  where   id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getByMerchantId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.product.domain.Product">
+        SELECT * FROM yy_product  where  merchant_id = #{merchantId}
     </select>
 
     <select id="getByCode" parameterType="java.lang.String" resultType="com.duobei.core.operation.product.domain.Product">
@@ -53,12 +69,12 @@
     </select>
 
     <select id="getAll" resultType="com.duobei.core.operation.product.domain.Product">
-        SELECT * FROM yy_product  where state = 1 order by id desc;
+        SELECT * FROM yy_product   order by id desc;
     </select>
 
     <!-- 根据多个产品id查询 -->
     <select id="getByProductIds" resultType="com.duobei.core.operation.product.domain.Product">
-        SELECT * FROM yy_product  where state = 1 and id in
+        SELECT * FROM yy_product  where  id in
         <foreach collection="productIds" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>

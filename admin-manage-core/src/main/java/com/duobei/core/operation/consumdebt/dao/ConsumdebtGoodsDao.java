@@ -54,5 +54,5 @@ public interface ConsumdebtGoodsDao {
      * 查询有效商品数量
      * @return
      */
-    int validCount();
+    int validCount(@Param("list") List<Integer> goodIdList);
 }

@@ -167,7 +167,7 @@ public class CouponSendRecordServiceImpl implements CouponSendRecordService {
         }
         List<Long> userIds = new ArrayList<>();
         // 第一遍筛选
-        for (int i = 1; i < listob.size(); i++) {
+        for (int i = 0; i < listob.size(); i++) {
             List<Object> lo = listob.get(i); //第行数据
             //删除空列
             if( lo.size() == BizConstant.INT_ZERO ){

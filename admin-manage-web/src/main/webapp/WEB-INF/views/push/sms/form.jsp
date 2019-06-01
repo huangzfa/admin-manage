@@ -25,7 +25,7 @@
         <input type="hidden" name="id" value="${not empty push.id?push.id:''}">
         <input type="hidden" name="productId" id="productId" value="${productId}">
         <input type="hidden" name="pushType" value="2">
-        <input type="hidden" name="platform" id="platform" value="user_id">
+        <input type="hidden" name="platform" id="platform" value="android,ios">
         <div class="control-group">
             <label class="control-label">选择应用：</label>
             <div class="controls">

@@ -149,12 +149,14 @@
     function optionformatter(value,row,index){
             var opStr='';
             <shiro:hasPermission name="app:upgrade:edit">
-            opStr+='<a class="si-option-a" href="${ctxA}/app/upgrade/form?id='+row.id+'">编辑</a>';
-       		 opStr+="<a class='si-option-a' href='javascript:del(\""+row.id+"\")'>删除</a>";
-			var isEnable = 0;
-        	if( row.state == 0) {isEnable = 1;}
-
-        opStr+="<a class='si-option-a' href='javascript:editState(\""+isEnable+"\" ,\""+row.id+"\"   )'>"+(row.state==0?"启用":"禁用")+"</a>";
+                opStr+='<a class="si-option-a" href="${ctxA}/app/upgrade/form?id='+row.id+'">编辑</a>';
+       		    opStr+="<a class='si-option-a' href='javascript:del(\""+row.id+"\")'>删除</a>";
+				var isEnable = 1;
+				if( row.state == 1) {
+					isEnable = 0;
+				}
+                var text = row.state==1?"禁用":"启用";
+                opStr+="<a class='si-option-a' href='javascript:editState(\""+isEnable+"\" ,\""+row.id+"\",\""+text+"\")'>"+text+"</a>";
             </shiro:hasPermission>
             return opStr;
 	}
@@ -182,14 +184,9 @@
         })
     }
 
-    function editState(state,id) {
-        $('#tt').datagrid('loading');
-        var title = "确定启用？";
-        if(status == 1){
-            title = "确定禁用？";
-        }
+    function editState(state,id,text) {
+        var title = "确定"+text+"？";
         top.$.jBox.confirm(title,'系统提示',function(v,h,f){
-            $('#tt').datagrid('loaded');
             if(v=='ok'){
                 jQuery.post('${ctxA}/app/upgrade/editState',{'state':state,'id':id},
                     function(data) {

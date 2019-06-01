@@ -252,10 +252,10 @@ public class ExportReportController extends BaseController {
         titleMap.put("gmtPlanRepayment", "预计还款时间");
         titleMap.put("renewalNum", "续借次数");
         titleMap.put("poundageRate", "借钱手续费率");
-        titleMap.put("waitAmountDeciaml","未还金额");
+        titleMap.put("waitOverdueAmountDeciaml","未还逾期费");
         titleMap.put("sumOverdueAmountDeciaml","已还逾期费");
         titleMap.put("repayAmountDeciaml","已还金额");
-        titleMap.put("waitOverdueAmountDeciaml","未还金额");
+        titleMap.put("waitAmountDeciaml","未还金额");
         try (final OutputStream os = response.getOutputStream()) {
             String gmtStart = new SimpleDateFormat("yyyy-MM-dd").format(criteria.getStartTime());
             String gmtEnd = new SimpleDateFormat("yyyy-MM-dd").format(criteria.getEndTime());

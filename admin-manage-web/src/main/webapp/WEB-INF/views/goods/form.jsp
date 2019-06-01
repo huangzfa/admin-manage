@@ -228,7 +228,7 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">备注：</label>
+            <label class="control-label">商品描述：</label>
             <div class="controls">
                 <textarea type="text" class="form-control"  type="text" name="remark" id="remark" maxlength="200"rows="7" cols="20" >${goods.remark}</textarea>
             </div>

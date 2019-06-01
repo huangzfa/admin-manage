@@ -153,11 +153,9 @@ public class MerchantServiceImpl implements MerchantService {
         map.put("merchant_no",merchant.getMerchantNo());
         map.put("merchant_name",merchant.getMerchantName());
         map.put("merchant_state",merchant.getState());
-        ProductCriteria criteria = new ProductCriteria();
-        criteria.setPagesize(100);
-        List<ProductVo> list = productDao.getPageList(criteria);
+        List<Product> list = productDao.getByMerchantId(merchant.getId());
         List<JSONObject> products = new ArrayList<>();
-        for(ProductVo product : list){
+        for(Product product : list){
             JSONObject object = new JSONObject();
             object.put("product_id",product.getId());
             object.put("product_code",product.getProductCode());

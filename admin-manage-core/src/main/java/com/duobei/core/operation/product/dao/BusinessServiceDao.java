@@ -14,6 +14,8 @@ import java.util.List;
 public interface BusinessServiceDao {
     List<BusinessServiceVo> getByBizCode(@Param("bizCode") String bizCode);
 
+    List<BusinessServiceVo> getByServiceCode(@Param("serviceCode") String servieCode);
+
     int save(BusinessService record);
 
     void delByBizCode(@Param("bizCode") String bizCode);

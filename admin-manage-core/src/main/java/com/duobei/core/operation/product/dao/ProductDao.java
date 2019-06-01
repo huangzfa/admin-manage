@@ -25,6 +25,8 @@ public interface ProductDao {
      */
     List<ProductVo> getPageList(ProductCriteria criteria);
 
+    List<Product> getByMerchantId(@Param("merchantId") Integer productId);
+
     /**
      * 数量查询
      * @param criteria
@@ -82,4 +84,5 @@ public interface ProductDao {
 
     @MapKey("id")
     Map<Integer,Product> getMapProduct();
+
 }

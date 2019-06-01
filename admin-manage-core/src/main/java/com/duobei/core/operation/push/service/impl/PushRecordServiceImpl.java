@@ -1,10 +1,13 @@
 package com.duobei.core.operation.push.service.impl;
 
 import com.duobei.common.constant.BizConstant;
+import com.duobei.common.enums.IdWorker;
 import com.duobei.common.enums.SmsUserfulCodeEnums;
 import com.duobei.common.exception.ManageExceptionCode;
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.GuidUtil;
 import com.duobei.common.util.ImportExcelUtil;
+import com.duobei.common.util.QuartzManager;
 import com.duobei.common.util.RegExpValidatorUtils;
 import com.duobei.common.util.lang.ArrayUtil;
 import com.duobei.common.util.lang.DateUtil;
@@ -17,6 +20,7 @@ import com.duobei.core.operation.app.dao.AppDao;
 import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.push.dao.PushFailUserDao;
 import com.duobei.core.operation.push.dao.PushRecordDao;
+import com.duobei.core.operation.push.dao.QuartzInfoDao;
 import com.duobei.core.operation.push.domain.PushRecord;
 import com.duobei.core.operation.push.domain.QuartzInfo;
 import com.duobei.core.operation.push.domain.criteria.PushRecordCriteria;
@@ -28,6 +32,9 @@ import com.duobei.core.user.user.domain.User;
 import com.duobei.dic.ZD;
 import com.pgy.data.handler.PgyDataHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
+import org.apache.poi.ss.formula.functions.T;
+import org.quartz.JobDataMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
@@ -36,12 +43,12 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 /**
@@ -148,14 +155,15 @@ public class PushRecordServiceImpl implements PushRecordService {
     @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
     public void save(PushRecord record,List<List<Object>> listob) throws TqException{
         //待推送人数
-        if( record.getPlatform().equals(ZD.platform_user_id)){
-            record.setPushCount(listob.size()-BizConstant.INT_ONE);
-        }else{
+        record.setPushCount(listob.size()-BizConstant.INT_ONE);
+        /*if( record.getPlatform().equals(ZD.platform_user_id)){
+
+        }*//*else{
             HashMap<String,Object> param = new HashMap<>();
             param.put("productId",record.getProductId());
             param.put("appId",record.getAppId());
             record.setPushCount(userDao.countByAppId(param));
-        }
+        }*/
         if( pushRecordDao.save(record) < BizConstant.INT_ONE){
             throw new TqException("添加失败");
         }
@@ -192,14 +200,14 @@ public class PushRecordServiceImpl implements PushRecordService {
                         return paramsDo;
                     }
                     //待推送人数
-                    if( record.getPlatform().equals(ZD.platform_user_id)){
-                        record.setPushCount(listob.size()-BizConstant.INT_ONE);
-                    }else{
+                    //if( record.getPlatform().equals(ZD.platform_user_id)){
+                    record.setPushCount(listob.size()-BizConstant.INT_ONE);
+                    /*}else{
                         HashMap<String,Object> param = new HashMap<>();
                         param.put("productId",record.getProductId());
                         param.put("appId",record.getAppId());
                         record.setPushCount(userDao.countByAppId(param));
-                    }
+                    }*/
                     if( pushRecordDao.save(record) < BizConstant.INT_ONE){
                         paramsDo.setCode(ManageExceptionCode.SYSTEM_ERROR.getErrorCode());
                         paramsDo.setMsg("添加失败");
@@ -237,64 +245,64 @@ public class PushRecordServiceImpl implements PushRecordService {
     public List<Object> getJgPushUser(PushRecord record,List<List<Object>> listob){
         List<Map<String, Object>> failUser = new ArrayList<>();//发送失败用户
         List<Object> userIds = new ArrayList<>();//待发送用户id
-        if( record.getPlatform().equals(ZD.platform_user_id) ){//导入excel推送
-            if( listob == null ){
-                try {
-                    URL url = new URL(record.getPath());//把远程文件地址转换成URL格式
-                    InputStream in = url.openStream();
-                    listob = ImportExcelUtil.getBankListByExcel(in,record.getPath());
-                }catch (Exception e){
-                    log.error("xml解析异常",e);
-                }
+        //if( record.getPlatform().equals(ZD.platform_user_id) ){//导入excel推送
+        if( listob == null ){
+            try {
+                URL url = new URL(record.getPath());//把远程文件地址转换成URL格式
+                InputStream in = url.openStream();
+                listob = ImportExcelUtil.getBankListByExcel(in,record.getPath());
+            }catch (Exception e){
+                log.error("xml解析异常",e);
+            }
 
+        }
+        for (int i = 1; i < listob.size(); i++) {
+            List<Object> lo = listob.get(i);
+            //删除空列
+            if( lo.size() == BizConstant.INT_ZERO ){
+                continue;
             }
-            for (int i = 1; i < listob.size(); i++) {
-                List<Object> lo = listob.get(i);
-                //删除空列
-                if( lo.size() == BizConstant.INT_ZERO ){
-                    continue;
-                }
-                String userId = String.valueOf(lo.get(0)).replace(" ", "");
-                if( StringUtil.isBlank(userId) ){
-                    continue;
-                }
-                if (!RegExpValidatorUtils.IsIntNumber(userId)) {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("userId",userId);
-                    map.put("reason", "id格式错误");
-                    failUser.add(map);
-                    continue;
-                }
-                userIds.add(Long.parseLong(userId));
+            String userId = String.valueOf(lo.get(0)).replace(" ", "");
+            if( StringUtil.isBlank(userId) ){
+                continue;
             }
-            // 第二遍筛选，用户是否存在
-            HashMap<String,Object> param = new HashMap<>();
-            param.put("productId",record.getProductId());
-            param.put("appId",record.getAppId());
-            param.put("userList",userIds);
-            List<User> successUser = userDao.getByAppId(param);
-            List<Long> userIdList = successUser.stream()
-                    .map(User::getId)
-                    .collect(Collectors.toList());
-            for(int i=0;i<userIds.size();i++){
-                if(!userIdList.contains(userIds.get(i))){
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("userId",userIds.get(i));
-                    map.put("reason", "用户不存在");
-                    failUser.add(map);
-                    userIds.remove(i);
-                    i--;
-                }else{
-                    userIdList.remove(userIds.get(i));
-                }
+            if (!RegExpValidatorUtils.IsIntNumber(userId)) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("userId",userId);
+                map.put("reason", "id格式错误");
+                failUser.add(map);
+                continue;
             }
-            //推送失败名单入库
-            if(failUser.size() >BizConstant.INT_ZERO){
-                param.put("pushId",record.getId());
-                param.put("failUser",failUser);
-                failUserDao.batchInsert(param);
+            userIds.add(Long.parseLong(userId));
+        }
+        // 第二遍筛选，用户是否存在
+        HashMap<String,Object> param = new HashMap<>();
+        param.put("productId",record.getProductId());
+        param.put("appId",record.getAppId());
+        param.put("userList",userIds);
+        List<User> successUser = userDao.getByAppId(param);
+        List<Long> userIdList = successUser.stream()
+                .map(User::getId)
+                .collect(Collectors.toList());
+        for(int i=0;i<userIds.size();i++){
+            if(!userIdList.contains(userIds.get(i))){
+                Map<String, Object> map = new HashMap<>();
+                map.put("userId",userIds.get(i));
+                map.put("reason", "用户不存在");
+                failUser.add(map);
+                userIds.remove(i);
+                i--;
+            }else{
+                userIdList.remove(userIds.get(i));
             }
-        }else{
+        }
+        //推送失败名单入库
+        if(failUser.size() >BizConstant.INT_ZERO){
+            param.put("pushId",record.getId());
+            param.put("failUser",failUser);
+            failUserDao.batchInsert(param);
+        }
+        /*}else{
             HashMap<String,Object> param = new HashMap<>();
             param.put("productId",record.getProductId());
             param.put("appId",record.getAppId());
@@ -302,7 +310,7 @@ public class PushRecordServiceImpl implements PushRecordService {
             userIds = userList.stream()
                     .map(User::getId)
                     .collect(Collectors.toList());
-        }
+        }*/
         return userIds;
     }
 
@@ -317,64 +325,64 @@ public class PushRecordServiceImpl implements PushRecordService {
         List<Map<String, Object>> failUser = new ArrayList<>();//发送失败用户
         List<Object> userIds = new ArrayList<>();//待发送用户id
         List<Object> userPhones = new ArrayList<>();//待发送用户手机号
-        if( record.getPlatform().equals(ZD.platform_user_id) ){//导入excel推送
-            if( listob == null ){
-                try {
-                    URL url = new URL(record.getPath());//把远程文件地址转换成URL格式
-                    InputStream in = url.openStream();
-                    listob = ImportExcelUtil.getBankListByExcel(in,record.getPath());
-                }catch (Exception e){
-                    log.error("xml解析异常",e);
-                }
+        //if( record.getPlatform().equals(ZD.platform_user_id) ){//导入excel推送
+        if( listob == null ){
+            try {
+                URL url = new URL(record.getPath());//把远程文件地址转换成URL格式
+                InputStream in = url.openStream();
+                listob = ImportExcelUtil.getBankListByExcel(in,record.getPath());
+            }catch (Exception e){
+                log.error("xml解析异常",e);
             }
-            for (int i = 1; i < listob.size(); i++) {
-                List<Object> lo = listob.get(i);
-                //删除空列
-                if( lo.size() == BizConstant.INT_ZERO ){
-                    continue;
-                }
-                String userId = String.valueOf(lo.get(0)).replace(" ", "");
-                if( StringUtil.isBlank(userId) ){
-                    continue;
-                }
-                if (!RegExpValidatorUtils.IsIntNumber(userId)) {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("userId",userId);
-                    map.put("reason", "id格式错误");
-                    failUser.add(map);
-                    continue;
-                }
-                userIds.add(Long.parseLong(userId));
+        }
+        for (int i = 1; i < listob.size(); i++) {
+            List<Object> lo = listob.get(i);
+            //删除空列
+            if( lo.size() == BizConstant.INT_ZERO ){
+                continue;
             }
-            // 第二遍筛选，用户是否存在
-            HashMap<String,Object> param = new HashMap<>();
-            param.put("productId",record.getProductId());
-            param.put("appId",record.getAppId());
-            param.put("userList",userIds);
-            List<User> successUser = userDao.getByAppId(param);
-            List<Long> userIdList = successUser.stream()
-                    .map(User::getId)
-                    .collect(Collectors.toList());
-            for (int i = 0; i < userIds.size(); i++) {
-                int index = userIdList.indexOf(userIds.get(i));
-                if ( index == BizConstant.MINUS_ONE) {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("userId",userIds.get(i));
-                    map.put("reason", "用户不存在");
-                    failUser.add(map);
-                }else{
-                    userPhones.add(PgyDataHandler.decrypt(successUser.get(index).getUserNameEncrypt()));
-                    userIdList.remove(index);
-                }
+            String userId = String.valueOf(lo.get(0)).replace(" ", "");
+            if( StringUtil.isBlank(userId) ){
+                continue;
             }
-            //推送失败名单入库
-            if(failUser.size() >BizConstant.INT_ZERO){
-                param.put("pushId",record.getId());
-                param.put("failUser",failUser);
-                failUserDao.batchInsert(param);
+            if (!RegExpValidatorUtils.IsIntNumber(userId)) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("userId",userId);
+                map.put("reason", "id格式错误");
+                failUser.add(map);
+                continue;
             }
+            userIds.add(Long.parseLong(userId));
+        }
+        // 第二遍筛选，用户是否存在
+        HashMap<String,Object> param = new HashMap<>();
+        param.put("productId",record.getProductId());
+        param.put("appId",record.getAppId());
+        param.put("userList",userIds);
+        List<User> successUser = userDao.getByAppId(param);
+        List<Long> userIdList = successUser.stream()
+                .map(User::getId)
+                .collect(Collectors.toList());
+        for (int i = 0; i < userIds.size(); i++) {
+            int index = userIdList.indexOf(userIds.get(i));
+            if ( index == BizConstant.MINUS_ONE) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("userId",userIds.get(i));
+                map.put("reason", "用户不存在");
+                failUser.add(map);
+            }else{
+                userPhones.add(PgyDataHandler.decrypt(successUser.get(index).getUserNameEncrypt()));
+                userIdList.remove(index);
+            }
+        }
+        //推送失败名单入库
+        if(failUser.size() >BizConstant.INT_ZERO){
+            param.put("pushId",record.getId());
+            param.put("failUser",failUser);
+            failUserDao.batchInsert(param);
+        }
 
-        }else{
+        /*}else{
             HashMap<String,Object> param = new HashMap<>();
             param.put("productId",record.getProductId());
             param.put("appId",record.getAppId());
@@ -382,7 +390,7 @@ public class PushRecordServiceImpl implements PushRecordService {
             for(User user: userList){
                 userPhones.add(PgyDataHandler.decrypt(user.getUserNameEncrypt()));
             }
-        }
+        }*/
         return userPhones;
     }
 

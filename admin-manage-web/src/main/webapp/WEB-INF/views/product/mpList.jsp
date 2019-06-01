@@ -113,7 +113,8 @@
             <th data-options="field:'productCode',width:180,align:'center',halign:'center',fixed:true">产品编码</th>
             <th data-options="field:'productName',width:180,align:'center',halign:'center',fixed:true">产品名称</th>
             <th data-options="field:'merchantName',width:180,align:'center',halign:'center',fixed:true">所属商户</th>
-            <th data-options="field:'showMaxQuota',width:200,align:'center',halign:'center',fixed:true">域名</th>
+            <th data-options="field:'bizName',width:180,align:'center',halign:'center',fixed:true">业务类型</th>
+            <th data-options="field:'serviceName',width:200,align:'center',halign:'center',fixed:true">接入服务</th>
             <th data-options="field:'modifyTime',width:160,align:'center',halign:'center',fixed:true">更新时间</th>
             <th data-options="field:'option',width:180,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
         </tr>

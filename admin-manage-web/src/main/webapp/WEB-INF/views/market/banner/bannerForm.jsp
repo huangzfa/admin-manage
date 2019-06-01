@@ -68,7 +68,7 @@
         <div class="control-group">
             <label class="control-label">跳转链接：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写链接地址"  type="text" name="redirectUrl" id="redirectUrl" maxlength="255" value="${banner.redirectUrl}" ></input>
+                <input type="text" class="form-control"  type="text" name="redirectUrl" id="redirectUrl" maxlength="255" value="${banner.redirectUrl}" ></input>
             </div>
         </div>
         <div class="control-group">

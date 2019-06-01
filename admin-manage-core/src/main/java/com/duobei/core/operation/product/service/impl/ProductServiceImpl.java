@@ -4,12 +4,18 @@ import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.encrypt.MD5Util;
 import com.duobei.common.util.lang.DateUtil;
+import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
+import com.duobei.core.operation.product.dao.BusinessServiceDao;
 import com.duobei.core.operation.product.dao.ProductBusinessDao;
 import com.duobei.core.operation.product.dao.ProductDao;
+import com.duobei.core.operation.product.domain.Business;
+import com.duobei.core.operation.product.domain.Merchant;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.ProductBusiness;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
+import com.duobei.core.operation.product.domain.vo.BusinessServiceVo;
+import com.duobei.core.operation.product.domain.vo.ProductBusinessVo;
 import com.duobei.core.operation.product.domain.vo.ProductVo;
 import com.duobei.core.operation.product.service.MerchantService;
 import com.duobei.core.operation.product.service.ProductService;
@@ -20,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author huangzhongfa
@@ -36,6 +43,9 @@ public class ProductServiceImpl implements ProductService {
     private ProductBusinessDao productBusinessDao;
     @Autowired
     private MerchantService merchantService;
+    @Autowired
+    private BusinessServiceDao businessServiceDao;
+
 
 
     /**
@@ -46,10 +56,52 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public ListVo<ProductVo> getLists(ProductCriteria criteria) {
+        //搜索服务查询
+        if( StringUtil.isBlank(criteria.getServiceCode())){
+            //查询服务关联了哪些业务
+            List<BusinessServiceVo> list = businessServiceDao.getByServiceCode(criteria.getServiceCode());
+            List<String> bizCodes =  list.stream().map(BusinessServiceVo::getBizCode).collect(Collectors.toList());
+            //查询哪些产品关联了该业务
+            List<ProductBusiness> products = productBusinessDao.getByBizCodes(bizCodes);
+            List<Integer> productList = products.stream().map(ProductBusiness::getProductId).collect(Collectors.toList());
+            criteria.setProductList(productList);
+        }
         int total = productDao.countByCriteria(criteria);
         List<ProductVo> list = null;
         if (total > 0) {
             list = productDao.getPageList(criteria);
+            //查询业务
+            List<Integer> ids = list.stream().map(ProductVo::getId).collect(Collectors.toList());
+            List<ProductBusinessVo> businessVos = productBusinessDao.getByProductIds(ids);
+            for( ProductVo vo : list){
+                String bizName = "";
+                String bizCodes="";
+                for (ProductBusinessVo businessVo :businessVos){
+                    if( businessVo.getState().equals(BizConstant.INT_ONE) && vo.getId().equals(businessVo.getProductId())){
+                        bizName+=","+businessVo.getBizName();
+                        bizCodes+=","+businessVo.getBizCode();
+                    }
+                }
+                if(!StringUtil.isEmpty(bizName)){
+                    vo.setBizName(bizName.substring(1));
+                    vo.setBizCodes(bizCodes.substring(1));
+                }
+            }
+            //查询接入服务
+            List<BusinessServiceVo> businessServiceVoList = businessServiceDao.getByBizCode(null);
+            for( ProductVo vo : list){
+                String serviceName = "";
+                for(BusinessServiceVo serviceVo :businessServiceVoList){
+                    if(!StringUtil.isBlank(vo.getBizCodes()) && vo.getBizCodes().contains(serviceVo.getBizCode())){
+                        if( !serviceName.contains(serviceVo.getServiceName())){
+                            serviceName+=","+serviceVo.getServiceName();
+                        }
+                    }
+                }
+                if(!StringUtil.isEmpty(serviceName)){
+                    vo.setServiceName(serviceName.substring(1));
+                }
+            }
         }
         return new ListVo<ProductVo>(total, list);
     }

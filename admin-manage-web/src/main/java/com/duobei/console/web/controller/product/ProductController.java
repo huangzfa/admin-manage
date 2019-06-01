@@ -17,6 +17,7 @@ import com.duobei.core.operation.consume.domain.vo.ConsumeLoanRenewalConfigVo;
 import com.duobei.core.operation.consume.service.ConsumeLoanConfigService;
 import com.duobei.core.operation.consume.service.ConsumeLoanRateDayConfigService;
 import com.duobei.core.operation.consume.service.ConsumeLoanRenewalConfigService;
+import com.duobei.core.operation.product.domain.Merchant;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.ProductBusiness;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
@@ -439,6 +440,9 @@ public class ProductController extends BaseController {
             if( loan.getId() == null ){
                 loan.setAddOperatorId(credential.getOpId());
             }
+            if( goodsList.size() == BizConstant.INT_ZERO){
+                throw new TqException("至少关联一个借贷商品");
+            }
             loan.setModifyTime(new Date());
             loan.setModifyOperatorId(credential.getOpId());
             consumeLoanConfigService.saveLoan(loan,goodsList);
@@ -533,7 +537,17 @@ public class ProductController extends BaseController {
         if( product == null ){
             return failJsonResult("产品不存在");
         }
-        String result = riskUtil.SceneCodeHad(code,productId,product.getMerchantId());
+        if( product.getState().equals(BizConstant.INT_ZERO)){
+            return failJsonResult("产品已被禁用，请联系平台");
+        }
+        Merchant merchant = merchantService.getById(product.getMerchantId());
+        if( merchant == null ){
+            return failJsonResult("商户不存在");
+        }
+        if( merchant.getState().equals(BizConstant.INT_ZERO)){
+            return failJsonResult("产品已被禁用，请联系平台");
+        }
+        String result = riskUtil.SceneCodeHad(code,product.getProductCode(),merchant.getMerchantNo());
         if ( !result.equals("success")) {
             return failJsonResult("校验失败，原因：" + result);
         } else {

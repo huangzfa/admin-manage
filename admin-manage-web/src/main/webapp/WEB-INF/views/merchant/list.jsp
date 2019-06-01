@@ -67,11 +67,47 @@
         function optionformater(value,row,index){
             var opStr='';
             <shiro:hasPermission name="merchant:list:edit">
-            opStr+='<a class="si-option-a" href="${ctxA}/merchant/form?merchantNo='+row.merchantNo+'">修改</a>';
+              var state = 0;
+              if( row.state == 0) state = 1;
+              opStr+='<a class="si-option-a" href="${ctxA}/merchant/form?merchantNo='+row.merchantNo+'">修改</a>';
+              opStr+="<a class='si-option-a' href='javascript:editState(\""+row.merchantNo+"\",\""+state+"\")'>"+(row.state==1?"禁用":"启用")+"</a>";
             </shiro:hasPermission>
             return opStr;
         }
 
+        function stateformater(value,row,index) {
+            if( value == 0){
+                return '禁用'
+            }else if( value == 1){
+                return '启用'
+            }
+            return '未知';
+        }
+
+        function editState(merchantNo,state){
+            var title = "确定启用用该商户吗";
+            if(state == 0){
+                title = "确定禁用该商户吗";
+            }
+            top.$.jBox.confirm(title,'系统提示',function(v,h,f){
+                if(v=='ok'){
+                    jQuery.post("${ctxA}/merchant/editState", {'merchantNo':merchantNo,'state':state},
+                        function(data) {
+                            if (data.code ==1) {
+                                top.layer.alert("操作完成", {
+                                    icon: 6,
+                                    end: function(){
+                                        getData();
+                                    }
+                                });
+                            } else {
+                                top.layer.alert(data.msg, {icon: 5});
+                            }
+                            return;
+                        }, "json");
+                }
+            })
+        }
 
     </script>
 </head>
@@ -100,9 +136,8 @@
         <tr>
             <th data-options="field:'merchantNo',width:180,align:'center',halign:'center',fixed:true">商户编码</th>
             <th data-options="field:'merchantName',width:180,align:'center',halign:'center',fixed:true">商户名称</th>
-            <th data-options="field:'state',width:180,align:'center',halign:'center',fixed:true">联系方式</th>
-            <th data-options="field:'state',width:200,align:'center',halign:'center',fixed:true">社会统一信用代码</th>
             <th data-options="field:'addTime',width:160,align:'center',halign:'center',fixed:true">接入时间</th>
+            <th data-options="field:'state',width:100,align:'center',halign:'center',fixed:true,formatter:stateformater">状态</th>
             <th data-options="field:'option',width:180,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
         </tr>
         </thead>

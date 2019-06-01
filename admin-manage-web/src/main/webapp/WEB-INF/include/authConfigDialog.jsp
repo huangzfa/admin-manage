@@ -72,7 +72,7 @@
             for(j = 0,len=result.list.length; j < len; j++) {
                 var auth = result.list[j];
                 var disabled = "";
-                if(auth.isEnable == 0 || auth.checked=="checked"){
+                if( auth.checked=="checked"){
                     disabled = "disabled";
                 }
                 $("#modalAuthConfig #rows").append("<tr>"

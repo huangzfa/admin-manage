@@ -165,9 +165,11 @@
 		   data-options="idField:'id',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
 		<thead>
 		<tr>
-			<th style="width:30%;" data-options="field:'positionName',width:80,align:'center',halign:'center',fixed:true">页面位置</th>
-			<th style="width:50%;" data-options="field:'copywriting1',width:120,align:'center',halign:'center',fixed:true">文案</th>
-			<th style="width:20%;" data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformatter">操作</th>
+			<th style="width:10%;" data-options="field:'positionName',width:80,align:'center',halign:'center',fixed:true">页面位置</th>
+			<th style="width:30%;" data-options="field:'copywriting1',width:120,align:'center',halign:'center',fixed:true">文案1</th>
+			<th style="width:30%;" data-options="field:'copywriting2',width:120,align:'center',halign:'center',fixed:true">文案2</th>
+			<th style="width:30%;" data-options="field:'copywriting3',width:120,align:'center',halign:'center',fixed:true">文案3</th>
+			<th style="width:10%;" data-options="field:'option',width:160,align:'left',halign:'center',fixed:true,formatter:optionformatter">操作</th>
 		</tr>
 		</thead>
 	</table>
@@ -186,19 +188,19 @@
 					</div>
 				</div>
 				<div class="control-group" style="border-bottom: none">
-					<label class="control-label" style="width: 30%;text-align: center">文案内容：</label>
+					<label class="control-label" style="width: 30%;text-align: center">文案1(必填)：</label>
 					<div class="controls" style="display: inline-block">
 						<textarea class="control-label" id="copywriting1" maxlength="40"></textarea>
 					</div>
 				</div>
 				<div class="control-group" style="border-bottom: none;">
-					<label class="control-label" style="width: 30%;text-align: center">文案内容：</label>
+					<label class="control-label" style="width: 30%;text-align: center">文案2：</label>
 					<div class="controls" style="display: inline-block">
 						<textarea class="control-label" id="copywriting2" maxlength="40"></textarea>
 					</div>
 				</div>
 				<div class="control-group" style="border-bottom: none">
-					<label class="control-label" style="width: 30%;text-align: center">文案内容：</label>
+					<label class="control-label" style="width: 30%;text-align: center">文案3：</label>
 					<div class="controls" style="display: inline-block">
 						<textarea class="control-label" id="copywriting3" maxlength="40"></textarea>
 					</div>

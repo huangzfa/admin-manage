@@ -3,6 +3,7 @@ package com.duobei.core.operation.consume.service.impl;
 import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.util.RegExpValidatorUtils;
+import com.duobei.core.operation.consumdebt.dao.ConsumdebtGoodsDao;
 import com.duobei.core.operation.consume.dao.ConsumeLoanConfigDao;
 import com.duobei.core.operation.consume.dao.ConsumeLoanRateDayConfigDao;
 import com.duobei.core.operation.consume.dao.ConsumeLoanRenewalConfigDao;
@@ -11,9 +12,11 @@ import com.duobei.core.operation.consume.domain.ConsumeLoanConfig;
 import com.duobei.core.operation.consume.domain.ConsumeLoanRateDayConfig;
 import com.duobei.core.operation.consume.domain.ConsumeLoanRenewalConfig;
 import com.duobei.core.operation.consume.service.ConsumeLoanConfigService;
+import com.duobei.core.operation.product.dao.MerchantDao;
 import com.duobei.core.operation.product.dao.ProductAuthConfigDao;
 import com.duobei.core.operation.product.dao.ProductConsumdebtGoodsDao;
 import com.duobei.core.operation.product.dao.ProductDao;
+import com.duobei.core.operation.product.domain.Merchant;
 import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo;
 import com.duobei.core.operation.product.domain.vo.ProductConsumdebtGoodsVo;
@@ -26,6 +29,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author huangzhongfa
@@ -46,9 +50,13 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
     @Autowired
     private ConsumeLoanRateDayConfigDao rateDayConfigDao;
     @Autowired
+    private ConsumdebtGoodsDao consumdebtGoodsDao;
+    @Autowired
     private RiskUtil riskUtil;
     @Autowired
     private ProductDao productDao;
+    @Autowired
+    private MerchantDao merchantDao;
     /**
      * 根据产品id查询消费贷配置
      * @param productId
@@ -68,6 +76,20 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
     @Override
     @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
     public void saveAuth(ConsumeLoanConfig record,List<ProductAuthConfigVo> auth) throws TqException{
+        Product product = productDao.getById(record.getProductId());
+        if( product == null ){
+            throw new TqException("产品不存在");
+        }
+        if( product.getState().equals(BizConstant.INT_ZERO)){
+            throw new TqException("此产品已被禁用，请联系平台");
+        }
+        Merchant merchant = merchantDao.getById(product.getMerchantId());
+        if( merchant == null ){
+            throw new TqException("商户不存在，请关联商户");
+        }
+        if( merchant.getState().equals(BizConstant.INT_ZERO)){
+            throw new TqException("此产品已被禁用，请联系平台");
+        }
         if( record.getId() == null ){
             if( consumeLoanConfigDao.save(record) <1 ){
                 throw new TqException("添加失败");
@@ -105,15 +127,30 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
         if( product == null ){
             throw new TqException("产品不存在");
         }
-       /* String result = riskUtil.SceneCodeHad(record.getQuotaSceneCode(),product.getId(),product.getMerchantId());
+        if( product.getState().equals(BizConstant.INT_ZERO)){
+            throw new TqException("此产品已被禁用，请联系平台");
+        }
+        Merchant merchant = merchantDao.getById(product.getMerchantId());
+        if( merchant == null ){
+            throw new TqException("商户不存在，请关联商户");
+        }
+        if( merchant.getState().equals(BizConstant.INT_ZERO)){
+            throw new TqException("此产品已被禁用，请联系平台");
+        }
+        List<Integer> goodIdList = goodsList.stream().map(ProductConsumdebtGoodsVo::getGoodsId).collect(Collectors.toList());
+        int count = consumdebtGoodsDao.validCount(goodIdList);
+        if( count <BizConstant.INT_ONE){
+            throw new TqException("至少添加一个上架商品");
+        }
+/*        String result = riskUtil.SceneCodeHad(record.getQuotaSceneCode(),product.getProductCode(),merchant.getMerchantNo()));
         if ( !result.equals("success")) {
             throw new TqException("额度风控场景编码，原因：" + result);
         }
-        result = riskUtil.SceneCodeHad(record.getBorrowSceneCode(),product.getId(),product.getMerchantId());
+        result = riskUtil.SceneCodeHad(record.getBorrowSceneCode(),product.getProductCode(),merchant.getMerchantNo());
         if ( !result.equals("success")) {
             throw new TqException("借款风控场景编码-非首次老用户，原因：" + result);
         }
-        result = riskUtil.SceneCodeHad(record.getBorrowSceneCodeFirst(),product.getId(),product.getMerchantId());
+        result = riskUtil.SceneCodeHad(record.getBorrowSceneCodeFirst(),product.getProductCode(),merchant.getMerchantNo());
         if ( !result.equals("success")) {
             throw new TqException("借款风控场景编码-首次新用户校验失败，原因：" + result);
         }*/
@@ -155,6 +192,20 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
     @Override
     @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
     public void rateDaySave(ConsumeLoanConfig record, List<ConsumeLoanRateDayConfig> rateDayList, List<ConsumeLoanRenewalConfig> renewalsList)throws TqException{
+        Product product = productDao.getById(record.getProductId());
+        if( product == null ){
+            throw new TqException("产品不存在");
+        }
+        if( product.getState().equals(BizConstant.INT_ZERO)){
+            throw new TqException("此产品已被禁用，请联系平台");
+        }
+        Merchant merchant = merchantDao.getById(product.getMerchantId());
+        if( merchant == null ){
+            throw new TqException("商户不存在，请关联商户");
+        }
+        if( merchant.getState().equals(BizConstant.INT_ZERO)){
+            throw new TqException("此产品已被禁用，请联系平台");
+        }
         if( record.getId() == null ){
             if( consumeLoanConfigDao.save(record) <1 ){
                 throw new TqException("添加失败");

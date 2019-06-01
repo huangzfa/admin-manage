@@ -68,9 +68,9 @@
         </div>
         <div class="form-actions">
             <shiro:hasPermission name="product:list:edit">
-                <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;"/>&nbsp;
+                <a id="btnSubmit" class="btn btn-primary" onclick="save()" >保存</a>
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/product/mpList'"/>
+            &nbsp;<a id="btnCancel" class="btn" type="button" onclick="window.location.href='${ctxA}/product/mpList'">返回</a>
         </div>
     </form:form>
 

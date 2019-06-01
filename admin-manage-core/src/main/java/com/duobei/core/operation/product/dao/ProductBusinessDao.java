@@ -2,6 +2,7 @@ package com.duobei.core.operation.product.dao;
 
 
 import com.duobei.core.operation.product.domain.ProductBusiness;
+import com.duobei.core.operation.product.domain.vo.ProductBusinessVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -31,4 +32,17 @@ public interface ProductBusinessDao {
 
     ProductBusiness getByBizCode(ProductBusiness entity);
 
+    /**
+     * 根据产品id查询，foreach，得到业务编码
+     * @param ids
+     * @return
+     */
+    List<ProductBusinessVo> getByProductIds(@Param("ids") List<Integer> ids);
+
+    /**
+     * 根据业务编码查询 foreach，得到产品
+     * @param bizCodes
+     * @return
+     */
+    List<ProductBusiness> getByBizCodes(@Param("bizCodes") List<String> bizCodes);
 }

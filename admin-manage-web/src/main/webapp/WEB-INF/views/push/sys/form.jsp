@@ -71,12 +71,12 @@
         <div class="control-group">
             <label class="control-label">推送人员：</label>
             <div class="controls">
-                <li  >
-                    <a  class='btn btn-primary' onclick="switchPush(this)">user-id</a>
+                <li >
+                    <a  class='btn btn-primary' >user-id</a>
                 </li>
             </div>
         </div>
-        <div class="control-group import" style="display:none;" >
+        <div class="control-group import"  >
             <label class="control-label">文件导入：</label>
             <div class="controls">
                 <div class="uploadExcle">
@@ -159,8 +159,9 @@
         }
         $("#platform").val(platform.substring(1));
         top.layer.load();
+        uploadExcel();
         //导入文件操作
-        if( platform == "user_id"){
+        /*if( platform == "user_id"){
             uploadExcel()
         }else{
             $("#btnSubmit").attr("disabled",true);
@@ -180,8 +181,8 @@
                 } else {
                     top.layer.alert(data.msg, {icon: 5});
                 }
-            }, "json");
-        }
+            }, "json");*/
+
 
     }
     function uploadExcel(){

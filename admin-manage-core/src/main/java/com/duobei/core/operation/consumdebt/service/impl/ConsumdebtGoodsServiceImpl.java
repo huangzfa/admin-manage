@@ -128,7 +128,7 @@ public class ConsumdebtGoodsServiceImpl implements ConsumdebtGoodsService {
     public void delete(ConsumdebtGoodsVo entity) throws TqException{
         //若果是商品下架
         if( entity.getState().equals(BizConstant.INT_ZERO)){
-            if( consumdebtGoodsDao.validCount() == BizConstant.INT_ONE){
+            if( consumdebtGoodsDao.validCount(null) == BizConstant.INT_ONE){
                 throw new TqException("至少有一个在售商品");
             }
         }
@@ -145,7 +145,7 @@ public class ConsumdebtGoodsServiceImpl implements ConsumdebtGoodsService {
     public void editState(ConsumdebtGoodsVo entity) throws TqException{
         //若果是商品下架
         if( entity.getState().equals(BizConstant.INT_ZERO)){
-            if( consumdebtGoodsDao.validCount() == BizConstant.INT_ONE){
+            if( consumdebtGoodsDao.validCount(null) == BizConstant.INT_ONE){
                 throw new TqException("至少有一个在售商品");
             }
         }

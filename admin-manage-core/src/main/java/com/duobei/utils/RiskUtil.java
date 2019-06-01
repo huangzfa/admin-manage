@@ -36,15 +36,15 @@ public class RiskUtil {
     /**
      * 判断场景id是否存在
      * @param sceneCode  场景code
-     * @param productId  产品id
-     * @param merId     商户id
+     * @param productCode  产品id
+     * @param merchantNo     商户id
      * @return
      * @throws TqException
      */
-    public String SceneCodeHad(String sceneCode,Integer productId,Integer merId) throws TqException{
+    public String SceneCodeHad(String sceneCode,String productCode,String merchantNo) throws TqException{
         HashMap<String,String> paramsMap = new HashMap<>();
-        paramsMap.put("productCode", productId+"");
-        paramsMap.put("merchantNo", merId+"");
+        paramsMap.put("productCode", productCode);
+        paramsMap.put("merchantNo", merchantNo);
         paramsMap.put("sceneCode", sceneCode);
         String result = OkHttpUtil.okHttpPostForm(url+"/tianqing/api/exist/scene.htm", paramsMap);
         logger.info("场景id校验 result:{}",result);

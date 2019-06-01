@@ -31,12 +31,12 @@
                         <th>操作</th>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="x in goods">
+                    <tr ng-repeat="x in goods track by $index">
                         <td>{{x.goodsNo}}</td>
                         <td>{{x.goodsName}}</td>
                         <td><input type="text" descripe="排序只能输入正整数" ng-model="x.sort" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></td>
                         <td>{{x.state==0?'下架':'上架'}}</td>
-                        <td><button id="deleteGoods" class="btn btn-warning"  ng-click="deleteGoods('{{x.id}}')" >删除</button></td>
+                        <td><button id="deleteGoods" class="btn btn-warning"  ng-click="deleteGoods($index)" >删除</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -90,9 +90,9 @@
             $scope.loan = loan;
             $scope.goods = goods;
             $scope.btnState = false;
-            $scope.deleteGoods = function(id) {
+            $scope.deleteGoods = function(index) {
                 //删除此条记录
-                $scope.goods.splice($.inArray(id, $scope.goods), 1);
+                $scope.goods.splice(index, 1);
             };
             $scope.save = function() {
                 var bool = true;

@@ -119,8 +119,8 @@
             <if test="remark != null">
                 m.remark = #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="state != null">
-                m.state = #{state,jdbcType=TINYINT},
+            <if test="state != null or state == 0">
+                m.state = #{state,jdbcType=INTEGER},
             </if>
             <if test="addTime != null">
                 m.add_time = #{addTime,jdbcType=TIMESTAMP},

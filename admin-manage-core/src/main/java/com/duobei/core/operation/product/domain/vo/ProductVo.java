@@ -16,4 +16,14 @@ public class ProductVo extends Product{
      * 业务类型
      */
     private String bizCodes;
+
+    /**
+     * 业务类型名称
+     */
+    private String bizName;
+
+    /**
+     * 服务名称
+     */
+    private String serviceName;
 }

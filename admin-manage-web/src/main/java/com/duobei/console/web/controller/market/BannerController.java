@@ -3,6 +3,7 @@ package com.duobei.console.web.controller.market;
 import com.alibaba.fastjson.JSON;
 import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
+import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.config.GlobalConfig;
 import com.duobei.console.web.controller.base.BaseController;
@@ -135,6 +136,11 @@ public class BannerController extends BaseController {
             }
             if (entity.getSort() == null){
                 entity.setSort(0);
+            }
+            if( entity.getRedirectType().equals(ZD.redirectType_url)){
+                if(StringUtil.isEmpty(entity.getRedirectUrl())){
+                    throw new TqException("请填写链接地址");
+                }
             }
             entity.setModifyTime(new Date());
             entity.setModifyOperatorId(credential.getOpId());

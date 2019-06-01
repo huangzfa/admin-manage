@@ -31,9 +31,9 @@
         </div>
         <div class="form-actions">
             <shiro:hasPermission name="merchant:list:edit">
-                <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;"/>&nbsp;
+                <a id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;">保存</a>
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/merchant/list'"/>
+            <a id="btnCancel" class="btn" value="返 回" onclick="window.location.href='${ctxA}/merchant/list'">返回</a>
         </div>
     </form:form>
 

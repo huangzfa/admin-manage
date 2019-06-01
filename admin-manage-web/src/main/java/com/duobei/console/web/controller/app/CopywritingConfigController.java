@@ -128,7 +128,7 @@ public class CopywritingConfigController extends BaseController {
 
     private void validParam(CopywritingConfig entity) throws TqException {
         if (entity.getCopywriting1() == null){
-            throw new TqException("请输入文案内容");
+            throw new TqException("请输入文案1");
         }
         if (entity.getCopywriting1().length() > 40){
             throw new TqException("文案长度在40字内");

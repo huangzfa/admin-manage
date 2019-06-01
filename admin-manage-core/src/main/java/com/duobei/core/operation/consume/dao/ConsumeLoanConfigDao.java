@@ -3,6 +3,8 @@ package com.duobei.core.operation.consume.dao;
 import com.duobei.core.operation.consume.domain.ConsumeLoanConfig;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author huangzhongfa
  * @description

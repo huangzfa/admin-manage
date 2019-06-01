@@ -123,4 +123,46 @@ public class MerchantController extends BaseController {
 
         }
     }
+    /**
+     * 启用禁用
+     * @param merchantNo
+     * @param state
+     * @return
+     * @throws TqException
+     */
+    @RequiresPermissions("merchant:list:edit")
+    @RequestMapping(value = "/editState")
+    @ResponseBody
+    public String editState(String merchantNo,Integer state) throws TqException{
+        try {
+            OperatorCredential credential = getCredential();
+            if (credential == null) {
+                throw new TqException("登录过期，请重新登录");
+            }
+            if( StringUtil.isEmpty(merchantNo) || state == null ){
+                throw new TqException("参数为空");
+            }
+            Merchant merchant = merchantService.getByMerchantNo(merchantNo);
+            if( merchant == null){
+                throw new TqException("商户不存在");
+            }
+            Merchant record = new Merchant();
+            record.setState(state);
+            record.setMerchantNo(merchantNo);
+            record.setId(merchant.getId());
+            record.setModifyTime(new Date());
+            record.setModifyOperatorId(credential.getOpId());
+            merchantService.update(record);
+            return simpleSuccessJsonResult("success");
+
+        }catch (Exception e){
+            if (e instanceof TqException) {
+                return failJsonResult(e.getMessage());
+            }else{
+                log.warn("editState产品失败", e);
+                return failJsonResult("修改失败");
+            }
+
+        }
+    }
 }

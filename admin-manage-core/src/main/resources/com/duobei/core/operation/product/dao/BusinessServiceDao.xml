@@ -6,7 +6,14 @@
     </resultMap>
 
     <select id="getByBizCode" resultType="com.duobei.core.operation.product.domain.vo.BusinessServiceVo" parameterType="java.lang.String">
-        select a.*,b.service_name from yy_business_service a left join yy_service b on a.service_code=b.service_code where a.biz_code=#{bizCode}
+        select a.*,b.service_name from yy_business_service a left join yy_service b on a.service_code=b.service_code where 1=1
+        <if test="bizCode!=null">
+            and a.biz_code=#{bizCode}
+        </if>
+    </select>
+
+    <select id="getByServiceCode" resultType="com.duobei.core.operation.product.domain.vo.BusinessServiceVo" parameterType="java.lang.String">
+        select a.*,b.service_name from yy_business_service a left join yy_service b on a.service_code=b.service_code where a.service_code =#{serviceCode}
     </select>
 
     <delete id="delByBizCode" parameterType="java.lang.String">

@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author huangzhongfa
@@ -113,6 +114,8 @@ public class ProductController extends BaseController {
             if (criteria.getPagesize() == 0) {
                 criteria.setPagesize(GlobalConfig.getPageSize());
             }
+            List<Integer> productList = getCredential().getProductList().stream().map(Product::getId).collect(Collectors.toList());
+            criteria.setProductList(productList);
             ListVo<ProductVo> list = productService.getLists(criteria);
             return successJsonResult("success", "list", list);
         } catch (Exception e) {
@@ -474,12 +477,12 @@ public class ProductController extends BaseController {
             if (credential == null) {
                 throw new TqException("登录过期，请重新登录");
             }
+            productVo.setModifyOperatorId(credential.getOpId());
             if( productVo.getId() == null ){
                 productVo.setAddOperatorId(credential.getOpId());
                 productService.saveMp(productVo);
             }else{
                 productVo.setModifyTime(new Date());
-                productVo.setModifyOperatorId(credential.getOpId());
                 productService.updateMp(productVo);
             }
             return simpleSuccessJsonResult("success");

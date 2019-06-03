@@ -18,6 +18,7 @@ import com.duobei.core.operation.product.service.MerchantService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +70,7 @@ public class MerchantServiceImpl implements MerchantService {
      * 修改商户
      * @param merchant
      */
+    @Transactional(value = "springTransactionManager",rollbackFor = Exception.class)
     @Override
     public void update(Merchant merchant) throws TqException{
         if( merchantDao.update(merchant) <BizConstant.INT_ONE){
@@ -82,6 +84,7 @@ public class MerchantServiceImpl implements MerchantService {
      * @param merchant
      */
     @Override
+    @Transactional(value = "springTransactionManager",rollbackFor = Exception.class)
     public void save(Merchant merchant) throws TqException{
         Merchant one = merchantDao.getLastOne();
         if( one == null ){

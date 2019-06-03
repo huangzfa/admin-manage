@@ -6,15 +6,11 @@
     </resultMap>
 
     <select id="getByProductId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.product.domain.vo.ProductAuthConfigVo">
-        select a.*,b.auth_name,b.auth_code from yy_product_auth_config a left join yy_auth_config b on a.auth_id = b.id where a.product_id=#{productId,jdbcType=INTEGER} order by auth_sort asc,a.add_time desc;
+        select  b.is_enable,a.*,b.auth_name,b.auth_code from yy_product_auth_config a left join yy_auth_config b on a.auth_id = b.id where a.product_id=#{productId,jdbcType=INTEGER} order by auth_sort asc,a.add_time desc;
     </select>
 
-    <update id="updateAuthState" parameterType="java.lang.String">
-        update yy_product_auth_config set
-        <if test="authState != null and authState != '' or authState==0">
-            is_enable = #{authState,jdbcType=VARCHAR}
-        </if>
-         where  auth_id=#{authId,jdbcType=INTEGER}
+    <update id="batchUpdateState"  parameterType="java.lang.Integer">
+       update yy_product_auth_config set is_enable= #{isEnable,jdbcType=INTEGER} where auth_id=#{authId,jdbcType=INTEGER}
     </update>
 
     <select id="deleteByProductId" parameterType="java.lang.Integer" >
@@ -36,10 +32,10 @@
             <if test="authId != null">
                 auth_id,
             </if>
-            <if test="isEnable != null">
+            <if test="isEnable != null or isEnable == 0">
                 is_enable,
             </if>
-            <if test="isRequired != null">
+            <if test="isRequired != null or isRequired == 0">
                 is_required,
             </if>
             <if test="authSort != null">
@@ -89,10 +85,10 @@
             <if test="authId != null">
                 #{authId,jdbcType=INTEGER},
             </if>
-            <if test="isEnable != null">
+            <if test="isEnable != null or isEnable == 0">
                 #{isEnable,jdbcType=INTEGER},
             </if>
-            <if test="isRequired != null">
+            <if test="isRequired != null or isRequired == 0">
                 #{isRequired,jdbcType=INTEGER},
             </if>
             <if test="authSort != null">
@@ -146,10 +142,10 @@
             <if test="authId != null">
                 auth_id = #{authId,jdbcType=INTEGER},
             </if>
-            <if test="isEnable != null">
+            <if test="isEnable != null or isEnable == 0">
                 is_enable = #{isEnable,jdbcType=INTEGER},
             </if>
-            <if test="isRequired != null">
+            <if test="isRequired != null or isRequired ==0">
                 is_required = #{isRequired,jdbcType=INTEGER},
             </if>
             <if test="authSort != null">

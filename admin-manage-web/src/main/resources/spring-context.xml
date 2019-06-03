@@ -229,7 +229,8 @@
 	<!--  =============================ossUtil 结束============================= -->
 
 	<!--  =============================jpushUtil 结束============================= -->
-
+	<bean id="messageUtil" class="com.duobei.utils.MessageUtil">
+	</bean>
 	<!--  =============================riskUtil 开始============================= -->
 	<bean id="riskUtil" class="com.duobei.utils.RiskUtil">
 		<property name="url" value="${pgy.risk.url}"></property>

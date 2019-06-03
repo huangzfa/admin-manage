@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ListVo<ProductVo> getLists(ProductCriteria criteria) {
         //搜索服务查询
-        if( StringUtil.isBlank(criteria.getServiceCode())){
+        if( !StringUtil.isBlank(criteria.getServiceCode())){
             //查询服务关联了哪些业务
             List<BusinessServiceVo> list = businessServiceDao.getByServiceCode(criteria.getServiceCode());
             List<String> bizCodes =  list.stream().map(BusinessServiceVo::getBizCode).collect(Collectors.toList());
@@ -146,22 +146,26 @@ public class ProductServiceImpl implements ProductService {
         }
         //保存业务类型,将所有state=1的，改为0
         productBusinessDao.updateState(productVo.getId(), BizConstant.INT_ZERO);
-        String[] bizCodes = productVo.getBizCodes().split(",");
-        for(String code :bizCodes){
-            ProductBusiness entity = new ProductBusiness();
-            entity.setProductId(productVo.getId());
-            entity.setBizCode(code);
-            ProductBusiness entity1 = productBusinessDao.getByBizCode(entity);
-            //数据库中不存在
-            if( entity1 == null){
-                //新增操作
-                entity.setAddOperatorId(productVo.getModifyOperatorId());
-                productBusinessDao.save(entity);
-            }else{
-                //修改状态为有效
-                entity.setId(entity1.getId());
-                entity.setState(BizConstant.INT_ONE);
-                productBusinessDao.update(entity);
+        if(StringUtil.isEmpty( productVo.getBizCodes())){
+            throw new TqException("至少关联一个业务");
+        }else{
+            String[] bizCodes = productVo.getBizCodes().split(",");
+            for(String code :bizCodes){
+                ProductBusiness entity = new ProductBusiness();
+                entity.setProductId(productVo.getId());
+                entity.setBizCode(code);
+                ProductBusiness entity1 = productBusinessDao.getByBizCode(entity);
+                //数据库中不存在
+                if( entity1 == null){
+                    //新增操作
+                    entity.setAddOperatorId(productVo.getModifyOperatorId());
+                    productBusinessDao.save(entity);
+                }else{
+                    //修改状态为有效
+                    entity.setId(entity1.getId());
+                    entity.setState(BizConstant.INT_ONE);
+                    productBusinessDao.update(entity);
+                }
             }
         }
         merchantService.noticeByProduct(productVo);
@@ -174,26 +178,37 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
     public void saveMp(ProductVo  productVo) throws TqException{
-        productVo.setProductCode(MD5Util.encrypt(DateUtil.getTimeStr(new Date())));
+        Product one = productDao.getLastOne();
+        if( one == null ){
+            productVo.setProductCode(BizConstant.PRODUCT_NO);
+        }else{
+            //产品code号加1
+            Integer nextNo = Integer.parseInt(one.getProductCode())+BizConstant.INT_ONE;
+            productVo.setProductCode(nextNo+"");
+        }
         if( productDao.save(productVo) <1){
             throw new TqException("添加失败");
         }
-        //保存业务类型
-        String[] bizCodes = productVo.getBizCodes().split(",");
-        for(String code :bizCodes){
-            ProductBusiness entity = new ProductBusiness();
-            entity.setProductId(productVo.getId());
-            entity.setBizCode(code);
-            ProductBusiness entity1 = productBusinessDao.getByBizCode(entity);
-            //数据库中不存在
-            if( entity1 == null){
-                //新增操作
-                entity.setAddOperatorId(productVo.getModifyOperatorId());
-                productBusinessDao.save(entity);
-            }else{
-                //修改状态为有效
-                entity.setState(BizConstant.INT_ONE);
-                productBusinessDao.update(entity);
+        if(StringUtil.isEmpty( productVo.getBizCodes())){
+            throw new TqException("至少关联一个业务");
+        }else{
+            //保存业务类型
+            String[] bizCodes = productVo.getBizCodes().split(",");
+            for(String code :bizCodes){
+                ProductBusiness entity = new ProductBusiness();
+                entity.setProductId(productVo.getId());
+                entity.setBizCode(code);
+                ProductBusiness entity1 = productBusinessDao.getByBizCode(entity);
+                //数据库中不存在
+                if( entity1 == null){
+                    //新增操作
+                    entity.setAddOperatorId(productVo.getModifyOperatorId());
+                    productBusinessDao.save(entity);
+                }else{
+                    //修改状态为有效
+                    entity.setState(BizConstant.INT_ONE);
+                    productBusinessDao.update(entity);
+                }
             }
         }
         merchantService.noticeByProduct(productVo);

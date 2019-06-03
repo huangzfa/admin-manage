@@ -1,8 +1,10 @@
 package com.duobei.core.operation.product.service.impl;
 
+import com.duobei.common.constant.BizConstant;
 import com.duobei.common.exception.TqException;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.operation.product.dao.AuthConfigDao;
+import com.duobei.core.operation.product.dao.ProductAuthConfigDao;
 import com.duobei.core.operation.product.dao.mapper.AuthConfigMapper;
 import com.duobei.core.operation.product.domain.AuthConfig;
 import com.duobei.core.operation.product.domain.vo.AuthConfigVo;
@@ -32,6 +34,8 @@ public class AuthConfigServiceImpl implements AuthConfigService {
     private AuthConfigMapper authConfigMapper;
     @Autowired
     private ProductDao productDao;
+    @Autowired
+    private ProductAuthConfigDao productAuthConfigDao;
 
     /**
      * type:1基础认证，2补充认证
@@ -106,7 +110,7 @@ public class AuthConfigServiceImpl implements AuthConfigService {
             throw new RuntimeException("认证项不存在");
         }
         //如果是禁用
-        if( authState.equals("0") ){
+        if( authState.equals(BizConstant.STRING_ZERO) ){
             List<Product> list = productDao.getByAuthId(entity.getId());
             if( list.size() >0 ){
                 String msg = "操作失败,该认证项在"+list.get(0).getProductName();
@@ -119,8 +123,10 @@ public class AuthConfigServiceImpl implements AuthConfigService {
                 msg += "等"+list.size()+"个产品中配置了,请解绑后尝试";
                 throw new RuntimeException(msg);
             }
+        }else{
+            productAuthConfigDao.batchUpdateState(Integer.parseInt(authState),entity.getId());
         }
-        if( authConfigDao.updateState(authState,code) !=1){
+        if( authConfigDao.updateState(authState,code) !=BizConstant.INT_ONE){
             throw new RuntimeException("认证项配置修改状态失败");
         }
 

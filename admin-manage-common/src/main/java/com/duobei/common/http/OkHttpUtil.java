@@ -67,7 +67,7 @@ public class OkHttpUtil {
      */
     public static String okHttpPostJson(String url, String json){
         String result = null;
-        OkHttpClient client =new OkHttpClient.Builder().connectTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS).build();
+        OkHttpClient client =new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(10, TimeUnit.SECONDS).build();
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
         Request request = new Request.Builder()

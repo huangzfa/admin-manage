@@ -60,6 +60,9 @@
         SELECT * FROM yy_product  where   id = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="getLastOne" resultType="com.duobei.core.operation.product.domain.Product">
+        select * from yy_product order by id  desc limit 1;
+    </select>
     <select id="getByMerchantId" parameterType="java.lang.Integer" resultType="com.duobei.core.operation.product.domain.Product">
         SELECT * FROM yy_product  where  merchant_id = #{merchantId}
     </select>

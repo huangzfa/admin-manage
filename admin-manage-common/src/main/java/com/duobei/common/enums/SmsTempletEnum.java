@@ -10,6 +10,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 public enum  SmsTempletEnum {
+    ADMIN_VERIFY_CODE("ADMIN_VERIFY_CODE", "后台管理系统登陆",0),
     ORDER_OVERDUE_ONE_DAY("ORDER_OVERDUE_ONE_DAY", "逾期一天",1),
     ORDER_OVERDUE_TWO_DAY("ORDER_OVERDUE_TWO_DAY", "逾期两天",2),
     ORDER_OVERDUE_THREE_DAY("ORDER_OVERDUE_THREE_DAY", "逾期三天",3),

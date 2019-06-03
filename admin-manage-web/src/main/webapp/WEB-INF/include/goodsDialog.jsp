@@ -19,8 +19,8 @@
                 <table class="table table-bordered">
                     <thead>
                         <td></td>
-                        <th >商品编码</th>
-                        <th >商品名称</th>
+                        <th width='30%'>商品编码</th>
+                        <th width='30%'>商品名称</th>
                         <th>商品图片</th>
                     </thead>
                     <tbody id="rows" >
@@ -67,7 +67,7 @@
                     disabled = "disabled";
                 }
                 $("#modalGoodsDialog #rows").append("<tr>"
-                    +"<td><input type='checkbox' state="+goods.state+" "+goods.checked+" "+disabled+" goodsId="+goods.id+" goodsName="+goods.goodsName+" goodsNo="+goods.goodsNo+"' sort='"+goods.sort+"  ></td>"
+                    +"<td><input type='checkbox' state="+goods.state+" "+goods.checked+" "+disabled+" goodsId="+goods.id+" goodsName="+goods.goodsName+" goodsNo="+goods.goodsNo+" sort="+goods.sort+" ></td>"
                     +"<td width='30%'>"+goods.goodsNo+"</td>"
                     +"<td width='30%'>"+goods.goodsName+"</td>"
                     +"<td><img src='"+goods.thumbnailIcon+"' style='height: 33px'></td>"

@@ -3,10 +3,10 @@ package com.duobei.core.message.sms.service.impl;
 import com.duobei.common.constant.BizConstant;
 import com.duobei.common.enums.SmsUserfulCodeEnums;
 import com.duobei.common.exception.TqException;
-import com.duobei.common.util.lang.StringUtil;
 import com.duobei.common.vo.ListVo;
 import com.duobei.core.message.sms.dao.SmsAppChannelConfigDao;
-import com.duobei.core.message.sms.dao.SmsAppChannelDao;
+import com.duobei.core.message.sms.dao.SmsAppDao;
+import com.duobei.core.message.sms.domain.SmsApp;
 import com.duobei.core.message.sms.domain.SmsAppChannelConfig;
 import com.duobei.core.message.sms.domain.criteria.SmsAppChannelConfigCriteria;
 import com.duobei.core.message.sms.domain.vo.SmsAppChannelConfigVo;
@@ -35,13 +35,15 @@ public class SmsAppChannelConfigServiceImpl implements SmsAppChannelConfigServic
     @Autowired
     private AppDao appDao;
     @Autowired
-    private SmsAppChannelDao appChannelDao;
+    private SmsAppDao smsAppDao;
+
 
     private static String[] channelCode = {"NORMAL","COLLECTION","MARKETING"};//短信类别
 
 
 
     @Override
+    @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
     public ListVo<SmsAppChannelConfigVo> getPage(SmsAppChannelConfigCriteria criteria){
         int total = channelConfigDao.countByCriteria(criteria);
         List<SmsAppChannelConfigVo> list = null;
@@ -111,7 +113,14 @@ public class SmsAppChannelConfigServiceImpl implements SmsAppChannelConfigServic
         if( channelConfigDao.save(config) < BizConstant.INT_ONE){
             throw new TqException("添加失败");
         }
-
+        SmsApp smsApp = smsAppDao.getByAppkey(config.getAppKey());
+        if( smsApp == null ){
+            smsApp = new SmsApp();
+            smsApp.setAppKey(config.getAppKey());
+            smsApp.setMerchantNo("1001");
+            smsApp.setDeleted(BizConstant.INT_ZERO.byteValue());
+            smsAppDao.save(smsApp);
+        }
     }
 
     /**

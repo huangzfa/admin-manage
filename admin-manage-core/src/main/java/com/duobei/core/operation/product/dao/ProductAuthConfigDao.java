@@ -21,4 +21,6 @@ public interface ProductAuthConfigDao {
     List<ProductAuthConfigVo> getByProductId(@Param("productId") Integer productId);
 
     void deleteByProductId(@Param("productId") Integer productId);
+
+    int batchUpdateState(@Param("isEnable") Integer state,@Param("authId") Integer authId);
 }

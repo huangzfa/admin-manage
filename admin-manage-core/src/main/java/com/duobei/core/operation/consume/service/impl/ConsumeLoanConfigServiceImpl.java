@@ -107,7 +107,6 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
                 throw  new TqException("请填写认证有效期");
             }
             vo.setAddOperatorId(record.getModifyOperatorId());
-            vo.setIsEnable(BizConstant.INT_ONE);
             vo.setProductId(record.getProductId());
             if( productAuthConfigDao.save(vo) <1){
                 throw  new TqException("认证项保存失败");
@@ -142,7 +141,7 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
         if( count <BizConstant.INT_ONE){
             throw new TqException("至少添加一个上架商品");
         }
-/*        String result = riskUtil.SceneCodeHad(record.getQuotaSceneCode(),product.getProductCode(),merchant.getMerchantNo()));
+        String result = riskUtil.SceneCodeHad(record.getQuotaSceneCode(),product.getProductCode(),merchant.getMerchantNo());
         if ( !result.equals("success")) {
             throw new TqException("额度风控场景编码，原因：" + result);
         }
@@ -153,7 +152,7 @@ public class ConsumeLoanConfigServiceImpl implements ConsumeLoanConfigService {
         result = riskUtil.SceneCodeHad(record.getBorrowSceneCodeFirst(),product.getProductCode(),merchant.getMerchantNo());
         if ( !result.equals("success")) {
             throw new TqException("借款风控场景编码-首次新用户校验失败，原因：" + result);
-        }*/
+        }
         if( record.getId() == null ){
             if( consumeLoanConfigDao.save(record) <1 ){
                 throw new TqException("添加失败");

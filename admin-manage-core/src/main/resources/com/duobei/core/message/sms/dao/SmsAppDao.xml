@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duobei.core.message.sms.dao.SmsAppDao" >
+
+    <select id="getByAppkey" resultType="com.duobei.core.message.sms.domain.SmsApp" parameterType="java.lang.String">
+        SELECT * from pub_sms_app where app_key=#{appkey} and deleted = 0;
+    </select>
+
+    <insert id="save" parameterType="com.duobei.core.message.sms.domain.SmsApp">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into pub_sms_app
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="merchantNo != null">
+                merchant_no,
+            </if>
+            <if test="appKey != null">
+                app_key,
+            </if>
+            <if test="secretKey != null">
+                secret_key,
+            </if>
+            <if test="deleted != null or deleted == 0">
+                deleted,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="merchantNo != null">
+                #{merchantNo,jdbcType=VARCHAR},
+            </if>
+            <if test="appKey != null">
+                #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="secretKey != null">
+                #{secretKey,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null or deleted == 0">
+                #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+</mapper>

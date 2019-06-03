@@ -23,9 +23,12 @@
     </insert>
 
     <select id="getByListRoleId" parameterType="java.util.List" resultType="com.duobei.core.manage.auth.domain.RoleDataAuth">
-        select * from aa_role_data_auth where role_id IN
-        <foreach collection="roleIds" index="index" item="item" open="(" separator="," close=")">
-              #{item}
-        </foreach>
+        select * from aa_role_data_auth where 1=1
+        <if test="roleIds.size() !=0">
+            and role_id IN
+            <foreach collection="roleIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
     </select>
 </mapper>

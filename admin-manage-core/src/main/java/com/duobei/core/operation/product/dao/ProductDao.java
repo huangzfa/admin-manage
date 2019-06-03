@@ -85,4 +85,10 @@ public interface ProductDao {
     @MapKey("id")
     Map<Integer,Product> getMapProduct();
 
+    /**
+     * 查询数据库中最后一个产品
+     * @return
+     */
+    Product getLastOne();
+
 }

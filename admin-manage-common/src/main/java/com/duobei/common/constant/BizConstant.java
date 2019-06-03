@@ -18,4 +18,6 @@ public interface BizConstant {
     String BIZE_DATA_DESC = "data";//服务化统一返回data 字符
 
     String MERCHANT_NO = "10000000";//默认商户编码
+
+    String PRODUCT_NO = "1000000";//默认产品编码
 }

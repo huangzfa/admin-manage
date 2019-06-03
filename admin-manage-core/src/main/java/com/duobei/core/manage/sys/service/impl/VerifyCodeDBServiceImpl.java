@@ -2,14 +2,15 @@ package com.duobei.core.manage.sys.service.impl;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
-import com.alibaba.fastjson.JSONObject;
-import com.duobei.common.constant.BizConstant;
+import com.alibaba.fastjson.JSON;
+import com.duobei.common.enums.SmsTempletEnum;
 import com.duobei.common.util.Constants;
-import com.duobei.common.vo.SmsVo;
 import com.duobei.core.manage.auth.domain.VerifyCodeFail;
 import com.duobei.core.manage.sys.handler.VerifyCodeFailHandler;
+import com.duobei.core.message.sms.dao.SmsTempletDao;
+import com.duobei.core.message.sms.domain.SmsTemplet;
+import com.duobei.utils.MessageUtil;
 import com.pgy.data.handler.service.PgyDataHandlerService;
 import com.pgy.data.handler.service.impl.PgyDataHandlerServiceImpl;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -36,6 +37,10 @@ public class VerifyCodeDBServiceImpl implements VerifyCodeService {
 	private SmsVerifyCodeDao smsVerifyCodeDao;
 	@Autowired
 	private VerifyCodeFailHandler verifyCodeFailHandler;
+	@Autowired
+	private SmsTempletDao smsTempletDao;
+	@Autowired
+	private MessageUtil messageUtil;
 	
 
 	@Override
@@ -97,19 +102,20 @@ public class VerifyCodeDBServiceImpl implements VerifyCodeService {
 			if (GlobalConfig.isProdEnvironment()) {
 				// TODO 发送短信验证码
 				PgyDataHandlerService pgyDataHandlerService = new PgyDataHandlerServiceImpl();
-				Map<String, Object> map = new HashMap<>();
-				map.put("value", verifyCode);
-				SmsVo smsVo = new SmsVo();
-				smsVo.setVerifyCode(verifyCode);
-				smsVo.setMobile(mobile);
-				smsVo.setParamsJson(JSONObject.toJSONString(map));
-/*				SmsTemplet smsTemplet = smsTempletDao.getTempletByTempletCodeAndPlatform(TemplateCodeEnum.findByType(smsBizType),BizConstant.PLATFORM);
+
+				SmsTemplet smsTemplet = smsTempletDao.getByCode(SmsTempletEnum.ADMIN_VERIFY_CODE.getCode());
 				if( smsTemplet == null ){
 					throw new RuntimeException("短信模板不存在");
-				}*/
-				smsVo.setSmsTemptCode(null);
-				//smsVo.setSystemCode(BizConstant.PLATFORM);
-				//messageUtil.sendSms(smsVo);
+				}
+				HashMap<String, Object> map = new HashMap<>();
+				map.put("appKey", smsTemplet.getAppKey());
+				map.put("businessCode", "NORMAL");
+				map.put("mobile", mobile);
+				map.put("templetCode", SmsTempletEnum.ADMIN_VERIFY_CODE.getCode());
+				HashMap<String, String> contentMap = new HashMap<>();
+				contentMap.put("code", verifyCode);
+				map.put("contentMap", contentMap);
+				messageUtil.sendSms(JSON.toJSONString(map));
 			}
 
 		} catch (Exception e) {

@@ -70,10 +70,11 @@
                                 <td>{{x.authName}}</td>
                                 <td>{{x.isEnable == 1?'可用':'不可用'}}</td>
                                 <td>
-                                    <input type="checkbox" ng-model="x.isRequired" ng-checked="{{x.isRequired==1}}" ng-disabled="{{x.isEnable ==0}}"  ng-true-value="1" ng-false-value="0"/>
+                                    <input type="checkbox" ng-model="x.isRequired" ng-checked="{{x.isRequired==1}}" ng-true-value="1" ng-false-value="0"/>
                                 </td>
-                                <td><input type="text" descripe="有效期只能为正整数" ng-model="x.validVal" ng-disabled="{{x.isEnable ==0}}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'>{{x.validUnit==0?'小时':'天'}}</td>
-                                <td><input type="text" descripe="排序只能为正整数" style="background-color:${auth.authState==0?'#e5e5e5':''}" ng-model="x.authSort" ng-disabled="{{x.isEnable ==0}}" onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></td>
+                                <!--ng-disabled="{{x.isEnable ==0}}"-->
+                                <td><input type="text" descripe="有效期只能为正整数" ng-model="x.validVal"  onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'>{{x.validUnit==0?'小时':'天'}}</td>
+                                <td><input type="text" descripe="排序只能为正整数" style="background-color:${auth.authState==0?'#e5e5e5':''}" ng-model="x.authSort"  onkeyup='this.value=this.value.replace(/[^0-9]/g,"")'></td>
                                 <td><button id="deleteGoods" class="btn btn-warning"  ng-click="deleteGoods($index)" >删除</button></td>
 
                             </tr>

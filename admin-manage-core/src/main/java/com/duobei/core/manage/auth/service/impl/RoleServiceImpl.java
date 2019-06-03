@@ -65,15 +65,7 @@ public class RoleServiceImpl implements RoleService {
 		if (roleCriteria == null) {
 			throw new TqException("查询条件不能为空");
 		}
-		RoleExample example = new RoleExample();
-		Criteria criteria = example.createCriteria();
-		if (StringUtils.isNotBlank(roleCriteria.getRoleStateZd())) {
-			criteria.andRoleStateEqualTo(roleCriteria.getRoleStateZd());
-		}
-		if (StringUtils.isNotBlank(roleCriteria.getRoleName())) {
-			criteria.andRoleNameLike(roleCriteria.getRoleName());
-		}
-		int total = roleMapper.countByExample(example);
+		int total = roleDao.count(roleCriteria);
 		List<RoleVo> roles = null;
 		if (total > 0) {
 			roles = roleDao.queryRoleList(roleCriteria);
@@ -108,6 +100,9 @@ public class RoleServiceImpl implements RoleService {
 		beanValidator(role);
 		role.setAddOperatorId(credential.getOpId());
 		role.setAddTime(new Date());
+		if(roleDao.countByRoleName(role) > BizConstant.INT_ZERO){
+			throw new TqException("该角色名称已存在");
+		}
 		// 入库
 		if (1 != roleMapper.insertSelective(role)) {
 			throw new TqException("角色入库失败");
@@ -162,6 +157,9 @@ public class RoleServiceImpl implements RoleService {
 		Role oldRole = queryRoleById(role.getRoleId());
 		if (oldRole == null) {
 			throw new TqException("角色不存在");
+		}
+		if(roleDao.countByRoleName(role) > BizConstant.INT_ZERO){
+			throw new TqException("该角色名称已存在");
 		}
 		if (1 != roleMapper.updateByPrimaryKeySelective(role)) {
 			throw new TqException("更新数据库失败");

@@ -26,7 +26,7 @@
 		    	AND r.role_state = #{roleStateZd}
 	    	</if>
 			<if test="roleName != null and roleName != ''">
-		    	AND r.role_name =#{roleName}
+		    	AND r.role_name LIKE CONCAT('%',#{roleName},'%')
 	    	</if>
 		</trim>
 	</where>
@@ -35,11 +35,33 @@
 		LIMIT #{offset}, #{pagesize}
 	</if>
   </select>
-  
+
+    <select id="count" parameterType="com.duobei.core.manage.auth.domain.criteria.RoleCriteria" resultType="java.lang.Integer">
+        select count(*)  from aa_role r
+        <where>
+            <trim prefix="(" prefixOverrides="and" suffix=")">
+                <if test="roleStateZd != null">
+                    AND r.role_state = #{roleStateZd}
+                </if>
+                <if test="roleName != null and roleName != ''">
+                    AND r.role_name LIKE CONCAT('%',#{roleName},'%')
+                </if>
+            </trim>
+        </where>
+        ORDER BY r.add_time
+    </select>
+
   <select id="queryRoleById" parameterType="java.lang.Integer" resultMap="RoleVoResultMap">
     select 
     <include refid="Base_Column_List" />
     from aa_role r
     where r.role_id = #{roleId}
   </select>
+
+    <select id="countByRoleName" parameterType="com.duobei.core.manage.auth.domain.vo.RoleVo" resultType="java.lang.Integer">
+        select count(*) from aa_role where role_name=#{roleName}
+        <if test="roleId!=null">
+            and role_id not in(#{roleId})
+        </if>
+    </select>
 </mapper>

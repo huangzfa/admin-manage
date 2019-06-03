@@ -292,7 +292,7 @@ public class ProductController extends BaseController {
                     config.setId(record.getId());
                     config.setRenewalDay(record.getRenewalDay());
                     config.setCanRenewalDayLimit(record.getCanRenewalDayLimit());
-                    config.setRenewalAmount(record.getRenewalAmount()/100);
+                    config.setRenewalAmount(record.getRenewalAmount()==null?null:record.getRenewalAmount()/100);
                     config.setDataVersion(record.getDataVersion());
 
                 }

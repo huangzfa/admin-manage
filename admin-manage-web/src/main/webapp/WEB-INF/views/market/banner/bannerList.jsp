@@ -135,14 +135,13 @@
 		return v;
 	}
     function redirectformater(value,row,index) {
-        if(value=='no'){
+        if(value==0){
 
             return "无连接";
 
-        }else if(value=='url'){
+        }else if(value==1){
 
             return "h5链接";
-
         }
         return '未知';
     }

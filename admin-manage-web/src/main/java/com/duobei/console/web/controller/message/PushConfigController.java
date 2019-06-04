@@ -9,6 +9,7 @@ import com.duobei.core.manage.auth.domain.credential.OperatorCredential;
 import com.duobei.core.message.push.domain.PushConfig;
 import com.duobei.core.message.push.domain.criteria.PushConfigCriteria;
 import com.duobei.core.message.push.service.PushConfigService;
+import com.duobei.core.operation.app.domain.App;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author huangzhongfa
@@ -58,6 +61,9 @@ public class PushConfigController extends BaseController{
             if (criteria.getPagesize()== BizConstant.INT_ZERO) {
                 criteria.setPagesize(GlobalConfig.getPageSize());
             }
+            List<App> appList = getCredential().getAppList();
+            List<String> appKeyList = appList.stream().map(App::getAppKey).collect(Collectors.toList());
+            criteria.setAppKeyList(appKeyList);
             ListVo<PushConfig> list = pushConfigService.getPage(criteria);
             return successJsonResult("success", "list", list);
         }catch (Exception e) {

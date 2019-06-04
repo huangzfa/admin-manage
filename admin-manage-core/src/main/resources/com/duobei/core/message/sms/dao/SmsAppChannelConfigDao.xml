@@ -6,14 +6,28 @@
     </resultMap>
 
     <select id="getPageList" resultType="com.duobei.core.message.sms.domain.vo.SmsAppChannelConfigVo" parameterType="com.duobei.core.message.sms.domain.criteria.SmsAppChannelConfigCriteria">
-        SELECT * from pub_sms_channel_config where is_delete = 0  order by id  DESC
+        SELECT * from pub_sms_channel_config where is_delete = 0
+        <if test="appKeyList != null">
+            and app_key
+            <foreach collection="appKeyList" open=" in(" close=")" separator="," item="key">
+                #{key}
+            </foreach>
+        </if>
+        order by id  DESC
         <if test="pagesize != 0">
             LIMIT #{offset}, #{pagesize}
         </if>
     </select>
 
     <select id="countByCriteria" resultType="java.lang.Integer" parameterType="com.duobei.core.message.sms.domain.criteria.SmsAppChannelConfigCriteria">
-        select count(*)  from pub_sms_channel_config where is_delete = 0 order by id  DESC
+        select count(*)  from pub_sms_channel_config where is_delete = 0
+        <if test="appKeyList != null">
+            and app_key
+            <foreach collection="appKeyList" open=" in(" close=")" separator="," item="key">
+                #{key}
+            </foreach>
+        </if>
+        order by id  DESC
     </select>
 
     <select id="getByAppkey" resultType="com.duobei.core.message.sms.domain.SmsAppChannelConfig" parameterType="java.lang.String">

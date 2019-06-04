@@ -5,6 +5,7 @@ import com.duobei.common.vo.ListVo;
 import com.duobei.core.message.sms.domain.SmsAppChannelConfig;
 import com.duobei.core.message.sms.domain.criteria.SmsAppChannelConfigCriteria;
 import com.duobei.core.message.sms.domain.vo.SmsAppChannelConfigVo;
+import com.duobei.core.operation.app.domain.App;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public interface SmsAppChannelConfigService {
 
-    ListVo<SmsAppChannelConfigVo> getPage(SmsAppChannelConfigCriteria criteria);
+    ListVo<SmsAppChannelConfigVo> getPage(SmsAppChannelConfigCriteria criteria,List<App> appList);
 
     void save(SmsAppChannelConfig config) throws TqException;
 

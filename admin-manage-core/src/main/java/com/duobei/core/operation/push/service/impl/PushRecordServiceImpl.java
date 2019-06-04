@@ -125,7 +125,7 @@ public class PushRecordServiceImpl implements PushRecordService {
             if( operator == null ){
                 return new ListVo<PushRecordVo>(BizConstant.INT_ZERO, new ArrayList<>());
             }else{
-                criteria.setAddOperatorId(operator.getAddOperatorId());
+                criteria.setAddOperatorId(operator.getOpId());
             }
         }
         int total = pushRecordDao.countByCriteria(criteria);
@@ -244,8 +244,8 @@ public class PushRecordServiceImpl implements PushRecordService {
      */
     public List<Object> getJgPushUser(PushRecord record,List<List<Object>> listob){
         List<Map<String, Object>> failUser = new ArrayList<>();//发送失败用户
-        List<Object> userIds = new ArrayList<>();//待发送用户id
-        //if( record.getPlatform().equals(ZD.platform_user_id) ){//导入excel推送
+        Set<Object> userIds = new TreeSet<>();
+        List<Object> userIdList = new ArrayList<>();//待发送用户id
         if( listob == null ){
             try {
                 URL url = new URL(record.getPath());//把远程文件地址转换成URL格式
@@ -273,7 +273,13 @@ public class PushRecordServiceImpl implements PushRecordService {
                 failUser.add(map);
                 continue;
             }
-            userIds.add(Long.parseLong(userId));
+            boolean bool = userIds.add(Long.parseLong(userId));
+            if( !bool){
+                Map<String, Object> map = new HashMap<>();
+                map.put("userId",userId);
+                map.put("reason", "id重复");
+                failUser.add(map);
+            }
         }
         // 第二遍筛选，用户是否存在
         HashMap<String,Object> param = new HashMap<>();
@@ -281,19 +287,16 @@ public class PushRecordServiceImpl implements PushRecordService {
         param.put("appId",record.getAppId());
         param.put("userList",userIds);
         List<User> successUser = userDao.getByAppId(param);
-        List<Long> userIdList = successUser.stream()
+        userIdList = successUser.stream()
                 .map(User::getId)
                 .collect(Collectors.toList());
-        for(int i=0;i<userIds.size();i++){
-            if(!userIdList.contains(userIds.get(i))){
+        for (Object object : userIds ) {
+            int index = userIdList.indexOf(object);
+            if ( index == BizConstant.MINUS_ONE) {
                 Map<String, Object> map = new HashMap<>();
-                map.put("userId",userIds.get(i));
+                map.put("userId",object);
                 map.put("reason", "用户不存在");
                 failUser.add(map);
-                userIds.remove(i);
-                i--;
-            }else{
-                userIdList.remove(userIds.get(i));
             }
         }
         //推送失败名单入库
@@ -302,16 +305,7 @@ public class PushRecordServiceImpl implements PushRecordService {
             param.put("failUser",failUser);
             failUserDao.batchInsert(param);
         }
-        /*}else{
-            HashMap<String,Object> param = new HashMap<>();
-            param.put("productId",record.getProductId());
-            param.put("appId",record.getAppId());
-            List<User> userList = userDao.getByAppId(param);
-            userIds = userList.stream()
-                    .map(User::getId)
-                    .collect(Collectors.toList());
-        }*/
-        return userIds;
+        return userIdList;
     }
 
 
@@ -323,9 +317,8 @@ public class PushRecordServiceImpl implements PushRecordService {
      */
     public List<Object> getSmsPushUser(PushRecord record,List<List<Object>> listob){
         List<Map<String, Object>> failUser = new ArrayList<>();//发送失败用户
-        List<Object> userIds = new ArrayList<>();//待发送用户id
+        Set<Object> userIds = new TreeSet<>();//待发送用户id
         List<Object> userPhones = new ArrayList<>();//待发送用户手机号
-        //if( record.getPlatform().equals(ZD.platform_user_id) ){//导入excel推送
         if( listob == null ){
             try {
                 URL url = new URL(record.getPath());//把远程文件地址转换成URL格式
@@ -352,7 +345,13 @@ public class PushRecordServiceImpl implements PushRecordService {
                 failUser.add(map);
                 continue;
             }
-            userIds.add(Long.parseLong(userId));
+            boolean bool = userIds.add(Long.parseLong(userId));
+            if( !bool){
+                Map<String, Object> map = new HashMap<>();
+                map.put("userId",userId);
+                map.put("reason", "id重复");
+                failUser.add(map);
+            }
         }
         // 第二遍筛选，用户是否存在
         HashMap<String,Object> param = new HashMap<>();
@@ -363,11 +362,11 @@ public class PushRecordServiceImpl implements PushRecordService {
         List<Long> userIdList = successUser.stream()
                 .map(User::getId)
                 .collect(Collectors.toList());
-        for (int i = 0; i < userIds.size(); i++) {
-            int index = userIdList.indexOf(userIds.get(i));
+        for (Object object : userIds ) {
+            int index = userIdList.indexOf(object);
             if ( index == BizConstant.MINUS_ONE) {
                 Map<String, Object> map = new HashMap<>();
-                map.put("userId",userIds.get(i));
+                map.put("userId",object);
                 map.put("reason", "用户不存在");
                 failUser.add(map);
             }else{
@@ -381,16 +380,6 @@ public class PushRecordServiceImpl implements PushRecordService {
             param.put("failUser",failUser);
             failUserDao.batchInsert(param);
         }
-
-        /*}else{
-            HashMap<String,Object> param = new HashMap<>();
-            param.put("productId",record.getProductId());
-            param.put("appId",record.getAppId());
-            List<User> userList = userDao.getByAppId(param);
-            for(User user: userList){
-                userPhones.add(PgyDataHandler.decrypt(user.getUserNameEncrypt()));
-            }
-        }*/
         return userPhones;
     }
 

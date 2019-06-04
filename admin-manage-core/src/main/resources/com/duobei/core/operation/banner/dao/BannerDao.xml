@@ -25,7 +25,7 @@
     <if test="isEnable != null">
       and banner.is_enable = #{isEnable}
     </if>
-    ORDER BY banner.sort asc
+    ORDER BY banner.sort desc
     <if test="pagesize != 0">
       LIMIT #{offset}, #{pagesize}
     </if>

@@ -102,6 +102,7 @@
            data-options="idField:'id',singleSelect:true,striped:true,fit:true,fitColumns:true,pagination:true">
         <thead>
         <tr>
+            <th data-options="field:'code',width:240,align:'center',halign:'center',fixed:true">模板编号</th>
             <th data-options="field:'appName',width:180,align:'center',halign:'center',fixed:true">应用</th>
             <th data-options="field:'content',width:380,align:'center',halign:'center',fixed:true">模板内容</th>
             <th data-options="field:'option',width:180,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>

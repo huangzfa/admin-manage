@@ -11,6 +11,7 @@ import com.duobei.core.message.sms.domain.SmsAppChannelConfig;
 import com.duobei.core.message.sms.domain.criteria.SmsAppChannelConfigCriteria;
 import com.duobei.core.message.sms.domain.vo.SmsAppChannelConfigVo;
 import com.duobei.core.message.sms.service.SmsAppChannelConfigService;
+import com.duobei.core.operation.app.domain.App;
 import com.duobei.core.operation.app.service.AppService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author huangzhongfa
@@ -65,7 +67,10 @@ public class SmsChannelConfigController extends BaseController{
             if (criteria.getPagesize()==BizConstant.INT_ZERO) {
                 criteria.setPagesize(GlobalConfig.getPageSize());
             }
-            ListVo<SmsAppChannelConfigVo> list = channelConfigService.getPage(criteria);
+            List<App> appList = getCredential().getAppList();
+            List<String> appKeyList = appList.stream().map(App::getAppKey).collect(Collectors.toList());
+            criteria.setAppKeyList(appKeyList);
+            ListVo<SmsAppChannelConfigVo> list = channelConfigService.getPage(criteria,appList);
             return successJsonResult("success", "list", list);
         }catch (Exception e) {
             if (e instanceof TqException) {

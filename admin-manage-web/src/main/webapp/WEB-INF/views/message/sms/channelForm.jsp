@@ -22,13 +22,12 @@
     <form:form id="channelForm" modelAttribute="channel"   action="${ctxA}/message/sms/save" method="post" class="form-horizontal">
         <input type="hidden" name="id" value="${not empty channel.id?channel.id:''}">
         <input type="hidden" id="channelName" name="channelName" value="">
-        <input type="hidden" id="state" name="state" value="1">
         <div class="control-group">
             <label class="control-label">选择应用：</label>
             <div class="controls">
                 <select  id="appKey" name="appKey" class="selectpicker show-tick form-control" descripe="请选择应用">
                     <c:forEach items="${appList}" var="app">
-                        <option value="${app.appKey}" ${channel.appKey == app.appKey?'checked':''}>${app.appName}</option>
+                        <option value="${app.appKey}" ${channel.appKey == app.appKey?'selected':''}>${app.appName}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -61,7 +60,7 @@
         <div class="control-group">
             <label class="control-label">签名：</label>
             <div class="controls">
-                <input type="text" class="form-control valid" descripe="请填写账号" type="text" name="smsSign" id="smsSign" maxlength="32" value="${channel.smsSign}"></input>
+                <input type="text" class="form-control valid" descripe="请填写签名" type="text" name="smsSign" id="smsSign" maxlength="32" value="${channel.smsSign}"></input>
             </div>
         </div>
         <div class="control-group">
@@ -78,9 +77,9 @@
         </div>
         <div class="form-actions">
             <shiro:hasPermission name="merchant:list:edit">
-                <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;"/>&nbsp;
+                <a id="btnSubmit" class="btn btn-primary" onclick="save()" >保存</a>
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/message/sms/list'"/>
+            &nbsp;<a id="btnCancel" class="btn" type="button" onclick="window.location.href='${ctxA}/message/sms/list'">返回</a>
         </div>
     </form:form>
 

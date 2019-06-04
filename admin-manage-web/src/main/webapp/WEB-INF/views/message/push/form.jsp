@@ -9,9 +9,9 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-    <li><a href="${ctxA}/message/sms/list">短信渠道列表</a></li>
+    <li><a href="${ctxA}/message/push/list">推送渠道列表</a></li>
     <li class="active">
-        <shiro:hasPermission name="message:sms:edit">
+        <shiro:hasPermission name="message:push:edit">
             <a href="javascript:void(0);">${not empty channel.id?'修改':'添加'}渠道</a>
         </shiro:hasPermission>
     </li>
@@ -41,9 +41,9 @@
         </div>
         <div class="form-actions">
             <shiro:hasPermission name="message:push:edit">
-                <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;"/>&nbsp;
+                <a id="btnSubmit" class="btn btn-primary" onclick="save()" >保存</a>
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/message/push/list'"/>
+            &nbsp;<a id="btnCancel" class="btn" type="button" onclick="window.location.href='${ctxA}/message/push/list'">返回</a>
         </div>
     </form:form>
 

@@ -39,7 +39,7 @@
         <div class="control-group">
             <label class="control-label">短信内容：</label>
             <div class="controls">
-                <textarea  class="form-control valid" descripe="请填写短信内容" type="text" name="pushContent" id="pushContent" maxlength="32" >${push.pushContent}</textarea>
+                <textarea  class="form-control valid" descripe="请填写短信内容" type="text" name="pushContent" id="pushContent" maxlength="64" >${push.pushContent}</textarea>
             </div>
         </div>
 

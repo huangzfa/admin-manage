@@ -66,7 +66,7 @@
         function optionformater(value,row,index){
             var opStr='';
             <shiro:hasPermission name="merchant:list:edit">
-              opStr+='<a class="si-option-a" href="${ctxA}/message/sms/form?id='+row.id+'">查看</a>';
+            opStr+="<a class='si-option-a' href='javascript:edit(\""+row.id+"\",\""+row.state+"\")'>查看</a>";
               var state = 0;
               if( row.state == 0) state = 1;
               opStr+="<a class='si-option-a' href='javascript:editState(\""+row.id+"\",\""+state+"\")'>"+(row.state==0?"启用":"禁用")+"</a>";
@@ -82,6 +82,14 @@
                 return "禁用";
             }
             return '未知';
+        }
+
+        function edit(id,state) {
+            if( state ==1){
+                top.$.jBox.tip("请禁用后编辑");
+            }else{
+                window.location.href="${ctxA}/message/sms/form?id="+id;
+            }
         }
 
         function editState(id,state){

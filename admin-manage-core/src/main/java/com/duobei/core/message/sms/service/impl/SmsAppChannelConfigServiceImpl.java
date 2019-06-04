@@ -44,12 +44,11 @@ public class SmsAppChannelConfigServiceImpl implements SmsAppChannelConfigServic
 
     @Override
     @Transactional(value = "springTransactionManager",rollbackFor = TqException.class)
-    public ListVo<SmsAppChannelConfigVo> getPage(SmsAppChannelConfigCriteria criteria){
+    public ListVo<SmsAppChannelConfigVo> getPage(SmsAppChannelConfigCriteria criteria,List<App> appList){
         int total = channelConfigDao.countByCriteria(criteria);
         List<SmsAppChannelConfigVo> list = null;
         if (total > BizConstant.INT_ZERO) {
             list = channelConfigDao.getPageList(criteria);
-            List<App> appList = appDao.getAll();
             for(SmsAppChannelConfigVo channelConfig :list){
                 if( channelConfig.getBusinessCode().contains(SmsUserfulCodeEnums.COLLECTION.getCode())){
                     channelConfig.setChannelCodeName(SmsUserfulCodeEnums.COLLECTION.getMsg());

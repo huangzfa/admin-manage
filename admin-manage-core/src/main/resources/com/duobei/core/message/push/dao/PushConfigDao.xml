@@ -3,14 +3,28 @@
 <mapper namespace="com.duobei.core.message.push.dao.PushConfigDao" >
 
     <select id="getPageList" resultType="com.duobei.core.message.push.domain.PushConfig" parameterType="com.duobei.core.message.push.domain.criteria.PushConfigCriteria">
-        SELECT * from pub_push_config order by id desc
+        SELECT * from pub_push_config where 1=1
+        <if test="appKeyList != null">
+            and app_key
+            <foreach collection="appKeyList" open=" in(" close=")" separator="," item="key">
+                #{key}
+            </foreach>
+        </if>
+        order by id desc
         <if test="pagesize != 0">
             LIMIT #{offset}, #{pagesize}
         </if>
     </select>
 
     <select id="countByCriteria" resultType="java.lang.Integer" parameterType="com.duobei.core.message.sms.domain.criteria.SmsAppChannelConfigCriteria">
-        select count(*) from pub_push_config order by id  desc
+        select count(*) from pub_push_config where 1=1
+        <if test="appKeyList != null">
+            and app_key
+            <foreach collection="appKeyList" open=" in(" close=")" separator="," item="key">
+                #{key}
+            </foreach>
+        </if>
+        order by id  desc
     </select>
 
     <select id="getById" resultType="com.duobei.core.message.push.domain.PushConfig">

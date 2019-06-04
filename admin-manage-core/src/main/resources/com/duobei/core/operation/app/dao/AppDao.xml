@@ -17,6 +17,12 @@
         <if test="merchantName != null and merchantName != '' ">
             and c.merchant_name like "%"#{merchantName,jdbcType=VARCHAR}"%"
         </if>
+        <if test="productList != null">
+            and a.product_id
+            <foreach collection="productList" open=" in(" close=")" separator="," item="id">
+                #{id}
+            </foreach>
+        </if>
         order by a.id desc
         <if test="pagesize != 0">
             LIMIT #{offset}, #{pagesize}
@@ -35,7 +41,12 @@
         <if test="merchantName != null and merchantName != '' ">
             and c.merchant_name like "%"#{merchantName,jdbcType=VARCHAR}"%"
         </if>
-
+        <if test="productList != null">
+            and a.product_id
+            <foreach collection="productList" open=" in(" close=")" separator="," item="id">
+                #{id}
+            </foreach>
+        </if>
     </select>
 
     <select id="countByAppKey" resultType="java.lang.Integer" parameterType="com.duobei.core.operation.app.domain.App">

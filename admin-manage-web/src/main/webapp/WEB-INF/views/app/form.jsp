@@ -35,10 +35,7 @@
             <label class="control-label">所属产品：</label>
             <div class="controls">
                 <select  name="productId" id="productId" class="selectpicker show-tick form-control valid" descripe="请选择产品">
-                    <option value="">请选择产品</option>
-                    <c:forEach items="${productList}" var="product">
-                        <option value="${product.id}" ${app.productId==product.id?"selected":''}>${product.productName}</option>
-                    </c:forEach>
+
                 </select>
             </div>
         </div>
@@ -63,14 +60,14 @@
         <div class="control-group">
             <label class="control-label">ios渠道下载链接：</label>
             <div class="controls">
-                <input type="text" class="form-control" id="iosUrl" name="iosUrl" descripe="请填写安卓渠道下载链接" type="text"  value="${app.iosUrl}"></input>
+                <input type="text" class="form-control valid" id="iosUrl" name="iosUrl" descripe="请填写ios渠道下载链接" type="text"  value="${app.iosUrl}"></input>
             </div>
         </div>
         <div class="form-actions">
             <shiro:hasPermission name="product:list:edit">
-                <input id="btnSubmit" class="btn btn-primary" onclick="save()" value="保 存" style="width: 50px;"/>&nbsp;
+                <a id="btnSubmit" class="btn btn-primary" onclick="save()" >保存</a>
             </shiro:hasPermission>
-            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="window.location.href='${ctxA}/app/list'"/>
+            &nbsp;<a id="btnCancel" class="btn" type="button" onclick="window.location.href='${ctxA}/app/list'">返回</a>
         </div>
     </form:form>
 
@@ -78,6 +75,9 @@
 </div>
 </body>
 <script>
+    $(function () {
+        merchanChange($("#merchantId"));
+    })
     /*
      * 商户下拉事件
      * */
@@ -87,7 +87,11 @@
             $("#productId").append("<option value=''>请选择产品</option>");
             for(j = 0,len=result.list.length; j < len; j++) {
                 var data = result.list[j];
-                $("#productId").append("<option value="+ data.id +">"+ data.productName +"</option>")
+                var selected = "";
+                if( "${productId}" == data.id + ""){
+                    selected = "selected";
+                }
+                $("#productId").append("<option value="+ data.id +" "+selected+">"+ data.productName +"</option>")
             }
             return;
         },"json");
@@ -107,14 +111,14 @@
         if( !bool ){
             return false;
         }
-        var androidUrl = $("#androidUrl").val()
+        var androidUrl = $("#androidUrl").val();
         if (androidUrl.indexOf("http://") == -1 && androidUrl.indexOf("https://") == -1) {
-            top.layer.alert("请填写正确连接地址", {icon: 5});
+            top.layer.alert("请填写正确安卓连接地址", {icon: 5});
             return false;
         }
-        var iosUrl = $("#iosUrl").val()
+        var iosUrl = $("#iosUrl").val();
         if (iosUrl.indexOf("http://") == -1 && iosUrl.indexOf("https://") == -1) {
-            top.layer.alert("请填写正确连接地址", {icon: 5});
+            top.layer.alert("请填写正确ios连接地址", {icon: 5});
             return false;
         }
         $("#btnSubmit").attr("disabled",true);

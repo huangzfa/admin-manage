@@ -11,6 +11,7 @@ import com.duobei.core.operation.app.domain.criteria.AppCriteria;
 import com.duobei.core.operation.app.domain.vo.AppVo;
 import com.duobei.core.operation.app.service.AppService;
 import com.duobei.core.operation.product.domain.Merchant;
+import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.criteria.ProductCriteria;
 import com.duobei.core.operation.product.service.MerchantService;
 import com.duobei.core.operation.product.service.ProductService;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author huangzhongfa
@@ -58,15 +60,11 @@ public class AppController  extends BaseController {
     @RequestMapping(value = "/form")
     public String form(Model model,Integer id) {
         if( id!=null){
-            model.addAttribute("app",appService.getAppById(id));
+            App app = appService.getAppById(id);
+            model.addAttribute("app",app);
+            model.addAttribute("productId",app.getProductId());
         }
         List<Merchant> merchantList = merchantService.getAll();
-        if( merchantList.size() > BizConstant.INT_ZERO){
-            ProductCriteria criteria = new ProductCriteria();
-            criteria.setPagesize(100);
-            criteria.setMerchantId(merchantList.get(BizConstant.INT_ZERO).getId());
-            model.addAttribute("productList",productService.getLists(criteria).getRows());
-        }
         model.addAttribute("merchantList",merchantList);
         return "app/form";
     }
@@ -87,6 +85,8 @@ public class AppController  extends BaseController {
             if (criteria.getPagesize() == 0) {
                 criteria.setPagesize(GlobalConfig.getPageSize());
             }
+            List<Integer> productList = getCredential().getProductList().stream().map(Product::getId).collect(Collectors.toList());
+            criteria.setProductList(productList);
             ListVo<AppVo> list = appService.getLists(criteria);
             return successJsonResult("success", "list", list);
         } catch (Exception e) {

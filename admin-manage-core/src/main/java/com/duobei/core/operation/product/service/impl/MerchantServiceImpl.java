@@ -120,6 +120,10 @@ public class MerchantServiceImpl implements MerchantService {
         return merchantDao.getById(id);
     }
 
+    @Override
+    public List<Merchant> getByProductIds(List<Product> productList){
+        return merchantDao.getByProductIds(productList);
+    }
     /**
      * 根据产品推送
      */

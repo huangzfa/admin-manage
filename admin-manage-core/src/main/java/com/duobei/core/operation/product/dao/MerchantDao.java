@@ -2,6 +2,7 @@ package com.duobei.core.operation.product.dao;
 
 
 import com.duobei.core.operation.product.domain.Merchant;
+import com.duobei.core.operation.product.domain.Product;
 import com.duobei.core.operation.product.domain.criteria.MerchantCriteria;
 import org.apache.ibatis.annotations.Param;
 
@@ -64,4 +65,6 @@ public interface MerchantDao {
      * @return
      */
     Merchant getLastOne();
+
+    List<Merchant> getByProductIds(@Param("productList") List<Product> productList);
 }

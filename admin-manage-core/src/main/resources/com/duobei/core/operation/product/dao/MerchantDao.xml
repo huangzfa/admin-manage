@@ -45,6 +45,17 @@
         SELECT * FROM sh_merchant order by id  desc limit 1
     </select>
 
+    <select id="getByProductIds" parameterType="java.util.List" resultType="com.duobei.core.operation.product.domain.Merchant">
+        select a.* from sh_merchant a left join yy_product b on a.id=b.merchant_id where 1=1
+        <if test="productList != null">
+            and b.id
+            <foreach collection="productList" open=" in(" close=")" separator="," item="product">
+                #{product.id}
+            </foreach>
+        </if>
+        GROUP BY a.id order by a.id desc
+    </select>
+
     <insert id="save" parameterType="com.duobei.core.operation.product.domain.Merchant">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
             SELECT LAST_INSERT_ID()

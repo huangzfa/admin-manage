@@ -64,7 +64,7 @@ public class AppController  extends BaseController {
             model.addAttribute("app",app);
             model.addAttribute("productId",app.getProductId());
         }
-        List<Merchant> merchantList = merchantService.getAll();
+        List<Merchant> merchantList = merchantService.getByProductIds(getCredential().getProductList());
         model.addAttribute("merchantList",merchantList);
         return "app/form";
     }

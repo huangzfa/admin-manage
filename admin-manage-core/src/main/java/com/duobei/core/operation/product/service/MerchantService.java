@@ -58,4 +58,6 @@ public interface MerchantService {
 
     void noticeByMerchant(Merchant merchant) throws TqException;
 
+    List<Merchant> getByProductIds(List<Product> productList);
+
 }

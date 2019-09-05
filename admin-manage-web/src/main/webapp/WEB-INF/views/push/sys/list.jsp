@@ -207,8 +207,8 @@
             <th data-options="field:'pushTitle',width:160,align:'center',halign:'center',fixed:true">推送标题</th>
             <th data-options="field:'pushContent',width:160,align:'center',halign:'center',fixed:true">推送内容</th>
             <th data-options="field:'platform',width:80,align:'center',halign:'center',fixed:true,platformformater">推送系统</th>
-            <th data-options="field:'pushCount',width:80,align:'center',halign:'center',fixed:true">推送数量</th>
-            <th data-options="field:'successCount',width:80,align:'center',halign:'center',fixed:true,formatter:countformater">成功数量</th>
+            <th data-options="field:'successCount',width:80,align:'center',halign:'center',fixed:true">推送数量</th>
+            <%--<th data-options="field:'successCount',width:80,align:'center',halign:'center',fixed:true,formatter:countformater">成功数量</th>--%>
             <th data-options="field:'addOperatorName',width:80,align:'center',halign:'center',fixed:true">操作人员</th>
             <th data-options="field:'option',width:180,align:'left',halign:'center',fixed:true,formatter:optionformater">操作</th>
         </tr>

@@ -11,7 +11,7 @@
 
   <!-- 分页查询 -->
   <select id="getPage" resultType="com.duobei.core.operation.coupon.domain.vo.CouponUserVo" parameterType="com.duobei.core.operation.coupon.domain.criteria.CouponUserCriteria">
-    select a.*,b.coupon_name,b.amount from yy_coupon_user a left join yy_coupon b on a.coupon_id=b.id  where a.is_delete = 0 and a.product_id=#{productId}
+    select a.*,b.coupon_name,b.amount/100 as amount from yy_coupon_user a left join yy_coupon b on a.coupon_id=b.id  where a.is_delete = 0 and a.product_id=#{productId}
     <if test="couponName != null and couponName!=''">
       and b.coupon_name=#{couponName}
     </if>
@@ -90,7 +90,7 @@
   <!-- 查看用户领了这个优惠券次数 -->
   <select id="getCountGroupUserId" resultType="java.util.Map">
     select count(user_id) as count,user_id from yy_coupon_user  where  product_id=#{productId} and coupon_id=#{couponId,jdbcType=INTEGER} and
-    user_id in
+    user_id
     <foreach collection="userIds" open="in(" close=")" item="userId" separator=",">
       #{userId}
     </foreach>

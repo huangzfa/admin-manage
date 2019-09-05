@@ -20,7 +20,7 @@
         <if test="addOperatorId!=null">
             and a.add_operator_id =#{addOperatorId}
         </if>
-        order by a.id desc
+        order by a.push_time desc
         <if test="pagesize != 0">
             LIMIT #{offset}, #{pagesize}
         </if>
